@@ -2,7 +2,7 @@
 
 This page summarizes reported operating practices in the catalog. Most sources are company reports. They do not establish cause and effect.
 
-The observations use the 28 approaches reviewed on August 13, 2026. The evidence is uneven. Read each source before you apply a practice to another organization.
+The observations use the 41 approaches reviewed on August 21, 2026. The evidence is uneven. Read each source before you apply a practice to another organization.
 
 ## Start with work that people can check
 
@@ -12,7 +12,7 @@ This suggests a practical starting question: can the team decide whether the wor
 
 ## Put the system near existing work
 
-Twenty entries list Slack as an interface. Other entries use GitHub, Linear, web interfaces, command-line tools, scheduled jobs, or event handlers.
+Twenty of the 41 entries list Slack as an interface. Other entries use GitHub, Linear, web interfaces, command-line tools, scheduled jobs, or event handlers.
 
 An existing interface can reduce the effort needed to try a system. It can also inherit the access, privacy, and retention problems of that interface. Public channels can spread examples, but teams must not expose private work to gain visibility.
 
@@ -27,6 +27,8 @@ These reports show that deployment includes training, support, evaluation, and o
 Several approaches read from or write to GitHub, Linear, Jira, Salesforce, and internal service catalogs. This can preserve familiar review and audit paths.
 
 The catalog also contains limits. Existing permissions can be too broad for an automated process. Teams still need task scope, approval rules, and an audit record for tool calls.
+
+OpenAI shows the read-heavy variant: its data agent runs strictly pass-through, so each person can only reach the warehouse tables they already have permission to access. This borrows the audit model of the system of record without a separate agent permission scheme.
 
 ## Centralize shared controls when the system grows
 
@@ -44,7 +46,7 @@ The catalog contains activity metrics, adoption metrics, and outcome metrics. Th
 - Cycle time and incident results can show an operational effect.
 - Review time and escaped defects can show hidden cost.
 
-Sierra distinguishes use from value in its report. DoorDash reports action rates for review findings. Replit reports output with review, revert, and incident measures. These examples support a broader metric set. They do not make the reported measurements independent.
+Sierra distinguishes use from value in its report. DoorDash reports action rates for review findings. Replit reports output with review, revert, and incident measures. OpenAI runs curated question sets with golden SQL continuously during development to catch regressions in its data agent. These examples support a broader metric set. They do not make the reported measurements independent.
 
 ## Expect work to move
 
@@ -54,7 +56,7 @@ When one step speeds up, inspect the next step. Track waiting time, review effor
 
 ## Expand autonomy with evidence
 
-The sample contains 19 `drafts-reviewed` approaches, seven `human-in-loop` approaches, and two `autonomous` approaches. This distribution reflects public reports in the catalog. It is not a recommendation.
+The sample contains 23 `drafts-reviewed` approaches, nine `human-in-loop` approaches, and three `autonomous` approaches. The rest are `assistive` or `unknown`. This distribution reflects public reports in the catalog. It is not a recommendation.
 
 Before a team removes a review step, it should define the failure limit, verification method, rollback path, and responsible owner. The relevant threshold depends on the task. A code migration and a customer payment action do not have the same impact.
 

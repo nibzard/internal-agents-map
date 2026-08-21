@@ -1,0 +1,202 @@
+id: openai-data-agent
+company: OpenAI
+agent_name: In-house data agent
+approach_type: task-agent
+deployment_stage: scaled
+year: 2026
+first_public_evidence:
+  date: '2026-01-29'
+  source_id: openai-data-agent-source-1
+last_reviewed_at: '2026-08-21'
+status: internal
+domains:
+- data
+autonomy: human-in-loop
+operating_models:
+- scope: 'natural-language data question → analysis or notebook the requester verifies'
+  attention_boundary: continuous-steering
+rubric:
+  invocation:
+  - interactive
+  state: cross-session-memory
+  identity: user
+  evidence_strength: detailed-primary
+summary: OpenAI's internal-only data agent. Employees ask questions in natural language and the agent
+  runs the analysis end to end over the company data platform, from finding tables and writing SQL to
+  synthesizing findings, notebooks, and reports.
+headline_metric: Question to insight in minutes rather than days (self-reported, January 2026)
+architecture:
+  harness: Custom conversational agent that evaluates its own progress and retries failed intermediate
+    results; workflows package recurring analyses into reusable instruction sets
+  model: GPT-5 with Codex for table-level knowledge and codebase crawling; Evals API for grading;
+    Embeddings API for context embeddings
+  tool_access: Live queries to the data warehouse plus the metadata service, Airflow, and Spark; web
+    search; Slack, Google Docs, and Notion through a permission-aware retrieval service
+  knowledge: Layered context that grounds the agent in schema metadata and table lineage, historical
+    queries, curated table descriptions, Codex-derived code-level table definitions, embedded company
+    documents, and runtime warehouse inspection
+  credentials: Strictly pass-through access; users can only query tables they already have permission
+    to access, and missing access is flagged or falls back to authorized datasets
+  context_mgmt: A daily offline pipeline aggregates table usage, human annotations, and Codex
+    enrichment into embeddings for retrieval at query time; global and personal memories save
+    corrections for later runs
+primitives:
+- name: Memory
+  desc: Global and personal memories retain non-obvious corrections, filters, and constraints; users
+    can create and edit them
+- name: Workflows
+  desc: Recurring analyses packaged as reusable instruction sets, such as weekly business reports and
+    table validations
+- name: Golden-SQL evals
+  desc: Curated question and answer pairs with authored golden SQL; generated and expected SQL and
+    results are compared through the Evals grader
+- name: Code-derived table context
+  desc: Codex crawls pipeline code to derive what each table contains, beyond schemas and query
+    history
+key_metrics:
+- OpenAI's data platform serves more than 3,500 internal users across Engineering, Product, and Research
+- The data platform spans more than 600 petabytes across 70,000 datasets
+lessons_learned:
+- Exposing the full tool set confused the agent, so OpenAI restricted and consolidated overlapping
+  tool calls
+- Highly prescriptive prompting degraded results; higher-level guidance with model reasoning worked
+  better
+- A table's meaning lives in the pipeline code that produces it, not only in schemas and query history
+sources:
+- id: openai-data-agent-source-1
+  title: Inside our in-house data agent
+  url: https://openai.com/index/inside-our-in-house-data-agent/
+  canonical_url: https://openai.com/index/inside-our-in-house-data-agent/
+  kind: engineering-blog
+  provenance_class: first-party
+  role: evidence
+  authors:
+  - Bonnie Xu
+  - Aravind Suresh
+  - Emma Tang
+  published_at: '2026-01-29'
+  accessed_at: '2026-08-21'
+  last_verified_at: '2026-08-21'
+  archived_url: https://web.archive.org/web/20260129232402/https://openai.com/index/inside-our-in-house-data-agent/
+evidence:
+  operating_models.0:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Built to think and work like a teammate"
+  summary:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "How it works"
+  headline_metric:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Introduction, paragraph 4"
+  architecture.harness:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "How it works"
+  architecture.model:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Introduction, paragraph 3"
+  architecture.tool_access:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Context is everything, runtime context"
+  architecture.knowledge:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Context is everything"
+  architecture.credentials:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Agent security"
+  architecture.context_mgmt:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Context is everything, final paragraph"
+  primitives.0:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Context is everything, memory"
+  primitives.1:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Built to think and work like a teammate"
+  primitives.2:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Moving fast without breaking trust"
+  primitives.3:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Lessons learned"
+  key_metrics.0:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Why we needed a custom tool, paragraph 1"
+  key_metrics.1:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Why we needed a custom tool, paragraph 1"
+  lessons_learned.0:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Lessons learned"
+  lessons_learned.1:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Lessons learned"
+  lessons_learned.2:
+  - source_id: openai-data-agent-source-1
+    relation: supports
+    locator: "Lessons learned"
+claim_metadata:
+  operating_models.0:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: medium
+    confidence_reason: The article documents conversational steering, mid-analysis interrupts, and
+      clarifying questions, but it does not measure where human attention returns in a normal run.
+    valid_at: '2026-01'
+  headline_metric:
+    kind: metric
+    provenance: reported
+    confidence: medium
+    confidence_reason: OpenAI reported this qualitative speedup in its own article without an
+      independent review or a stated measurement method.
+    valid_at: '2026-01'
+    reported_by: OpenAI
+  key_metrics.0:
+    kind: metric
+    provenance: reported
+    confidence: medium
+    confidence_reason: OpenAI reported the platform figure in its own article; the count covers the
+      data platform, not only agent users.
+    valid_at: '2026-01'
+    reported_by: OpenAI
+    metric_scope: Users of OpenAI's internal data platform
+  key_metrics.1:
+    kind: metric
+    provenance: reported
+    confidence: medium
+    confidence_reason: OpenAI reported the platform scale in its own article without independent
+      verification.
+    valid_at: '2026-01'
+    reported_by: OpenAI
+    metric_scope: Size of OpenAI's internal data platform
+  lessons_learned.0:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: medium
+    confidence_reason: The catalog derives this observation from the linked source.
+  lessons_learned.1:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: medium
+    confidence_reason: The catalog derives this observation from the linked source.
+  lessons_learned.2:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: medium
+    confidence_reason: The catalog derives this observation from the linked source.

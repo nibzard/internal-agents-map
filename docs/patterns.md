@@ -1,8 +1,8 @@
 # Architecture patterns
 
-This page compares the 40 approaches in the catalog. It describes reported designs. It does not prescribe one definition of an agent.
+This page compares the 41 approaches in the catalog. It describes reported designs. It does not prescribe one definition of an agent.
 
-Most evidence comes from organizations that describe their own systems. Architecture details are incomplete for many entries. Counts below use the catalog snapshot reviewed on August 13, 2026.
+Most evidence comes from organizations that describe their own systems. Architecture details are incomplete for many entries. Counts below use the catalog snapshot reviewed on August 21, 2026.
 
 ## Sample
 
@@ -10,7 +10,7 @@ The catalog contains these approach types:
 
 | Type | Count |
 | --- | ---: |
-| Task agent | 16 |
+| Task agent | 17 |
 | Platform | 10 |
 | Background agent | 6 |
 | Agent system | 4 |
@@ -76,6 +76,8 @@ Reported controls include:
 - Network proxies that inject credentials
 - Deterministic tests before a change can proceed
 
+OpenAI reports a pass-through variant for read-heavy work: its data agent inherits the requester's warehouse permissions, so a user can only query tables they already have permission to access. OpenAI also reports that exposing the full tool set confused the agent, and that it consolidated overlapping tool calls to reduce ambiguity.
+
 These controls reduce access and limit impact. They do not make incorrect or harmful action impossible. A system can still supply a scoped session token to a worker even when it keeps a long-lived credential outside that worker.
 
 ## Company context
@@ -84,15 +86,17 @@ Several organizations expose code ownership, service catalogs, tickets, document
 
 The implementations differ. Some use repository instruction files. Some query live systems. Others load domain playbooks when needed. The evidence supports company context as a recurring investment. It does not establish one best storage or retrieval method.
 
+OpenAI's data agent is the most layered reported example. It grounds queries in schema metadata and table lineage, historical queries, curated descriptions, company documents, saved memories, and live warehouse inspection. Its distinctive choice is to derive table meaning from the pipeline code that produces each table, not only from schemas and query history.
+
 ## Invocation
 
-Twenty of 40 entries list Slack as an interface. GitHub, web interfaces, command-line tools, scheduled jobs, and event handlers also appear.
+Twenty of 41 entries list Slack as an interface. GitHub, web interfaces, command-line tools, scheduled jobs, and event handlers also appear.
 
 This count shows where reported systems appear in the sample. It does not show that Slack causes adoption. Public channels can help people observe agent work, but they can also expose private or sensitive information. Teams must apply access and retention rules before they copy this practice.
 
 ## State and identity
 
-The current public evidence does not document state duration for 35 entries. Four entries describe durable session state, and one describes run-only state. This gap is why durable identity belongs in the rubric instead of the inclusion policy.
+The current public evidence does not document state duration for 36 entries. Four entries describe durable session state, one describes run-only state, and one describes memory that persists across sessions. This gap is why durable identity belongs in the rubric instead of the inclusion policy.
 
 The rubric asks separate questions:
 
@@ -105,9 +109,11 @@ These choices affect audit records, authorization, recovery, and accountability.
 
 ## Verification and autonomy
 
-The catalog classifies 23 approaches as `drafts-reviewed`, eight as `human-in-loop`, three as `autonomous`, three as `assistive`, and three as `unknown`. These labels describe the reported review boundary. They do not measure output quality.
+The catalog classifies 23 approaches as `drafts-reviewed`, nine as `human-in-loop`, three as `autonomous`, three as `assistive`, and three as `unknown`. These labels describe the reported review boundary. They do not measure output quality.
 
 Reported verification methods include tests, continuous integration checks, schema checks, query planning, policy checks, model judges, and human review. Deterministic checks and model review serve different purposes. A model judge does not replace a test that can decide a property directly.
+
+OpenAI combines both kinds for generated SQL. Each eval pairs a question with an authored golden query, executes the generated SQL, and compares both the query text and the result set through a grader that accepts syntactic variation. The evals run continuously and act as regression canaries.
 
 ## Human attention and operating levels
 

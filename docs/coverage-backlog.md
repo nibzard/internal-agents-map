@@ -32,6 +32,11 @@ On 2026-08-13, twelve records moved off this backlog and into the
 - HubSpot — Sidekick → [landscape](landscape.md#hubspot-sidekick)
 - Databricks — coSTAR (Omnigent excluded) → [landscape](landscape.md#databricks-costar)
 
+On 2026-08-21, the OpenAI in-house data agent moved off this backlog and into the
+[landscape](landscape.md). Its detail block stays on this page as a source collection.
+
+- OpenAI — in-house data agent → [landscape](landscape.md#openai-data-agent)
+
 ## Editorial rule
 
 A company that uses its **own shipping consumer product** internally does not qualify on that
@@ -286,15 +291,15 @@ A product the company sells is not enough on its own.
 
 ### OpenAI — in-house data agent
 
-- **Status**: Verified, ready.
+- **Status**: Promoted to the catalog on 2026-08-21.
 - **Confidence**: high.
 - **What it does**: OpenAI built a bespoke, internal-only data agent that explores and reasons
   over OpenAI's own data platform. It serves Engineering, Data Science, Go-To-Market, Finance, and
-  Research. It has more than 3,500 internal users across 70,000 datasets and 600 PB. It inherits
-  existing permissions. It is built on Codex and GPT-5.
+  Research. The data platform it works over serves more than 3,500 internal users and spans 70,000
+  datasets and 600 PB. It inherits existing permissions. It is built on Codex and GPT-5.
 - **Reported stage**: scaled internally.
 - **Sources**:
-  - [Inside our in-house data agent](https://openai.com/index/inside-our-in-house-data-agent/) — OpenAI engineering blog. First-party.
+  - [Inside our in-house data agent](https://openai.com/index/inside-our-in-house-data-agent/) — OpenAI engineering blog, 2026-01-29. First-party.
 
 ### Amazon — Amazon Q Developer
 

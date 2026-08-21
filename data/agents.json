@@ -1248,6 +1248,63 @@
       "interfaces": []
     },
     {
+      "id": "openai-data-agent",
+      "company": "OpenAI",
+      "agent_name": "In-house data agent",
+      "approach_type": "task-agent",
+      "deployment_stage": "scaled",
+      "year": 2026,
+      "first_public_evidence": {
+        "date": "2026-01-29",
+        "source_id": "openai-data-agent-source-1"
+      },
+      "last_reviewed_at": "2026-08-21",
+      "status": "internal",
+      "domains": [
+        "data"
+      ],
+      "autonomy": "human-in-loop",
+      "operating_models": [
+        {
+          "scope": "natural-language data question → analysis or notebook the requester verifies",
+          "attention_boundary": "continuous-steering",
+          "level": 2
+        }
+      ],
+      "rubric": {
+        "invocation": [
+          "interactive"
+        ],
+        "state": "cross-session-memory",
+        "identity": "user",
+        "evidence_strength": "detailed-primary"
+      },
+      "claim_ids": [
+        "openai-data-agent--summary",
+        "openai-data-agent--headline-metric",
+        "openai-data-agent--architecture-harness",
+        "openai-data-agent--architecture-model",
+        "openai-data-agent--architecture-tool-access",
+        "openai-data-agent--architecture-knowledge",
+        "openai-data-agent--architecture-credentials",
+        "openai-data-agent--architecture-context-mgmt",
+        "openai-data-agent--primitives-0",
+        "openai-data-agent--primitives-1",
+        "openai-data-agent--primitives-2",
+        "openai-data-agent--primitives-3",
+        "openai-data-agent--key-metrics-0",
+        "openai-data-agent--key-metrics-1",
+        "openai-data-agent--lessons-learned-0",
+        "openai-data-agent--lessons-learned-1",
+        "openai-data-agent--lessons-learned-2",
+        "openai-data-agent--operating-models-0"
+      ],
+      "source_ids": [
+        "openai-data-agent-source-1"
+      ],
+      "interfaces": []
+    },
+    {
       "id": "plaid-ai-annotator",
       "company": "Plaid",
       "agent_name": "AI Annotator",
@@ -7465,6 +7522,335 @@
       ]
     },
     {
+      "id": "openai-data-agent--summary",
+      "approach_id": "openai-data-agent",
+      "field": "summary",
+      "text": "OpenAI's internal-only data agent. Employees ask questions in natural language and the agent runs the analysis end to end over the company data platform, from finding tables and writing SQL to synthesizing findings, notebooks, and reports.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "How it works"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--headline-metric",
+      "approach_id": "openai-data-agent",
+      "field": "headline_metric",
+      "text": "Question to insight in minutes rather than days (self-reported, January 2026)",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "OpenAI reported this qualitative speedup in its own article without an independent review or a stated measurement method.",
+      "valid_at": "2026-01",
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Introduction, paragraph 4"
+        }
+      ],
+      "reported_by": "OpenAI"
+    },
+    {
+      "id": "openai-data-agent--architecture-harness",
+      "approach_id": "openai-data-agent",
+      "field": "architecture.harness",
+      "text": "Custom conversational agent that evaluates its own progress and retries failed intermediate results; workflows package recurring analyses into reusable instruction sets",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "How it works"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--architecture-model",
+      "approach_id": "openai-data-agent",
+      "field": "architecture.model",
+      "text": "GPT-5 with Codex for table-level knowledge and codebase crawling; Evals API for grading; Embeddings API for context embeddings",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Introduction, paragraph 3"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--architecture-tool-access",
+      "approach_id": "openai-data-agent",
+      "field": "architecture.tool_access",
+      "text": "Live queries to the data warehouse plus the metadata service, Airflow, and Spark; web search; Slack, Google Docs, and Notion through a permission-aware retrieval service",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Context is everything, runtime context"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--architecture-knowledge",
+      "approach_id": "openai-data-agent",
+      "field": "architecture.knowledge",
+      "text": "Layered context that grounds the agent in schema metadata and table lineage, historical queries, curated table descriptions, Codex-derived code-level table definitions, embedded company documents, and runtime warehouse inspection",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Context is everything"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--architecture-credentials",
+      "approach_id": "openai-data-agent",
+      "field": "architecture.credentials",
+      "text": "Strictly pass-through access; users can only query tables they already have permission to access, and missing access is flagged or falls back to authorized datasets",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Agent security"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--architecture-context-mgmt",
+      "approach_id": "openai-data-agent",
+      "field": "architecture.context_mgmt",
+      "text": "A daily offline pipeline aggregates table usage, human annotations, and Codex enrichment into embeddings for retrieval at query time; global and personal memories save corrections for later runs",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Context is everything, final paragraph"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--primitives-0",
+      "approach_id": "openai-data-agent",
+      "field": "primitives.0",
+      "text": "Global and personal memories retain non-obvious corrections, filters, and constraints; users can create and edit them",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Context is everything, memory"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--primitives-1",
+      "approach_id": "openai-data-agent",
+      "field": "primitives.1",
+      "text": "Recurring analyses packaged as reusable instruction sets, such as weekly business reports and table validations",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Built to think and work like a teammate"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--primitives-2",
+      "approach_id": "openai-data-agent",
+      "field": "primitives.2",
+      "text": "Curated question and answer pairs with authored golden SQL; generated and expected SQL and results are compared through the Evals grader",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Moving fast without breaking trust"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--primitives-3",
+      "approach_id": "openai-data-agent",
+      "field": "primitives.3",
+      "text": "Codex crawls pipeline code to derive what each table contains, beyond schemas and query history",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Lessons learned"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--key-metrics-0",
+      "approach_id": "openai-data-agent",
+      "field": "key_metrics.0",
+      "text": "OpenAI's data platform serves more than 3,500 internal users across Engineering, Product, and Research",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "OpenAI reported the platform figure in its own article; the count covers the data platform, not only agent users.",
+      "valid_at": "2026-01",
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Why we needed a custom tool, paragraph 1"
+        }
+      ],
+      "reported_by": "OpenAI",
+      "metric_scope": "Users of OpenAI's internal data platform"
+    },
+    {
+      "id": "openai-data-agent--key-metrics-1",
+      "approach_id": "openai-data-agent",
+      "field": "key_metrics.1",
+      "text": "The data platform spans more than 600 petabytes across 70,000 datasets",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "OpenAI reported the platform scale in its own article without independent verification.",
+      "valid_at": "2026-01",
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Why we needed a custom tool, paragraph 1"
+        }
+      ],
+      "reported_by": "OpenAI",
+      "metric_scope": "Size of OpenAI's internal data platform"
+    },
+    {
+      "id": "openai-data-agent--lessons-learned-0",
+      "approach_id": "openai-data-agent",
+      "field": "lessons_learned.0",
+      "text": "Exposing the full tool set confused the agent, so OpenAI restricted and consolidated overlapping tool calls",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The catalog derives this observation from the linked source.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Lessons learned"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--lessons-learned-1",
+      "approach_id": "openai-data-agent",
+      "field": "lessons_learned.1",
+      "text": "Highly prescriptive prompting degraded results; higher-level guidance with model reasoning worked better",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The catalog derives this observation from the linked source.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Lessons learned"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--lessons-learned-2",
+      "approach_id": "openai-data-agent",
+      "field": "lessons_learned.2",
+      "text": "A table's meaning lives in the pipeline code that produces it, not only in schemas and query history",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The catalog derives this observation from the linked source.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Lessons learned"
+        }
+      ]
+    },
+    {
+      "id": "openai-data-agent--operating-models-0",
+      "approach_id": "openai-data-agent",
+      "field": "operating_models.0",
+      "text": "Level 2 for natural-language data question → analysis or notebook the requester verifies; human attention boundary: continuous-steering.",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The article documents conversational steering, mid-analysis interrupts, and clarifying questions, but it does not measure where human attention returns in a normal run.",
+      "valid_at": "2026-01",
+      "evidence": [
+        {
+          "source_id": "openai-data-agent-source-1",
+          "relation": "supports",
+          "locator": "Built to think and work like a teammate"
+        }
+      ]
+    },
+    {
       "id": "plaid-ai-annotator--summary",
       "approach_id": "plaid-ai-annotator",
       "field": "summary",
@@ -12896,6 +13282,25 @@
       "accessed_at": "2026-08-13",
       "last_verified_at": "2026-08-13",
       "approach_id": "notion-custom-agents"
+    },
+    {
+      "id": "openai-data-agent-source-1",
+      "title": "Inside our in-house data agent",
+      "url": "https://openai.com/index/inside-our-in-house-data-agent/",
+      "canonical_url": "https://openai.com/index/inside-our-in-house-data-agent/",
+      "kind": "engineering-blog",
+      "provenance_class": "first-party",
+      "role": "evidence",
+      "authors": [
+        "Bonnie Xu",
+        "Aravind Suresh",
+        "Emma Tang"
+      ],
+      "published_at": "2026-01-29",
+      "accessed_at": "2026-08-21",
+      "last_verified_at": "2026-08-21",
+      "archived_url": "https://web.archive.org/web/20260129232402/https://openai.com/index/inside-our-in-house-data-agent/",
+      "approach_id": "openai-data-agent"
     },
     {
       "id": "plaid-ai-annotator-source-1",
