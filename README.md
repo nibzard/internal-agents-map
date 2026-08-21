@@ -74,6 +74,7 @@ The table is sorted by company. Each row links to the relevant section of the
 | Microsoft | [PRAssistant](docs/landscape.md#microsoft-prassistant) | background-agent | code-review | L3 · pull request → AI review comments | drafts-reviewed | scaled | internal | 2025 |
 | monday.com | [Sphera / Atlas / Morphex](docs/landscape.md#monday-sphera-atlas-morphex) | agent-system | coding, code-review | L4 · Atlas or Morphex feature task → tested and merged pull request | autonomous | scaled | internal | 2026 |
 | Notion | [Custom Agents](docs/landscape.md#notion-custom-agents) | platform | support, finance-ops, recruitment, security | Unknown · cross-team internal tasks → Custom Agents output | unknown | scaled | internal | 2026 |
+| OpenAI | [In-house data agent](docs/landscape.md#openai-data-agent) | task-agent | data | L3 · natural-language data question → warehouse exploration, SQL, and reviewed answer | drafts-reviewed | scaled | internal | 2026 |
 | Plaid | [AI Annotator](docs/landscape.md#plaid-ai-annotator) | task-agent | data | L3 · raw transactions → labeled training data | drafts-reviewed | scaled | internal | 2025 |
 | Plaid | [Fix My Connection](docs/landscape.md#plaid-fix-my-connection) | task-agent | ops, maintenance | L4 · integration degradation → repaired connection | autonomous | scaled | internal | 2025 |
 | Plaid | [Internal MCP server](docs/landscape.md#plaid-internal-mcp-server) | supporting-pattern | coding | Unknown · engineer request → internal tool access | unknown | scaled | internal | 2025 |

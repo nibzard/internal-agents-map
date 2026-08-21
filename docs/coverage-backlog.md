@@ -32,6 +32,10 @@ On 2026-08-13, twelve records moved off this backlog and into the
 - HubSpot — Sidekick → [landscape](landscape.md#hubspot-sidekick)
 - Databricks — coSTAR (Omnigent excluded) → [landscape](landscape.md#databricks-costar)
 
+On 2026-08-21, one more record moved off this backlog:
+
+- OpenAI — in-house data agent → [landscape](landscape.md#openai-data-agent)
+
 ## Editorial rule
 
 A company that uses its **own shipping consumer product** internally does not qualify on that
@@ -286,7 +290,7 @@ A product the company sells is not enough on its own.
 
 ### OpenAI — in-house data agent
 
-- **Status**: Verified, ready.
+- **Status**: Promoted to the catalog on 2026-08-21.
 - **Confidence**: high.
 - **What it does**: OpenAI built a bespoke, internal-only data agent that explores and reasons
   over OpenAI's own data platform. It serves Engineering, Data Science, Go-To-Market, Finance, and
