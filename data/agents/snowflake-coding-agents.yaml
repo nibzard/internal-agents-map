@@ -1,0 +1,330 @@
+id: snowflake-coding-agents
+company: Snowflake
+agent_name: Internal coding agents (CoCo / Cortex Code)
+approach_type: agent-system
+deployment_stage: scaled
+year: 2026
+first_public_evidence:
+  date: '2026-07'
+  source_id: snowflake-coding-agents-source-1
+last_reviewed_at: '2026-08-21'
+status: internal
+domains:
+- coding
+- code-review
+- ci-triage
+- on-call
+autonomy: drafts-reviewed
+operating_models:
+- scope: 'coding request → reviewed pull request (inner loop)'
+  attention_boundary: work-product-review
+- scope: 'release validation blocker → agent-diagnosed fix pull request'
+  attention_boundary: work-product-review
+- scope: 'on-call alert → skill-guided agent investigation'
+  attention_boundary: unknown
+rubric:
+  invocation:
+  - interactive
+  - event-driven
+  state: cross-session-memory
+  identity: unknown
+  evidence_strength: limited-primary
+summary: 'Snowflake''s organization-wide rollout of coding agents on its CoCo agent:
+  unrestricted adoption first, then a shared vocabulary of about 14 design patterns,
+  focus weeks, and roughly 7,000 versioned skills that extend the agent into release
+  validation and on-call work.'
+headline_metric: Release validation time down from 15 days to 1 day in 12 months (self-reported)
+architecture:
+  sandbox: 'Pattern 4, "fence your robots", runs parallel agents in separate git worktrees'
+  harness: CoCo coding agent extended with versionable CI/CD skill workflows; teams
+    share about 14 numbered AI design patterns
+  interfaces:
+  - github
+  - slack
+  - ci
+  - webhook
+  tool_access: Skills encode operational workflows, including a blast-radius skill
+    that lists affected customers
+  knowledge: Tribal knowledge encoded in about 7,000 skills written by about 1,000
+    engineers; profiles group skills by domain, such as streaming debugging
+  context_mgmt: Pattern 8 keeps the orchestrator context small and delegates work
+    to an agent team
+primitives:
+- name: Skills
+  desc: Versionable CI/CD workflows that replace runbooks and extend the CoCo coding
+    agent
+- name: Profiles
+  desc: Units that group skills for a domain, such as the skill set needed to debug
+    a streaming issue
+- name: AI design patterns
+  desc: A numbered internal vocabulary of about 14 effective coding-agent practices,
+    disseminated with an XKCD comic
+- name: Memory promotion
+  desc: Overnight promotion of agent memory into shared skills so the system improves
+    with use
+key_metrics:
+- 97% of engineers are weekly active coding-agent users (mid-2026)
+- Code volume up about 1.5X year over year and about 3X over three years
+- Test volume up about 3X; the source also cites 3.5X
+- Release validation time down from 15 days to 1 day in 12 months
+- About 1,000 engineers have written about 7,000 skills
+- Keep-the-lights-on (KTLO) work is about 30% of engineering effort, with a target
+  of 5%
+- Compiler rewrite by a tech lead, three engineers, and coding agents reported about
+  40X improvement
+lessons_learned:
+- Let unrestricted use run before imposing standards; measure adoption, not lines
+  of code or pull-request counts
+- Codify effective use into a shared pattern vocabulary before pushing organization-wide
+  practice
+- Give both groups dedicated time; focus weeks serve the 95% who follow paved paths
+  and the 5% who explore
+- Encode runbooks as versionable skills rather than documents that age quickly
+- Promote agent memory into shared skills so individual learning becomes tribal knowledge
+- Meet pioneers, settlers, and skeptics where they are; expect a grief-like acceptance
+  process
+sources:
+- id: snowflake-coding-agents-source-1
+  title: 'How do you turn AI coding chaos into a repeatable playbook? (Stack Overflow
+    podcast, Leaders of Code)'
+  url: https://stackoverflow.blog/2026/07/02/ai-coding-chaos-into-a-repeatable-playbook/
+  canonical_url: https://stackoverflow.blog/2026/07/02/ai-coding-chaos-into-a-repeatable-playbook/
+  kind: podcast
+  provenance_class: direct-participant
+  publisher: Stack Overflow
+  authors:
+  - Eira May
+  - Vivek Raghunathan
+  published_at: '2026-07-02'
+  accessed_at: '2026-08-21'
+  last_verified_at: '2026-08-21'
+evidence:
+  operating_models.0:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "use it to write code, review code, understand code";
+      review-speed and time-to-merge metrics "up between one and 2X"'
+  operating_models.1:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "diagnose what''s going on, potentially put up a
+      PR on GitHub automatically and let the person whose score it is go take a look"'
+  operating_models.2:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan describes a four-step on-call maturity model and an
+      agent-primary vision, not current attention boundaries'
+  summary:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Full transcript; rollout described as "very methodical progress" over
+      "the last 12, 18, 24 months"'
+  headline_metric:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "we were up at 15 days to bless a release ... brought
+      validation time down in the last 12 months to a day"'
+  architecture.sandbox:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "you can have git-worktrees that run each of them
+      independently"'
+  architecture.harness:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "build them as versionable CI/CD workflows of skills
+      and they''re part of the CoCo coding agent"; "about 14 patterns"'
+  architecture.interfaces:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Pull requests "on GitHub"; on-call triggers "hook it up to PagerDuty
+      or Slack"; release validation runs in CI/CD'
+  architecture.tool_access:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "All customer issues have a blast radius skill"'
+  architecture.knowledge:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "thousand engineers writing ... 7,000 skills"; profiles
+      such as the skill set for a streaming issue'
+  architecture.context_mgmt:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan on pattern 8: the master agent "is never holding a
+      lot of context. It is delegating work"'
+  primitives.0:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "versionable CI/CD workflows of skills ... part of
+      the CoCo coding agent"'
+  primitives.1:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "packaged into things called profiles ... if you
+      have an issue with streaming, this is the set of skills"'
+  primitives.2:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "about 14 patterns"; "We have an XKCD comic with
+      these 14 so we can easily disseminate knowledge"'
+  primitives.3:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan on patterns 12 and 13: "promote it into skills overnight
+      and that will make the system get better as you use it"'
+  key_metrics.0:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "97% of our users, of our engineers are weekly actives
+      on coding agents"'
+  key_metrics.1:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "code is up about 1.5X in the last year over year,
+      maybe 3X up over the last three years"'
+  key_metrics.2:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "Test it up like three and a half X" and later "those
+      tests are up 3X"'
+  key_metrics.3:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "we were up at 15 days to bless a release ... brought
+      validation time down in the last 12 months to a day"'
+  key_metrics.4:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "We have thousand engineers writing I''m going to
+      say like 7,000 skills at this point"'
+  key_metrics.5:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "What we call KTLO is about 30% for us and I''m looking
+      to reduce that to like 5%"'
+  key_metrics.6:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "Me, a set of like coding agents and three engineers
+      ... things like 40X improvements"'
+  lessons_learned.0:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "let chaos reign before you rein in the chaos ...
+      We''re just going to measure adoption ... not lines of code"'
+  lessons_learned.1:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "14 AI design patterns ... created a language" for
+      upskilling, then "reign in the chaos"'
+  lessons_learned.2:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "focus weeks"; "95% of the organization is what I
+      call exploiters ... 5% ... fearless explorers"'
+  lessons_learned.3:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: runbooks "get outdated very quickly" versus "versionable
+      CI/CD workflows of skills"'
+  lessons_learned.4:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: patterns 12 and 13 on continued learning and "tribal
+      knowledge"'
+  lessons_learned.5:
+  - source_id: snowflake-coding-agents-source-1
+    relation: supports
+    locator: 'Vivek Raghunathan: "pioneers ... settlers ... skeptics"; "seven stages
+      of acceptance"'
+claim_metadata:
+  operating_models.0:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: medium
+    confidence_reason: 'The source documents engineers writing and reviewing agent
+      code with pull-request review culture, but not one stated review boundary.'
+    valid_at: '2026-07'
+  operating_models.1:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: medium
+    confidence_reason: 'The source states that agents open a diagnosis pull request
+      and a person confirms the fix; the boundary is described in one passage.'
+    valid_at: '2026-07'
+  operating_models.2:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: unverified
+    confidence_reason: 'The source describes a four-step maturity model and a future
+      agent-primary on-call vision, not where attention returns in current runs.'
+    valid_at: '2026-07'
+  headline_metric:
+    kind: metric
+    provenance: reported
+    confidence: medium
+    confidence_reason: 'The senior vice president reported the figure in an interview,
+      without a method or denominator.'
+    valid_at: '2026-07'
+    reported_by: Snowflake
+    metric_scope: Validation of full production releases
+    denominator: Not described
+    measurement_method: Not described
+  key_metrics.0:
+    kind: metric
+    provenance: reported
+    confidence: medium
+    confidence_reason: 'The senior vice president reported the share without describing
+      the measurement window beyond weekly activity.'
+    valid_at: '2026-07'
+    reported_by: Snowflake
+    metric_scope: Snowflake engineers, weekly active coding-agent use
+  key_metrics.2:
+    kind: metric
+    provenance: reported
+    confidence: low
+    confidence_reason: 'The speaker gives 3.5X in one passage and 3X in another,
+      with no baseline or counting method.'
+    valid_at: '2026-07'
+    reported_by: Snowflake
+    metric_scope: Tests written across engineering
+  key_metrics.6:
+    kind: metric
+    provenance: reported
+    confidence: low
+    confidence_reason: 'A single anecdote about one rewrite; the source gives no
+      benchmark definition for the 40X figure.'
+    valid_at: '2026-07'
+    reported_by: Snowflake
+    metric_scope: Query compiler rewrite benchmark
+  lessons_learned.0:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: medium
+    confidence_reason: The catalog derives this observation from the linked interview.
+  lessons_learned.1:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: medium
+    confidence_reason: The catalog derives this observation from the linked interview.
+  lessons_learned.2:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: medium
+    confidence_reason: The catalog derives this observation from the linked interview.
+  lessons_learned.3:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: medium
+    confidence_reason: The catalog derives this observation from the linked interview.
+  lessons_learned.4:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: medium
+    confidence_reason: The catalog derives this observation from the linked interview.
+  lessons_learned.5:
+    kind: inference
+    provenance: catalog-judgment
+    confidence: medium
+    confidence_reason: The catalog derives this observation from the linked interview.

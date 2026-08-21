@@ -2,7 +2,7 @@
 
 This page summarizes reported operating practices in the catalog. Most sources are company reports. They do not establish cause and effect.
 
-The observations use the 28 approaches reviewed on August 13, 2026. The evidence is uneven. Read each source before you apply a practice to another organization.
+The observations use the 41 approaches in the catalog snapshot of August 21, 2026. The evidence is uneven. Read each source before you apply a practice to another organization.
 
 ## Start with work that people can check
 
@@ -12,7 +12,7 @@ This suggests a practical starting question: can the team decide whether the wor
 
 ## Put the system near existing work
 
-Twenty entries list Slack as an interface. Other entries use GitHub, Linear, web interfaces, command-line tools, scheduled jobs, or event handlers.
+Twenty-one entries list Slack as an interface. Other entries use GitHub, Linear, web interfaces, command-line tools, scheduled jobs, or event handlers.
 
 An existing interface can reduce the effort needed to try a system. It can also inherit the access, privacy, and retention problems of that interface. Public channels can spread examples, but teams must not expose private work to gain visibility.
 
@@ -21,6 +21,12 @@ An existing interface can reduce the effort needed to try a system. It can also 
 Several organizations report work beyond the agent runtime. DoorDash describes workshops and playbooks. Brex describes tools that operations staff use to test prompts and models. monday.com describes managers, scopes, and performance measures for agents.
 
 These reports show that deployment includes training, support, evaluation, and ownership. The public sources do not isolate how much each activity affected adoption.
+
+## Sequence open use before standard practice
+
+Snowflake reports a three-step sequence for coding agents. It allowed unrestricted tool use first. It then collected the practices of its most advanced engineers into a shared vocabulary of about 14 design patterns. It then spread those patterns through recurring "focus weeks" that serve both the majority who follow paved paths and the few who explore.
+
+One entry in this sample documents the full sequence, and it is a self-reported executive account. Open use can spread uneven habits as fast as good ones. The source does not report how the organization resolved practices that conflicted with its pattern list.
 
 ## Use existing systems of record
 
@@ -44,7 +50,7 @@ The catalog contains activity metrics, adoption metrics, and outcome metrics. Th
 - Cycle time and incident results can show an operational effect.
 - Review time and escaped defects can show hidden cost.
 
-Sierra distinguishes use from value in its report. DoorDash reports action rates for review findings. Replit reports output with review, revert, and incident measures. These examples support a broader metric set. They do not make the reported measurements independent.
+Sierra distinguishes use from value in its report. DoorDash reports action rates for review findings. Replit reports output with review, revert, and incident measures. Snowflake reports adoption only in its first phase and calls lines of code and pull-request counts easy to manipulate. These examples support a broader metric set. They do not make the reported measurements independent.
 
 ## Expect work to move
 
@@ -54,7 +60,7 @@ When one step speeds up, inspect the next step. Track waiting time, review effor
 
 ## Expand autonomy with evidence
 
-The sample contains 19 `drafts-reviewed` approaches, seven `human-in-loop` approaches, and two `autonomous` approaches. This distribution reflects public reports in the catalog. It is not a recommendation.
+The sample contains 24 `drafts-reviewed` approaches, eight `human-in-loop` approaches, and three `autonomous` approaches. This distribution reflects public reports in the catalog. It is not a recommendation.
 
 Before a team removes a review step, it should define the failure limit, verification method, rollback path, and responsible owner. The relevant threshold depends on the task. A code migration and a customer payment action do not have the same impact.
 

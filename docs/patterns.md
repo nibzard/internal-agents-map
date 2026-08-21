@@ -1,6 +1,6 @@
 # Architecture patterns
 
-This page compares the 40 approaches in the catalog. It describes reported designs. It does not prescribe one definition of an agent.
+This page compares the 41 approaches in the catalog. It describes reported designs. It does not prescribe one definition of an agent.
 
 Most evidence comes from organizations that describe their own systems. Architecture details are incomplete for many entries. Counts below use the catalog snapshot reviewed on August 13, 2026.
 
@@ -13,7 +13,7 @@ The catalog contains these approach types:
 | Task agent | 16 |
 | Platform | 10 |
 | Background agent | 6 |
-| Agent system | 4 |
+| Agent system | 5 |
 | Orchestration system | 2 |
 | Supporting pattern | 2 |
 
@@ -82,17 +82,17 @@ These controls reduce access and limit impact. They do not make incorrect or har
 
 Several organizations expose code ownership, service catalogs, tickets, documentation, or telemetry to their systems. Spotify and Cloudflare use service catalog data. Linear uses workspace records. DoorDash reports hybrid retrieval for company information.
 
-The implementations differ. Some use repository instruction files. Some query live systems. Others load domain playbooks when needed. The evidence supports company context as a recurring investment. It does not establish one best storage or retrieval method.
+The implementations differ. Some use repository instruction files. Some query live systems. Others load domain playbooks when needed. Snowflake reports operational knowledge stored as versionable skills that teams group into domain profiles. The evidence supports company context as a recurring investment. It does not establish one best storage or retrieval method.
 
 ## Invocation
 
-Twenty of 40 entries list Slack as an interface. GitHub, web interfaces, command-line tools, scheduled jobs, and event handlers also appear.
+Twenty-one of 41 entries list Slack as an interface. GitHub, web interfaces, command-line tools, scheduled jobs, and event handlers also appear.
 
 This count shows where reported systems appear in the sample. It does not show that Slack causes adoption. Public channels can help people observe agent work, but they can also expose private or sensitive information. Teams must apply access and retention rules before they copy this practice.
 
 ## State and identity
 
-The current public evidence does not document state duration for 35 entries. Four entries describe durable session state, and one describes run-only state. This gap is why durable identity belongs in the rubric instead of the inclusion policy.
+The current public evidence does not document state duration for 34 entries. Four entries describe durable session state, one describes run-only state, and one describes cross-session memory built from skills promoted out of agent memory. This gap is why durable identity belongs in the rubric instead of the inclusion policy.
 
 The rubric asks separate questions:
 
@@ -105,7 +105,7 @@ These choices affect audit records, authorization, recovery, and accountability.
 
 ## Verification and autonomy
 
-The catalog classifies 23 approaches as `drafts-reviewed`, eight as `human-in-loop`, three as `autonomous`, three as `assistive`, and three as `unknown`. These labels describe the reported review boundary. They do not measure output quality.
+The catalog classifies 24 approaches as `drafts-reviewed`, eight as `human-in-loop`, three as `autonomous`, three as `assistive`, and three as `unknown`. These labels describe the reported review boundary. They do not measure output quality.
 
 Reported verification methods include tests, continuous integration checks, schema checks, query planning, policy checks, model judges, and human review. Deterministic checks and model review serve different purposes. A model judge does not replace a test that can decide a property directly.
 
@@ -123,7 +123,7 @@ The current sample is strongly Level 3-shaped: most documented workflows return 
 
 The reported metrics are not directly comparable. Some measure agent output. Others measure broad AI tool use, automated workflows, sessions, or user adoption.
 
-For example, Spotify reports Honk pull requests and wider Fleet Management automation in the same record. Cloudflare reports traffic for a larger AI engineering system. Keep these scopes separate when you use the data.
+For example, Spotify reports Honk pull requests and wider Fleet Management automation in the same record. Cloudflare reports traffic for a larger AI engineering system. Snowflake reports adoption, code volume, test volume, and release validation time in the same record. Keep these scopes separate when you use the data.
 
 Each future metric should record its date, system scope, denominator, method, and source. Treat a company metric as self-reported unless an independent source verifies it.
 

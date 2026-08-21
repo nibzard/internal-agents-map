@@ -1946,6 +1946,92 @@
       "interfaces": []
     },
     {
+      "id": "snowflake-coding-agents",
+      "company": "Snowflake",
+      "agent_name": "Internal coding agents (CoCo / Cortex Code)",
+      "approach_type": "agent-system",
+      "deployment_stage": "scaled",
+      "year": 2026,
+      "first_public_evidence": {
+        "date": "2026-07",
+        "source_id": "snowflake-coding-agents-source-1"
+      },
+      "last_reviewed_at": "2026-08-21",
+      "status": "internal",
+      "domains": [
+        "coding",
+        "code-review",
+        "ci-triage",
+        "on-call"
+      ],
+      "autonomy": "drafts-reviewed",
+      "operating_models": [
+        {
+          "scope": "coding request → reviewed pull request (inner loop)",
+          "attention_boundary": "work-product-review",
+          "level": 3
+        },
+        {
+          "scope": "release validation blocker → agent-diagnosed fix pull request",
+          "attention_boundary": "work-product-review",
+          "level": 3
+        },
+        {
+          "scope": "on-call alert → skill-guided agent investigation",
+          "attention_boundary": "unknown",
+          "level": null
+        }
+      ],
+      "rubric": {
+        "invocation": [
+          "interactive",
+          "event-driven"
+        ],
+        "state": "cross-session-memory",
+        "identity": "unknown",
+        "evidence_strength": "limited-primary"
+      },
+      "claim_ids": [
+        "snowflake-coding-agents--summary",
+        "snowflake-coding-agents--headline-metric",
+        "snowflake-coding-agents--architecture-sandbox",
+        "snowflake-coding-agents--architecture-harness",
+        "snowflake-coding-agents--architecture-interfaces",
+        "snowflake-coding-agents--architecture-tool-access",
+        "snowflake-coding-agents--architecture-knowledge",
+        "snowflake-coding-agents--architecture-context-mgmt",
+        "snowflake-coding-agents--primitives-0",
+        "snowflake-coding-agents--primitives-1",
+        "snowflake-coding-agents--primitives-2",
+        "snowflake-coding-agents--primitives-3",
+        "snowflake-coding-agents--key-metrics-0",
+        "snowflake-coding-agents--key-metrics-1",
+        "snowflake-coding-agents--key-metrics-2",
+        "snowflake-coding-agents--key-metrics-3",
+        "snowflake-coding-agents--key-metrics-4",
+        "snowflake-coding-agents--key-metrics-5",
+        "snowflake-coding-agents--key-metrics-6",
+        "snowflake-coding-agents--lessons-learned-0",
+        "snowflake-coding-agents--lessons-learned-1",
+        "snowflake-coding-agents--lessons-learned-2",
+        "snowflake-coding-agents--lessons-learned-3",
+        "snowflake-coding-agents--lessons-learned-4",
+        "snowflake-coding-agents--lessons-learned-5",
+        "snowflake-coding-agents--operating-models-0",
+        "snowflake-coding-agents--operating-models-1",
+        "snowflake-coding-agents--operating-models-2"
+      ],
+      "source_ids": [
+        "snowflake-coding-agents-source-1"
+      ],
+      "interfaces": [
+        "github",
+        "slack",
+        "ci",
+        "webhook"
+      ]
+    },
+    {
       "id": "spotify-honk-xirp",
       "company": "Spotify",
       "agent_name": "Honk / Xirp",
@@ -10483,6 +10569,524 @@
       ]
     },
     {
+      "id": "snowflake-coding-agents--summary",
+      "approach_id": "snowflake-coding-agents",
+      "field": "summary",
+      "text": "Snowflake's organization-wide rollout of coding agents on its CoCo agent: unrestricted adoption first, then a shared vocabulary of about 14 design patterns, focus weeks, and roughly 7,000 versioned skills that extend the agent into release validation and on-call work.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Full transcript; rollout described as \"very methodical progress\" over \"the last 12, 18, 24 months\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--headline-metric",
+      "approach_id": "snowflake-coding-agents",
+      "field": "headline_metric",
+      "text": "Release validation time down from 15 days to 1 day in 12 months (self-reported)",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "The senior vice president reported the figure in an interview, without a method or denominator.",
+      "valid_at": "2026-07",
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"we were up at 15 days to bless a release ... brought validation time down in the last 12 months to a day\""
+        }
+      ],
+      "reported_by": "Snowflake",
+      "metric_scope": "Validation of full production releases",
+      "denominator": "Not described",
+      "measurement_method": "Not described"
+    },
+    {
+      "id": "snowflake-coding-agents--architecture-sandbox",
+      "approach_id": "snowflake-coding-agents",
+      "field": "architecture.sandbox",
+      "text": "Pattern 4, \"fence your robots\", runs parallel agents in separate git worktrees",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"you can have git-worktrees that run each of them independently\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--architecture-harness",
+      "approach_id": "snowflake-coding-agents",
+      "field": "architecture.harness",
+      "text": "CoCo coding agent extended with versionable CI/CD skill workflows; teams share about 14 numbered AI design patterns",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"build them as versionable CI/CD workflows of skills and they're part of the CoCo coding agent\"; \"about 14 patterns\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--architecture-interfaces",
+      "approach_id": "snowflake-coding-agents",
+      "field": "architecture.interfaces",
+      "text": "github, slack, ci, webhook",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Pull requests \"on GitHub\"; on-call triggers \"hook it up to PagerDuty or Slack\"; release validation runs in CI/CD"
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--architecture-tool-access",
+      "approach_id": "snowflake-coding-agents",
+      "field": "architecture.tool_access",
+      "text": "Skills encode operational workflows, including a blast-radius skill that lists affected customers",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"All customer issues have a blast radius skill\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--architecture-knowledge",
+      "approach_id": "snowflake-coding-agents",
+      "field": "architecture.knowledge",
+      "text": "Tribal knowledge encoded in about 7,000 skills written by about 1,000 engineers; profiles group skills by domain, such as streaming debugging",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"thousand engineers writing ... 7,000 skills\"; profiles such as the skill set for a streaming issue"
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--architecture-context-mgmt",
+      "approach_id": "snowflake-coding-agents",
+      "field": "architecture.context_mgmt",
+      "text": "Pattern 8 keeps the orchestrator context small and delegates work to an agent team",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan on pattern 8: the master agent \"is never holding a lot of context. It is delegating work\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--primitives-0",
+      "approach_id": "snowflake-coding-agents",
+      "field": "primitives.0",
+      "text": "Versionable CI/CD workflows that replace runbooks and extend the CoCo coding agent",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"versionable CI/CD workflows of skills ... part of the CoCo coding agent\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--primitives-1",
+      "approach_id": "snowflake-coding-agents",
+      "field": "primitives.1",
+      "text": "Units that group skills for a domain, such as the skill set needed to debug a streaming issue",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"packaged into things called profiles ... if you have an issue with streaming, this is the set of skills\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--primitives-2",
+      "approach_id": "snowflake-coding-agents",
+      "field": "primitives.2",
+      "text": "A numbered internal vocabulary of about 14 effective coding-agent practices, disseminated with an XKCD comic",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"about 14 patterns\"; \"We have an XKCD comic with these 14 so we can easily disseminate knowledge\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--primitives-3",
+      "approach_id": "snowflake-coding-agents",
+      "field": "primitives.3",
+      "text": "Overnight promotion of agent memory into shared skills so the system improves with use",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan on patterns 12 and 13: \"promote it into skills overnight and that will make the system get better as you use it\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--key-metrics-0",
+      "approach_id": "snowflake-coding-agents",
+      "field": "key_metrics.0",
+      "text": "97% of engineers are weekly active coding-agent users (mid-2026)",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "The senior vice president reported the share without describing the measurement window beyond weekly activity.",
+      "valid_at": "2026-07",
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"97% of our users, of our engineers are weekly actives on coding agents\""
+        }
+      ],
+      "reported_by": "Snowflake",
+      "metric_scope": "Snowflake engineers, weekly active coding-agent use"
+    },
+    {
+      "id": "snowflake-coding-agents--key-metrics-1",
+      "approach_id": "snowflake-coding-agents",
+      "field": "key_metrics.1",
+      "text": "Code volume up about 1.5X year over year and about 3X over three years",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"code is up about 1.5X in the last year over year, maybe 3X up over the last three years\""
+        }
+      ],
+      "reported_by": "Snowflake"
+    },
+    {
+      "id": "snowflake-coding-agents--key-metrics-2",
+      "approach_id": "snowflake-coding-agents",
+      "field": "key_metrics.2",
+      "text": "Test volume up about 3X; the source also cites 3.5X",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "low",
+      "confidence_reason": "The speaker gives 3.5X in one passage and 3X in another, with no baseline or counting method.",
+      "valid_at": "2026-07",
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"Test it up like three and a half X\" and later \"those tests are up 3X\""
+        }
+      ],
+      "reported_by": "Snowflake",
+      "metric_scope": "Tests written across engineering"
+    },
+    {
+      "id": "snowflake-coding-agents--key-metrics-3",
+      "approach_id": "snowflake-coding-agents",
+      "field": "key_metrics.3",
+      "text": "Release validation time down from 15 days to 1 day in 12 months",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"we were up at 15 days to bless a release ... brought validation time down in the last 12 months to a day\""
+        }
+      ],
+      "reported_by": "Snowflake"
+    },
+    {
+      "id": "snowflake-coding-agents--key-metrics-4",
+      "approach_id": "snowflake-coding-agents",
+      "field": "key_metrics.4",
+      "text": "About 1,000 engineers have written about 7,000 skills",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"We have thousand engineers writing I'm going to say like 7,000 skills at this point\""
+        }
+      ],
+      "reported_by": "Snowflake"
+    },
+    {
+      "id": "snowflake-coding-agents--key-metrics-5",
+      "approach_id": "snowflake-coding-agents",
+      "field": "key_metrics.5",
+      "text": "Keep-the-lights-on (KTLO) work is about 30% of engineering effort, with a target of 5%",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"What we call KTLO is about 30% for us and I'm looking to reduce that to like 5%\""
+        }
+      ],
+      "reported_by": "Snowflake"
+    },
+    {
+      "id": "snowflake-coding-agents--key-metrics-6",
+      "approach_id": "snowflake-coding-agents",
+      "field": "key_metrics.6",
+      "text": "Compiler rewrite by a tech lead, three engineers, and coding agents reported about 40X improvement",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "low",
+      "confidence_reason": "A single anecdote about one rewrite; the source gives no benchmark definition for the 40X figure.",
+      "valid_at": "2026-07",
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"Me, a set of like coding agents and three engineers ... things like 40X improvements\""
+        }
+      ],
+      "reported_by": "Snowflake",
+      "metric_scope": "Query compiler rewrite benchmark"
+    },
+    {
+      "id": "snowflake-coding-agents--lessons-learned-0",
+      "approach_id": "snowflake-coding-agents",
+      "field": "lessons_learned.0",
+      "text": "Let unrestricted use run before imposing standards; measure adoption, not lines of code or pull-request counts",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The catalog derives this observation from the linked interview.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"let chaos reign before you rein in the chaos ... We're just going to measure adoption ... not lines of code\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--lessons-learned-1",
+      "approach_id": "snowflake-coding-agents",
+      "field": "lessons_learned.1",
+      "text": "Codify effective use into a shared pattern vocabulary before pushing organization-wide practice",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The catalog derives this observation from the linked interview.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"14 AI design patterns ... created a language\" for upskilling, then \"reign in the chaos\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--lessons-learned-2",
+      "approach_id": "snowflake-coding-agents",
+      "field": "lessons_learned.2",
+      "text": "Give both groups dedicated time; focus weeks serve the 95% who follow paved paths and the 5% who explore",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The catalog derives this observation from the linked interview.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"focus weeks\"; \"95% of the organization is what I call exploiters ... 5% ... fearless explorers\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--lessons-learned-3",
+      "approach_id": "snowflake-coding-agents",
+      "field": "lessons_learned.3",
+      "text": "Encode runbooks as versionable skills rather than documents that age quickly",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The catalog derives this observation from the linked interview.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: runbooks \"get outdated very quickly\" versus \"versionable CI/CD workflows of skills\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--lessons-learned-4",
+      "approach_id": "snowflake-coding-agents",
+      "field": "lessons_learned.4",
+      "text": "Promote agent memory into shared skills so individual learning becomes tribal knowledge",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The catalog derives this observation from the linked interview.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: patterns 12 and 13 on continued learning and \"tribal knowledge\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--lessons-learned-5",
+      "approach_id": "snowflake-coding-agents",
+      "field": "lessons_learned.5",
+      "text": "Meet pioneers, settlers, and skeptics where they are; expect a grief-like acceptance process",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The catalog derives this observation from the linked interview.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"pioneers ... settlers ... skeptics\"; \"seven stages of acceptance\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--operating-models-0",
+      "approach_id": "snowflake-coding-agents",
+      "field": "operating_models.0",
+      "text": "Level 3 for coding request → reviewed pull request (inner loop); human attention boundary: work-product-review.",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The source documents engineers writing and reviewing agent code with pull-request review culture, but not one stated review boundary.",
+      "valid_at": "2026-07",
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"use it to write code, review code, understand code\"; review-speed and time-to-merge metrics \"up between one and 2X\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--operating-models-1",
+      "approach_id": "snowflake-coding-agents",
+      "field": "operating_models.1",
+      "text": "Level 3 for release validation blocker → agent-diagnosed fix pull request; human attention boundary: work-product-review.",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The source states that agents open a diagnosis pull request and a person confirms the fix; the boundary is described in one passage.",
+      "valid_at": "2026-07",
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan: \"diagnose what's going on, potentially put up a PR on GitHub automatically and let the person whose score it is go take a look\""
+        }
+      ]
+    },
+    {
+      "id": "snowflake-coding-agents--operating-models-2",
+      "approach_id": "snowflake-coding-agents",
+      "field": "operating_models.2",
+      "text": "Unclassified for on-call alert → skill-guided agent investigation; human attention boundary: unknown.",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "unverified",
+      "confidence_reason": "The source describes a four-step maturity model and a future agent-primary on-call vision, not where attention returns in current runs.",
+      "valid_at": "2026-07",
+      "evidence": [
+        {
+          "source_id": "snowflake-coding-agents-source-1",
+          "relation": "supports",
+          "locator": "Vivek Raghunathan describes a four-step on-call maturity model and an agent-primary vision, not current attention boundaries"
+        }
+      ]
+    },
+    {
       "id": "spotify-honk-xirp--summary",
       "approach_id": "spotify-honk-xirp",
       "field": "summary",
@@ -13220,6 +13824,24 @@
       "last_verified_at": "2026-08-12",
       "role": "evidence",
       "approach_id": "slack-context-system"
+    },
+    {
+      "id": "snowflake-coding-agents-source-1",
+      "title": "How do you turn AI coding chaos into a repeatable playbook? (Stack Overflow podcast, Leaders of Code)",
+      "url": "https://stackoverflow.blog/2026/07/02/ai-coding-chaos-into-a-repeatable-playbook/",
+      "canonical_url": "https://stackoverflow.blog/2026/07/02/ai-coding-chaos-into-a-repeatable-playbook/",
+      "kind": "podcast",
+      "provenance_class": "direct-participant",
+      "publisher": "Stack Overflow",
+      "authors": [
+        "Eira May",
+        "Vivek Raghunathan"
+      ],
+      "published_at": "2026-07-02",
+      "accessed_at": "2026-08-21",
+      "last_verified_at": "2026-08-21",
+      "role": "evidence",
+      "approach_id": "snowflake-coding-agents"
     },
     {
       "id": "spotify-honk-xirp-source-1",
