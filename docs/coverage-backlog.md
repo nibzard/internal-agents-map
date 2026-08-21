@@ -372,6 +372,13 @@ source.
   dogfooding, the same pattern as Vercel v0.
 - **Netflix in-house LLM serving**: Netflix runs its own model inference stack (Model Scoring
   Service on vLLM and NVIDIA Triton). This is serving infrastructure, not an agent. Excluded.
+- **Plaid AI coding adoption program**: the
+  [AI coding adoption post](https://plaid.com/blog/ai-coding-adoption-plaid/) (May 2025) describes
+  a rollout of vendor tools such as Cursor. It covers streamlined pilots, a tool-review framework,
+  an adoption dashboard, in-house videos, and an internal "AI Day". It names no internal agent,
+  platform, or material adaptation, and gives no implementation detail. Excluded as vendor-tool
+  usage, the same pattern as Samsara. The cataloged Plaid approaches rest on other sources. Do not
+  cite the post's ">75% of engineers" or "90%+ CSAT" figures as evidence for them.
 
 ## Confirmed gaps
 
