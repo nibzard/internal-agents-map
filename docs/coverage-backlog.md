@@ -264,20 +264,32 @@ or repos that describe an agent they built for their own teams.
 ### Snowflake — Cortex Code internal adaptation
 
 - **Status**: Border case.
-- **Confidence**: low.
+- **Confidence**: medium. Re-scored 2026-08-21 through the URL intake rubric. The rollout claim
+  comes from a named SVP of engineering speaking on the record, which the schema rates as medium.
 - **What it does**: Snowflake rolls out Cortex Code (also called CoCo), its coding agent, across
   its own engineering organization. On top of the product, Snowflake built an internal skills
   system with about 7,000 skills written by roughly 1,000 engineers, domain profiles, a
   14-pattern proficiency framework, and integration into PagerDuty and Slack on-call workflows.
 - **Reported stage**: scaled internally.
-- **Why it is a border case**: Cortex Code is a shipping Snowflake product. The internal use alone
-  is dogfooding. The argument for inclusion is the large internal adaptation layer: the skills
-  system and the on-call integration go beyond the shipped product. Decide whether that adaptation
-  clears the bar for a distinct internal build.
+- **Rubric scores** (2026-08-21 intake run): identified build 2, internal ownership 2, source
+  provenance 2, operational specificity 2, product independence 1. Total 9. The add path needs a
+  2 on product independence, so the total does not qualify it.
+- **Why it is a border case**: Cortex Code is a shipping Snowflake product; the Snowflake product
+  post names more than 7,100 customers and documents no internal use. The internal use alone is
+  dogfooding, and the interview describes the skills as "part of the CoCo coding agent," so the
+  adaptation lives on the product rather than beside it. The argument for inclusion is the large
+  internal adaptation layer: the skills system, the profiles, and the event-driven PagerDuty and
+  Slack wiring. That wiring appears to run ahead of the shipped Slack integration, which the
+  product post lists as "coming soon." Decide whether that adaptation clears the bar for a
+  distinct internal build.
+- **Open question for a human**: count the internal layer (about 7,000 skills, profiles,
+  event-driven on-call integration, memory-to-skill promotion) as a distinct internal build, or
+  keep it out as product dogfooding? A first-party Snowflake engineering post that documents the
+  skills system and the on-call integration as internal-only assets would settle it.
 - **Sources**:
-  - [AI coding chaos into a repeatable playbook (Stack Overflow Blog)](https://stackoverflow.blog/2026/07/02/ai-coding-chaos-into-a-repeatable-playbook/) — secondary, 2026-07-02.
-  - [Snowflake CoCo coding agent](https://www.snowflake.com/en/blog/snowflake-coco-ai-coding-agent-modern-data-stack/) — Snowflake blog. First-party.
-  - [ArcticMem persistent memory](https://www.snowflake.com/en/blog/engineering/arcticmem-persistent-memory-ai-agents/) — Snowflake engineering blog. First-party.
+  - [AI coding chaos into a repeatable playbook (Stack Overflow Blog)](https://stackoverflow.blog/2026/07/02/ai-coding-chaos-into-a-repeatable-playbook/) — direct-participant interview with Vivek Raghunathan, SVP of engineering, 2026-07-02. Carries the internal-rollout claims and every metric.
+  - [Snowflake CoCo coding agent](https://www.snowflake.com/en/blog/snowflake-coco-ai-coding-agent-modern-data-stack/) — Snowflake blog, 2026-06-02. First-party. Documents the shipping product and its customers; documents no internal use.
+  - [ArcticMem persistent memory](https://www.snowflake.com/en/blog/engineering/arcticmem-persistent-memory-ai-agents/) — Snowflake engineering blog, 2026-07-29. First-party. Names Cortex Code (CoCo) and internal benchmark tasks; documents the memory research, not the internal rollout.
 
 ## Tier 2 — Hyperscalers and AI-native vendors
 
@@ -401,8 +413,10 @@ Most have only shipping products, vendor-tool usage, or aspirational job posting
 
 - Does Datadog run Bits Investigation on its own production incidents, or is the dogfooding limited
   to the benchmark dataset? This split vote is the weakest point in the Tier 1 set.
-- Is the Snowflake internal adaptation layer (about 7,000 skills, on-call integration) enough to
-  count as a distinct internal build, or does it stay excluded as product dogfooding?
+- Is the Snowflake internal adaptation layer (about 7,000 skills, profiles, event-driven on-call
+  integration) enough to count as a distinct internal build, or does it stay excluded as product
+  dogfooding? The 2026-08-21 intake run scored it 9 of 10 with product independence at 1. A
+  first-party Snowflake engineering post on the internal skills system would settle it.
 - Anthropic: locate the primary first-party "antfooding" paper to confirm it documents internal
   use and to capture the real figures.
 - Airbnb: find a first-party engineering blog or repository to firm up the "64% of PRs" figure,
