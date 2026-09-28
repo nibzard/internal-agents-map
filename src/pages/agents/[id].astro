@@ -12,6 +12,7 @@ import { loadCatalog } from '../../lib/catalog';
 import { coverageNote, directoryCards, entryView, showQuestion } from '../../lib/entry-view';
 import { entryCard, ogImage } from '../../lib/og';
 import { assertPublishableId, canonicalUrl, organizationPath } from '../../lib/routes';
+import { facetPath } from '../../lib/search';
 import {
   SITE_NAME,
   breadcrumbNode,
@@ -46,6 +47,9 @@ const graph = structuredData([
 // Invocation and interfaces are classifications, so they sit with the other facts.
 // Reviewed entries explain a missing workflow even when there are no claims.
 const invocation = entry.invocation.filter((item) => item.id !== 'unknown');
+// A classification links to the palette, opened on the entries that share it.
+const workLinks = entry.domains.map((domain) => ({ ...domain, href: facetPath('work', domain.id) }));
+const invocationLinks = invocation.map((mode) => ({ ...mode, href: facetPath('invocation', mode.id) }));
 const hasResults =
   entry.metricClaims.length > 0 ||
   entry.resultStatementClaims.length > 0 ||
@@ -83,11 +87,11 @@ const lessonsNote = coverageNoteOf('lessons');
         </div>
         <div>
           <dt>Approach type</dt>
-          <dd>{entry.approachTypeLabel}</dd>
+          <dd><a href={facetPath('type', entry.approachType)} data-palette-filter>{entry.approachTypeLabel}</a></dd>
         </div>
         <div>
           <dt>{entry.isSupportingSystem ? 'Work supported' : 'Work'}</dt>
-          <dd>{entry.domains.map((domain) => domain.label).join(', ')}</dd>
+          <dd>{workLinks.map((domain, index) => <>{index > 0 && ', '}<a href={domain.href} data-palette-filter>{domain.label}</a></>)}</dd>
         </div>
         {!entry.isSupportingSystem && <div>
           <dt>Human involvement</dt>
@@ -103,7 +107,7 @@ const lessonsNote = coverageNoteOf('lessons');
         {!entry.isSupportingSystem && invocation.length > 0 && (
           <div>
             <dt>Invocation</dt>
-            <dd>{invocation.map((item) => item.label).join(', ')}</dd>
+            <dd>{invocationLinks.map((mode, index) => <>{index > 0 && ', '}<a href={mode.href} data-palette-filter>{mode.label}</a></>)}</dd>
           </div>
         )}
         {entry.interfaces.length > 0 && (

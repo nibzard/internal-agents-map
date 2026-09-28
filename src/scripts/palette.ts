@@ -2,6 +2,7 @@
 // ABOUTME: Every item is already a link, so without this script the page still reaches them all.
 
 import { animate } from 'motion';
+import { searchWithoutFacets, selectionFromSearch } from '../lib/search';
 
 /** How long the palette takes to arrive, and to leave. */
 const OPEN_SECONDS = 0.26;
@@ -87,7 +88,12 @@ function normalize(value: string): string {
  * The palette of the page on show. The document keeps its listeners across a
  * swap, so the shortcut is claimed once and always acts on the current one.
  */
-let live: { open: () => void; close: () => void; isOpen: () => boolean } | null = null;
+let live: {
+  open: () => void;
+  close: () => void;
+  isOpen: () => boolean;
+  openOn: (search: string) => boolean;
+} | null = null;
 let shortcutClaimed = false;
 const initialized = new WeakSet<HTMLElement>();
 
@@ -188,6 +194,11 @@ export function startPalette(): void {
 
   const settle = (): void => {
     palette.hidden = true;
+    // The filter of a facet link ends with the palette, so a reload does not open it again.
+    const rest = searchWithoutFacets(location.search);
+    if (rest !== location.search) {
+      history.replaceState(history.state, '', `${location.pathname}${rest}${location.hash}`);
+    }
     // Back in the place it left, never shifted by a transform of its own.
     for (const bar of bars) fadeBar(bar, true);
     if (opener instanceof HTMLElement) opener.focus();
@@ -410,6 +421,28 @@ export function startPalette(): void {
     input.focus();
   });
 
+  /**
+   * Open on the facet values a query string chooses, in place of the values chosen before.
+   * False when the query chooses no facet, so a caller can let a link go to its page.
+   */
+  const openOn = (search: string): boolean => {
+    const selection = selectionFromSearch(search);
+    if (!FACETS.some((facet) => selection[facet].length > 0)) return false;
+    for (const facet of FACETS) {
+      // Only a value that the pill offers is chosen, so the count names nothing the reader cannot see.
+      const offered = new Set(
+        [...palette.querySelectorAll<HTMLButtonElement>(`.palette-facet[data-facet="${facet}"] .palette-option`)]
+          .map((option) => option.dataset.value ?? ''),
+      );
+      chosen[facet] = new Set(selection[facet].filter((value) => offered.has(value)));
+    }
+    drawFacets();
+    input.value = '';
+    open();
+    apply();
+    return true;
+  };
+
   input.addEventListener('input', () => apply());
   // The catalog order moved the items, so the resting handful is chosen again.
   palette.addEventListener('catalog-order', () => apply());
@@ -448,9 +481,20 @@ export function startPalette(): void {
     if (event.target instanceof Element && !event.target.closest('.palette-facet')) closeMenus();
   });
 
-  live = { open, close, isOpen: () => !palette.hidden };
+  live = { open, close, isOpen: () => !palette.hidden, openOn };
   if (!shortcutClaimed) {
     shortcutClaimed = true;
+    // A facet link opens the palette where the reader is. The capture phase acts before the router follows the link.
+    document.addEventListener(
+      'click',
+      (event) => {
+        if (!live || event.defaultPrevented || event.button !== 0) return;
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        const link = event.target instanceof Element ? event.target.closest('a[data-palette-filter]') : null;
+        if (link instanceof HTMLAnchorElement && live.openOn(new URL(link.href).search)) event.preventDefault();
+      },
+      true,
+    );
     document.addEventListener('keydown', (event) => {
       if (!live) return;
       if (event.key === 'Escape' && live.isOpen()) { event.preventDefault(); live.close(); return; }
@@ -473,5 +517,6 @@ export function startPalette(): void {
       open();
     });
   }
-  apply();
+  // A page reached through a facet link opens on that filter.
+  if (!openOn(location.search)) apply();
 }
