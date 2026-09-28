@@ -81,7 +81,8 @@ const [foregroundFigure, backgroundFigure] = terms.participation.figures;
 >
   <header class="guide-header">
     <h1>{DEFINITIONS_HEADING}</h1>
-    <p class="lede">{DEFINITIONS_LEDE}{DEFINITIONS_INTRO.map((block) => <>{' '}<Inline parts={block} /></>)}</p>
+    <p class="lede">{DEFINITIONS_LEDE}</p>
+    {DEFINITIONS_INTRO.map((block) => <p><Inline parts={block} /></p>)}
   </header>
   <p class="section-note">The agent comparisons below exclude shared infrastructure. Explore <a href="/infrastructure">platforms and components</a> separately.</p>
   <section id="terms">
@@ -196,6 +197,7 @@ const [foregroundFigure, backgroundFigure] = terms.participation.figures;
     {chart.body.map((block) => <p><Inline parts={block} /></p>)}
     <details class="placement-notes">
       <summary><span>{chart.notesSummary}</span><Icon name="chevron-down" /></summary>
+      <p>{chart.notesIntro}</p>
       <ul>
         {placed.map((item) => (
           <li id={markerAnchor(item.id)}>
@@ -356,6 +358,7 @@ const [foregroundFigure, backgroundFigure] = terms.participation.figures;
     <h3 id={terms.autonomy.id}>{terms.autonomy.heading}</h3>
     {terms.autonomy.body.map((block) => <p><Inline parts={block} /></p>)}
     <p><Inline parts={terms.autonomy.lead} /> “{terms.autonomy.quote}” <Inline parts={terms.autonomy.closing} /></p>
+    <p><Inline parts={terms.autonomy.recorded} /></p>
   </section>
   <section id="faq" class="guide-faq" data-exclusive>
     <h2>{questions.heading}</h2>

@@ -1,6 +1,6 @@
 # Design
 
-- Set headings and the wordmark in Nanum Myeongjo ExtraBold (800) through `--font-brand`: 24px page titles, 20px section and card headings, a 16px wordmark. Set everything else in ABC Areal: 14px body, opening paragraphs, and controls, 12px metadata, in regular (400) and medium (500). Labels inside a diagram stay in Areal. Inherit existing responsive overrides.
+- Set headings and the wordmark in Nanum Myeongjo ExtraBold (800) through `--font-brand`: 24px page titles, 20px section and card headings, a 16px wordmark. Set everything else in ABC Areal: 16px medium (500) subheadings under a section, 14px body, opening paragraphs, and controls, 12px metadata, in regular (400) and medium (500). Labels inside a diagram stay in Areal. Inherit existing responsive overrides.
 - Keep one font weight within a paragraph; use darker text for inline emphasis.
 - Use a `--sand-1` page ground and Radix Sand colors: `--sand-12` for headings, `--sand-10` for body and secondary text, `--sand-3` for surfaces, and `--sand-6` for fine dividers.
 - Use one blue, the wordmark's `--brand`. The `--blue-*` steps are mixed from it, so every accent, badge, and mark shares its hue.
