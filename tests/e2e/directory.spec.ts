@@ -639,6 +639,12 @@ test.describe('the problem entry points', () => {
     expect(problems.x).toBeGreaterThanOrEqual(main.x + main.width);
     expect(Math.round(problems.y)).toBe(Math.round(sidebar.y));
     expect(problems.x + problems.width).toBeLessThanOrEqual(page.viewportSize()!.width);
+    // The title takes the form of a contents title: the body face, not a heading's serif.
+    const title = await page.locator('.problem-links h2').evaluate((node) => {
+      const style = getComputedStyle(node);
+      return [style.fontFamily.split(',')[0], style.fontWeight, style.lineHeight];
+    });
+    expect(title).toEqual(['Areal', '400', '22.4px']);
     // A list, not a row of pills: each link on its own line.
     const links = await page.locator('.problem-links a').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().left));
     expect(new Set(links).size).toBe(1);
