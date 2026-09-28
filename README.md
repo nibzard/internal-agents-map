@@ -28,7 +28,7 @@ undocumented details stay unknown.
 
 <!-- BEGIN OVERVIEW -->
 
-**Current map: 51 agents across 41 organizations, plus 15 infrastructure records. The complete catalog is backed by 120 distinct sources and 1139 evidence-linked claims.**
+**Current map: 51 agents across 41 organizations, plus 15 infrastructure records. The complete catalog is backed by 122 distinct sources and 1148 evidence-linked claims.**
 
 ## Agents
 
@@ -122,7 +122,7 @@ These counts classify 66 catalog entries. A platform and one of its components c
 
 Agent autonomy (51 records; infrastructure excluded) is classified as 28 drafts-reviewed, 5 human-in-loop, 6 autonomous, 1 assistive, and 11 unknown. Human-in-loop includes approval checkpoints; it does not mean a person continuously steers the whole run.
 
-The catalog contains 64 scoped supervision assessments across those entries, including 3 continuous-steering, 32 work-product-review, 1 outcome-review, 7 exception-only, and 21 unknown assessments. 9 entries have more than one assessed workflow; the counts therefore do not assign one level to each company.
+The catalog contains 65 scoped supervision assessments across those entries, including 3 continuous-steering, 33 work-product-review, 1 outcome-review, 7 exception-only, and 21 unknown assessments. 10 entries have more than one assessed workflow; the counts therefore do not assign one level to each company.
 
 15 entries are platforms or supporting patterns. Review cost, failure rates, and retired systems remain rarely reported.
 

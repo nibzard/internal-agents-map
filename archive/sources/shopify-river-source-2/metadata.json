@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "source_id": "shopify-river-source-2",
+  "original_url": "https://fs.blog/knowledge-project-podcast/tobi-lutke-3/",
+  "final_url": "https://fs.blog/knowledge-project-podcast/tobi-lutke-3/",
+  "captured_at": "2026-09-15T22:31:34Z",
+  "http_status": 200,
+  "tool": {
+    "name": "steel",
+    "version": "0.4.4"
+  },
+  "artifacts": {
+    "markdown": {
+      "path": "archive/sources/shopify-river-source-2/content.md",
+      "sha256": "sha256:ec4c2f1ea51ab1ae99139e9cf3eb8d14d4230a5f21496b09f921eff57138ece8",
+      "bytes": 2874
+    }
+  }
+}

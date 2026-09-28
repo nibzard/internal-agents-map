@@ -48,7 +48,7 @@ The L2-L5 labels adapt [Dan Shapiro's five levels of AI-assisted software develo
 | Replit | [Manager agent (agent-of-agents)](#replit-manager-agent) | agent | coding, code-review, support, research, data | L3 · objective → verifiable multi-agent work product<br>L5 · pull request → agent review with risk-gated human second reviewer | autonomous | scaled | internal | 2026 |
 | Salesforce | [Slackbot](#salesforce-slackbot) | agent | support, customer-success, ops | L3 · employee request → drafted work | drafts-reviewed | scaled | commercialized | 2025 |
 | Sentry | [Junior](#sentry-junior) | agent | coding, code-review, support, on-call | L2 · interactive Slack task → human-steered and reviewed output<br>Unknown · event- or scheduler-triggered follow-up (watched GitHub PR) → agent-initiated thread update | human-in-loop | deployed | open-sourced | 2026 |
-| Shopify | [River](#shopify-river) | agent | coding | Unknown · public Slack question → collaborative investigation or code change | unknown | deployed | internal | 2026 |
+| Shopify | [River](#shopify-river) | agent | coding | Unknown · public Slack question → collaborative investigation or code change<br>L3 · River-authored code change → reviewed pull request | unknown | deployed | internal | 2026 |
 | Sierra | [Pinecone](#sierra-pinecone) | agent | coding, code-review, support, research, data | L3 · employee request → reviewed agent output | drafts-reviewed | scaled | internal | 2026 |
 | Slack | [Security investigation service](#slack-context-system) | agent | security | L3 · security alert → investigation report for on-call staff; owning team resolves escalated issues | drafts-reviewed | deployed | internal | 2025 |
 | Snap | [Casper](#snap-casper) | agent-system | coding, maintenance, on-call, data | L3 · plain-language task from Slack, the Agents Portal, a trigger, or the API → validated pull request presented for human review<br>Unknown · non-coding Casper work reached through the MCP Gateway, such as Jira status triage, A/B experiment checks, data analysis, and document summaries | drafts-reviewed | scaled | internal | 2026 |
@@ -3004,17 +3004,17 @@ Last reviewed: 2026-09-17.
 
 ## Shopify: River
 
-> River is Shopify’s internal Slack agent for investigating questions and making code changes in public threads. <small>Sources: [shopify-river-source-1](#shopify-river-source-1).</small>
+> River is Shopify’s internal Slack agent for investigating questions and making code changes in public threads. Teams can provide channel context, and River carries knowledge across conversations. <small>Sources: [shopify-river-source-1](#shopify-river-source-1), [shopify-river-source-2](#shopify-river-source-2), [shopify-river-source-3](#shopify-river-source-3).</small>
 
 | Field | Value |
 | --- | --- |
 | Collection | agents |
 | Approach type | agent |
-| First public evidence | 2026 |
+| First public evidence | 2026-05-09 |
 | Deployment stage | deployed |
 | Availability | internal |
 | Domains | coding |
-| Operating model | Unknown · public Slack question → collaborative investigation or code change |
+| Operating model | Unknown · public Slack question → collaborative investigation or code change<br>L3 · River-authored code change → reviewed pull request |
 | Autonomy | unknown |
 | Invocation | interactive |
 | Evidence | detailed-primary |
@@ -3023,12 +3023,14 @@ Last reviewed: 2026-09-17.
 ### Operating model
 
 - **Unclassified · unknown** — public Slack question → collaborative investigation or code change (unverified confidence; 2026) <small>Sources: [shopify-river-source-1](#shopify-river-source-1).</small>
+- **Level 3 · work-product-review** — River-authored code change → reviewed pull request (medium confidence; 2026-05-09) <small>Sources: [shopify-river-source-3](#shopify-river-source-3).</small>
 
 ### Architecture
 
 - Harness: An agent profile on Aquifer. <small>Sources: [shopify-river-source-1](#shopify-river-source-1).</small>
 - Tool access: Code, tests, data warehouse and production traces. <small>Sources: [shopify-river-source-1](#shopify-river-source-1).</small>
 - Knowledge: World monorepo, skills and shared Slack transcripts. <small>Sources: [shopify-river-source-1](#shopify-river-source-1).</small>
+- Context mgmt: Teams can pre-load channel instructions and skills. River also uses memory that updates across conversations. <small>Sources: [shopify-river-source-3](#shopify-river-source-3).</small>
 - Interfaces: slack <small>Sources: [shopify-river-source-1](#shopify-river-source-1).</small>
 
 ### Primitives
@@ -3036,16 +3038,28 @@ Last reviewed: 2026-09-17.
 - Receive a request: An employee mentions River in a public Slack channel. <small>Sources: [shopify-river-source-1](#shopify-river-source-1).</small>
 - Investigate and act: River reads files, runs tests and queries, and posts findings; it can open pull requests. <small>Sources: [shopify-river-source-1](#shopify-river-source-1).</small>
 - Continue collaboratively: Colleagues add constraints and redirect the work within the same thread. <small>Sources: [shopify-river-source-1](#shopify-river-source-1).</small>
+- Work in public: River declines direct messages and asks employees to start a public channel. <small>Sources: [shopify-river-source-3](#shopify-river-source-3).</small>
+- Carry knowledge forward: Teams pre-load channel context, and River updates its memory from shared work. <small>Sources: [shopify-river-source-3](#shopify-river-source-3).</small>
 
 ### Reported metrics
 
 - 59,918 sessions across 5,170 Slack channels in a reported 30-day period; 3,536 River-coauthored PRs merged. <small>Sources: [shopify-river-source-1](#shopify-river-source-1).</small>
+- 5,938 employees worked with River across 4,450 Slack channels in the 30 days before 2026-05-09. <small>Sources: [shopify-river-source-3](#shopify-river-source-3).</small>
+- 1,870 pull requests opened by River in the main monorepo in the week before 2026-05-09. <small>Sources: [shopify-river-source-3](#shopify-river-source-3).</small>
+- River pull request merge rate rose from 36% to 77% over two months, according to Shopify's CEO. <small>Sources: [shopify-river-source-3](#shopify-river-source-3).</small>
+
+### Catalog observations
+
+- Shared River threads let Shopify employees learn from other teams' requests and reuse their skills. <small>Sources: [shopify-river-source-3](#shopify-river-source-3).</small>
+- Shopify's CEO attributes River's rising pull request merge rate to public observation and written skills. <small>Sources: [shopify-river-source-3](#shopify-river-source-3).</small>
 
 ### Sources
 
 - <a id="shopify-river-source-1"></a>[Under the River](https://shopify.engineering/under-the-river) ([snapshot](../archive/sources/shopify-internal-agents-source-1/content.md), captured 2026-08-31) (engineering-blog; first-party; evidence)
+- <a id="shopify-river-source-2"></a>[Tobi Lütke on The Knowledge Project: AI Agents, Better Decisions, and the Future of Work](https://fs.blog/knowledge-project-podcast/tobi-lutke-3/) ([snapshot](../archive/sources/shopify-river-source-2/content.md), captured 2026-09-15) (podcast; direct-participant; evidence)
+- <a id="shopify-river-source-3"></a>[Tobi Lütke on X: Learning on the Shop floor](https://x.com/tobi/status/2053121182044451016) ([snapshot](../archive/sources/shopify-river-source-3/content.md), captured 2026-09-15) (social-post; direct-participant; evidence)
 
-Last reviewed: 2026-09-17.
+Last reviewed: 2026-09-28.
 
 ---
 

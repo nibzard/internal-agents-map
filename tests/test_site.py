@@ -130,14 +130,15 @@ class ArtifactTests(unittest.TestCase):
             page = (DIST / f"agents/{approach['id']}.html").read_text(encoding="utf-8")
             for source_id in approach["source_ids"]:
                 source = self.sources[source_id]
-                self.assertIn(f'href="{source["url"]}"', page, source_id)
+                source_item = page.split(f'<li id="source-{source_id}"', 1)[1].split("</li>", 1)[0]
+                self.assertIn(f'href="{source["url"]}"', source_item, source_id)
                 capture = source.get("capture")
                 if capture:
                     preserved = blob + capture["artifacts"]["markdown"]["path"]
-                    self.assertIn(preserved, page, source_id)
+                    self.assertIn(preserved, source_item, source_id)
                     self.assertNotEqual(preserved, source["url"])
                 else:
-                    self.assertNotIn("Preserved copy", page, source_id)
+                    self.assertNotIn("Preserved copy", source_item, source_id)
 
     def test_the_guides_send_the_reader_to_the_entry_pages(self):
         definitions = (DIST / "definitions.html").read_text(encoding="utf-8")
