@@ -84,7 +84,7 @@ const image = ogImage ?? { url: OG_IMAGE, alt: OG_IMAGE_ALT };
   )}
   <ClientRouter />
 </head>
-<body>
+<body data-current={current ?? undefined}>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="topbar">
   <a class="brand" href={homePath()}>Internal Agents Map</a>
