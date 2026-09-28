@@ -10,7 +10,7 @@
 .page-shell {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 684px) minmax(0, 1fr);
-  gap: 40px;
+  gap: 60px;
   /* The page starts on the same line its rails do, so a title and the wordmark
      beside it begin together. */
   padding: var(--rail-top) 32px 0;
@@ -97,15 +97,20 @@
   border-bottom: .5px solid var(--sand-6);
 }
 .brand {
+  font-family: var(--font-brand);
   font-size: var(--text-md);
-  font-weight: 500;
+  font-weight: 800;
   line-height: 1;
-  color: var(--ink);
+  color: var(--brand);
   text-decoration: none;
 }
 /* The wordmark at the head of the rail, over the links it belongs to. */
 .brand-rail {
   display: block;
+  /* The larger heading's glyphs sit lower in its line box. Match its visible
+     top without shifting the navigation rows below the wordmark. */
+  position: relative;
+  top: 3px;
   margin-bottom: 24px;
 }
 .nav-links {
@@ -154,6 +159,16 @@
   background: var(--blue-9);
 }
 .nav-links .contribute-link { color: var(--link); }
+/* The data files and the ways to contribute sit apart from the pages that explain the catalog. */
+.nav-group {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+.nav-group-label {
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
 .sidebar-note {
   font-size: var(--text-xs);
   color: var(--muted);
@@ -271,6 +286,8 @@ footer a { color: inherit; }
   }
   .nav-links a[aria-current="page"] { color: var(--blue-9); }
   .nav-links .icon { width: 20px; height: 20px; }
+  .nav-group { gap: 0; margin-top: 24px; }
+  .nav-group-label { padding-bottom: 4px; }
   .sidebar-note { display: none; }
   .footer-inner {
     flex-wrap: wrap;

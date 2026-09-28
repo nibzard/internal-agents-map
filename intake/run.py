@@ -115,7 +115,7 @@ def load_queue(path: Path) -> list[QueueEntry]:
             # before any capture or spend.
             from intake.catalog import load_build
 
-            allowed = load_build().PROVENANCE_CLASSES
+            allowed = load_build().schema_values("provenanceClass")
             if role not in allowed:
                 raise QueueError(
                     f"{path}: entry {index} source_role {role!r} is not one of: "

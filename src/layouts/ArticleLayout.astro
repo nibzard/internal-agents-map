@@ -1,5 +1,5 @@
 ---
-// ABOUTME: The frame the guides and the notes share, wrapped around the site shell.
+// ABOUTME: The frame the guides and the lessons share, wrapped around the site shell.
 // ABOUTME: It also carries the reading styles those pages use, ported from the old site.
 import SiteLayout from './SiteLayout.astro';
 import type { JsonLdNode } from '../lib/metadata';
@@ -10,11 +10,11 @@ interface Props {
   description: string;
   /** The canonical path of this page. */
   path: string;
-  current?: 'catalog' | 'definitions' | 'notes' | 'methodology' | null;
+  current?: 'catalog' | 'definitions' | 'lessons' | 'methodology' | null;
   structuredData?: JsonLdNode | null;
-  /** `notes` adds the reading width and type size the notes use. */
-  variant?: 'guide' | 'notes';
-  /** A note is an article; a guide is an ordinary page. */
+  /** `lessons` adds the reading width and type size the lessons use. */
+  variant?: 'guide' | 'lessons';
+  /** A lesson is an article; a guide is an ordinary page. */
   ogType?: 'website' | 'article';
   /** The publication date of an article, for link previews. */
   articlePublishedTime?: string | null;
@@ -44,26 +44,28 @@ const {
   articlePublishedTime={articlePublishedTime}
   ogImage={ogImage}
 >
-  <div class:list={['guide', variant === 'notes' && 'notes']}>
+  <div class:list={['guide', variant === 'lessons' && 'lessons']}>
     <slot />
   </div>
 </SiteLayout>
 
 <style is:global>
-/* The guides and the notes read as documents: fine rules, wide measure, quiet labels. */
-.guide-header { padding-bottom: 32px; }
+/* The guides and the lessons read as documents: fine rules, wide measure, quiet labels. */
+.guide-header { padding-bottom: 16px; }
 .guide-header h1 { max-width: 700px; margin-top: 0; }
 .guide-header > p { max-width: 680px; }
-.guide-header .lede { font-size: var(--text-sm); line-height: 1.5; margin-top: 24px; }
 .guide p { line-height: 1.65; }
 .guide section > p { max-width: 680px; }
 .guide section > .eyebrow { margin-bottom: 12px; }
 .guide section > h2 { margin-bottom: 8px; }
 .guide section > h3 + p { margin-top: 12px; }
 .guide section > p + p { margin-top: 16px; }
-.guide section { padding: 32px 0; }
-.guide section > h3 { margin-top: 32px; max-width: 680px; }
-.guide h3 { font-size: var(--text-md); font-weight: 500; }
+/* Sections sit forty apart: twenty either side of the line between them. */
+.guide section { padding: 20px 0; }
+.guide section > h3 { margin-top: 24px; max-width: 680px; }
+.guide h3 { font-size: var(--text-lg); }
+/* The running text of a guide sits a step back from its headings. */
+.guide section > p { color: var(--sand-10); }
 .guide figure { margin: 32px 0; }
 .guide figcaption { color: var(--muted); font-size: var(--text-xs); line-height: 1.65; margin-top: 24px; }
 .guide blockquote { margin: 24px 0; padding: 8px 0; font-size: var(--text-sm); }
@@ -101,58 +103,61 @@ const {
   /* The fill is the plot's own, so nothing needs clipping and a name near an
      edge can run past it rather than being cut. */
   background: var(--sand-3);
+  position: relative;
 }
 .quadrant-cell { position: relative; min-width: 0; }
 /* The two axes carry the same hairline as the square they divide. */
 .quadrant-cell:nth-child(odd) { border-right: .5px solid var(--sand-6); }
 .quadrant-cell:nth-child(-n+2) { border-bottom: .5px solid var(--sand-6); }
-.quadrant-cell h3 { position: absolute; top: var(--cell-inset); left: var(--cell-inset); right: var(--cell-inset); margin: 0; font-size: 14px; line-height: 1.35; font-weight: 500; color: var(--ink); letter-spacing: -.015em; }
-.quadrant-cell h3 span { display: block; margin-bottom: 4px; color: var(--muted); font-size: 14px; line-height: 1.35; font-weight: 400; }
+.quadrant-cell h3 { position: absolute; top: var(--cell-inset); left: var(--cell-inset); right: var(--cell-inset); margin: 0; font-family: inherit; font-size: 14px; line-height: 1.35; font-weight: 500; color: var(--ink); letter-spacing: -.015em; }
 .quadrant-cell:nth-child(n+3) h3 { top: auto; bottom: var(--cell-inset); }
 /* The two right-hand cells read from the edge they sit against. */
 .quadrant-cell:nth-child(2) h3, .quadrant-cell:nth-child(4) h3 { text-align: right; }
-.quadrant-cell ul { margin: 0; padding: 0; list-style: none; }
-.quadrant-cell li { position: absolute; left: 15%; top: 34%; max-width: 78%; font-size: 14px; padding-left: 20px; }
-.quadrant-cell li:nth-child(2) { left: 33%; top: 65%; }
-.quadrant-assistants li { left: 12%; top: 15%; }
-.quadrant-assistants li:nth-child(2) { left: 33%; top: 37%; }
-.quadrant-assistants li:nth-child(3) { left: 20%; top: 60%; }
-.quadrant-cell li::before {
+/* Each marker sits at the position its data names: --x and --y run from 0 to 100
+   across the whole plot, with 0 at the left and at the foot. The point is the centre
+   of the mark. A marker on the right half reads leftward from its point, so its name
+   stays inside the plot at every width, and a name wraps before it leaves its half. */
+.quadrant-markers { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
+.quadrant-markers li {
+  --dot: 12.5px;
+  position: absolute;
+  top: calc((100 - var(--y)) * 1% - 1.35em / 2);
+  font-size: 14px;
+  line-height: 1.35;
+}
+.quadrant-markers .marker-start {
+  left: calc(var(--x) * 1% - var(--dot) / 2);
+  max-width: max(9em, calc((50 - var(--x)) * 1% - 8px));
+  padding-left: calc(var(--dot) + 7.5px);
+}
+.quadrant-markers .marker-end {
+  right: calc((100 - var(--x)) * 1% - var(--dot) / 2);
+  max-width: max(9em, calc((var(--x) - 50) * 1% - 8px));
+  padding-right: calc(var(--dot) + 7.5px);
+  text-align: right;
+}
+.quadrant-markers li::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: calc((1.35em - 12.5px) / 2);
-  width: 12.5px;
-  height: 12.5px;
+  top: calc((1.35em - var(--dot)) / 2);
+  width: var(--dot);
+  height: var(--dot);
   border-radius: 50%;
   background: var(--blue-9);
 }
-.quadrant-cell a { display: block; line-height: 1.35; text-decoration: none; }
-.quadrant-cell a:hover { color: var(--sand-10); }
-.quadrant-cell li strong { display: block; font-size: 14px; font-weight: 500; line-height: 1.35; }
-.quadrant-cell li span { display: block; font-size: 14px; line-height: 1.35; margin-top: 4px; }
-.quadrant-cell .reference-marker { color: var(--sand-10); }
-.quadrant-cell .reference-marker strong { color: var(--sand-12); }
-/* A reference names a class of product: breaking it reads as two of them. */
-.quadrant-cell .reference-marker { max-width: none; white-space: nowrap; }
-.quadrant-cell .reference-marker::before {
-  top: calc((1.35em - 12px) / 2);
-  border-radius: 0;
-  width: 12px;
-  height: 12px;
-  background: var(--green-9);
-  clip-path: var(--triangle);
-}
-.quadrant-cell li[data-chart-reference="deep-research"] { left: 5%; top: 42%; max-width: 40%; }
-.quadrant-cell li[data-chart-reference="ready-made-task"] { left: 49%; top: 42%; max-width: 48%; }
-.quadrant-cell li[data-chart-reference="general-assistant"] { left: 28%; top: 34%; max-width: 66%; }
-.quadrant-cell li[data-chart-approach-id="doordash-code-review"] { left: 10%; top: 30%; max-width: 56%; }
-.quadrant-cell li[data-chart-approach-id="posthog-stamphog"] { left: 15%; top: 72%; max-width: 46%; }
-.quadrant-cell li[data-chart-approach-id="ramp-inspect"] { left: 60%; top: 76%; max-width: 35%; }
-.quadrant-cell li[data-chart-approach-id="stripe-minions"] { left: 56%; top: 48%; max-width: 40%; }
-.quadrant-cell li[data-chart-approach-id="brex-agent-platform"] { left: 10%; top: 30%; max-width: 58%; }
-.quadrant-cell li[data-chart-approach-id="sentry-junior"] { left: 56%; top: 50%; max-width: 38%; }
-.quadrant-cell li[data-chart-approach-id="shopify-internal-agents"] { left: 17%; top: 72%; max-width: 52%; }
+.quadrant-markers .marker-start::before { left: 0; }
+.quadrant-markers .marker-end::before { right: 0; }
+.quadrant-markers a { display: block; line-height: 1.35; text-decoration: none; }
+.quadrant-markers a:hover { color: var(--sand-10); }
+.quadrant-markers strong { display: block; font-size: 14px; font-weight: 500; line-height: 1.35; }
+.quadrant-markers span { display: block; font-size: 14px; line-height: 1.35; margin-top: 4px; }
+.quadrant-markers .reference-marker { --dot: 12px; color: var(--sand-10); }
+.quadrant-markers .reference-marker strong { color: var(--sand-12); }
+.quadrant-markers .reference-marker::before { border-radius: 0; background: var(--green-9); clip-path: var(--triangle); }
+/* An arrow runs from a standard product up to a company system built on it. */
+.quadrant-arrows { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.quadrant-arrows line { stroke: var(--figure-line); stroke-width: var(--figure-line-width); stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+.quadrant-arrows path { fill: var(--sand-8); }
 .quadrant-x-axis { display: flex; justify-content: space-between; gap: 12px; padding: 0 var(--cell-inset); font-size: var(--text-xs); line-height: var(--scale-row); color: var(--muted); }
 .quadrant-legend { display: flex; flex-wrap: wrap; gap: 12px 24px; margin: 24px 0 12px; color: var(--muted); font-size: var(--text-sm); }
 .quadrant-legend span { display: inline-flex; align-items: center; gap: 8px; }
@@ -186,17 +191,14 @@ const {
 .guide-faq details[open] > summary .icon { transform: rotate(180deg); }
 .guide-faq details p { margin: 0; padding: 0 12px 12px; max-width: 680px; color: var(--muted); }
 .dimension-intro { display: grid; gap: 24px; margin-top: 24px; }
-.dimension-intro h3 { font-size: var(--text-md); line-height: 1.3; margin-bottom: 8px; }
+.dimension-intro h3 { font-size: var(--text-lg); line-height: 1.3; margin-bottom: 8px; }
 .dimension-intro p { font-size: var(--text-sm); color: var(--muted); }
 
 /* A company workflow supplies the context around model-directed work. */
 .workflow-stack {
   display: grid;
   justify-items: center;
-  padding: 24px;
-  background: #fff;
-  border: .5px solid var(--sand-6);
-  border-radius: 16px;
+  padding: 32px 0;
 }
 .workflow-node {
   width: fit-content;
@@ -206,12 +208,12 @@ const {
   padding: 16px;
   text-align: center;
 }
-.workflow-node .eyebrow { font-size: var(--text-xs); }
-.workflow-node strong { display: block; font-weight: 400; margin-top: 2px; }
+.workflow-node .eyebrow { font-size: var(--text-sm); }
+.workflow-node strong { display: block; font-size: var(--text-sm); font-weight: 400; margin-top: 2px; }
 .workflow-context { background: var(--sand-3); }
 /* A drawn arrow, clear of the panel above it and the one below. */
 .workflow-connector { display: flex; justify-content: center; padding: 4px 0; }
-.workflow-connector svg { display: block; width: 12px; height: 32px; fill: none; stroke: var(--sand-9); stroke-width: .5; }
+.workflow-connector svg { display: block; width: 12px; height: 32px; fill: none; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
 .placement-notes { padding: 24px 0; margin-top: 24px; }
 .placement-notes summary {
   display: flex;
@@ -233,7 +235,15 @@ const {
 .core-definition { padding: 64px 24px; margin: 24px 0; background: var(--sand-3); border-radius: 14px; text-align: center; }
 .combination-title { font-size: var(--text-sm); line-height: 1.5; }
 .combination-title strong { font-weight: 400; }
-.guide .core-definition p { font-size: var(--text-md); font-weight: 500; line-height: 1.4; margin: 0 auto; max-width: 440px; color: var(--blue-9); }
+.guide .core-definition p {
+  font-family: var(--font-brand);
+  font-size: var(--text-md);
+  font-weight: 800;
+  line-height: 1.4;
+  margin: 0 auto;
+  max-width: 440px;
+  color: var(--blue-9);
+}
 .guide .core-definition strong { font-weight: 500; color: var(--blue-9); }
 /* A call to action stands clear of the paragraph that leads into it. */
 .guide section > .button { margin-top: 16px; }
@@ -241,38 +251,36 @@ const {
 .scope-figure {
   width: 100%;
   margin: 24px 0 0;
-  background: #fff;
-  border-radius: 16px;
-  overflow: hidden;
 }
 .scope-figure svg { display: block; width: 100%; height: auto; }
 .scope-figure .scope-portrait { display: none; }
-.scope-frame { fill: none; stroke: var(--sand-6); stroke-width: .5; }
 /* The viewBox is the body's own width, so a label reads at its stated size. */
 .scope-label { fill: var(--muted); font-size: 14px; letter-spacing: -.01em; }
-.scope-link { fill: none; stroke: var(--sand-6); stroke-width: 1.2; }
+.scope-link { fill: none; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
 /* The agent, what it reaches, and what passes between them share one colour. */
 .scope-node { fill: var(--blue-9); stroke: var(--blue-9); stroke-width: 1.2; }
 .scope-agent { fill: var(--blue-9); stroke: var(--blue-9); }
-.scope-signal { fill: var(--blue-9); }
-.concept-pair svg { display: block; width: 100%; fill: none; stroke: var(--sand-10); stroke-width: 1.2; }
+.scope-signal { fill: none; stroke: var(--blue-9); stroke-width: var(--figure-line-width); }
+.concept-pair svg { display: block; width: 100%; fill: none; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
 .concept-pair svg text { fill: var(--muted); stroke: none; font: 12px Areal, sans-serif; }
 .concept-pair svg .agent-dot { fill: var(--accent); stroke: var(--accent); }
 .guide .concept-definition { font-size: var(--text-sm); line-height: 1.5; max-width: 610px; }
 /* Where an agent runs: one panel per answer, each a field of its own. */
-.place-panels { display: grid; gap: 16px; margin: 24px 0; }
+.place-panels { display: grid; margin: 24px 0; }
 .guide .place-panel { margin: 0; }
 .place-panel {
   overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 32px;
-  padding: 16px;
+  padding: 24px 0;
   margin: 0;
-  background: #fff;
-  border: .5px solid var(--sand-6);
-  border-radius: 16px;
 }
+.place-panel + .place-panel { border-top: 1px dotted var(--sand-8); }
+/* A joined pair names itself at the rule between them, one line either side. */
+.place-panels-joined .place-panel:first-child { padding-bottom: 12px; }
+.place-panels-joined .place-panel:last-child { padding-top: 12px; }
+.guide .place-panels-joined figcaption { color: var(--ink); font-weight: 500; }
 .guide .place-panel figcaption { margin: 0; font-size: var(--text-sm); line-height: 1.4; }
 .place-panel figcaption strong { display: block; color: var(--ink); font-weight: 500; }
 .place-panel figcaption span { display: block; margin-top: 8px; color: var(--muted); }
@@ -367,24 +375,24 @@ const {
 }
 .place-link { flex: none; }
 .exchange-scene { display: block; width: 100%; height: 100%; }
-.exchange-scene, .exchange-strand { fill: none; stroke: var(--sand-10); stroke-width: 1.2; }
-.exchange-you { fill: #fff; stroke: var(--sand-10); stroke-width: 1.2; }
+.exchange-scene, .exchange-strand { fill: none; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
+.exchange-you { fill: #fff; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
 .exchange-agent { fill: var(--blue-9); stroke: var(--blue-9); }
 .exchange-scene text { fill: var(--muted); stroke: none; }
-.exchange-signal { fill: var(--blue-9); stroke: none; }
+.exchange-signal { fill: none; stroke: var(--blue-9); stroke-width: var(--figure-line-width); }
 /* A trigger arrives, the agent works, a result lands, and it begins again. */
 .cycle-scene { display: block; width: calc(100% + 16px); height: 100%; margin-left: -16px; }
 .cycle-scene text { fill: var(--muted); stroke: none; }
-.cycle-link { fill: none; stroke: var(--sand-6); stroke-width: 1.2; }
-.cycle-trigger { fill: #fff; stroke: var(--sand-6); stroke-width: 1.2; }
+.cycle-link { fill: none; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
+.cycle-trigger { fill: #fff; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
 /* The lit state is its own circle, so it can rise and fall on top of the first. */
 .cycle-trigger-on { fill: var(--blue-9); stroke: var(--blue-9); stroke-width: 1.2; }
 .cycle-agent { fill: var(--blue-9); }
 .cycle-spinner { fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; }
-.cycle-result { fill: #fff; stroke: var(--sand-6); stroke-width: 1.2; }
-.cycle-result-dot { fill: var(--blue-9); }
-.cycle-signal { fill: var(--blue-9); }
-.place-arrow { align-self: center; width: 64px; fill: none; stroke: var(--sand-9); stroke-width: 1.2; }
+.cycle-result { fill: #fff; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
+.cycle-result-on { fill: var(--blue-9); stroke: var(--blue-9); stroke-width: 1.2; }
+.cycle-signal { fill: none; stroke: var(--blue-9); stroke-width: var(--figure-line-width); }
+.place-arrow { align-self: center; width: 64px; fill: none; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
 .concept-pair { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); max-width: 680px; margin: 24px 0; }
 .guide .concept-pair figure { margin: 0; padding: 24px 16px; min-width: 0; }
 .concept-pair figure + figure { border-left: 1px solid var(--sand-6); }
@@ -423,51 +431,51 @@ const {
 .concept-combination dl > div:last-child dd { border-bottom: 0; }
 .guide .concept-combination .combination-note { font-size: var(--text-sm); color: var(--muted); }
 
-/* Notes use the same fine rules, type, and restrained diagram accents. */
-.notes { font-size: var(--text-sm); }
-.notes .note-meta { font-size: var(--text-sm); color: var(--sand-10); }
-.notes .guide-header { padding-bottom: 32px; }
-.notes .guide-header > * { max-width: 680px; }
-.notes .note-list, .note-detail > article { max-width: 680px; }
-.note-preview { position: relative; margin-bottom: 40px; cursor: pointer; }
-.note-preview h2 a::after { content: ""; position: absolute; inset: 0; }
-.note-preview h2 { margin: 0 0 8px; }
-.note-preview h2 a { color: var(--ink); text-decoration: none; }
-.note-summary { font-size: var(--text-sm); color: var(--sand-10); max-width: 580px; }
-.note-preview:hover h2 a { color: var(--sand-11); }
-.note-preview:hover .note-summary { color: var(--sand-9); }
-.notes-editorial { max-width: 620px; padding: 24px 0 32px; color: var(--muted); font-size: var(--text-sm); }
-.note-back { display: inline-block; margin-bottom: 32px; font-size: var(--text-sm); }
-.note-detail h1 { max-width: 640px; }
-.notes section { padding: 32px 0; }
-.notes blockquote { margin: 32px 0 8px; padding: 8px 0 0; font-size: var(--text-md); }
-.notes .quote-credit { color: var(--muted); font-size: var(--text-sm); margin: 0 0 24px; }
-.notes table { width: 100%; table-layout: fixed; border-spacing: 0; margin: 24px 0; border: .5px solid var(--sand-6); border-radius: 14px; overflow: hidden; }
-.notes th, .notes td { padding: 12px; text-align: left; vertical-align: top; line-height: 1.5; overflow-wrap: anywhere; }
-.notes th { background: var(--sand-3); font-weight: 500; }
-.notes th:first-child { width: 30%; }
-.notes tbody td { border-top: .5px solid var(--sand-6); }
-.notes .note-diagram { margin: 32px 0 0; }
-.note-node {
+/* Lessons use the same fine rules, type, and restrained diagram accents. */
+.lessons { font-size: var(--text-sm); }
+.lessons .lesson-meta { font-size: var(--text-sm); color: var(--sand-10); }
+.lessons .guide-header { padding-bottom: 16px; }
+.lessons .guide-header > * { max-width: 680px; }
+.lessons .lesson-list, .lesson-detail > article { max-width: 680px; }
+.lesson-preview { position: relative; margin-bottom: 32px; cursor: pointer; }
+.lesson-preview h2 a::after { content: ""; position: absolute; inset: 0; }
+.lesson-preview h2 { margin: 0 0 8px; }
+.lesson-preview h2 a { color: var(--ink); text-decoration: none; }
+.lesson-summary { font-size: var(--text-sm); color: var(--sand-10); max-width: 580px; }
+.lesson-preview:hover h2 a { color: var(--sand-11); }
+.lesson-preview:hover .lesson-summary { color: var(--sand-9); }
+.lessons-editorial { max-width: 620px; padding: 24px 0 32px; color: var(--muted); font-size: var(--text-sm); }
+.lesson-back { display: inline-block; margin-bottom: 32px; font-size: var(--text-sm); }
+.lesson-detail h1 { max-width: 640px; }
+.lessons section { padding: 20px 0; }
+.lessons blockquote { margin: 32px 0 8px; padding: 8px 0 0; font-size: var(--text-md); }
+.lessons .quote-credit { color: var(--muted); font-size: var(--text-sm); margin: 0 0 24px; }
+.lessons table { width: 100%; table-layout: fixed; border-spacing: 0; margin: 24px 0; border: .5px solid var(--sand-6); border-radius: 14px; overflow: hidden; }
+.lessons th, .lessons td { padding: 12px; text-align: left; vertical-align: top; line-height: 1.5; overflow-wrap: anywhere; }
+.lessons th { background: var(--sand-3); font-weight: 500; }
+.lessons th:first-child { width: 30%; }
+.lessons tbody td { border-top: .5px solid var(--sand-6); }
+.lessons .lesson-diagram { margin: 32px 0 0; }
+.lesson-node {
   min-width: 0;
   background: var(--sand-3);
   border-radius: 14px;
   padding: 16px;
 }
-.note-node strong { display: block; font-size: var(--text-md); font-weight: 400; line-height: 1.4; }
+.lesson-node strong { display: block; font-size: var(--text-md); font-weight: 400; line-height: 1.4; }
 /* A node standing on its own is a caption, not a step: both its lines read at 14px. */
-.note-diagram > .note-node strong { font-size: var(--text-sm); line-height: 1.5; }
-.note-node small { display: block; color: var(--muted); font-size: var(--text-sm); line-height: 1.5; margin-top: 6px; }
-.note-diagram-tail { margin-top: 16px; font-size: var(--text-sm); }
-.note-reviewers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.lesson-diagram > .lesson-node strong { font-size: var(--text-sm); line-height: 1.5; }
+.lesson-node small { display: block; color: var(--muted); font-size: var(--text-sm); line-height: 1.5; margin-top: 6px; }
+.lesson-diagram-tail { margin-top: 16px; font-size: var(--text-sm); }
+.lesson-reviewers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 /* Branch labels carry the conditions in both the page and the text export. */
-.notes .note-branches { list-style: none; margin: 0 0 0 16px; padding: 16px 0 0 20px; border-left: 1px solid var(--sand-6); }
-.note-branches li { position: relative; padding: 12px 16px; background: var(--sand-3); border-radius: 14px; }
-.note-branches li + li { margin-top: 12px; }
+.lessons .lesson-branches { list-style: none; margin: 0 0 0 16px; padding: 16px 0 0 20px; border-left: 1px solid var(--sand-6); }
+.lesson-branches li { position: relative; padding: 12px 16px; background: var(--sand-3); border-radius: 14px; }
+.lesson-branches li + li { margin-top: 12px; }
 /* A branch meets its container at the middle of its side, whatever its height. */
-.note-branches li::before { content: ""; position: absolute; top: 50%; left: -20px; width: 20px; border-top: 1px solid var(--sand-6); }
+.lesson-branches li::before { content: ""; position: absolute; top: 50%; left: -20px; width: 20px; border-top: 1px solid var(--sand-6); }
 /* The junction sits astride that edge: half on the line, half on the container. */
-.note-branches li::after {
+.lesson-branches li::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -478,25 +486,25 @@ const {
   border-radius: 50%;
   background: var(--sand-6);
 }
-.note-branches strong, .note-shared-state strong { display: block; font-weight: 500; }
-.note-branches span, .note-shared-state span { display: block; margin-top: 6px; color: var(--sand-10); }
-.note-shared-state { position: relative; margin-top: 16px; padding: 16px; border: 1px solid var(--sand-6); border-radius: 14px; text-align: center; }
-.note-shared-state::before, .note-shared-state::after { content: ""; position: absolute; top: -17px; height: 16px; border-left: 1px solid var(--sand-6); }
-.note-shared-state::before { left: 25%; }
-.note-shared-state::after { left: 75%; }
-.notes .note-diagram figcaption {
+.lesson-branches strong, .lesson-shared-state strong { display: block; font-weight: 500; }
+.lesson-branches span, .lesson-shared-state span { display: block; margin-top: 6px; color: var(--sand-10); }
+.lesson-shared-state { position: relative; margin-top: 16px; padding: 16px; border: 1px solid var(--sand-6); border-radius: 14px; text-align: center; }
+.lesson-shared-state::before, .lesson-shared-state::after { content: ""; position: absolute; top: -17px; height: 16px; border-left: 1px solid var(--sand-6); }
+.lesson-shared-state::before { left: 25%; }
+.lesson-shared-state::after { left: 75%; }
+.lessons .lesson-diagram figcaption {
   margin-top: 16px;
   font-size: var(--text-xs);
   color: var(--sand-10);
 }
-.notes figcaption { font-size: var(--text-sm); margin-top: 16px; }
-.guide .note-sources > h2 { margin-bottom: 16px; }
-.note-related-title { margin-top: 32px; font-size: var(--text-md); }
-.note-sources ol { padding-left: 24px; margin: 0; font-size: var(--text-sm); }
-.note-sources ol li + li { margin-top: 16px; }
-.note-sources li span { display: block; color: var(--muted); margin-top: 8px; }
-.note-sources .resource-links { font-size: var(--text-sm); }
-.note-next { display: grid; gap: 12px; padding: 24px 0 32px; font-size: var(--text-sm); }
+.lessons figcaption { font-size: var(--text-sm); margin-top: 16px; }
+.guide .lesson-sources > h2 { margin-bottom: 16px; }
+.lesson-related-title { margin-top: 32px; font-size: var(--text-md); }
+.lesson-sources ol { padding-left: 24px; margin: 0; font-size: var(--text-sm); }
+.lesson-sources ol li + li { margin-top: 16px; }
+.lesson-sources li span { display: block; color: var(--muted); margin-top: 8px; }
+.lesson-sources .resource-links { font-size: var(--text-sm); }
+.lesson-next { display: grid; gap: 12px; padding: 24px 0 32px; font-size: var(--text-sm); }
 
 @media (max-width: 800px) {
   /*
@@ -517,17 +525,17 @@ const {
   .place-callout,
   .workflow-stack .workflow-node .eyebrow,
   .workflow-stack .workflow-node strong,
-  .note-diagram .note-node > span,
-  .note-diagram .note-node strong,
-  .note-diagram .note-node small,
-  .note-diagram .note-versions .diagram-number,
-  .note-diagram .note-versions strong,
-  .note-diagram .note-versions p,
-  .note-diagram .note-branches strong,
-  .note-diagram .note-branches span,
-  .notes .note-diagram figcaption,
-  .note-diagram .note-diagram-tail { font-size: 14px; }
-  .notes table, .note-branches, .note-shared-state { font-size: 14px; }
+  .lesson-diagram .lesson-node > span,
+  .lesson-diagram .lesson-node strong,
+  .lesson-diagram .lesson-node small,
+  .lesson-diagram .lesson-versions .diagram-number,
+  .lesson-diagram .lesson-versions strong,
+  .lesson-diagram .lesson-versions p,
+  .lesson-diagram .lesson-branches strong,
+  .lesson-diagram .lesson-branches span,
+  .lessons .lesson-diagram figcaption,
+  .lesson-diagram .lesson-diagram-tail { font-size: 14px; }
+  .lessons table, .lesson-branches, .lesson-shared-state { font-size: 14px; }
   .guide-faq details, .concept-combination dl, .guide .classification-table { font-size: 14px; }
   .cycle-scene text { font-size: 30px; }
   .exchange-scene text { font-size: 29px; }
@@ -556,8 +564,8 @@ const {
 }
 @media (max-width: 600px) {
   .guide-header h1 { font-size: var(--text-xl); }
-  .guide-header { padding-bottom: 32px; }
-  .guide section { padding: 32px 0; }
+  .guide-header { padding-bottom: 16px; }
+  .guide section { padding: 20px 0; }
   .quadrant-chart { gap: 8px; }
   /* A narrow screen has no margin to hang the scale label in, so it leads the plot. */
   .quadrant-y-axis {
@@ -571,42 +579,24 @@ const {
   .quadrant-y-axis span { position: static; writing-mode: horizontal-tb; transform: none; }
   .quadrant-plot { aspect-ratio: .82; }
   .quadrant-cell h3 { left: 12px; right: 12px; top: 12px; }
-  .quadrant-cell h3 span { display: none; }
   .quadrant-cell:nth-child(n+3) h3 { bottom: 12px; }
-  .quadrant-cell li { padding-left: 20px; }
   .quadrant-x-axis, .quadrant-y-axis { display: none; }
-
-  .quadrant-cell li::before { width: 10px; height: 10px; top: calc((1.35em - 10px) / 2); }
-  .quadrant-cell .reference-marker::before { width: 10px; height: 10px; top: calc((1.35em - 10px) / 2); }
-  /* Each name holds one line here, so the narrow plot is placed name by name:
-     clear of the region titles, clear of each other, and clear of every edge.
-     A name in a right-hand region hangs off the right so it cannot run out. */
-  .quadrant-cell li[data-chart-approach-id="doordash-code-review"] { left: 10%; top: 34%; }
-  .quadrant-cell li[data-chart-approach-id="stripe-minions"] { left: 56%; top: 54%; }
-  .quadrant-cell li[data-chart-approach-id="posthog-stamphog"] { left: 10%; top: 72%; }
-  .quadrant-cell li[data-chart-approach-id="ramp-inspect"] { left: 64%; top: 86%; }
-  .quadrant-cell li[data-chart-approach-id="brex-agent-platform"] { left: 10%; top: 34%; }
-  .quadrant-cell li[data-chart-approach-id="sentry-junior"] { left: auto; right: 12px; top: 54%; }
-  .quadrant-cell li[data-chart-approach-id="shopify-internal-agents"] { left: 10%; top: 72%; }
-  .quadrant-cell li[data-chart-reference="deep-research"] { left: 7%; top: 8%; }
-  .quadrant-cell li[data-chart-reference="ready-made-task"] { left: 7%; top: 50%; }
-  .quadrant-cell li[data-chart-reference="general-assistant"] { left: auto; right: 12px; top: 32%; }
-  .quadrant-cell li span { display: none; }
-  .quadrant-cell li strong { font-weight: 400; }
-  .quadrant-cell li,
-  .quadrant-cell li[data-chart-approach-id],
-  .quadrant-cell li[data-chart-reference] { max-width: none; white-space: nowrap; }
+  /* Each name holds one line here: the company, or the name of the reference. */
+  .quadrant-markers li { --dot: 10px; white-space: nowrap; }
+  .quadrant-markers .reference-marker { --dot: 10px; }
+  .quadrant-markers .marker-start, .quadrant-markers .marker-end { max-width: none; }
+  .quadrant-markers span { display: none; }
+  .quadrant-markers strong { font-weight: 400; }
   .quadrant-legend { gap: 8px 16px; }
   .core-definition { padding: 40px 20px; }
   .concept-pair { grid-template-columns: 1fr; }
   .concept-pair figure + figure { border-left: 0; border-top: 1px solid var(--sand-6); }
   .concept-pair svg { max-width: 320px; margin: auto; }
   .workflow-node { padding: 16px 12px; }
-  .workflow-node .eyebrow { font-size: var(--text-xs); }
-  .workflow-node strong { font-size: var(--text-sm); }
-  .notes .note-diagram { padding: 0; }
-  .note-reviewers { gap: 8px; }
-  .note-reviewers .note-node { padding: 12px; }
-  .note-meta span { display: block; margin: 8px 0 0; }
+  .workflow-node .eyebrow, .workflow-node strong { font-size: var(--text-sm); }
+  .lessons .lesson-diagram { padding: 0; }
+  .lesson-reviewers { gap: 8px; }
+  .lesson-reviewers .lesson-node { padding: 12px; }
+  .lesson-meta span { display: block; margin: 8px 0 0; }
 }
 </style>

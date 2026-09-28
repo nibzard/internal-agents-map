@@ -3,6 +3,7 @@
 
 import type { DirectoryCard } from './entry-view';
 import { BOUNDARY_LEVELS, termLabel } from './labels';
+import { homePath } from './routes';
 
 /** The facets the directory filters by. They are also the URL query parameters. */
 export const FACET_KEYS = ['work', 'type', 'invocation', 'supervision'] as const;
@@ -29,6 +30,9 @@ export type Selection = Readonly<Record<FacetKey, readonly string[]>>;
 
 /** The facet values a card carries, read from its data attributes or its view. */
 export type CardFacets = Readonly<Record<FacetKey, readonly string[]>>;
+
+/** The form of every facet value, so a query parameter cannot carry anything else. */
+const FACET_VALUE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 /** The most suggestions the search box lists at once. */
 export const SUGGESTION_LIMIT = 8;
@@ -146,4 +150,29 @@ export function toSelection(selected: readonly FacetTerm[]): Selection {
     invocation: selected.filter((term) => term.key === 'invocation').map((term) => term.id),
     supervision: selected.filter((term) => term.key === 'supervision').map((term) => term.id),
   };
+}
+
+/** The homepage with one facet value chosen. The palette opens on it with that value selected. */
+export function facetPath(key: FacetKey, id: string): string {
+  return `${homePath()}?${new URLSearchParams({ [key]: id })}`;
+}
+
+/** The facet values that a query string chooses. A parameter can repeat to choose more than one value. */
+export function selectionFromSearch(search: string): Selection {
+  const params = new URLSearchParams(search);
+  const values = (key: FacetKey): string[] => params.getAll(key).filter((value) => FACET_VALUE.test(value));
+  return {
+    work: values('work'),
+    type: values('type'),
+    invocation: values('invocation'),
+    supervision: values('supervision'),
+  };
+}
+
+/** The query string without its facet values, so a closed palette leaves no filter in the URL. */
+export function searchWithoutFacets(search: string): string {
+  const params = new URLSearchParams(search);
+  for (const key of FACET_KEYS) params.delete(key);
+  const rest = params.toString();
+  return rest ? `?${rest}` : '';
 }

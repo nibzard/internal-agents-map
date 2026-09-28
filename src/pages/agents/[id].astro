@@ -6,12 +6,14 @@ import EntrySection from '../../components/EntrySection.astro';
 import Claim from '../../components/Claim.astro';
 import Icon from '../../components/Icon.astro';
 import CompanyLogo from '../../components/CompanyLogo.astro';
+import EntryActions from '../../components/EntryActions.astro';
 import ResearchDetails from '../../components/ResearchDetails.astro';
 import SourceList from '../../components/SourceList.astro';
 import { loadCatalog } from '../../lib/catalog';
-import { directoryCards, entryView, showQuestion } from '../../lib/entry-view';
+import { coverageNote, directoryCards, entryView, showQuestion } from '../../lib/entry-view';
 import { entryCard, ogImage } from '../../lib/og';
 import { assertPublishableId, canonicalUrl, organizationPath } from '../../lib/routes';
+import { facetPath } from '../../lib/search';
 import {
   SITE_NAME,
   breadcrumbNode,
@@ -46,6 +48,9 @@ const graph = structuredData([
 // Invocation and interfaces are classifications, so they sit with the other facts.
 // Reviewed entries explain a missing workflow even when there are no claims.
 const invocation = entry.invocation.filter((item) => item.id !== 'unknown');
+// A classification links to the palette, opened on the entries that share it.
+const workLinks = entry.domains.map((domain) => ({ ...domain, href: facetPath('work', domain.id) }));
+const invocationLinks = invocation.map((mode) => ({ ...mode, href: facetPath('invocation', mode.id) }));
 const hasResults =
   entry.metricClaims.length > 0 ||
   entry.resultStatementClaims.length > 0 ||
@@ -56,20 +61,25 @@ const hasResults =
 const hasFigures = entry.isPilot
   ? entry.observationItems.length > 0
   : entry.metricClaims.length > 0 || entry.resultStatementClaims.length > 0;
-const hasRelated = entry.relatedEntries.length > 0 || entry.relatedNotes.length > 0;
+const hasRelated = entry.relatedEntries.length > 0 || entry.relatedLessons.length > 0;
+// A question that the sources leave unanswered keeps its section with the absence statement.
+const coverageNoteOf = (key: string) => {
+  const answer = entry.coverageQuestions[key];
+  return answer ? coverageNote(answer, key) : null;
+};
+const validationNote = coverageNoteOf('validation');
+const lessonsNote = coverageNoteOf('lessons');
 ---
 <SiteLayout title={title} description={description} path={entry.path} structuredData={graph} ogImage={preview}>
   <article class="entry-page" data-approach-id={entry.id}>
     <header class="entry-header">
       <CompanyLogo company={entry.companyView} size={40} eager />
       <h1>{entry.agentName}</h1>
-      {entry.summary && !entry.isPilot ? (
-        <>
-          <p class="lede" id={entry.summary.anchor} data-claim-id={entry.summary.id}>{entry.summary.text}</p>
-        </>
-      ) : !entry.summary ? (
+      {entry.summary ? (
+        <p class="lede" id={entry.summary.anchor} data-claim-id={entry.summary.id}>{entry.summary.text}</p>
+      ) : (
         <p class="lede">This entry has no summary claim yet.</p>
-      ) : null}
+      )}
       <dl class="entry-facts">
         <div>
           <dt>Company</dt>
@@ -77,20 +87,27 @@ const hasRelated = entry.relatedEntries.length > 0 || entry.relatedNotes.length 
         </div>
         <div>
           <dt>Approach type</dt>
-          <dd>{entry.approachTypeLabel}</dd>
+          <dd><a href={facetPath('type', entry.approachType)} data-palette-filter>{entry.approachTypeLabel}</a></dd>
         </div>
         <div>
           <dt>{entry.isSupportingSystem ? 'Work supported' : 'Work'}</dt>
-          <dd>{entry.domains.map((domain) => domain.label).join(', ')}</dd>
+          <dd>{workLinks.map((domain, index) => <>{index > 0 && ', '}<a href={domain.href} data-palette-filter>{domain.label}</a></>)}</dd>
         </div>
         {!entry.isSupportingSystem && <div>
           <dt>Human involvement</dt>
-          <dd>{entry.autonomyLabel}</dd>
+          {entry.boundaryLabels.length > 1 ? (
+            <dd>
+              Varies by scope: {entry.boundaryLabels.join(', ')}.
+              {showQuestion(entry, 'human_involvement') && <> <a href="#human-involvement">See each scope</a>.</>}
+            </dd>
+          ) : (
+            <dd>{entry.autonomyLabel}</dd>
+          )}
         </div>}
         {!entry.isSupportingSystem && invocation.length > 0 && (
           <div>
             <dt>Invocation</dt>
-            <dd>{invocation.map((item) => item.label).join(', ')}</dd>
+            <dd>{invocationLinks.map((mode, index) => <>{index > 0 && ', '}<a href={mode.href} data-palette-filter>{mode.label}</a></>)}</dd>
           </div>
         )}
         {entry.interfaces.length > 0 && (
@@ -112,20 +129,13 @@ const hasRelated = entry.relatedEntries.length > 0 || entry.relatedNotes.length 
           <dd><time datetime={entry.reviewedAt}>{entry.reviewedAt}</time></dd>
         </div>
       </dl>
+      <EntryActions path={entry.path} title={`${entry.agentName} at ${entry.company}`} />
     </header>
-
-    {entry.isPilot && (
-      <section class="entry-section" id="purpose" aria-labelledby="purpose-title">
-        <h2 id="purpose-title">Purpose</h2>
-        {entry.summary && <Claim claim={entry.summary} showLabel={false} />}
-        <p class="section-note"><a href="#sources">Check the reviewed sources and claim details</a>.</p>
-      </section>
-    )}
 
     {entry.profile.sectionOrder.map((section) => <EntrySection entry={entry} section={section} />)}
 
-    {entry.isPilot && showQuestion(entry, 'validation') &&
-      (entry.validationClaims.length > 0 || (entry.coverageQuestions.validation?.claimAnchors.length ?? 0) > 0) && (
+    {entry.isPilot && showQuestion(entry, 'validation') && (entry.validationClaims.length > 0 || validationNote !== null ||
+      (entry.coverageQuestions.validation?.claimAnchors.length ?? 0) > 0) && (
       <section class="entry-section" id="validation" aria-labelledby="validation-title">
         <h2 id="validation-title">{entry.profile.validation}</h2>
         {entry.validationClaims.length > 0 ? (
@@ -137,7 +147,9 @@ const hasRelated = entry.relatedEntries.length > 0 || entry.relatedNotes.length 
               <>{index > 0 && ', '}<a href={`#${claim.anchor}`}>{claim.label}</a></>
             ))}
           </p>
-        ) : null}
+        ) : entry.coverageQuestions.validation && (
+          <p class="review-state" data-state={entry.coverageQuestions.validation.state}><strong>{entry.coverageQuestions.validation.stateLabel}:</strong> {validationNote}</p>
+        )}
       </section>
     )}
 
@@ -176,10 +188,14 @@ const hasRelated = entry.relatedEntries.length > 0 || entry.relatedNotes.length 
       </section>
     )}
 
-    {entry.isPilot && showQuestion(entry, 'lessons') && entry.lessonClaims.length > 0 && (
+    {entry.isPilot && showQuestion(entry, 'lessons') && (entry.lessonClaims.length > 0 || lessonsNote !== null) && (
       <section class="entry-section" id="lessons" aria-labelledby="lessons-title">
         <h2 id="lessons-title">Lessons</h2>
-        <div class="step-panel">{entry.lessonClaims.map((claim) => <Claim claim={claim} showLabel={false} mark="circle-check" />)}</div>
+        {entry.lessonClaims.length > 0 ? (
+          <div class="step-panel">{entry.lessonClaims.map((claim) => <Claim claim={claim} showLabel={false} mark="circle-check" />)}</div>
+        ) : entry.coverageQuestions.lessons && (
+          <p class="review-state" data-state={entry.coverageQuestions.lessons.state}><strong>{entry.coverageQuestions.lessons.stateLabel}:</strong> {lessonsNote}</p>
+        )}
       </section>
     )}
 
@@ -209,10 +225,10 @@ const hasRelated = entry.relatedEntries.length > 0 || entry.relatedNotes.length 
             </li>
           ))}
           </>)}
-          {entry.relatedNotes.map((note) => (
+          {entry.relatedLessons.map((lesson) => (
             <li class="related-card">
-              <span class="related-kind"><Icon name="note-text" />Note</span>
-              <a href={note.path}>{note.title}</a>
+              <span class="related-kind"><Icon name="note-text" />Lesson</span>
+              <a href={lesson.path}>{lesson.title}</a>
             </li>
           ))}
         </ul>

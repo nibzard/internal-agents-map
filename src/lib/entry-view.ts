@@ -11,11 +11,14 @@ import {
   type Claim,
   type ClaimKind,
   type EvidenceRelation,
+  type PageContent,
   type Source,
 } from './catalog';
+import type { ObservationBasis } from './schema-values';
 import { fieldLabel, levelLabel, termLabel } from './labels';
 import { companyView, type CompanyView } from './companies';
-import { notesForApproach } from './notes';
+import { isWellDocumented } from './documentation';
+import { lessonsForApproach } from './lessons';
 import { entryPath } from './routes';
 import { shorten } from './text';
 
@@ -54,6 +57,20 @@ export function pageProfile(section: CatalogSection): PageProfile {
 
 export function showQuestion(entry: EntryView, key: string): boolean {
   return !entry.isSupportingSystem || entry.coverageQuestions[key]?.state !== 'not-applicable';
+}
+
+/** The absence statement of a question that the sources leave unanswered. */
+const UNREPORTED_STATEMENTS: Readonly<Record<string, string>> = {
+  validation: 'The available sources do not describe how the team checks the output.',
+  lessons: 'The available sources do not report lessons from this work.',
+};
+
+/**
+ * Give the note of a coverage answer. An unreported answer without a note gets the
+ * absence statement of its question, so the section says what the sources omit.
+ */
+export function coverageNote(answer: CoverageAnswerView, key: string): string | null {
+  return answer.note ?? (answer.state === 'unreported' ? (UNREPORTED_STATEMENTS[key] ?? null) : null);
 }
 
 export interface CaveatView {
@@ -171,7 +188,7 @@ export interface RelatedEntryView {
   readonly group: 'uses' | 'used-by' | 'related';
 }
 
-export interface RelatedNoteView {
+export interface RelatedLessonView {
   readonly slug: string;
   readonly path: string;
   readonly title: string;
@@ -209,6 +226,8 @@ export interface EntryView {
   readonly interfaces: readonly TermView[];
   readonly invocation: readonly TermView[];
   readonly operatingModels: readonly OperatingModelView[];
+  /** The distinct boundary labels of the scoped assessments, in record order. */
+  readonly boundaryLabels: readonly string[];
   readonly isPilot: boolean;
   readonly workflowScope: string | null;
   readonly coverageQuestions: Readonly<Record<string, CoverageAnswerView>>;
@@ -234,8 +253,8 @@ export interface EntryView {
   readonly claims: readonly ClaimView[];
   readonly sources: readonly SourceView[];
   readonly relatedEntries: readonly RelatedEntryView[];
-  /** Notes about this entry. Later steps fill this from note metadata. */
-  readonly relatedNotes: readonly RelatedNoteView[];
+  /** Lessons about this entry. Later steps fill this from lesson metadata. */
+  readonly relatedLessons: readonly RelatedLessonView[];
 }
 
 function termView(id: string): TermView {
@@ -300,11 +319,19 @@ function caveats(claim: Claim): CaveatView[] {
 }
 
 /**
+ * Tell if a claim is a figure that needs a scope and a denominator.
+ * A qualitative observation measures nothing, so it has no denominator to report.
+ */
+function needsFigureFields(claim: Claim, basis: ObservationBasis | undefined): boolean {
+  return claim.kind === 'metric' && basis !== 'qualitative';
+}
+
+/**
  * Say which qualification of a figure the sources do not report.
  * Without this line a number with no denominator reads as a plain outcome.
  */
-function qualification(claim: Claim): string | null {
-  if (claim.kind !== 'metric') return null;
+function qualification(claim: Claim, basis: ObservationBasis | undefined): string | null {
+  if (!needsFigureFields(claim, basis)) return null;
   const missing = REQUIRED_METRIC_FIELDS.filter(([key]) => fieldValue(claim, key) === null).map(
     ([, label]) => label.toLowerCase(),
   );
@@ -313,18 +340,36 @@ function qualification(claim: Claim): string | null {
   return `The source does not report the ${names} of this figure.`;
 }
 
-/** List every research field of a claim. A metric names the fields it lacks. */
-function metadata(claim: Claim): CaveatView[] {
+/**
+ * List every research field of a claim. A metric names the fields it lacks.
+ * A qualitative observation does not name a missing scope or denominator.
+ */
+function metadata(claim: Claim, basis: ObservationBasis | undefined): CaveatView[] {
+  const figureFields = new Set(REQUIRED_METRIC_FIELDS.map(([key]) => key));
   const result: CaveatView[] = [];
   for (const [key, label] of QUALIFIER_FIELDS) {
     const value = fieldValue(claim, key);
     if (value !== null) result.push({ label, value });
-    else if (claim.kind === 'metric') result.push({ label, value: 'Not reported' });
+    else if (claim.kind === 'metric' && (needsFigureFields(claim, basis) || !figureFields.has(key))) {
+      result.push({ label, value: 'Not reported' });
+    }
   }
   return result;
 }
 
-function claimView(claim: Claim, numbers: ReadonlyMap<string, number>, sources: ReadonlyMap<string, Source>): ClaimView {
+/** Find the observation basis of a claim. An alias observation uses the basis of its target. */
+function observationBasis(page: PageContent | undefined, claim: Claim): ObservationBasis | undefined {
+  const observation = page?.observations[claim.field];
+  if (observation?.duplicate_of) return page?.observations[observation.duplicate_of]?.basis;
+  return observation?.basis;
+}
+
+function claimView(
+  claim: Claim,
+  basis: ObservationBasis | undefined,
+  numbers: ReadonlyMap<string, number>,
+  sources: ReadonlyMap<string, Source>,
+): ClaimView {
   const citations: CitationView[] = claim.evidence.map((evidence) => {
     const source = sources.get(evidence.source_id);
     const number = numbers.get(evidence.source_id);
@@ -360,8 +405,8 @@ function claimView(claim: Claim, numbers: ReadonlyMap<string, number>, sources: 
     validAt: claim.valid_at,
     isMetric: claim.kind === 'metric',
     caveats: caveats(claim),
-    qualification: qualification(claim),
-    metadata: metadata(claim),
+    qualification: qualification(claim, basis),
+    metadata: metadata(claim, basis),
     showCitationRoles:
       citations.length > 1 || citations.some((item) => item.relation !== 'supports'),
     supporting: citations.filter((item) => item.relation === 'supports'),
@@ -424,7 +469,7 @@ export function entryView(catalog: Catalog, id: string): EntryView {
   const claims = approach.claim_ids.map((claimId) => {
     const claim = allClaims.get(claimId);
     if (!claim) throw new Error(`approach "${approach.id}" lists unknown claim "${claimId}".`);
-    return claimView(claim, numbers, allSources);
+    return claimView(claim, observationBasis(approach.page_content, claim), numbers, allSources);
   });
 
   const of = (test: (claim: ClaimView) => boolean) => claims.filter(test);
@@ -533,6 +578,7 @@ export function entryView(catalog: Catalog, id: string): EntryView {
       level: model.level,
       levelLabel: levelLabel(model.level),
     })),
+    boundaryLabels: [...new Set(approach.operating_models.map((model) => termLabel(model.attention_boundary)))],
     isPilot: Boolean(page),
     workflowScope: page?.workflow_scope ?? null,
     coverageQuestions,
@@ -563,9 +609,12 @@ export function entryView(catalog: Catalog, id: string): EntryView {
     claims,
     sources,
     relatedEntries: relatedEntries(catalog, approach),
-    relatedNotes: notesForApproach(approach.id),
+    relatedLessons: lessonsForApproach(approach.id),
   };
 }
+
+/** The usual type of each view. A card of that type names no type. */
+const UNTAGGED_TYPES: ReadonlySet<string> = new Set(['agent', 'platform']);
 
 export interface DirectoryCard {
   readonly id: string;
@@ -574,6 +623,8 @@ export interface DirectoryCard {
   /** The logo or monogram mark the card shows beside the company name. */
   readonly companyView: CompanyView;
   readonly agentName: string;
+  /** The company and the name, such as `Stripe · Minions`, as the card and the palette show them. */
+  readonly title: string;
   readonly summary: string;
   /** The first sentences of the summary, for the directory card. */
   readonly excerpt: string;
@@ -582,6 +633,11 @@ export interface DirectoryCard {
   readonly catalogSection: CatalogSection;
   readonly approachType: string;
   readonly approachTypeLabel: string;
+  /**
+   * The type the card names, or null for the usual type of its view: a plain agent in Agents,
+   * or a platform in Infrastructure. There the tag would be on almost every card and say nothing.
+   */
+  readonly typeTag: string | null;
   readonly domains: readonly TermView[];
   readonly invocation: readonly TermView[];
   /** The attention boundaries of the scoped operating models, with their derived levels. */
@@ -589,6 +645,12 @@ export interface DirectoryCard {
   readonly reviewedAt: string;
   /** The source identifiers of the entry, so an old source fragment can find its page. */
   readonly sourceIds: readonly string[];
+  /** True when the editors show the entry before all others in the default order. */
+  readonly featured: boolean;
+  /** True when the evidence of the entry meets the well-documented rule. */
+  readonly wellDocumented: boolean;
+  /** The position of the entry in the alphabetical order, so the browser can sort it again. */
+  readonly alphabeticalRank: number;
 }
 
 /** An attention boundary as a filter term. The level is null when the boundary is unknown. */
@@ -607,7 +669,7 @@ function searchText(parts: readonly string[]): string {
 /** Build the compact card of every implementation, ordered the way the directory reads. */
 export function directoryCards(catalog: Catalog): DirectoryCard[] {
   const claims = new Map(catalog.claims.map((claim) => [claim.id, claim]));
-  return sortedApproaches(catalog).map((approach) => {
+  return sortedApproaches(catalog).map((approach, alphabeticalRank) => {
     const summary = approach.claim_ids
       .map((claimId) => claims.get(claimId))
       .find((claim) => claim?.field === 'summary');
@@ -626,6 +688,7 @@ export function directoryCards(catalog: Catalog): DirectoryCard[] {
       company: approach.company,
       companyView: companyView(catalog, approach.company_id),
       agentName: approach.agent_name,
+      title: `${approach.company} · ${approach.agent_name}`,
       summary: summary?.text ?? 'Unknown',
       excerpt: shorten(summary?.text ?? 'Unknown', CARD_SUMMARY_LIMIT),
       search: searchText([
@@ -645,11 +708,15 @@ export function directoryCards(catalog: Catalog): DirectoryCard[] {
       catalogSection: approach.catalog_section,
       approachType: approach.approach_type,
       approachTypeLabel: termLabel(approach.approach_type),
+      typeTag: UNTAGGED_TYPES.has(approach.approach_type) ? null : termLabel(approach.approach_type),
       sourceIds: approach.source_ids,
       domains,
       invocation: approach.catalog_section === 'agents' ? invocation : [],
       boundaries: approach.catalog_section === 'agents' ? boundaries : [],
       reviewedAt: approach.last_reviewed_at,
+      featured: approach.featured === true,
+      wellDocumented: isWellDocumented(catalog, approach),
+      alphabeticalRank,
     };
   });
 }

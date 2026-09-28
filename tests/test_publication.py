@@ -251,3 +251,27 @@ class WorkflowTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ContributionTests(unittest.TestCase):
+    TEMPLATE = ROOT / ".github" / "ISSUE_TEMPLATE" / "catalog-suggestion.yml"
+
+    def test_the_contribution_link_opens_the_catalog_issue_form(self):
+        metadata = (ROOT / "src" / "lib" / "metadata.ts").read_text(encoding="utf-8")
+        self.assertIn(f"issues/new?template={self.TEMPLATE.name}", metadata)
+        self.assertTrue(self.TEMPLATE.is_file())
+
+    def test_the_issue_form_asks_for_what_a_catalog_entry_needs(self):
+        form = yaml.safe_load(self.TEMPLATE.read_text(encoding="utf-8"))
+        fields = {item["id"]: item for item in form["body"] if "id" in item}
+        # A short form: the request, the company and agent, and one public link.
+        self.assertEqual(list(fields), ["request", "agent", "source", "details"])
+        for field in ("request", "agent", "source"):
+            with self.subTest(field=field):
+                self.assertTrue(fields[field]["validations"]["required"])
+        self.assertEqual(
+            fields["request"]["attributes"]["options"],
+            ["Add a new agent", "Fix an existing entry"],
+        )
+        self.assertIn("public", fields["source"]["attributes"]["description"])
+        self.assertFalse(fields["details"].get("validations", {}).get("required", False))

@@ -4,6 +4,7 @@ import { type Catalog } from './catalog';
 import { companyView, requireCompany } from './companies';
 import { directoryCards, type DirectoryCard } from './entry-view';
 import { organizationPath, canonicalUrl } from './routes';
+import { outboundUrl } from './outbound';
 
 interface Connection {
   readonly from: DirectoryCard;
@@ -50,6 +51,7 @@ export function organizationView(catalog: Catalog, id: string) {
   return {
     company: companyView(catalog, id),
     homepage: company.homepage,
+    websiteUrl: outboundUrl(company.homepage, 'organization-profile'),
     websiteLabel: new URL(company.homepage).hostname.replace(/^www\./, ''),
     path: organizationPath(id),
     groups,
@@ -71,9 +73,9 @@ export function organizationMarkdown(catalog: Catalog, id: string): string {
   for (const group of view.groups) {
     lines.push(`## ${group.label}`, '');
     for (const card of group.cards) {
-      const tags = [card.approachTypeLabel, ...card.domains.map((domain) => domain.label)];
+      const tags = [...(card.typeTag ? [card.typeTag] : []), ...card.domains.map((domain) => domain.label)];
       lines.push(
-        `### ${link(`${card.company}'s ${card.agentName}`, card.path)}`, '',
+        `### ${link(card.title, card.path)}`, '',
         card.excerpt, '', tags.join(' · '), '',
       );
     }

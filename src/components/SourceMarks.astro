@@ -1,0 +1,16 @@
+---
+// ABOUTME: Renders the supporting source numbers of one claim as small bracketed links.
+// ABOUTME: Each number links to its entry in the source list, so it works without JavaScript.
+import type { CitationView } from '../lib/entry-view';
+
+interface Props { citations: readonly CitationView[] }
+
+const { citations } = Astro.props;
+---
+{citations.length > 0 && (
+  <sup class="source-marks">
+    [{citations.map((citation, index) => (
+      <>{index > 0 && ', '}<a class="citation" href={`#${citation.anchor}`}><span class="visually-hidden">Source </span>{citation.number}</a></>
+    ))}]
+  </sup>
+)}

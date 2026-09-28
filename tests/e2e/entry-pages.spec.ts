@@ -75,9 +75,12 @@ async function structuredData(page: Page): Promise<Record<string, unknown>> {
 test.describe('the directory', () => {
   test('links to every entry page in the initial HTML', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('h1')).toHaveText(
-      'AI agents organizations build or adapt to do work for their own teams.',
-    );
+    await expect(page.locator('h1')).toHaveText('How companies build internal AI agents');
+    await expect(page.locator('#decisions a')).toHaveText([
+      'When should an agent stop?',
+      'Which steps do not need a model?',
+      'When do more review comments mean more work?',
+    ]);
     const cards = page.locator('article.entry[data-approach-id]');
     await expect(cards).toHaveCount(TOTAL);
     for (const entry of ENTRIES) {
@@ -221,6 +224,28 @@ test.describe('page-content pilot', () => {
     });
   }
 
+  test('links each claim to its supporting sources beside the statement', async ({ page }) => {
+    const claims = CATALOG.claims as ReadonlyArray<{
+      id: string;
+      evidence?: ReadonlyArray<{ source_id: string; relation: string }>;
+    }>;
+    await page.goto('/agents/block-builderbot');
+    const rendered = page.locator('#how-it-works [data-claim-id], #implementation dd[data-claim-id]');
+    const ids = await rendered.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-claim-id')));
+    expect(ids.some((id) => id?.includes('--architecture-'))).toBe(true);
+    expect(ids.some((id) => !id?.includes('--architecture-'))).toBe(true);
+    for (const id of ids) {
+      const claim = claims.find((candidate) => candidate.id === id);
+      const supporting = (claim?.evidence ?? []).filter((item) => item.relation === 'supports');
+      expect(supporting.length, id!).toBeGreaterThan(0);
+      for (const item of supporting) {
+        const href = `#source-${item.source_id}`;
+        await expect(page.locator(`[data-claim-id="${id}"] a[href="${href}"]`), id!).toHaveCount(1);
+        await expect(page.locator(href)).toHaveCount(1);
+      }
+    }
+  });
+
   test('keeps reported implementation notes beside their claims', async ({ page, request }) => {
     await page.goto('/agents/linear-agent');
     const note = 'Codex is named for internal pull-request review; the captures say only frontier language models elsewhere.';
@@ -243,21 +268,28 @@ test.describe('page-content pilot', () => {
       .toContain('excluding tests, evals, docs, and lockfiles');
   });
 
+  test('shows a paraphrased headline without quotation marks', async ({ page }) => {
+    await page.goto('/agents/stripe-minions');
+    const headline = page.locator('#claim-stripe-minions--headline-metric .claim-text');
+    await expect(headline).toContainText('Over 1,300 completely minion-produced PRs merged per week');
+    await expect(headline).not.toContainText('“');
+    await expect(headline).not.toContainText('”');
+  });
+
   for (const id of PILOT_IDS) {
     test(`${id} exposes the reviewed reading order and exports`, async ({ page, request }) => {
       await page.goto(`/agents/${id}`);
       const record = CATALOG.approaches.find((item) => item.id === id)!;
       const questionBySection: Record<string, string> = { '#how-it-works': 'workflow', '#validation': 'validation', '#results': 'observations', '#lessons': 'lessons' };
-      // A section that would only say nothing was reported is not rendered at all,
-      // so validation and lessons appear where the evidence gives them something.
+      // Every section of the reading order is on the page. A question that the sources
+      // leave unanswered keeps its section with a statement of what the sources omit.
       const stateOf = (selector: string): string | undefined =>
         questionBySection[selector]
           ? record.page_content.questions[questionBySection[selector]!]?.state
           : undefined;
-      const selectors = ['#purpose', '#how-it-works', '#human-involvement', '#implementation', '#validation', '#results', '#lessons', '#sources'].filter(
+      const selectors = ['#how-it-works', '#human-involvement', '#implementation', '#validation', '#results', '#lessons', '#sources'].filter(
         (selector) =>
-          !(record.catalog_section === 'infrastructure' && stateOf(selector) === 'not-applicable') &&
-          !(['#validation', '#lessons'].includes(selector) && stateOf(selector) !== 'reported' && stateOf(selector) !== 'mixed'),
+          !(record.catalog_section === 'infrastructure' && stateOf(selector) === 'not-applicable'),
       );
       for (const selector of selectors) {
         await expect(page.locator(selector), selector).toBeVisible();
@@ -265,13 +297,28 @@ test.describe('page-content pilot', () => {
       if (WORKFLOW_REPORTED.has(id)) {
         await expect(page.locator('#how-it-works .claim-label').first()).not.toBeEmpty();
       }
-      await expect(page.locator('#purpose a[href="#sources"]')).toBeVisible();
+      // The sources close the page, so neither the header nor a section sends a reader there ahead of the rest.
+      await expect(page.locator('.entry-header a[href="#sources"], .entry-section > .section-note a[href="#sources"]')).toHaveCount(0);
       const ids = await page.locator('[data-claim-id]').evaluateAll((nodes) => nodes.map((node) => node.id));
       expect(new Set(ids).size).toBe(ids.length);
       expect([...ids].sort()).toEqual(CATALOG.claims.filter((claim) => claim.approach_id === id).map((claim) => `claim-${claim.id}`).sort());
       expect((await request.get(`/agents/${id}.md`)).status()).toBe(200);
     });
   }
+
+  test('says when the sources do not describe validation or lessons', async ({ page }) => {
+    await page.goto('/agents/airbnb-datako');
+    await expect(page.locator('#validation .review-state')).toHaveText(
+      'Not reported: The available sources do not describe how the team checks the output.',
+    );
+    await expect(page.locator('#lessons .review-state')).toHaveText(
+      'Not reported: The available sources do not report lessons from this work.',
+    );
+    await page.goto('/agents/deel-payroll-incident-agents');
+    await expect(page.locator('#validation .review-state')).toContainText(
+      'Not reported: The post reports no test, evaluation, or accuracy check',
+    );
+  });
 
   test('keeps lessons separate from YC’s reviewed empty observations state', async ({ page }) => {
     await page.goto('/agents/ycombinator-agent-infra');
@@ -299,12 +346,70 @@ test.describe('page-content pilot', () => {
       await page.goto(`/agents/${id}`);
       await page.evaluate(async () => document.fonts.ready);
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
+      // The capture is for a person to review, and CI does not keep it. On CI runners,
+      // Chromium sometimes cannot capture a full page, for a record of any height.
+      if (process.env.CI) return;
+      // At the phone's device scale the long records exceed the height that Chromium can capture, so the capture uses CSS pixels.
       await page.screenshot({
         path: testInfo.outputPath(`pilot-${testInfo.project.name}-${id}.png`),
         fullPage: true,
+        scale: 'css',
       });
     });
   }
+});
+
+test.describe('entry header', () => {
+  test('shows the summary directly under the title of a reviewed entry', async ({ page }) => {
+    await page.goto('/agents/figma-security-agent');
+    const lede = page.locator('.entry-header h1 + .lede');
+    await expect(lede).toHaveAttribute('data-claim-id', 'figma-security-agent--summary');
+    await expect(lede).toContainText('alert-response system from commercial parts');
+    await expect(page.getByText('alert-response system from commercial parts')).toHaveCount(1);
+  });
+
+  test('lists each boundary of an entry whose scopes differ', async ({ page }) => {
+    await page.goto('/agents/figma-security-agent');
+    const involvement = page
+      .locator('.entry-facts div')
+      .filter({ has: page.locator('dt', { hasText: 'Human involvement' }) })
+      .locator('dd');
+    await expect(involvement).toContainText('Varies by scope');
+    await expect(involvement).toContainText('Work-product review');
+    await expect(involvement).toContainText('Exception-only');
+    await expect(involvement.locator('a[href="#human-involvement"]')).toBeVisible();
+  });
+
+  test('keeps the single label of an entry with one boundary', async ({ page }) => {
+    await page.goto('/agents/hubspot-sidekick');
+    const involvement = page
+      .locator('.entry-facts div')
+      .filter({ has: page.locator('dt', { hasText: 'Human involvement' }) })
+      .locator('dd');
+    await expect(involvement).toHaveText('Drafts reviewed');
+  });
+
+  test('links the Markdown record and a ChatGPT prompt', async ({ page }) => {
+    await page.goto('/agents/stripe-minions');
+    const actions = page.locator('.entry-header .entry-actions');
+    await expect(actions.getByRole('link', { name: 'Copy as MD' })).toHaveAttribute('href', '/agents/stripe-minions.md');
+    await expect(actions.getByRole('link')).toHaveCount(2);
+    const ask = new URL((await actions.getByRole('link', { name: 'Ask ChatGPT' }).getAttribute('href'))!);
+    expect(ask.origin).toBe('https://chatgpt.com');
+    expect(ask.searchParams.get('q')).toContain('https://internal-agents.com/agents/stripe-minions.md');
+  });
+
+  test('copies the Markdown record instead of opening it', async ({ page, context }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop', 'The clipboard needs JavaScript and one browser grant.');
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    await page.goto('/agents/stripe-minions');
+    const copy = page.locator('.entry-actions a[data-copy-markdown]');
+    await copy.click();
+    await expect(copy).toHaveText('Copied');
+    await expect(page).toHaveURL(/\/agents\/stripe-minions$/);
+    const text = await page.evaluate(() => navigator.clipboard.readText());
+    expect(text.startsWith('Source: https://internal-agents.com/agents/stripe-minions')).toBe(true);
+  });
 });
 
 test.describe('lesson attribution', () => {
@@ -355,6 +460,7 @@ test.describe('page previews', () => {
       await page.screenshot({
         path: testInfo.outputPath(`${name}.png`),
         fullPage: true,
+        scale: 'css',
       });
     }
   });

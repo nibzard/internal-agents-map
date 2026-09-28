@@ -2,13 +2,17 @@
 // ABOUTME: One compact directory card that links to the page of an implementation.
 // ABOUTME: It keeps the approach id, so older fragment links still find the card.
 import CompanyLogo from './CompanyLogo.astro';
+import Icon from './Icon.astro';
+import { WELL_DOCUMENTED_LABEL } from '../lib/documentation';
 import type { DirectoryCard } from '../lib/entry-view';
 
 interface Props {
   card: DirectoryCard;
+  /** The work domains the page is about. Their tags are marked, so a reader sees why the card is listed. */
+  highlight?: readonly string[];
 }
 
-const { card } = Astro.props;
+const { card, highlight = [] } = Astro.props;
 ---
 <article
   class="entry"
@@ -21,20 +25,38 @@ const { card } = Astro.props;
   data-type={card.approachType}
   data-invocation={card.invocation.map((mode) => mode.id).join(' ')}
   data-supervision={card.boundaries.map((boundary) => boundary.id).join(' ')}
+  data-featured={String(card.featured)}
+  data-well-documented={String(card.wellDocumented)}
+  data-alphabetical-rank={card.alphabeticalRank}
 >
   <div class="entry-box">
     <div class="entry-top">
       <div class="entry-heading">
         <CompanyLogo company={card.companyView} size={20} />
-        <h3><a href={card.path}>{card.company}'s {card.agentName}</a></h3>
+        <h3><a href={card.path}>{card.title}</a></h3>
       </div>
     </div>
     <p class="entry-summary">{card.excerpt}</p>
     <div class="tags">
-      <span class="tag">{card.approachTypeLabel}</span>
+      {card.typeTag && <span class="tag tag-type">{card.typeTag}</span>}
       {card.domains.map((domain) => (
-        <span class="tag">{domain.label}</span>
+        <span class:list={['tag', { 'tag-match': highlight.includes(domain.id) }]}>{domain.label}</span>
       ))}
+      {card.wellDocumented && (
+        <span class="tag tag-documented"><Icon name="check" size={12} />{WELL_DOCUMENTED_LABEL}</span>
+      )}
     </div>
   </div>
+  <!-- The button stands outside the box: the box clips what it holds to its
+       rounded border, and the fold has to cover that border at the corner. -->
+  <button
+    type="button"
+    class="entry-bookmark"
+    data-bookmark={card.id}
+    aria-pressed="false"
+    aria-label={`Bookmark ${card.title}`}
+    hidden
+  >
+    <span class="entry-fold" aria-hidden="true"></span>
+  </button>
 </article>

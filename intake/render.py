@@ -89,7 +89,7 @@ def _locator(start: int, end: int) -> str:
     return f"Preserved content.md, lines {start}–{end}"
 
 
-def _enum(build: Any, value: str, allowed: set[str], label: str) -> str:
+def _enum(value: str, allowed: set[str] | frozenset[str], label: str) -> str:
     if value not in allowed:
         raise RenderError(f"{label} is {value!r}; expected one of: {', '.join(sorted(allowed))}")
     return value
@@ -225,9 +225,8 @@ class _Renderer:
                 if key == "interfaces":
                     value = claim.text.strip()
                     _enum(
-                        self.build,
                         value,
-                        self.build.INTERFACE_VALUES,
+                        self.build.schema_values("interface"),
                         "architecture.interfaces claim",
                     )
                     interfaces.append(value)
@@ -286,9 +285,8 @@ class _Renderer:
                 continue
             boundary = proposal.attention_boundary
             _enum(
-                self.build,
                 boundary,
-                self.build.ATTENTION_BOUNDARIES,
+                self.build.schema_values("attentionBoundary"),
                 "operating_models.attention_boundary",
             )
             index = self.list_offsets.get("operating_models", 0) + len(operating_models)
@@ -411,55 +409,49 @@ class _Renderer:
     def _validate_classification(self) -> None:
         build = self.build
         classification = self.extraction.classification
-        _enum(build, classification.approach_type, build.APPROACH_TYPES, "approach_type")
+        _enum(classification.approach_type, build.schema_values("approachType"), "approach_type")
         _enum(
-            build,
             classification.deployment_stage,
-            build.DEPLOYMENT_STAGES,
+            build.schema_values("deploymentStage"),
             "deployment_stage",
         )
-        _enum(build, classification.status, build.STATUS, "status")
-        _enum(build, classification.autonomy, build.AUTONOMY, "autonomy")
+        _enum(classification.status, build.schema_values("status"), "status")
+        _enum(classification.autonomy, build.schema_values("autonomy"), "autonomy")
         for domain in classification.domains:
-            _enum(build, domain, build.DOMAIN_VALUES, f"domain {domain!r}")
+            _enum(domain, build.schema_values("domain"), f"domain {domain!r}")
         for value in classification.rubric.invocation:
-            _enum(build, value, build.INVOCATION, "rubric.invocation value")
-        _enum(build, classification.rubric.state, build.STATE, "rubric.state")
-        _enum(build, classification.rubric.identity, build.IDENTITY, "rubric.identity")
+            _enum(value, build.schema_values("invocation"), "rubric.invocation value")
+        _enum(classification.rubric.state, build.schema_values("rubricState"), "rubric.state")
+        _enum(classification.rubric.identity, build.schema_values("identity"), "rubric.identity")
         _enum(
-            build,
             classification.rubric.evidence_strength,
-            build.EVIDENCE_STRENGTH,
+            build.schema_values("evidenceStrength"),
             "rubric.evidence_strength",
         )
         for source in self.extraction.sources:
-            _enum(build, source.kind, build.SOURCE_KINDS, f"source {source.local_id} kind")
+            _enum(source.kind, build.schema_values("sourceKind"), f"source {source.local_id} kind")
             _enum(
-                build,
                 source.provenance_class,
-                build.PROVENANCE_CLASSES,
+                build.schema_values("provenanceClass"),
                 f"source {source.local_id} provenance_class",
             )
-            _enum(build, source.role, build.SOURCE_ROLES, f"source {source.local_id} role")
+            _enum(source.role, build.schema_values("sourceRole"), f"source {source.local_id} role")
         for claim in self.extraction.claims:
             if claim.observation is not None and claim.observation.duplicate_of is None:
                 _enum(
-                    build,
                     claim.observation.category or "",
-                    build.OBSERVATION_CATEGORIES,
+                    build.schema_values("observationCategory"),
                     "observation.category",
                 )
                 _enum(
-                    build,
                     claim.observation.basis or "",
-                    build.OBSERVATION_BASES,
+                    build.schema_values("observationBasis"),
                     "observation.basis",
                 )
             if claim.metadata is not None and claim.metadata.attention_boundary is not None:
                 _enum(
-                    build,
                     claim.metadata.attention_boundary,
-                    build.ATTENTION_BOUNDARIES,
+                    build.schema_values("attentionBoundary"),
                     "claim attention_boundary",
                 )
 

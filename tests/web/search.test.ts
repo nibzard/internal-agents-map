@@ -9,10 +9,13 @@ import { BOUNDARY_LEVELS } from '../../src/lib/labels';
 import {
   FACET_KEYS,
   facetVocabulary,
+  facetPath,
   findTerm,
   matchesFacets,
   matchesText,
   resolveTerm,
+  searchWithoutFacets,
+  selectionFromSearch,
   suggest,
   toSelection,
 } from '../../src/lib/search';
@@ -176,5 +179,42 @@ describe('card matching', () => {
       ]);
       expect(matchesFacets(facets, selection)).toBe(true);
     }
+  });
+});
+
+describe('the facet selection in the URL', () => {
+  it('links one facet value to the homepage', () => {
+    expect(facetPath('work', 'support')).toBe('/?work=support');
+    expect(facetPath('type', 'agent-system')).toBe('/?type=agent-system');
+  });
+
+  it('reads the facet values back from the query, one or more per facet', () => {
+    expect(selectionFromSearch('?work=support')).toEqual({
+      work: ['support'], type: [], invocation: [], supervision: [],
+    });
+    expect(selectionFromSearch('?work=support&work=coding&type=agent&sort=az')).toEqual({
+      work: ['support', 'coding'], type: ['agent'], invocation: [], supervision: [],
+    });
+  });
+
+  it('reads nothing from a query without facets, and drops values that are not slugs', () => {
+    const none = { work: [], type: [], invocation: [], supervision: [] };
+    expect(selectionFromSearch('')).toEqual(none);
+    expect(selectionFromSearch('?sort=az')).toEqual(none);
+    expect(selectionFromSearch('?work=<script>&work=')).toEqual(none);
+  });
+
+  it('reads back what it links to', () => {
+    for (const term of vocabulary) {
+      const search = facetPath(term.key, term.id).slice(1);
+      expect(selectionFromSearch(search)[term.key]).toEqual([term.id]);
+    }
+  });
+
+  it('removes the facet values and keeps every other parameter', () => {
+    expect(searchWithoutFacets('?work=support')).toBe('');
+    expect(searchWithoutFacets('?work=support&sort=az&type=agent')).toBe('?sort=az');
+    expect(searchWithoutFacets('?sort=az')).toBe('?sort=az');
+    expect(searchWithoutFacets('')).toBe('');
   });
 });

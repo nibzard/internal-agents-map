@@ -1,0 +1,33 @@
+name: Suggest an agent or correction
+description: Tell us about a company's internal agent, or about an error in an entry.
+title: "Catalog: "
+body:
+  - type: dropdown
+    id: request
+    attributes:
+      label: What do you suggest?
+      options:
+        - Add a new agent
+        - Fix an existing entry
+    validations:
+      required: true
+  - type: input
+    id: agent
+    attributes:
+      label: Company and agent
+      placeholder: Stripe, Minions
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Public link
+      description: A public write-up, talk, post, or documentation page about the agent.
+      placeholder: https://
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Anything else?
+      description: Optional. For a fix, tell us what to change.

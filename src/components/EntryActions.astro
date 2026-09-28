@@ -1,0 +1,23 @@
+---
+// ABOUTME: The actions that take one entry out of the page: its Markdown record and a chat about it.
+// ABOUTME: Without JavaScript the copy action is a plain link to the Markdown record.
+import Icon from './Icon.astro';
+import { askChatGptUrl } from '../lib/ask';
+import { markdownPath } from '../lib/routes';
+
+interface Props {
+  path: string;
+  title: string;
+}
+
+const { path, title } = Astro.props;
+---
+<div class="entry-actions">
+  {/* The router would take the click first, so it leaves the copy link to the page script. */}
+  <a class="button" href={markdownPath(path)} data-copy-markdown data-astro-reload>
+    <span data-copy-label>Copy as MD</span><Icon name="clipboard" />
+  </a>
+  <a class="button" href={askChatGptUrl(path, title)} target="_blank" rel="noopener">
+    <span>Ask ChatGPT</span><Icon name="arrow-upright" />
+  </a>
+</div>
