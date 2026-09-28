@@ -49,7 +49,7 @@ export type ClaimKind = (typeof CLAIM_KIND_VALUES)[number];
 export const CLAIM_PROVENANCE_VALUES = ['reported', 'observed', 'inferred', 'catalog-judgment'] as const;
 export type ClaimProvenance = (typeof CLAIM_PROVENANCE_VALUES)[number];
 
-export const CONFIDENCE_VALUES = ['high', 'medium', 'low', 'unverified'] as const;
+export const CONFIDENCE_VALUES = ['high', 'medium', 'low', 'unverified', 'not-assessed'] as const;
 export type Confidence = (typeof CONFIDENCE_VALUES)[number];
 
 export const REVIEW_STATE_VALUES = ['reported', 'unreported', 'not-applicable', 'not-reviewed'] as const;

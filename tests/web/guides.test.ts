@@ -89,6 +89,13 @@ for (const guide of guides) {
       for (const heading of found) expect(prose).toContain(heading);
     });
 
+    it('carries every table definition of the page', () => {
+      const bodies = [...html.matchAll(/<tbody[^>]*>([\s\S]*?)<\/tbody>/g)].map((match) => match[1]).join('');
+      const cells = [...bodies.matchAll(/<(?:th|td)\b[^>]*>([\s\S]*?)<\/(?:th|td)>/g)];
+      expect(cells.length).toBeGreaterThan(0);
+      for (const cell of cells) expect(prose).toContain(words(cell[1]!));
+    });
+
     it('carries every link of the page, with its address', () => {
       const found = links(html);
       expect(found.length).toBeGreaterThan(3);

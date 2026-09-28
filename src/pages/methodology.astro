@@ -38,6 +38,19 @@ const graph = structuredData([
     <section id={section.id} aria-labelledby={section.titleId}>
       <h2 id={section.titleId}>{section.heading}</h2>
       {section.body.map((block) => <p><Inline parts={block} /></p>)}
+      {section.table && (
+        <div class="classification-table term-table" role="region" aria-labelledby={section.titleId} tabindex="0">
+          <table>
+            <thead><tr>{section.table.headings.map((heading) => <th scope="col">{heading}</th>)}</tr></thead>
+            <tbody>{section.table.rows.map((row) => (
+              <tr>{row.map((cell, index) => index === 0
+                ? <th scope="row">{cell}</th>
+                : <td data-label={section.table!.headings[index]}><span>{cell}</span></td>
+              )}</tr>
+            ))}</tbody>
+          </table>
+        </div>
+      )}
       {section.links && (
         <ul class="doc-links">
           {section.links.map((link) => (

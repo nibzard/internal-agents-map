@@ -230,6 +230,8 @@ claim_metadata:
     confidence_reason: July 9 is the report date; the source says last month without exact measurement boundaries.
   key_metrics.one-three-prs-merged-posthog-main:
     confidence: medium
+    confidence_reason: The source says roughly one in three merged PRs in the main repository during one
+      quarter, without dating the quarter or giving the underlying counts.
     valid_at: 2026-07
     reported_by: PostHog
     metric_scope: Main-repository merged PRs receiving StampHog final approval during the reported quarter
@@ -237,6 +239,8 @@ claim_metadata:
     measurement_method: Company-reported production usage
   key_metrics.prs-approved-stamphog-july:
     confidence: medium
+    confidence_reason: The July 28 report gives a 20% approval share and about $300 in monthly token cost,
+      without defining the approval measurement period or repository coverage.
     valid_at: 2026-07
     reported_by: PostHog
     metric_scope: PostHog PRs approved by StampHog and monthly token cost in the July 28, 2026 report

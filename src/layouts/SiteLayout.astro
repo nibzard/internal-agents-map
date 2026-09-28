@@ -7,6 +7,7 @@ import ContributionInvite from '../components/ContributionInvite.astro';
 import { ClientRouter } from 'astro:transitions';
 import CommandPalette from '../components/CommandPalette.astro';
 import Icon from '../components/Icon.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 import { canonicalUrl, guidePath, homePath, markdownPath, lessonsIndexPath } from '../lib/routes';
 import {
   CONTRIBUTE_URL,
@@ -55,6 +56,16 @@ const image = ogImage ?? { url: OG_IMAGE, alt: OG_IMAGE_ALT };
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <script is:inline>
+    // Apply the saved choice before styles paint. With no choice, CSS follows the system.
+    try {
+      const theme = localStorage.getItem('theme');
+      if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+    } catch {
+      // Storage can be disabled; the system theme still works.
+    }
+  </script>
   <Analytics />
   <title>{title}</title>
   <meta name="description" content={description} />
@@ -88,10 +99,13 @@ const image = ogImage ?? { url: OG_IMAGE, alt: OG_IMAGE_ALT };
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="topbar">
   <a class="brand" href={homePath()}>Internal Agents Map</a>
-  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav">
-    <span class="visually-hidden">Menu</span>
-    <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span></span>
-  </button>
+  <div class="topbar-actions">
+    <ThemeToggle />
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav">
+      <span class="visually-hidden">Menu</span>
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span></span>
+    </button>
+  </div>
 </header>
 <div class="page-shell">
   <aside class="sidebar" id="mobile-nav">
@@ -113,6 +127,7 @@ const image = ogImage ?? { url: OG_IMAGE, alt: OG_IMAGE_ALT };
         </div>
       </div>
       <p class="sidebar-note">An open catalog.<br />Built from public evidence.</p>
+      <ThemeToggle />
     </nav>
   </aside>
   <main id="main">
@@ -142,10 +157,12 @@ const image = ogImage ?? { url: OG_IMAGE, alt: OG_IMAGE_ALT };
   import { startPalette } from '../scripts/palette';
   import { startCatalogOrder } from '../scripts/catalog-order';
   import { startCopyMarkdown } from '../scripts/copy-markdown';
+  import { startTheme } from '../scripts/theme';
 
   // The router swaps the document rather than reloading it, so every page it
   // builds is wired here, not once at first load.
   document.addEventListener('astro:page-load', () => {
+    startTheme();
     startNavDot();
     startNavMenu();
     startContents();

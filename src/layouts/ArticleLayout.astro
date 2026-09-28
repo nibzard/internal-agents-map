@@ -66,7 +66,7 @@ const {
 /* A subheading steps down to the body face, one size and one weight above the text. */
 .guide h3 { font-family: var(--font-body); font-size: var(--text-md); font-weight: 500; letter-spacing: -.015em; }
 /* The running text of a guide sits a step back from its headings. */
-.guide section > p { color: var(--sand-10); }
+.guide section > p { color: var(--muted); }
 .guide figure { margin: 32px 0; }
 .guide figcaption { color: var(--muted); font-size: var(--text-xs); line-height: 1.65; margin-top: 24px; }
 .guide blockquote { margin: 24px 0; padding: 8px 0; font-size: var(--text-sm); }
@@ -149,10 +149,10 @@ const {
 .quadrant-markers .marker-start::before { left: 0; }
 .quadrant-markers .marker-end::before { right: 0; }
 .quadrant-markers a { display: block; line-height: 1.35; text-decoration: none; }
-.quadrant-markers a:hover { color: var(--sand-10); }
+.quadrant-markers a:hover { color: var(--muted); }
 .quadrant-markers strong { display: block; font-size: 14px; font-weight: 500; line-height: 1.35; }
 .quadrant-markers span { display: block; font-size: 14px; line-height: 1.35; margin-top: 4px; }
-.quadrant-markers .reference-marker { --dot: 12px; color: var(--sand-10); }
+.quadrant-markers .reference-marker { --dot: 12px; color: var(--muted); }
 .quadrant-markers .reference-marker strong { color: var(--sand-12); }
 .quadrant-markers .reference-marker::before { border-radius: 0; background: var(--green-9); clip-path: var(--triangle); }
 /* An arrow runs from a standard product up to a company system built on it. */
@@ -188,7 +188,7 @@ const {
 .guide-faq details:hover { background: var(--sand-4); }
 }
 .guide-faq summary::before { content: none; }
-.guide-faq summary .icon { flex: none; color: var(--sand-10); }
+.guide-faq summary .icon { flex: none; color: var(--muted); }
 .guide-faq details[open] > summary .icon { transform: rotate(180deg); }
 .guide-faq details p { margin: 0; padding: 0 12px 12px; max-width: 680px; color: var(--muted); }
 .dimension-intro { display: grid; gap: 24px; margin-top: 24px; }
@@ -224,7 +224,7 @@ const {
   cursor: pointer;
 }
 .placement-notes summary::before { content: none; }
-.placement-notes summary .icon { flex: none; width: 20px; height: 20px; color: var(--sand-10); }
+.placement-notes summary .icon { flex: none; width: 20px; height: 20px; color: var(--muted); }
 .placement-notes[open] > summary .icon { transform: rotate(180deg); }
 .placement-notes ul { list-style: none; padding: 0; }
 .placement-notes li { margin-top: 24px; font-size: var(--text-sm); }
@@ -377,7 +377,8 @@ const {
 .place-link { flex: none; }
 .exchange-scene { display: block; width: 100%; height: 100%; }
 .exchange-scene, .exchange-strand { fill: none; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
-.exchange-you, .exchange-agent { fill: var(--blue-9); stroke: var(--blue-9); }
+.exchange-you { fill: var(--panel); stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
+.exchange-agent { fill: var(--blue-9); stroke: var(--blue-9); }
 .exchange-scene text { fill: var(--muted); stroke: none; }
 .exchange-signal { fill: none; stroke: var(--blue-9); stroke-width: var(--figure-line-width); }
 /* The agent continues on its row while your row is dotted; the result returns to you. */
@@ -385,7 +386,7 @@ const {
 .handoff-scene text { fill: var(--muted); stroke: none; }
 .handoff-link { fill: none; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
 .handoff-away { stroke-dasharray: 2 4; }
-.handoff-you { fill: var(--sand-1); stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
+.handoff-you { fill: var(--panel); stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
 .handoff-agent, .handoff-you-active { fill: var(--blue-9); stroke: var(--blue-9); stroke-width: var(--figure-line-width); }
 .handoff-signal { fill: none; stroke: var(--blue-9); stroke-width: var(--figure-line-width); }
 /* One run changes modes. HTML labels and dots keep their size as the path narrows. */
@@ -406,7 +407,7 @@ const {
 .mode-switch-track .mode-switch-signal { stroke: var(--blue-9); vector-effect: none; }
 .mode-switch-origin { position: absolute; left: -32px; top: var(--rail-y); width: 20px; height: 20px; transform: translate(-50%, -50%); }
 .mode-switch-origin::after { content: ''; position: absolute; left: 100%; top: 50%; width: 22px; height: 1px; transform: translateY(-50%); background: var(--figure-line); }
-.mode-switch-node { position: absolute; inset: 0; box-sizing: border-box; border: 1px solid var(--figure-line); border-radius: 50%; background: var(--sand-1); }
+.mode-switch-node { position: absolute; inset: 0; box-sizing: border-box; border: 1px solid var(--figure-line); border-radius: 50%; background: var(--panel); }
 .mode-switch-agent, .mode-switch-you-active { border-color: var(--blue-9); background: var(--blue-9); }
 .mode-switch-background { border-style: dashed; }
 .mode-switch-label { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); line-height: 1.4; text-align: center; }
@@ -458,7 +459,7 @@ const {
 
 /* Lessons use the same fine rules, type, and restrained diagram accents. */
 .lessons { font-size: var(--text-sm); }
-.lessons .lesson-meta { font-size: var(--text-sm); color: var(--sand-10); }
+.lessons .lesson-meta { font-size: var(--text-sm); color: var(--muted); }
 .lessons .guide-header { padding-bottom: 16px; }
 .lessons .guide-header > * { max-width: 680px; }
 .lessons .lesson-list, .lesson-detail > article { max-width: 680px; }
@@ -466,9 +467,9 @@ const {
 .lesson-preview h2 a::after { content: ""; position: absolute; inset: 0; }
 .lesson-preview h2 { margin: 0 0 8px; }
 .lesson-preview h2 a { color: var(--ink); text-decoration: none; }
-.lesson-summary { font-size: var(--text-sm); color: var(--sand-10); max-width: 580px; }
+.lesson-summary { font-size: var(--text-sm); color: var(--muted); max-width: 580px; }
 .lesson-preview:hover h2 a { color: var(--sand-11); }
-.lesson-preview:hover .lesson-summary { color: var(--sand-9); }
+.lesson-preview:hover .lesson-summary { color: var(--subtle); }
 .lessons-editorial { max-width: 620px; padding: 24px 0 32px; color: var(--muted); font-size: var(--text-sm); }
 .lesson-back { display: inline-block; margin-bottom: 32px; font-size: var(--text-sm); }
 .lesson-detail h1 { max-width: 640px; }
@@ -512,7 +513,7 @@ const {
   background: var(--sand-6);
 }
 .lesson-branches strong, .lesson-shared-state strong { display: block; font-weight: 500; }
-.lesson-branches span, .lesson-shared-state span { display: block; margin-top: 6px; color: var(--sand-10); }
+.lesson-branches span, .lesson-shared-state span { display: block; margin-top: 6px; color: var(--muted); }
 .lesson-shared-state { position: relative; margin-top: 16px; padding: 16px; border: 1px solid var(--sand-6); border-radius: 14px; text-align: center; }
 .lesson-shared-state::before, .lesson-shared-state::after { content: ""; position: absolute; top: -17px; height: 16px; border-left: 1px solid var(--sand-6); }
 .lesson-shared-state::before { left: 25%; }
@@ -520,7 +521,7 @@ const {
 .lessons .lesson-diagram figcaption {
   margin-top: 16px;
   font-size: var(--text-xs);
-  color: var(--sand-10);
+  color: var(--muted);
 }
 .lessons figcaption { font-size: var(--text-sm); margin-top: 16px; }
 .guide .lesson-sources > h2 { margin-bottom: 16px; }
@@ -583,7 +584,7 @@ const {
   .concept-combination dl > div + div { margin-top: 12px; }
   .concept-combination dl > div dt, .concept-combination dl > div dd { border: .5px solid var(--sand-6); }
   .concept-combination dl > div dt { border-radius: 12px 12px 0 0; }
-  .concept-combination dl > div dd { background: #fff; border-top: 0; border-radius: 0 0 12px 12px; }
+  .concept-combination dl > div dd { background: var(--panel); border-top: 0; border-radius: 0 0 12px 12px; }
   .concept-combination dl > div:last-child dt { border-bottom: .5px solid var(--sand-6); }
   .concept-combination dl > div:last-child dd { border-bottom: .5px solid var(--sand-6); border-top: 0; }
 }
