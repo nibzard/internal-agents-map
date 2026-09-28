@@ -601,6 +601,8 @@
 .citation-contradicts strong { color: #a1392d; }
 /* The supporting source numbers sit small after the statement, as footnote marks. */
 .source-marks {
+  /* A small gap keeps the opening bracket clear of the last letter of the statement. */
+  margin-left: 0.3em;
   font-size: var(--text-xs);
   line-height: 0;
   color: var(--sand-10);
