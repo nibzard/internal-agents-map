@@ -224,6 +224,28 @@ test.describe('page-content pilot', () => {
     });
   }
 
+  test('links each claim to its supporting sources beside the statement', async ({ page }) => {
+    const claims = CATALOG.claims as ReadonlyArray<{
+      id: string;
+      evidence?: ReadonlyArray<{ source_id: string; relation: string }>;
+    }>;
+    await page.goto('/agents/block-builderbot');
+    const rendered = page.locator('#how-it-works [data-claim-id], #implementation dd[data-claim-id]');
+    const ids = await rendered.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-claim-id')));
+    expect(ids.some((id) => id?.includes('--architecture-'))).toBe(true);
+    expect(ids.some((id) => !id?.includes('--architecture-'))).toBe(true);
+    for (const id of ids) {
+      const claim = claims.find((candidate) => candidate.id === id);
+      const supporting = (claim?.evidence ?? []).filter((item) => item.relation === 'supports');
+      expect(supporting.length, id!).toBeGreaterThan(0);
+      for (const item of supporting) {
+        const href = `#source-${item.source_id}`;
+        await expect(page.locator(`[data-claim-id="${id}"] a[href="${href}"]`), id!).toHaveCount(1);
+        await expect(page.locator(href)).toHaveCount(1);
+      }
+    }
+  });
+
   test('keeps reported implementation notes beside their claims', async ({ page, request }) => {
     await page.goto('/agents/linear-agent');
     const note = 'Codex is named for internal pull-request review; the captures say only frontier language models elsewhere.';

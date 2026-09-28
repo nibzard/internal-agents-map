@@ -3,6 +3,7 @@
 // ABOUTME: Caveats and conflicts stay in the initial HTML, beside the statement.
 import Arrowed from './Arrowed.astro';
 import Icon from './Icon.astro';
+import SourceMarks from './SourceMarks.astro';
 import type { ClaimView } from '../lib/entry-view';
 import { observedDate } from '../lib/labels';
 
@@ -43,6 +44,7 @@ const attribution =
   <p class="claim-text">
     {attribution && <><span class="claim-attribution">{attribution}:</span>{' '}</>}
     <Arrowed text={claim.text} />
+    <SourceMarks citations={claim.supporting} />
   </p>
   {claim.contradicting.length > 0 && (
     <div class="conflict">
