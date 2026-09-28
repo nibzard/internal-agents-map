@@ -965,6 +965,7 @@
   .mobile-catalog-search .icon { color: var(--sand-10); }
   /* A page with a door in its reading flow needs no floating one. */
   body:has(.mobile-catalog-search:not([hidden])) .search-launcher { display: none; }
+  body:has(.mobile-catalog-search:not([hidden])) footer { padding-bottom: 0; }
   .entries .entry-box { padding: 20px; }
   .entry-top { align-items: start; }
   /*
