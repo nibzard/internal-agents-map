@@ -281,16 +281,15 @@ test.describe('page-content pilot', () => {
       await page.goto(`/agents/${id}`);
       const record = CATALOG.approaches.find((item) => item.id === id)!;
       const questionBySection: Record<string, string> = { '#how-it-works': 'workflow', '#validation': 'validation', '#results': 'observations', '#lessons': 'lessons' };
-      // A section that would only say nothing was reported is not rendered at all,
-      // so validation and lessons appear where the evidence gives them something.
+      // Every section of the reading order is on the page. A question that the sources
+      // leave unanswered keeps its section with a statement of what the sources omit.
       const stateOf = (selector: string): string | undefined =>
         questionBySection[selector]
           ? record.page_content.questions[questionBySection[selector]!]?.state
           : undefined;
       const selectors = ['#how-it-works', '#human-involvement', '#implementation', '#validation', '#results', '#lessons', '#sources'].filter(
         (selector) =>
-          !(record.catalog_section === 'infrastructure' && stateOf(selector) === 'not-applicable') &&
-          !(['#validation', '#lessons'].includes(selector) && stateOf(selector) !== 'reported' && stateOf(selector) !== 'mixed'),
+          !(record.catalog_section === 'infrastructure' && stateOf(selector) === 'not-applicable'),
       );
       for (const selector of selectors) {
         await expect(page.locator(selector), selector).toBeVisible();
@@ -305,6 +304,20 @@ test.describe('page-content pilot', () => {
       expect((await request.get(`/agents/${id}.md`)).status()).toBe(200);
     });
   }
+
+  test('says when the sources do not describe validation or lessons', async ({ page }) => {
+    await page.goto('/agents/airbnb-datako');
+    await expect(page.locator('#validation .review-state')).toHaveText(
+      'Not reported: The available sources do not describe how the team checks the output.',
+    );
+    await expect(page.locator('#lessons .review-state')).toHaveText(
+      'Not reported: The available sources do not report lessons from this work.',
+    );
+    await page.goto('/agents/deel-payroll-incident-agents');
+    await expect(page.locator('#validation .review-state')).toContainText(
+      'Not reported: The post reports no test, evaluation, or accuracy check',
+    );
+  });
 
   test('keeps lessons separate from YC’s reviewed empty observations state', async ({ page }) => {
     await page.goto('/agents/ycombinator-agent-infra');

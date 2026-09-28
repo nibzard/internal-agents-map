@@ -59,6 +59,20 @@ export function showQuestion(entry: EntryView, key: string): boolean {
   return !entry.isSupportingSystem || entry.coverageQuestions[key]?.state !== 'not-applicable';
 }
 
+/** The absence statement of a question that the sources leave unanswered. */
+const UNREPORTED_STATEMENTS: Readonly<Record<string, string>> = {
+  validation: 'The available sources do not describe how the team checks the output.',
+  lessons: 'The available sources do not report lessons from this work.',
+};
+
+/**
+ * Give the note of a coverage answer. An unreported answer without a note gets the
+ * absence statement of its question, so the section says what the sources omit.
+ */
+export function coverageNote(answer: CoverageAnswerView, key: string): string | null {
+  return answer.note ?? (answer.state === 'unreported' ? (UNREPORTED_STATEMENTS[key] ?? null) : null);
+}
+
 export interface CaveatView {
   readonly label: string;
   readonly value: string;

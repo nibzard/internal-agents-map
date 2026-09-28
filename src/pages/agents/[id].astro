@@ -9,7 +9,7 @@ import CompanyLogo from '../../components/CompanyLogo.astro';
 import ResearchDetails from '../../components/ResearchDetails.astro';
 import SourceList from '../../components/SourceList.astro';
 import { loadCatalog } from '../../lib/catalog';
-import { directoryCards, entryView, showQuestion } from '../../lib/entry-view';
+import { coverageNote, directoryCards, entryView, showQuestion } from '../../lib/entry-view';
 import { entryCard, ogImage } from '../../lib/og';
 import { assertPublishableId, canonicalUrl, organizationPath } from '../../lib/routes';
 import {
@@ -57,6 +57,13 @@ const hasFigures = entry.isPilot
   ? entry.observationItems.length > 0
   : entry.metricClaims.length > 0 || entry.resultStatementClaims.length > 0;
 const hasRelated = entry.relatedEntries.length > 0 || entry.relatedLessons.length > 0;
+// A question that the sources leave unanswered keeps its section with the absence statement.
+const coverageNoteOf = (key: string) => {
+  const answer = entry.coverageQuestions[key];
+  return answer ? coverageNote(answer, key) : null;
+};
+const validationNote = coverageNoteOf('validation');
+const lessonsNote = coverageNoteOf('lessons');
 ---
 <SiteLayout title={title} description={description} path={entry.path} structuredData={graph} ogImage={preview}>
   <article class="entry-page" data-approach-id={entry.id}>
@@ -122,8 +129,8 @@ const hasRelated = entry.relatedEntries.length > 0 || entry.relatedLessons.lengt
 
     {entry.profile.sectionOrder.map((section) => <EntrySection entry={entry} section={section} />)}
 
-    {entry.isPilot && showQuestion(entry, 'validation') &&
-      (entry.validationClaims.length > 0 || (entry.coverageQuestions.validation?.claimAnchors.length ?? 0) > 0) && (
+    {entry.isPilot && showQuestion(entry, 'validation') && (entry.validationClaims.length > 0 || validationNote !== null ||
+      (entry.coverageQuestions.validation?.claimAnchors.length ?? 0) > 0) && (
       <section class="entry-section" id="validation" aria-labelledby="validation-title">
         <h2 id="validation-title">{entry.profile.validation}</h2>
         {entry.validationClaims.length > 0 ? (
@@ -135,7 +142,9 @@ const hasRelated = entry.relatedEntries.length > 0 || entry.relatedLessons.lengt
               <>{index > 0 && ', '}<a href={`#${claim.anchor}`}>{claim.label}</a></>
             ))}
           </p>
-        ) : null}
+        ) : entry.coverageQuestions.validation && (
+          <p class="review-state" data-state={entry.coverageQuestions.validation.state}><strong>{entry.coverageQuestions.validation.stateLabel}:</strong> {validationNote}</p>
+        )}
       </section>
     )}
 
@@ -174,10 +183,14 @@ const hasRelated = entry.relatedEntries.length > 0 || entry.relatedLessons.lengt
       </section>
     )}
 
-    {entry.isPilot && showQuestion(entry, 'lessons') && entry.lessonClaims.length > 0 && (
+    {entry.isPilot && showQuestion(entry, 'lessons') && (entry.lessonClaims.length > 0 || lessonsNote !== null) && (
       <section class="entry-section" id="lessons" aria-labelledby="lessons-title">
         <h2 id="lessons-title">Lessons</h2>
-        <div class="step-panel">{entry.lessonClaims.map((claim) => <Claim claim={claim} showLabel={false} mark="circle-check" />)}</div>
+        {entry.lessonClaims.length > 0 ? (
+          <div class="step-panel">{entry.lessonClaims.map((claim) => <Claim claim={claim} showLabel={false} mark="circle-check" />)}</div>
+        ) : entry.coverageQuestions.lessons && (
+          <p class="review-state" data-state={entry.coverageQuestions.lessons.state}><strong>{entry.coverageQuestions.lessons.stateLabel}:</strong> {lessonsNote}</p>
+        )}
       </section>
     )}
 

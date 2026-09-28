@@ -145,16 +145,14 @@ describe('record Markdown', () => {
     const markdown = recordMarkdown(catalog, 'brex-support-qa');
     const view = entryView(catalog, 'brex-support-qa');
     const sections = [
-      [view.profile.validation, 'validation'],
-      [view.profile.observations, 'observations'],
-      ['Lessons', 'lessons'],
+      [view.profile.validation, 'validation', '**Not reported:** The available sources do not describe how the team checks the output.'],
+      [view.profile.observations, 'observations', '**Not reported**'],
+      ['Lessons', 'lessons', '**Not reported:** The available sources do not report lessons from this work.'],
     ] as const;
-    for (const [title, key] of sections) {
+    for (const [title, key, statement] of sections) {
       expect(view.coverageQuestions[key]?.note, key).toBeNull();
       const section = markdown.split(`## ${title}`)[1] ?? '';
-      expect(section.trimStart().startsWith('**Not reported**'), `${key}: ${section.slice(0, 60)}`).toBe(
-        true,
-      );
+      expect(section.trimStart().startsWith(statement), `${key}: ${section.slice(0, 60)}`).toBe(true);
     }
   });
 
