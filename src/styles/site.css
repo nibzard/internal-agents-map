@@ -1,6 +1,5 @@
 /* ABOUTME: One stylesheet entry point: tokens first, then layout, then components. */
 /* ABOUTME: The layout imports this file, so every page shares the same cascade. */
-@import '@radix-ui/colors/sand.css';
 @import '@radix-ui/colors/blue.css';
 @import '@radix-ui/colors/indigo.css';
 @import '@radix-ui/colors/purple.css';

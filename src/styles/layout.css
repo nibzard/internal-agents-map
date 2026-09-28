@@ -36,7 +36,7 @@
 .contents-title {
   margin: 0 0 8px;
   padding: 0 12px;
-  color: var(--sand-10);
+  color: var(--muted);
 }
 .contents ul {
   list-style: none;
@@ -47,7 +47,7 @@
 .contents a {
   display: block;
   padding: 8px 12px;
-  color: var(--sand-10);
+  color: var(--muted);
   text-decoration: none;
 }
 /* Hovering an entry speaks for itself; the ground stays for what is in view. */
@@ -93,7 +93,7 @@
   justify-content: center;
   height: 68px;
   padding: 0 16px;
-  background: #fff;
+  background: var(--panel);
   border-bottom: .5px solid var(--sand-6);
 }
 .brand {
@@ -137,7 +137,7 @@
 /* The outward arrow is a hint at the edge, not part of the label. It steps
    forward when the row is hovered. */
 .nav-links .nav-external > .icon { color: var(--sand-6); }
-.nav-links .nav-external:hover > .icon { color: var(--sand-10); }
+.nav-links .nav-external:hover > .icon { color: var(--muted); }
 .nav-label {
   display: flex;
   align-items: center;
@@ -174,18 +174,37 @@
   color: var(--muted);
   margin-top: 32px;
 }
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+}
+.theme-toggle [data-theme-icon] { display: flex; }
+.theme-toggle .icon { flex: none; }
+/* Align the visible mark with the navigation icons while keeping its hit area. */
+.sidebar .theme-toggle { margin: 16px 0 0 -12px; }
+@media (hover: hover) {
+  .theme-toggle:hover { color: var(--ink); }
+}
+.topbar-actions { display: flex; align-items: center; gap: 4px; }
 .skip-link {
   position: absolute;
   left: 16px;
   top: -100px;
-  background: #fff;
+  background: var(--panel);
   padding: 12px;
   z-index: 10;
 }
 .skip-link:focus { top: 12px; }
 .page-shell { padding-bottom: 48px; }
 footer {
-  color: var(--sand-10);
+  color: var(--muted);
   font-size: var(--text-sm);
   margin-top: 32px;
 }
@@ -237,6 +256,11 @@ footer a { color: inherit; }
   /* The bar comes back, and the wordmark heads it instead of the rail. */
   .topbar { display: flex; justify-content: space-between; }
   .brand-rail { display: none; }
+  .topbar .theme-toggle {
+    width: 44px;
+    height: 44px;
+  }
+  .sidebar .theme-toggle { display: none; }
   .nav-toggle {
     display: grid;
     place-items: center;
@@ -257,7 +281,7 @@ footer a { color: inherit; }
     margin: 0;
     padding: 8px 24px 24px;
     overflow-y: auto;
-    background: #fff;
+    background: var(--panel);
   }
   .sidebar { display: none; }
   .sidebar.is-open { display: block; }
