@@ -72,8 +72,9 @@
 }
 /* On a wide screen the problems stand in the rail column, which the catalog page
    leaves empty, as a list under a quiet title: the same form as a table of contents.
-   The markup stays in the intro, so a narrow screen keeps the pills above the cards. */
-@media (min-width: 1051px) {
+   The markup stays in the intro, so a narrow screen keeps the pills above the cards.
+   The width is the one at which layout.css shows the rail column. */
+@media (min-width: 1340px) {
   .intro { position: relative; }
   .problem-links {
     position: absolute;
@@ -130,6 +131,11 @@
   object-fit: contain;
   filter: grayscale(1);
 }
+/* Vendored marks already render in grayscale; reverse that ink on dark pages. */
+:root[data-theme="dark"] .company-logo img { filter: grayscale(1) invert(1); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .company-logo img { filter: grayscale(1) invert(1); }
+}
 .company-logo-monogram {
   display: inline-flex;
   align-items: center;
@@ -174,8 +180,8 @@
 /* No container to shade: hovering lightens everything the card says by a step. */
 @media (hover: hover) {
 .entry-box:hover h3 a { color: var(--sand-11); }
-.entry-box:hover .entry-summary { color: var(--sand-9); }
-.entry-box:hover .tag { color: var(--sand-9); }
+.entry-box:hover .entry-summary { color: var(--subtle); }
+.entry-box:hover .tag { color: var(--subtle); }
 /* An accent badge is not dimmed with the rest: it stands as it is. */
 .entry-box:hover .tags > .tag-type,
 .entry-box:hover .tags > .tag-match,
@@ -299,7 +305,7 @@
   font-size: var(--text-sm);
   line-height: 1.65;
   max-width: 740px;
-  color: var(--sand-10);
+  color: var(--muted);
 }
 .tags {
   display: flex;
@@ -318,7 +324,7 @@
   line-height: 16px;
   padding: 4px 9px 5px;
   border-radius: 999px;
-  color: var(--sand-10);
+  color: var(--muted);
 }
 /* The evidence badge is a note, not a category: a light outline in place of a
    fill, and no accent text. Only its check mark carries the accent. */
@@ -331,7 +337,7 @@
 }
 .tag-documented .icon { flex: none; color: var(--blue-9); }
 
-/* The directory holds its entries as cards: a grid of white panels in the
+/* The directory holds its entries as cards: a grid of raised panels in the
    proportions of the design, four wide to five tall. Each card carries its
    badges at the head and the name and summary at the foot, with the space
    between them left open. The same card on an organization page keeps the
@@ -352,7 +358,7 @@
   padding: 24px;
   border: .5px solid var(--sand-6);
   border-radius: 26px;
-  background: #fff;
+  background: var(--panel);
   /* The shading of the design, taken down to a hint: two layers, the lower one
      close enough to the card to read as weight rather than as a shadow. */
   box-shadow:
@@ -383,9 +389,9 @@
   /* A card has a surface to answer with, so its words hold their colour and
      the panel lifts instead. */
   .entries .entry-box:hover h3 a { color: var(--ink); }
-  .entries .entry-box:hover .entry-summary { color: var(--sand-10); }
-  .entries .entry-box:hover .tag { color: var(--sand-10); }
-  .entries .entry-box:hover { background: var(--sand-2); }
+  .entries .entry-box:hover .entry-summary { color: var(--muted); }
+  .entries .entry-box:hover .tag { color: var(--muted); }
+  .entries .entry-box:hover { background: var(--panel-hover); }
 }
 @media (prefers-reduced-motion: no-preference) {
   .entries .entry-box { transition: background-color var(--hover-out) var(--ease-out); }
@@ -420,7 +426,7 @@
 }
 .contribution-invite p {
   margin-top: 8px;
-  color: var(--sand-10);
+  color: var(--muted);
 }
 .contribution-links {
   display: grid;
@@ -447,7 +453,7 @@
 /* The action that carries the reader onward. */
 .button-solid {
   background: var(--blue-9);
-  color: #fff;
+  color: var(--on-brand);
 }
 /* Already dark, so this one lifts toward the page instead of away from it. */
 @media (hover: hover) {
@@ -532,7 +538,7 @@
   margin-top: 8px;
 }
 /* An arrow inside a sentence steps back from the words it joins. */
-.arrow { color: var(--sand-10); }
+.arrow { color: var(--muted); }
 /* A marked row holds its mark on the centre line of the text beside it. */
 .claim-marked {
   display: grid;
@@ -550,7 +556,7 @@
 .claim-marked:has(> .claim-label) > .icon,
 .claim-marked:has(> .claim-label) > .claim-text { grid-row: 2; }
 /* What kind of statement this is, said before the statement itself. */
-.claim-attribution { color: var(--sand-10); }
+.claim-attribution { color: var(--muted); }
 /* The observation takes its own row, starting at the mark's edge. */
 .claim-marked > .observed { grid-column: 1 / -1; margin-top: 0; }
 .entry-section h3 {
@@ -628,14 +634,14 @@
   gap: 8px 12px;
   margin-top: 12px;
   font-size: var(--text-xs);
-  color: var(--sand-10);
+  color: var(--muted);
 }
 .citations-label {
-  color: var(--sand-10);
+  color: var(--muted);
   text-decoration: underline;
 }
 .citation {
-  color: var(--sand-10);
+  color: var(--muted);
   text-decoration: underline;
 }
 /* The number is the link; it no longer shouts from inside the footnote. */
@@ -646,14 +652,14 @@
 .citation:hover strong {
   color: var(--link);
 }
-.citation-contradicts strong { color: #a1392d; }
+.citation-contradicts strong { color: var(--warning); }
 /* The supporting source numbers sit small after the statement, as footnote marks. */
 .source-marks {
   /* A small gap keeps the opening bracket clear of the last letter of the statement. */
   margin-left: 0.3em;
   font-size: var(--text-xs);
   line-height: 0;
-  color: var(--sand-10);
+  color: var(--muted);
   white-space: nowrap;
 }
 .source-marks .citation:hover { color: var(--link); }
@@ -698,7 +704,7 @@
    fields the sources do not report. */
 .architecture { margin: 16px 0 0; }
 .architecture dt { white-space: nowrap; }
-.architecture .is-unreported { color: var(--sand-9); }
+.architecture .is-unreported { color: var(--subtle); }
 .architecture-note,
 .architecture .is-unreported span { display: block; margin-top: 4px; font-size: var(--text-sm); }
 .review-state { color: var(--sand-11); }
@@ -714,7 +720,7 @@
   display: block;
   margin-top: 8px;
   font-size: var(--text-xs);
-  color: var(--sand-9);
+  color: var(--subtle);
 }
 .architecture-caveats span + span::before { content: " \00B7 "; }
 .classification-table {
@@ -741,7 +747,7 @@
 .classification-table thead th { background: var(--sand-3); font-weight: 500; }
 .classification-table tbody tr:last-child > * { border-bottom: 0; }
 .classification-table tbody th { font-weight: 500; color: var(--ink); }
-.classification-table tbody td { color: var(--sand-10); }
+.classification-table tbody td { color: var(--muted); }
 /* The two term tables read as one pair, so their name column is one width. */
 .term-table th:first-child { width: 28%; }
 /* A metric turns the table: its qualifications head the columns, and the values
@@ -771,7 +777,7 @@
 .observed {
   margin-top: 12px;
   font-size: var(--text-xs);
-  color: var(--sand-10);
+  color: var(--muted);
 }
 .qualification {
   margin-top: 12px;
@@ -786,7 +792,7 @@
 }
 .conflict strong {
   display: block;
-  color: #a1392d;
+  color: var(--warning);
   font-weight: 400;
 }
 .claim-details {
@@ -819,7 +825,7 @@
   line-height: 20px;
   border-right: .5px solid var(--sand-6);
 }
-.claim-details dd { padding: 10px 12px; line-height: 20px; color: var(--sand-10); }
+.claim-details dd { padding: 10px 12px; line-height: 20px; color: var(--muted); }
 /* One rule between rows: the two cells of a row carry half of it each. */
 .claim-details dt ~ dt, .claim-details dd ~ dd { border-top: .5px solid var(--sand-6); }
 .evidence {
@@ -847,7 +853,7 @@
 }
 /* The locator belongs under its source, in the same cell rather than a row of its own. */
 .evidence .locator { margin-top: 4px; }
-.relation-contradicts { color: #a1392d; }
+.relation-contradicts { color: var(--warning); }
 .locator {
   display: block;
   white-space: pre-wrap;
@@ -902,7 +908,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--sand-10);
+  color: var(--muted);
 }
 .related-kind .icon { flex: none; }
 .related-card a {
@@ -942,7 +948,7 @@
   font-size: var(--text-sm);
   line-height: 20px;
 }
-.doc-card .icon { color: var(--sand-10); }
+.doc-card .icon { color: var(--muted); }
 .doc-card a {
   color: var(--sand-12);
   text-decoration: none;
@@ -999,7 +1005,7 @@
     text-align: left;
     font-size: var(--text-sm);
   }
-  .mobile-catalog-search .icon { color: var(--sand-10); }
+  .mobile-catalog-search .icon { color: var(--muted); }
   /* A page with a door in its reading flow needs no floating one. */
   body:has(.mobile-catalog-search:not([hidden])) .search-launcher { display: none; }
   body:has(.mobile-catalog-search:not([hidden])) footer { padding-bottom: 0; }
@@ -1027,7 +1033,7 @@
     border: 0;
     background: none;
   }
-  /* Each pair keeps the table's two rows: its name on sand, its value on white. */
+  /* Each pair keeps the table's two rows: its name on sand, its value on a panel. */
   .caveats dt, .architecture dt, .concept-combination dt {
     padding: 10px 12px;
     background: var(--sand-3);
@@ -1040,7 +1046,7 @@
   .architecture dd:last-of-type { border-bottom: .5px solid var(--sand-6); }
   .caveats dd, .architecture dd, .concept-combination dd {
     padding: 10px 12px;
-    background: #fff;
+    background: var(--panel);
     border: .5px solid var(--sand-6);
     border-radius: 0 0 12px 12px;
   }
@@ -1081,13 +1087,23 @@
   .classification-table tbody td > span {
     display: block;
     padding: 10px 12px;
-    background: #fff;
+    background: var(--panel);
     border: .5px solid var(--sand-6);
     border-top: 0;
     border-radius: 0 0 12px 12px;
   }
   .claim { padding: 16px 0; }
   .sources li { padding: 8px 0; }
+}
+@media (max-width: 360px) {
+  /* Keep the count labels whole when three columns cannot fit beside one another. */
+  .stats {
+    grid-template-columns: repeat(2, auto);
+    justify-content: start;
+    column-gap: 24px;
+    row-gap: 12px;
+  }
+  .stat span { white-space: nowrap; }
 }
 /* A phone holds one card across; a tablet keeps the two the base grid gives. */
 @media (max-width: 679px) {
@@ -1108,7 +1124,7 @@
   display: grid;
   grid-template-columns: subgrid;
   align-content: start;
-  background: #fff;
+  background: var(--panel);
   border: .5px solid var(--sand-6);
   border-radius: 12px;
   padding: 0;
@@ -1177,6 +1193,7 @@
 /* A region that has reached its end passes nothing on to the page behind it. */
 .palette-results, .palette-filters, .palette-menu { overscroll-behavior: contain; }
 .palette-panel {
+  color-scheme: dark;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -1403,7 +1420,7 @@
     border-radius: 10px;
     font-size: 16px;
   }
-  .palette-apply { background: #fff; color: var(--sand-12); }
+  .palette-apply { background: #fff; color: #21201c; }
   .palette-apply[disabled] { opacity: .4; }
   .palette-back { background: rgba(255, 255, 255, .1); color: rgba(255, 255, 255, .8); }
   .palette { padding: 16px; align-content: center; }
@@ -1414,7 +1431,7 @@
 .collection-heading { margin-top: 32px; }
 
 /* Company indexes reuse the entry shell and unboxed catalog previews. */
-.organization-website { display: inline-flex; align-items: center; gap: 4px; color: var(--sand-10); }
+.organization-website { display: inline-flex; align-items: center; gap: 4px; color: var(--muted); }
 .organization-connections { list-style: none; padding: 16px; margin: 16px 0 0; border-radius: 14px; background: var(--sand-3); }
 .organization-connections > li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; }
 .organization-connections > li + li { margin-top: 16px; }
