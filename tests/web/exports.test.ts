@@ -176,6 +176,21 @@ describe('lesson attribution in Markdown', () => {
   });
 });
 
+describe('related reading in Markdown', () => {
+  it('links every lesson that the entry page links', () => {
+    const withLessons = catalog.approaches.filter((approach) => entryView(catalog, approach.id).relatedLessons.length > 0);
+    expect(withLessons.length).toBeGreaterThan(0);
+    for (const approach of withLessons) {
+      const markdown = recordMarkdown(catalog, approach.id);
+      const related = markdown.slice(markdown.indexOf('## Related reading'));
+      expect(markdown, approach.id).toContain('## Related reading');
+      for (const lesson of entryView(catalog, approach.id).relatedLessons) {
+        expect(related, `${approach.id}: ${lesson.slug}`).toContain(`- Lesson: [${lesson.title}](${canonicalUrl(lesson.path)})`);
+      }
+    }
+  });
+});
+
 describe('catalog Markdown', () => {
   const markdown = catalogMarkdown(catalog) + catalogMarkdown(catalog, 'infrastructure');
 
