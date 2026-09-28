@@ -142,8 +142,7 @@
 /* An accent badge is not dimmed with the rest: it stands as it is. */
 .entry-box:hover .tags > .tag-type,
 .entry-box:hover .tags > .tag-match,
-.entry-box:hover .tags > .tag-company,
-.entry-box:hover .tags > .tag-documented { color: var(--blue-9); }
+.entry-box:hover .tags > .tag-company { color: var(--blue-9); }
 }
 /* The heading link covers the container, so the whole card opens the entry. */
 .entry-box h3 a::after {
@@ -284,17 +283,16 @@
   border-radius: 999px;
   color: var(--sand-10);
 }
-/* The evidence badge is one more tag in the row, with an outline instead of a
-   fill, so it does not read as one more category. */
+/* The evidence badge is a note, not a category: a light outline in place of a
+   fill, and no accent text. Only its check mark carries the accent. */
 .tags > .tag-documented {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   background: none;
-  box-shadow: inset 0 0 0 1px var(--blue-6);
-  color: var(--blue-9);
+  box-shadow: inset 0 0 0 1px var(--sand-5);
 }
-.tag-documented .icon { flex: none; }
+.tag-documented .icon { flex: none; color: var(--blue-9); }
 
 /* The directory holds its entries as cards: a grid of white panels in the
    proportions of the design, four wide to five tall. Each card carries its
@@ -349,7 +347,6 @@
   .entries .entry-box:hover h3 a { color: var(--ink); }
   .entries .entry-box:hover .entry-summary { color: var(--sand-10); }
   .entries .entry-box:hover .tag { color: var(--sand-10); }
-  .entries .entry-box:hover .tag-documented { color: var(--blue-9); }
   .entries .entry-box:hover { background: var(--sand-2); }
 }
 @media (prefers-reduced-motion: no-preference) {
