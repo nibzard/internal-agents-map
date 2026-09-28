@@ -70,6 +70,32 @@
 @media (max-width: 800px) {
   .problem-links a { padding: 4px 11px; }
 }
+/* On a wide screen the problems stand in the rail column, which the catalog page
+   leaves empty, as a list under a quiet title: the same form as a table of contents.
+   The markup stays in the intro, so a narrow screen keeps the pills above the cards. */
+@media (min-width: 1051px) {
+  .intro { position: relative; }
+  .problem-links {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 60px);
+    width: 224px;
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+  .problem-links h2 { margin: 0 0 8px; padding: 0 12px; color: var(--sand-10); }
+  .problem-links ul { display: block; }
+  .problem-links li { line-height: inherit; }
+  .problem-links a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: none;
+    color: var(--sand-10);
+    line-height: inherit;
+  }
+  .problem-links a:hover { background: var(--sand-3); color: var(--sand-12); }
+}
 
 /* The company mark, in a card and at the top of an entry. */
 .entry-heading {

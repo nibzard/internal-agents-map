@@ -623,6 +623,27 @@ test.describe('the problem entry points', () => {
     await expect(page.locator('.problem-links h2')).toHaveText('Start with a problem');
   });
 
+  test('the problem links stand in the rail on a wide screen and in the intro on a phone', async ({ page, isMobile }) => {
+    await page.goto('/');
+    const problems = (await page.locator('.problem-links').boundingBox())!;
+    const main = (await page.locator('#main').boundingBox())!;
+    if (isMobile) {
+      // In the reading flow: inside the column, above the first card.
+      expect(problems.x).toBeGreaterThanOrEqual(main.x);
+      const firstCard = (await page.locator('article.entry:visible').first().boundingBox())!;
+      expect(problems.y + problems.height).toBeLessThanOrEqual(firstCard.y);
+      return;
+    }
+    // In the rail: right of the column, on the line the sidebar starts on, inside the viewport.
+    const sidebar = (await page.locator('.sidebar nav').boundingBox())!;
+    expect(problems.x).toBeGreaterThanOrEqual(main.x + main.width);
+    expect(Math.round(problems.y)).toBe(Math.round(sidebar.y));
+    expect(problems.x + problems.width).toBeLessThanOrEqual(page.viewportSize()!.width);
+    // A list, not a row of pills: each link on its own line.
+    const links = await page.locator('.problem-links a').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().left));
+    expect(new Set(links).size).toBe(1);
+  });
+
   test('the infrastructure page shows no problem links', async ({ page }) => {
     await page.goto('/infrastructure');
     await expect(page.locator('.problem-links')).toHaveCount(0);
