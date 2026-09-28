@@ -936,16 +936,18 @@
   .related-list, .doc-links { grid-template-columns: minmax(0, 1fr); }
   .intro > h1 + p { display: none; }
   .intro { padding-bottom: 0; margin-bottom: 20px; }
+  /* The labels size the columns, so the long first label of the infrastructure page stays on one line. */
   .stats {
     display: grid;
-    grid-template-columns: .8fr 1.3fr .8fr;
+    grid-template-columns: repeat(3, auto);
+    justify-content: space-between;
     gap: 8px;
     margin-top: 20px;
   }
   .stat + .stat { border-left: 0; padding-left: 0; }
   .stat span { font-size: 13px; }
   .problem-links { margin-top: 24px; }
-  .mobile-catalog-search {
+  .mobile-catalog-search:not([hidden]) {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -961,9 +963,8 @@
     font-size: var(--text-sm);
   }
   .mobile-catalog-search .icon { color: var(--sand-10); }
-  body[data-current="catalog"] .search-launcher,
-  body[data-current="infrastructure"] .search-launcher { display: none; }
-  .entries:not([hidden]) { grid-template-columns: minmax(0, 1fr); }
+  /* A page with a door in its reading flow needs no floating one. */
+  body:has(.mobile-catalog-search:not([hidden])) .search-launcher { display: none; }
   .entries .entry-box { padding: 20px; }
   .entry-top { align-items: start; }
   /*
@@ -1050,8 +1051,9 @@
   .claim { padding: 16px 0; }
   .sources li { padding: 8px 0; }
 }
-@media (min-width: 680px) and (max-width: 800px) {
-  .entries:not([hidden]) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* A phone holds one card across; a tablet keeps the two the base grid gives. */
+@media (max-width: 679px) {
+  .entries:not([hidden]) { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* Research ledger */

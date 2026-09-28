@@ -39,8 +39,9 @@ test.describe('the directory without javascript', () => {
     await expect(page.locator('#dropbox-nova h3')).toHaveText('Dropbox · Nova');
   });
 
-  test('shows every entry link', async ({ page }) => {
+  test('shows every entry link, and no search door that cannot open', async ({ page }) => {
     await page.goto('/');
+    await expect(page.locator('.mobile-catalog-search')).toBeHidden();
     await expect(visibleCards(page)).toHaveCount(TOTAL);
     const links = page.locator('article.entry a[href^="/agents/"]');
     const targets = await links.evaluateAll((nodes) =>
@@ -181,10 +182,44 @@ test.describe('the directory with javascript', () => {
     await page.keyboard.press('Escape');
     await expect(page.locator('#palette')).toBeHidden();
     for (let attempt = 0; attempt < 3; attempt++) {
-      await page.locator('#search-shortcut:visible, .mobile-catalog-search:visible').first().click();
+      await searchLauncher(page).click();
       await expect(page.locator('#palette-input')).toBeFocused();
       await page.keyboard.press('Escape');
       await expect(page.locator('#palette')).toBeHidden();
+    }
+  });
+
+  test('on a phone the catalog opens the palette from a door in the page, not the floating bar', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'The inline door is for a phone.');
+    for (const path of ['/', '/infrastructure']) {
+      await page.goto(path);
+      await expect(page.locator('.mobile-catalog-search')).toBeVisible();
+      await expect(page.locator('.search-launcher')).toBeHidden();
+      await page.locator('.mobile-catalog-search').click();
+      await expect(page.locator('#palette')).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(page.locator('#palette')).toBeHidden();
+    }
+    await page.goto('/lessons');
+    await expect(page.locator('.mobile-catalog-search')).toHaveCount(0);
+    await expect(page.locator('.search-launcher')).toBeVisible();
+  });
+
+  test('a narrow phone shows the directory without a sideways scroll', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'The narrow layout is for a phone.');
+    await page.setViewportSize({ width: 320, height: 640 });
+    for (const path of ['/', '/infrastructure']) {
+      await page.goto(path);
+      await expect(page.locator('.mobile-catalog-search')).toBeVisible();
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      );
+      expect(overflow).toBe(0);
+      // Each figure keeps its label on one line, so the row reads as one.
+      const wrapped = await page.locator('.stat span').evaluateAll((nodes) =>
+        nodes.filter((node) => node.getBoundingClientRect().height > parseFloat(getComputedStyle(node).fontSize) * 1.9),
+      );
+      expect(wrapped).toHaveLength(0);
     }
   });
 

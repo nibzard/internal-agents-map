@@ -61,8 +61,9 @@ const preview = infrastructure ? ogImage(path, SECTION_CARDS.infrastructure) : n
   </header>
   <section id="catalog" data-default-collection={collection} aria-labelledby="catalog-title">
     <h2 id="catalog-title" class="visually-hidden">Explore the catalog</h2>
-    <button type="button" class="mobile-catalog-search" data-palette-open>
-      <Icon name="search" size={18} />
+    <!-- The script reveals this door once it can open the palette, so a page without it reads straight through. -->
+    <button type="button" class="mobile-catalog-search" data-palette-open hidden>
+      <Icon name="search" />
       <span>Search the catalog</span>
     </button>
     {(['agents', 'infrastructure'] as const).map((section) => (
