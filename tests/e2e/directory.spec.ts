@@ -175,6 +175,10 @@ test.describe('the directory with javascript', () => {
 
   test('global search launcher opens the palette after repeated closes', async ({ page }) => {
     await page.goto('/?work=security');
+    // A facet in the URL opens the palette first; the launcher must still work after that close.
+    await expect(page.locator('#palette')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#palette')).toBeHidden();
     for (const target of ['#search-shortcut', '#search-shortcut', '#search-shortcut']) {
       await page.locator(target).first().click();
       await expect(page.locator('#palette-input')).toBeFocused();
@@ -587,4 +591,45 @@ test.describe('the problem entry points', () => {
       expect(href).toMatch(/^\/agents\//);
     });
   }
+});
+
+test.describe('the facet links of an entry', () => {
+  const ENTRY = '/agents/block-builderbot';
+  const workLink = (page: Page) => page.locator('.entry-facts a[data-palette-filter][href^="/?work="]').first();
+
+  test('open the palette on the entries that share the value', async ({ page, javaScriptEnabled }) => {
+    test.skip(javaScriptEnabled === false, 'The palette requires JavaScript.');
+    await page.goto(ENTRY);
+    const value = new URLSearchParams((await workLink(page).getAttribute('href'))!.slice(1)).get('work')!;
+    await workLink(page).click();
+    await expect(page.locator('#palette')).toBeVisible();
+    // The reader stays on the entry: the palette opens over it.
+    expect(new URL(page.url()).pathname).toBe(ENTRY);
+    const pill = page.locator('.palette-facet[data-facet="work"]');
+    await expect(pill.locator('.palette-pill-count')).toHaveText('1');
+    await expect(pill.locator(`.palette-option[data-value="${value}"]`)).toHaveAttribute('aria-pressed', 'true');
+    const shown = page.locator('.palette-item:visible');
+    expect(await shown.count()).toBeGreaterThan(0);
+    for (const work of await shown.evaluateAll((items) => items.map((item) => (item as HTMLElement).dataset.work ?? ''))) {
+      expect(work.split(' ')).toContain(value);
+    }
+  });
+
+  test('open the palette from the URL and leave no filter behind', async ({ page, javaScriptEnabled }) => {
+    test.skip(javaScriptEnabled === false, 'The palette requires JavaScript.');
+    await page.goto('/?work=coding&sort=az');
+    await expect(page.locator('#palette')).toBeVisible();
+    await expect(page.locator('.palette-facet[data-facet="work"] .palette-pill-count')).toHaveText('1');
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#palette')).toBeHidden();
+    expect(new URL(page.url()).search).toBe('?sort=az');
+  });
+
+  test('reach the whole directory without javascript', async ({ page, javaScriptEnabled }) => {
+    test.skip(javaScriptEnabled !== false, 'This case is the path without the script.');
+    await page.goto(ENTRY);
+    await workLink(page).click();
+    expect(new URL(page.url()).pathname).toBe('/');
+    await expect(visibleCards(page)).toHaveCount(TOTAL);
+  });
 });
