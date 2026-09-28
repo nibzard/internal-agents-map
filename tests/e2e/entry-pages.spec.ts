@@ -297,7 +297,8 @@ test.describe('page-content pilot', () => {
       if (WORKFLOW_REPORTED.has(id)) {
         await expect(page.locator('#how-it-works .claim-label').first()).not.toBeEmpty();
       }
-      await expect(page.locator('.entry-header a[href="#sources"]')).toBeVisible();
+      // The sources close the page, so the header sends no reader there ahead of the rest.
+      await expect(page.locator('.entry-header a[href="#sources"]')).toHaveCount(0);
       const ids = await page.locator('[data-claim-id]').evaluateAll((nodes) => nodes.map((node) => node.id));
       expect(new Set(ids).size).toBe(ids.length);
       expect([...ids].sort()).toEqual(CATALOG.claims.filter((claim) => claim.approach_id === id).map((claim) => `claim-${claim.id}`).sort());
