@@ -180,6 +180,7 @@ function document(): string {
     inlineMarkdown(terms.participation.definition),
     ...terms.participation.figures.flatMap(figure),
     ...blocks(terms.participation.body),
+    ...figure(terms.participation.switchingFigure),
     terms.combination.label,
     inlineMarkdown(terms.combination.lede),
     ...terms.combination.pairs.map((pair) => `${pair.label}\n:   ${pair.value}`),

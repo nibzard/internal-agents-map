@@ -70,6 +70,7 @@ const [task, work, result] = workflow.steps;
 const [breadth, adaptation] = chart.dimensions;
 const [localFigure, cloudFigure] = terms.place.figures;
 const [foregroundFigure, backgroundFigure] = terms.participation.figures;
+const { switchingFigure } = terms.participation;
 ---
 <ArticleLayout
   title={DEFINITIONS_TITLE}
@@ -310,20 +311,14 @@ const [foregroundFigure, backgroundFigure] = terms.participation.figures;
     <div class="place-panels place-panels-joined">
       <figure class="place-panel">
         <div class="place-scene place-scene-wide" role="img" aria-label={foregroundFigure.label}>
-          <svg class="exchange-scene" viewBox="0 0 652 280" aria-hidden="true" data-signals="5">
-            <path class="exchange-strand" id="exchange-0" d="M66 130 H160 C 250 130, 250 50, 326 50 C 402 50, 402 130, 492 130 H586"/>
-            <path class="exchange-strand" id="exchange-1" d="M66 130 H586"/>
-            <path class="exchange-strand" id="exchange-2" d="M66 130 H160 C 250 130, 250 210, 326 210 C 402 210, 402 130, 492 130 H586"/>
+          <svg class="exchange-scene" viewBox="0 0 652 280" aria-hidden="true">
+            <path class="exchange-strand exchange-link" d="M66 130 H572"/>
+            <path class="exchange-strand exchange-orbit" d="M572 130 A24 24 0 1 1 620 130 A24 24 0 1 1 572 130"/>
+            <path class="exchange-signal" opacity="0"/>
             <circle class="exchange-you" cx="56" cy="130" r="10"/>
             <circle class="exchange-agent" cx="596" cy="130" r="10"/>
-            <path class="signal exchange-signal" data-link="exchange-0" data-delay="0" opacity="0"/>
-            <path class="signal exchange-signal" data-link="exchange-1" data-delay=".5" opacity="0"/>
-            <path class="signal exchange-signal" data-link="exchange-2" data-delay="1" opacity="0"/>
-            <path class="signal exchange-signal" data-link="exchange-0" data-delay="1.6" data-return opacity="0"/>
-            <path class="signal exchange-signal" data-link="exchange-1" data-delay="2.1" data-return opacity="0"/>
-            <path class="signal exchange-signal" data-link="exchange-2" data-delay="2.6" data-return opacity="0"/>
             <text class="scope-label" x="56" y="170" text-anchor="middle">You</text>
-            <text class="scope-label" x="596" y="170" text-anchor="middle">Agent</text>
+            <text class="scope-label" x="596" y="190" text-anchor="middle">Agent</text>
           </svg>
         </div>
         <figcaption>{foregroundFigure.term}</figcaption>
@@ -331,29 +326,47 @@ const [foregroundFigure, backgroundFigure] = terms.participation.figures;
       <figure class="place-panel">
         <figcaption>{backgroundFigure.term}</figcaption>
         <div class="place-scene place-scene-wide" role="img" aria-label={backgroundFigure.label}>
-          <svg class="cycle-scene" viewBox="0 0 668 280" aria-hidden="true">
-            <defs>
-              <clipPath id="cycle-trigger-wipe"><rect class="cycle-wipe" x="127" y="127" width="0" height="26"/></clipPath>
-              <clipPath id="cycle-result-wipe"><rect class="cycle-wipe" x="598" y="127" width="0" height="26"/></clipPath>
-            </defs>
-            <path class="cycle-link" id="cycle-in" d="M0 140 H126"/>
-            <path class="cycle-link" id="cycle-work" d="M154 140 H302"/>
-            <path class="cycle-link" id="cycle-out" d="M350 140 H597"/>
-            <circle class="cycle-trigger" cx="140" cy="140" r="12"/>
-            <circle class="cycle-trigger-on" cx="140" cy="140" r="12" opacity="0" clip-path="url(#cycle-trigger-wipe)"/>
-            <circle class="cycle-agent" cx="326" cy="140" r="22"/>
-            <path class="cycle-spinner" d="M326 128 A12 12 0 0 1 338 140" opacity="0"/>
-            <circle class="cycle-result" cx="611" cy="140" r="12"/>
-            <circle class="cycle-result-on" cx="611" cy="140" r="12" opacity="0" clip-path="url(#cycle-result-wipe)"/>
-            <path class="cycle-signal" opacity="0"/>
-            <text class="scope-label" x="140" y="186" text-anchor="middle">Trigger</text>
-            <text class="scope-label" x="326" y="186" text-anchor="middle">Agent</text>
-            <text class="scope-label" x="611" y="186" text-anchor="middle">Result</text>
+          <svg class="handoff-scene" viewBox="0 0 652 210" aria-hidden="true">
+            <path class="handoff-link" d="M66 70 H110 M580 70 H620 M66 150 H620"/>
+            <path class="handoff-link handoff-away" d="M110 70 H580"/>
+            <path class="handoff-link handoff-route" d="M76 70 H110 C150 70 150 150 190 150 H500 C540 150 540 70 580 70 H620"/>
+            <path class="handoff-signal" opacity="0"/>
+            <circle class="handoff-you" cx="56" cy="70" r="10"/>
+            <circle class="handoff-you-active" cx="56" cy="70" r="10"/>
+            <circle class="handoff-agent" cx="56" cy="150" r="10"/>
+            <text class="scope-label" x="56" y="48" text-anchor="middle">You</text>
+            <text class="scope-label" x="56" y="186" text-anchor="middle">Agent</text>
           </svg>
         </div>
       </figure>
     </div>
     {terms.participation.body.map((block) => <p><Inline parts={block} /></p>)}
+    <figure class="mode-switch-figure">
+      <figcaption>{switchingFigure.term}</figcaption>
+      <div class="mode-switch-scene" role="img" aria-label={switchingFigure.label}>
+        <div class="mode-switch-track" aria-hidden="true">
+          <svg viewBox="0 0 520 282" preserveAspectRatio="none" aria-hidden="true">
+            <path class="mode-switch-guide" d="M163 0 V248 M357 0 V248 M163 48 H357 M163 136 H357"/>
+            <path class="mode-switch-rail" d="M0 48 H163 M357 48 H520 M0 136 H163 M357 136 H520 M0 224 H520"/>
+            <path class="mode-switch-route" d="M0 48 H16 C34 48 34 136 52 136 H64 C82 136 82 48 100 48 H116 C138 48 138 136 160 136 C182 136 182 224 204 224 H316 C338 224 338 136 360 136 C382 136 382 48 404 48 H416 C434 48 434 136 452 136 H464 C482 136 482 48 500 48 H520"/>
+            <path class="mode-switch-signal" opacity="0"/>
+          </svg>
+          <span class="mode-switch-origin" style="--rail-y: 48px">
+            <i class="mode-switch-node"></i><i class="mode-switch-node mode-switch-you-active"></i>
+            <span class="mode-switch-label mode-switch-label-above">You</span>
+          </span>
+          <span class="mode-switch-origin" style="--rail-y: 136px">
+            <i class="mode-switch-node mode-switch-agent"></i>
+            <span class="mode-switch-label">Agent</span>
+          </span>
+          <span class="mode-switch-origin" style="--rail-y: 224px">
+            <i class="mode-switch-node mode-switch-background"></i>
+            <span class="mode-switch-label">Background<br />work</span>
+          </span>
+        </div>
+        <div class="mode-switch-notes" aria-hidden="true"><span>Interact</span><span>Agents at Work</span><span>Interact</span></div>
+      </div>
+    </figure>
     <aside class="concept-combination"><p class="combination-title">{terms.combination.label}<br /><Inline parts={terms.combination.lede} /></p><dl>{terms.combination.pairs.map((pair) => <div><dt>{pair.label}</dt><dd>{pair.value}</dd></div>)}</dl><p class="combination-note">{terms.combination.note}</p></aside>
     <h3 id={terms.autonomy.id}>{terms.autonomy.heading}</h3>
     {terms.autonomy.body.map((block) => <p><Inline parts={block} /></p>)}
@@ -373,14 +386,14 @@ const [foregroundFigure, backgroundFigure] = terms.participation.figures;
 <script>
   import { startOpenTargets } from '../scripts/open-target';
   import { startSignals } from '../scripts/signals';
-  import { startWorkCycle } from '../scripts/work-cycle';
+  import { startParticipation } from '../scripts/participation';
 
   // The router swaps the document rather than reloading it, and a module it has
   // already run is not run again. The diagrams are wired per page it builds, as
   // the rest of the frame is, or a second visit arrives on a still page.
   document.addEventListener('astro:page-load', () => {
     startSignals();
-    startWorkCycle();
+    startParticipation();
     startOpenTargets();
   });
 </script>
