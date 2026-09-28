@@ -394,6 +394,22 @@ test.describe('the site chrome', () => {
       .toBe(true);
   });
 
+  test('keeps the navigation and the rails on the screen at the widths between a laptop and a desktop', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop', 'One project is enough, and it can resize.');
+    for (const width of [1051, 1100, 1200, 1300, 1340]) {
+      await page.setViewportSize({ width, height: 900 });
+      for (const path of ['/', '/definitions']) {
+        await page.goto(path);
+        const layout = await page.evaluate(() => ({
+          overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+          navLeft: document.querySelector('.sidebar nav')!.getBoundingClientRect().left,
+        }));
+        expect(layout.overflow, `${path} at ${width}px`).toBeLessThanOrEqual(0);
+        expect(layout.navLeft, `${path} at ${width}px`).toBeGreaterThanOrEqual(0);
+      }
+    }
+  });
+
   test('carries the dot to its link when a narrow window is widened', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'desktop', 'One project is enough, and it can resize.');
     // A narrow screen hides the column, so the dot is placed against a laid-out one.

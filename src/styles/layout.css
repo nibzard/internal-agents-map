@@ -201,9 +201,13 @@ footer {
 }
 footer small { font-size: inherit; }
 footer a { color: inherit; }
-@media (max-width: 1050px) {
+/* The three columns need 1316px: two 224px rails, two 60px gaps, the 684px
+   column, and the 32px margins. The step up to 1340px leaves space for a
+   scrollbar. Below that, the rail drops and the sidebar narrows, so the nav
+   does not start off the screen. The column keeps its reading width. */
+@media (max-width: 1339px) {
   .page-shell {
-    grid-template-columns: 180px minmax(0, 1fr);
+    grid-template-columns: 180px minmax(0, 684px);
     gap: 32px;
   }
   /* The fixed nav takes its place from where the sidebar sits, so the sidebar

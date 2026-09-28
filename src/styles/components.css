@@ -72,8 +72,9 @@
 }
 /* On a wide screen the problems stand in the rail column, which the catalog page
    leaves empty, as a list under a quiet title: the same form as a table of contents.
-   The markup stays in the intro, so a narrow screen keeps the pills above the cards. */
-@media (min-width: 1051px) {
+   The markup stays in the intro, so a narrow screen keeps the pills above the cards.
+   The width is the one at which layout.css shows the rail column. */
+@media (min-width: 1340px) {
   .intro { position: relative; }
   .problem-links {
     position: absolute;
@@ -1088,6 +1089,16 @@
   }
   .claim { padding: 16px 0; }
   .sources li { padding: 8px 0; }
+}
+@media (max-width: 360px) {
+  /* Keep the count labels whole when three columns cannot fit beside one another. */
+  .stats {
+    grid-template-columns: repeat(2, auto);
+    justify-content: start;
+    column-gap: 24px;
+    row-gap: 12px;
+  }
+  .stat span { white-space: nowrap; }
 }
 /* A phone holds one card across; a tablet keeps the two the base grid gives. */
 @media (max-width: 679px) {
