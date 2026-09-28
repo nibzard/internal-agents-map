@@ -246,6 +246,14 @@ test.describe('page-content pilot', () => {
       .toContain('excluding tests, evals, docs, and lockfiles');
   });
 
+  test('shows a paraphrased headline without quotation marks', async ({ page }) => {
+    await page.goto('/agents/stripe-minions');
+    const headline = page.locator('#claim-stripe-minions--headline-metric .claim-text');
+    await expect(headline).toContainText('Over 1,300 completely minion-produced PRs merged per week');
+    await expect(headline).not.toContainText('“');
+    await expect(headline).not.toContainText('”');
+  });
+
   for (const id of PILOT_IDS) {
     test(`${id} exposes the reviewed reading order and exports`, async ({ page, request }) => {
       await page.goto(`/agents/${id}`);

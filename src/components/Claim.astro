@@ -23,11 +23,6 @@ const { claim, showLabel = true, showKind = false, mark } = Astro.props;
  */
 const OBSERVED = 'Observation date';
 const observed = claim.caveats.find((caveat) => caveat.label === OBSERVED) ?? null;
-/**
- * The headline figure and the key observations lead their sections, a size
- * above the rest. Only the headline is quoted.
- */
-const isHeadline = claim.field === 'headline_metric';
 const tabled = claim.caveats.filter((caveat) => caveat.label !== OBSERVED);
 const attribution =
   claim.kind === 'opinion' && claim.provenanceLabel === 'Reported'
@@ -35,6 +30,8 @@ const attribution =
     : claim.provenanceLabel === 'Catalog judgment'
       ? 'Catalog interpretation'
       : null;
+// Claim text is catalog wording, not the words of the source, so no claim,
+// the headline included, shows quotation marks.
 ---
 <article class:list={['claim', mark && 'claim-marked']} id={claim.anchor} data-claim-id={claim.id}>
   {mark && <Icon name={mark} />}
@@ -45,7 +42,7 @@ const attribution =
   )}
   <p class="claim-text">
     {attribution && <><span class="claim-attribution">{attribution}:</span>{' '}</>}
-    {isHeadline ? <>“<Arrowed text={claim.text} />”</> : <Arrowed text={claim.text} />}
+    <Arrowed text={claim.text} />
   </p>
   {claim.contradicting.length > 0 && (
     <div class="conflict">
