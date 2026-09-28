@@ -4,7 +4,6 @@ company: Cursor
 agent_name: Support investigation workflow
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: "2026-03-03"
   source_id: cursor-support-workflow-source-1
@@ -106,7 +105,6 @@ sources:
   - id: cursor-support-workflow-source-1
     title: "How technical support at Cursor uses Cursor"
     url: "https://cursor.com/blog/cursor-support"
-    canonical_url: "https://cursor.com/blog/cursor-support"
     kind: engineering-blog
     provenance_class: first-party
     role: evidence
@@ -120,122 +118,66 @@ sources:
 
 evidence:
   summary:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 10-12, 18, 24-31, 59-72"
+    - locator: "Preserved content.md, lines 10-12, 18, 24-31, 59-72"
   headline_metric:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 12"
+    - locator: "Preserved content.md, line 12"
   operating_models.0:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 16, 22, 37, 41, 45"
+    - locator: "Preserved content.md, lines 16, 22, 37, 41, 45"
   operating_models.1:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 67-74"
+    - locator: "Preserved content.md, lines 67-74"
   architecture.sandbox:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 16, 53"
+    - locator: "Preserved content.md, lines 16, 53"
   architecture.harness:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 16-18, 22, 53, 59-67"
+    - locator: "Preserved content.md, lines 16-18, 22, 53, 59-67"
   architecture.interfaces:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 16, 53"
+    - locator: "Preserved content.md, lines 16, 53"
   architecture.tool_access:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 26-31, 37, 41, 45, 49"
+    - locator: "Preserved content.md, lines 26-31, 37, 41, 45, 49"
   architecture.knowledge:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 16, 28, 30, 41, 45"
+    - locator: "Preserved content.md, lines 16, 28, 30, 41, 45"
   architecture.context_mgmt:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 10, 18, 74"
+    - locator: "Preserved content.md, lines 10, 18, 74"
   primitives.0:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 10"
+    - locator: "Preserved content.md, line 10"
   primitives.1:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 16, 18"
+    - locator: "Preserved content.md, lines 16, 18"
   primitives.2:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 22, 26-31, 33"
+    - locator: "Preserved content.md, lines 22, 26-31, 33"
   primitives.3:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 37"
+    - locator: "Preserved content.md, line 37"
   primitives.4:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 41"
+    - locator: "Preserved content.md, line 41"
   primitives.5:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 45"
+    - locator: "Preserved content.md, line 45"
   primitives.6:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 49"
+    - locator: "Preserved content.md, line 49"
   primitives.7:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 53"
+    - locator: "Preserved content.md, line 53"
   primitives.8:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 57-63"
+    - locator: "Preserved content.md, lines 57-63"
   primitives.9:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, lines 67-74"
+    - locator: "Preserved content.md, lines 67-74"
   key_metrics.0:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 12"
+    - locator: "Preserved content.md, line 12"
   key_metrics.1:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 12"
+    - locator: "Preserved content.md, line 12"
   key_metrics.2:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 78"
+    - locator: "Preserved content.md, line 78"
   lessons_learned.0:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 41"
+    - locator: "Preserved content.md, line 41"
   lessons_learned.1:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 18"
+    - locator: "Preserved content.md, line 18"
   lessons_learned.2:
-    - source_id: cursor-support-workflow-source-1
-      relation: supports
-      locator: "Preserved content.md, line 53"
+    - locator: "Preserved content.md, line 53"
 
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: "The post describes an engineer opening the session, pointing Ask Mode at the symptom, and
       pulling each MCP source into the thread step by step, which places attention with the engineer throughout the
       investigation; it never describes an investigation running without one."
     valid_at: "2026-03"
   operating_models.1:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: "The subagent section states that the parallel results merge into a single output that the
       team reviews and sends, which locates the return of attention at the merged work product; the post does not
@@ -248,8 +190,6 @@ claim_metadata:
     confidence_reason: "The post says the full codebase is available locally and that a cloud agent opens docs pull
       requests, but documents no execution isolation boundary for either; unknown does not mean absent."
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: "Cursor states both figures in one sentence of its own blog post with no measurement period,
       no definition of a support interaction, no denominator, and no method; 'over 75%' is a floor and '5-10x' is a
@@ -258,8 +198,6 @@ claim_metadata:
     reported_by: Cursor
     metric_scope: "Cursor support interactions and support engineer throughput, as stated in March 2026"
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: "The share is a self-reported floor with no measurement period and no definition of a support
       interaction, so the true value and the base it is taken over both stay open."
@@ -267,8 +205,6 @@ claim_metadata:
     reported_by: Cursor
     metric_scope: "Share of Cursor support interactions that run through Cursor itself"
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: "Cursor reports a 5-10x throughput range without saying what throughput counts, over which
       period, or against which baseline, so the range cannot be reduced to a point estimate."
@@ -276,8 +212,6 @@ claim_metadata:
     reported_by: Cursor
     metric_scope: "Support engineer throughput after support work moved into Cursor"
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: "The closing section marks this figure as the team's own estimate, bounds it with 'as much
       as', and compares it to unspecified traditional approaches, so it is a hedged self-assessment rather than a

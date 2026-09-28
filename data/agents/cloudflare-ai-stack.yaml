@@ -4,7 +4,6 @@ company: Cloudflare
 agent_name: Internal AI engineering stack
 approach_type: platform
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: cloudflare-ai-stack-source-1
@@ -74,7 +73,6 @@ sources:
 - id: cloudflare-ai-stack-source-1
   title: The AI engineering stack we built internally
   url: https://blog.cloudflare.com/internal-ai-engineering-stack/
-  canonical_url: https://blog.cloudflare.com/internal-ai-engineering-stack/
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -84,7 +82,6 @@ sources:
 - id: cloudflare-ai-stack-source-2
   title: Hacker News discussion of Cloudflare's internal AI engineering stack
   url: https://news.ycombinator.com/item?id=47837240
-  canonical_url: https://news.ycombinator.com/item?id=47837240
   kind: hn-thread
   provenance_class: community
   role: commentary
@@ -98,7 +95,6 @@ sources:
 - id: cloudflare-code-review-source
   title: Orchestrating AI Code Review at scale
   url: https://blog.cloudflare.com/ai-code-review/
-  canonical_url: https://blog.cloudflare.com/ai-code-review/
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-09-17'
@@ -108,105 +104,76 @@ sources:
 evidence:
   operating_models.0:
   - source_id: cloudflare-code-review-source
-    relation: supports
     locator: The coordinator helps keep things focused; approval rubric and break glass override
   operating_models.1:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
     locator: Preserved content.md, line 247 (owning team reviews and refines the generated document)
   summary:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
   - source_id: cloudflare-ai-stack-source-2
     relation: contextualizes
   headline_metric:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
     locator: Preserved content.md, lines 14–20
   architecture.sandbox:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
   architecture.harness:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
   architecture.model:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
   architecture.knowledge:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
   architecture.credentials:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
   architecture.context_mgmt:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
   primitives.0:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
   primitives.1:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
     locator: Preserved content.md, lines 179-189
   primitives.2:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
   primitives.3:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
   primitives.4:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
     locator: Preserved content.md, lines 249–251
   key_metrics.0:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
     locator: Preserved content.md, lines 14–16
   key_metrics.1:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
     locator: Preserved content.md, lines 14–20
   key_metrics.2:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
     locator: Preserved content.md, lines 25–29
   key_metrics.3:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
     locator: Preserved content.md, lines 14–18
   lessons_learned.0:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
     locator: Preserved content.md, lines 105
   lessons_learned.1:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
     locator: Preserved content.md, lines 195-212
   lessons_learned.2:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
     locator: Preserved content.md, lines 179-189
   lessons_learned.3:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
     locator: Preserved content.md, lines 84-103
   architecture.interfaces:
   - source_id: cloudflare-ai-stack-source-1
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The reviewer changes approval state and supports human override; this does not establish
       the required human attention boundary for every successful merge.
     valid_at: '2026-09-17'
   operating_models.1:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source states the system opens a merge request so the owning team can review and refine
       the generated AGENTS.md document.

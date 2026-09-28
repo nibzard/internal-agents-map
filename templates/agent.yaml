@@ -15,7 +15,7 @@ agent_name: Agent
 # This does not describe how the work starts.
 approach_type: agent
 deployment_stage: prototype
-year: 2026
+# The build derives year from first_public_evidence.date.
 first_public_evidence:
   date: "2026-08"
   source_id: company-agent-source-1
@@ -54,10 +54,8 @@ sources:
   - id: company-agent-source-1
     title: "Source title"
     url: "https://example.com/source"
-    canonical_url: "https://example.com/source"
     kind: engineering-blog
     provenance_class: first-party
-    role: evidence
     published_at: "2026-08"
     accessed_at: "2026-08-12"
     last_verified_at: "2026-08-12"
@@ -65,30 +63,22 @@ sources:
     # capture:
     #   manifest_path: "archive/sources/company-agent-source-1/metadata.json"
 
+# A link names its source_id only when the record has more than one source.
+# The relation is supports unless you write contradicts or contextualizes.
 evidence:
   operating_models.0:
-    - source_id: company-agent-source-1
-      relation: supports
-      locator: "Human review boundary"
+    - locator: "Human review boundary"
   summary:
-    - source_id: company-agent-source-1
-      relation: supports
-      locator: "Section heading"
+    - locator: "Section heading"
   headline_metric:
-    - source_id: company-agent-source-1
-      relation: supports
-      locator: "Metrics, paragraph 2"
+    - locator: "Metrics, paragraph 2"
 
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: "The public evidence does not document where human attention returns."
     valid_at: "2026-08"
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: "The organization reported this metric without an independent review."
     valid_at: "2026-08"

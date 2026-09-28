@@ -4,7 +4,6 @@ company: OpenAI
 agent_name: Sevbot
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: "2025-11-20"
   source_id: crtsh-sevbot-certificates
@@ -48,7 +47,6 @@ sources:
 - id: openai-sevbot-article
   title: "Inside OpenAI's agentic software factory"
   url: https://newsletter.pragmaticengineer.com/p/openai-software-factory
-  canonical_url: https://newsletter.pragmaticengineer.com/p/openai-software-factory
   kind: news
   provenance_class: independent-secondary
   role: evidence
@@ -63,7 +61,6 @@ sources:
 - id: crtsh-sevbot-certificates
   title: "Certificate Transparency records for sevbot.api.openai.com"
   url: https://crt.sh/?q=sevbot.api.openai.com
-  canonical_url: https://crt.sh/?q=sevbot.api.openai.com
   kind: other
   provenance_class: aggregator
   role: evidence
@@ -75,7 +72,6 @@ sources:
 - id: github-sevbot-pr
   title: "[SEVBot] Optionize initialized notification tolerance (openai-agents-python pull 2765 commits)"
   url: https://github.com/openai/openai-agents-python/pull/2765/commits
-  canonical_url: https://github.com/openai/openai-agents-python/pull/2765/commits
   kind: source-code
   provenance_class: first-party
   role: evidence
@@ -90,56 +86,44 @@ sources:
 evidence:
   summary:
   - source_id: openai-sevbot-article
-    relation: supports
     locator: Preserved content.md, lines 183-195
   - source_id: crtsh-sevbot-certificates
-    relation: supports
     locator: Preserved content.md, lines 13-41 (certificate table for sevbot.api.openai.com; earliest not-before
       2025-11-20 at lines 37-41, with renewals through 2026-08-01; evidences a deployed OpenAI service under
       the Sevbot name, not its incident-response behavior)
   - source_id: github-sevbot-pr
-    relation: supports
     locator: Preserved content.md, lines 21-27 (initial commit '[SEVBot] Optionize initialized notification tolerance',
       219a67a, 2026-03-24, authored by an OpenAI employee and co-authored by Codex; evidences internal Sevbot-branded
       engineering work)
   operating_models.0:
   - source_id: openai-sevbot-article
-    relation: supports
     locator: "Preserved content.md, lines 190-193 (determines possible mitigations but never executes any; an engineer can tell it to apply a specific mitigation)"
   architecture.sandbox:
   - source_id: openai-sevbot-article
-    relation: supports
     locator: "Preserved content.md, lines 188-195 describe Sevbot without documenting an execution sandbox"
   architecture.harness:
   - source_id: openai-sevbot-article
-    relation: supports
     locator: "Preserved content.md, line 188 (Sevbot is built on top of Codex)"
   architecture.model:
   - source_id: openai-sevbot-article
-    relation: supports
     locator: "The preserved article names no underlying models for Sevbot"
   architecture.interfaces:
   - source_id: openai-sevbot-article
-    relation: supports
     locator: "Preserved content.md, line 192 (it is part of the Slack channel and answers devs' questions)"
   primitives.0:
   - source_id: openai-sevbot-article
-    relation: supports
     locator: Preserved content.md, lines 191-193
   primitives.1:
-  - {source_id: openai-sevbot-article, relation: supports, locator: 'Preserved content.md, line 188'}
+  - {source_id: openai-sevbot-article, locator: 'Preserved content.md, line 188'}
   primitives.2:
-  - {source_id: openai-sevbot-article, relation: supports, locator: 'Preserved content.md, line 190'}
+  - {source_id: openai-sevbot-article, locator: 'Preserved content.md, line 190'}
   primitives.3:
-  - {source_id: openai-sevbot-article, relation: supports, locator: 'Preserved content.md, line 192'}
+  - {source_id: openai-sevbot-article, locator: 'Preserved content.md, line 192'}
   lessons_learned.0:
   - source_id: openai-sevbot-article
-    relation: supports
     locator: Preserved content.md, lines 195
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: "The article says Sevbot proposes mitigations and that an engineer can tell it to apply one. This supports an engineer-controlled mitigation path; the source's 'never executes any' wording is read as a limit on autonomous execution."
     valid_at: "2026-09"

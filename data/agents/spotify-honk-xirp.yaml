@@ -4,7 +4,6 @@ company: Spotify
 agent_name: Honk
 approach_type: agent
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: '2025'
   source_id: spotify-honk-xirp-source-1
@@ -75,7 +74,6 @@ sources:
 - id: spotify-honk-xirp-source-1
   title: Spotify's Journey with Our Background Coding Agent (Honk)
   url: https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1
-  canonical_url: https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -85,7 +83,6 @@ sources:
 - id: spotify-honk-xirp-source-2
   title: 'Code with Claude: coding is no longer the constraint (Honk v2)'
   url: https://engineering.atspotify.com/2026/6/code-with-claude-coding-is-no-longer-the-constraint
-  canonical_url: https://engineering.atspotify.com/2026/6/code-with-claude-coding-is-no-longer-the-constraint
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -95,7 +92,6 @@ sources:
 - id: spotify-honk-xirp-source-3
   title: Xirp - Powered by Spotify Portal
   url: https://xirp.spotify.com/
-  canonical_url: https://xirp.spotify.com/
   kind: documentation
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -105,114 +101,80 @@ sources:
 evidence:
   operating_models.0:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
   summary:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
   - source_id: spotify-honk-xirp-source-3
-    relation: supports
   headline_metric:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 70
   architecture.sandbox:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 26
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 56
   architecture.harness:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
   architecture.model:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 64
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 56
   architecture.tool_access:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 64
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 56
   architecture.knowledge:
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 88-94
   architecture.context_mgmt:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
   - source_id: spotify-honk-xirp-source-3
-    relation: supports
   primitives.0:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
   primitives.1:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
   primitives.2:
   - source_id: spotify-honk-xirp-source-3
-    relation: supports
   key_metrics.0:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 70
   key_metrics.1:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 70–77
   key_metrics.2:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 22–38
   lessons_learned.0:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 64
   lessons_learned.1:
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 56
   lessons_learned.2:
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 88-104
   lessons_learned.3:
   - source_id: spotify-honk-xirp-source-3
-    relation: supports
     locator: Preserved content.md, lines 12
   architecture.interfaces:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
   primitives.3:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 58, 87
   primitives.4:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 52–58
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 56–62
   primitives.5:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 26, 58
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source documents automated verification followed by a pull-request workflow that retains
       human review.

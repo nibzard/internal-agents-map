@@ -4,7 +4,6 @@ company: Domu
 agent_name: Clementino
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: domu-clementino-source-1
@@ -69,7 +68,6 @@ sources:
 - id: domu-clementino-source-1
   title: Why we split our internal agent in two
   url: https://domu.ai/blog/why-we-split-our-internal-agent-in-two
-  canonical_url: https://domu.ai/blog/why-we-split-our-internal-agent-in-two
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -79,86 +77,55 @@ sources:
 evidence:
   operating_models.0:
   - source_id: domu-clementino-source-1
-    relation: supports
   operating_models.1:
-  - source_id: domu-clementino-source-1
-    relation: supports
-    locator: Preserved content.md, lines 76, 80 (two workflows; work watched in one place as it happens)
+  - locator: Preserved content.md, lines 76, 80 (two workflows; work watched in one place as it happens)
   operating_models.2:
-  - source_id: domu-clementino-source-1
-    relation: supports
-    locator: Preserved content.md, lines 70, 78 (scheduled jobs post at 5am; review, if any, not described)
+  - locator: Preserved content.md, lines 70, 78 (scheduled jobs post at 5am; review, if any, not described)
   summary:
   - source_id: domu-clementino-source-1
-    relation: supports
   headline_metric:
-  - source_id: domu-clementino-source-1
-    relation: supports
-    locator: Preserved content.md, lines 58–60
+  - locator: Preserved content.md, lines 58–60
   architecture.harness:
   - source_id: domu-clementino-source-1
-    relation: supports
   architecture.model:
   - source_id: domu-clementino-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: domu-clementino-source-1
-    relation: supports
   architecture.knowledge:
   - source_id: domu-clementino-source-1
-    relation: supports
   architecture.credentials:
   - source_id: domu-clementino-source-1
-    relation: supports
   architecture.context_mgmt:
   - source_id: domu-clementino-source-1
-    relation: supports
   primitives.0:
   - source_id: domu-clementino-source-1
-    relation: supports
   primitives.1:
   - source_id: domu-clementino-source-1
-    relation: supports
   primitives.2:
-  - {source_id: domu-clementino-source-1, relation: supports, locator: 'Preserved content.md, lines 70, 78'}
+  - {locator: 'Preserved content.md, lines 70, 78'}
   primitives.3:
-  - {source_id: domu-clementino-source-1, relation: supports, locator: 'Preserved content.md, line 80'}
+  - {locator: 'Preserved content.md, line 80'}
   key_metrics.0:
-  - source_id: domu-clementino-source-1
-    relation: supports
-    locator: Preserved content.md, lines 58–60
+  - locator: Preserved content.md, lines 58–60
   lessons_learned.0:
-  - source_id: domu-clementino-source-1
-    relation: supports
-    locator: Preserved content.md, lines 54-72,98
+  - locator: Preserved content.md, lines 54-72,98
   lessons_learned.1:
-  - source_id: domu-clementino-source-1
-    relation: supports
-    locator: Preserved content.md, lines 64-72,90
+  - locator: Preserved content.md, lines 64-72,90
   lessons_learned.2:
-  - source_id: domu-clementino-source-1
-    relation: supports
-    locator: Preserved content.md, lines 78,92
+  - locator: Preserved content.md, lines 78,92
   architecture.interfaces:
   - source_id: domu-clementino-source-1
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source documents explicit human approval for customer-impacting actions.
     valid_at: '2026'
   operating_models.1:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source describes the author working alongside the agent in Cowork and watching what
       happens in one place, with no approval gate described.
     valid_at: '2026'
   operating_models.2:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source lists scheduled jobs that post without a person starting them, but does not
       describe whether anyone reviews their output.

@@ -4,7 +4,6 @@ company: Cloudflare
 agent_name: AI Code Reviewer
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: cloudflare-code-reviewer-source-1
@@ -42,7 +41,6 @@ sources:
 - id: cloudflare-code-reviewer-source-1
   title: Orchestrating AI Code Review at scale
   url: https://blog.cloudflare.com/ai-code-review/
-  canonical_url: https://blog.cloudflare.com/ai-code-review/
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-09-17'
@@ -50,49 +48,27 @@ sources:
   duplicate_of: cloudflare-code-review-source
 evidence:
   summary:
-  - source_id: cloudflare-code-reviewer-source-1
-    relation: supports
-    locator: The architecture; The coordinator helps keep things focused; Limitations
+  - locator: The architecture; The coordinator helps keep things focused; Limitations
   operating_models.0:
-  - source_id: cloudflare-code-reviewer-source-1
-    relation: supports
-    locator: The architecture; The coordinator helps keep things focused; Limitations
+  - locator: The architecture; The coordinator helps keep things focused; Limitations
   architecture.harness:
-  - source_id: cloudflare-code-reviewer-source-1
-    relation: supports
-    locator: The architecture; The coordinator helps keep things focused; Limitations
+  - locator: The architecture; The coordinator helps keep things focused; Limitations
   architecture.tool_access:
-  - source_id: cloudflare-code-reviewer-source-1
-    relation: supports
-    locator: The architecture; The coordinator helps keep things focused; Limitations
+  - locator: The architecture; The coordinator helps keep things focused; Limitations
   architecture.context_mgmt:
-  - source_id: cloudflare-code-reviewer-source-1
-    relation: supports
-    locator: The architecture; The coordinator helps keep things focused; Limitations
+  - locator: The architecture; The coordinator helps keep things focused; Limitations
   architecture.interfaces:
-  - source_id: cloudflare-code-reviewer-source-1
-    relation: supports
-    locator: The architecture; The coordinator helps keep things focused; Limitations
+  - locator: The architecture; The coordinator helps keep things focused; Limitations
   primitives.0:
-  - source_id: cloudflare-code-reviewer-source-1
-    relation: supports
-    locator: The architecture; The coordinator helps keep things focused; Limitations
+  - locator: The architecture; The coordinator helps keep things focused; Limitations
   primitives.1:
-  - source_id: cloudflare-code-reviewer-source-1
-    relation: supports
-    locator: The architecture; The coordinator helps keep things focused; Limitations
+  - locator: The architecture; The coordinator helps keep things focused; Limitations
   primitives.2:
-  - source_id: cloudflare-code-reviewer-source-1
-    relation: supports
-    locator: The architecture; The coordinator helps keep things focused; Limitations
+  - locator: The architecture; The coordinator helps keep things focused; Limitations
   lessons_learned.0:
-  - source_id: cloudflare-code-reviewer-source-1
-    relation: supports
-    locator: The architecture; The coordinator helps keep things focused; Limitations
+  - locator: The architecture; The coordinator helps keep things focused; Limitations
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes AI Code Reviewer and its work, but does not establish whether a person
       must approve or inspect each successful output.

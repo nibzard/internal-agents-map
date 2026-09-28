@@ -4,7 +4,6 @@ company: PostHog
 agent_name: StampHog
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026-07-09'
   source_id: posthog-stamphog-source-1
@@ -78,7 +77,6 @@ sources:
 - id: posthog-stamphog-source-1
   title: Stop being the code review bottleneck
   url: https://posthog.com/newsletter/code-review-tips
-  canonical_url: https://posthog.com/newsletter/code-review-tips
   kind: corporate-article
   provenance_class: first-party
   role: evidence
@@ -90,7 +88,6 @@ sources:
 - id: posthog-stamphog-source-2
   title: '10,000 PRs a month is easy: How devex is evolving at PostHog'
   url: https://posthog.com/blog/10k-prs-a-month
-  canonical_url: https://posthog.com/blog/10k-prs-a-month
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -104,7 +101,6 @@ sources:
 - id: posthog-stamphog-source-3
   title: StampHog PR approval agent source code and documentation
   url: https://github.com/PostHog/posthog/tree/988c9031bb93c74bafcdfb670c01497c79a4f644/tools/pr-approval-agent
-  canonical_url: https://github.com/PostHog/posthog/tree/988c9031bb93c74bafcdfb670c01497c79a4f644/tools/pr-approval-agent
   kind: source-code
   provenance_class: first-party
   role: evidence
@@ -115,111 +111,86 @@ sources:
 evidence:
   operating_models.0:
   - source_id: posthog-stamphog-source-1
-    relation: supports
   summary:
   - source_id: posthog-stamphog-source-1
-    relation: supports
     locator: Add a PR auto-stamper
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: commit 988c9031bb93c74bafcdfb670c01497c79a4f644, tools/pr-approval-agent/README.md, How it works
   headline_metric:
   - source_id: posthog-stamphog-source-1
-    relation: supports
     locator: Preserved content.md, lines 105, 118
   architecture.harness:
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: commit 988c9031bb93c74bafcdfb670c01497c79a4f644, tools/pr-approval-agent/README.md, How it works and
       Architecture
   architecture.model:
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: commit 988c9031bb93c74bafcdfb670c01497c79a4f644, tools/pr-approval-agent/README.md, LLM Review
   architecture.interfaces:
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: commit 988c9031bb93c74bafcdfb670c01497c79a4f644, tools/pr-approval-agent/README.md, Usage
   architecture.tool_access:
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: commit 988c9031bb93c74bafcdfb670c01497c79a4f644, tools/pr-approval-agent/README.md, LLM Review
   architecture.knowledge:
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: commit 988c9031bb93c74bafcdfb670c01497c79a4f644, tools/pr-approval-agent/README.md, Tiers and Empirical
       basis
   architecture.credentials:
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: commit 988c9031bb93c74bafcdfb670c01497c79a4f644, tools/pr-approval-agent/README.md, Usage and final
       verdict
   architecture.context_mgmt:
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: commit 988c9031bb93c74bafcdfb670c01497c79a4f644, tools/pr-approval-agent/README.md, Usage and Evidence
       bundle
   primitives.0:
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: commit 988c9031bb93c74bafcdfb670c01497c79a4f644, tools/pr-approval-agent/README.md, How it works
   primitives.1:
   - source_id: posthog-stamphog-source-1
-    relation: supports
     locator: Add a PR auto-stamper
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: commit 988c9031bb93c74bafcdfb670c01497c79a4f644, tools/pr-approval-agent/README.md, LLM Review
   primitives.2:
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: commit 988c9031bb93c74bafcdfb670c01497c79a4f644, tools/pr-approval-agent/README.md, Evidence bundle
   primitives.3:
-  - {source_id: posthog-stamphog-source-1, relation: supports, locator: 'Preserved content.md, lines 107–108'}
-  - {source_id: posthog-stamphog-source-3, relation: supports, locator: 'Preserved content.md, lines 19, 41–44'}
+  - {source_id: posthog-stamphog-source-1, locator: 'Preserved content.md, lines 107–108'}
+  - {source_id: posthog-stamphog-source-3, locator: 'Preserved content.md, lines 19, 41–44'}
   primitives.4:
-  - {source_id: posthog-stamphog-source-3, relation: supports, locator: 'Preserved content.md, lines 80–92'}
+  - {source_id: posthog-stamphog-source-3, locator: 'Preserved content.md, lines 80–92'}
   primitives.5:
-  - {source_id: posthog-stamphog-source-2, relation: supports, locator: 'Preserved content.md, line 123'}
-  - {source_id: posthog-stamphog-source-3, relation: supports, locator: 'Preserved content.md, lines 95–112'}
+  - {source_id: posthog-stamphog-source-2, locator: 'Preserved content.md, line 123'}
+  - {source_id: posthog-stamphog-source-3, locator: 'Preserved content.md, lines 95–112'}
   primitives.6:
-  - {source_id: posthog-stamphog-source-1, relation: supports, locator: 'Preserved content.md, lines 114–116'}
-  - {source_id: posthog-stamphog-source-3, relation: supports, locator: 'Preserved content.md, lines 128–131'}
+  - {source_id: posthog-stamphog-source-1, locator: 'Preserved content.md, lines 114–116'}
+  - {source_id: posthog-stamphog-source-3, locator: 'Preserved content.md, lines 128–131'}
   key_metrics.0:
   - source_id: posthog-stamphog-source-1
-    relation: supports
     locator: Preserved content.md, lines 118
   key_metrics.1:
   - source_id: posthog-stamphog-source-1
-    relation: supports
     locator: Preserved content.md, lines 105
   key_metrics.2:
   - source_id: posthog-stamphog-source-2
-    relation: supports
     locator: Preserved content.md, lines 131
   lessons_learned.0:
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: Preserved content.md, lines 119-125
   lessons_learned.1:
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: Preserved content.md, lines 202-214
   lessons_learned.2:
   - source_id: posthog-stamphog-source-3
-    relation: supports
     locator: Preserved content.md, lines 19
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: Eligible pull requests are approved automatically; risky or ambiguous cases are refused or
       routed to a human.
     valid_at: '2026-07-09'
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: PostHog reports two different windows in its July 9, 2026 article; exact monthly and quarterly
       boundaries are not supplied.
@@ -229,8 +200,6 @@ claim_metadata:
     denominator: Merged main-repository PRs for the quarterly share; absolute handled PRs for the monthly count
     measurement_method: Company-reported production usage
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     valid_at: '2026-07-09'
     reported_by: PostHog
@@ -239,8 +208,6 @@ claim_metadata:
     measurement_method: Company-reported production usage
     confidence_reason: July 9 is the report date; the source says last month without exact measurement boundaries.
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     valid_at: 2026-07
     reported_by: PostHog
@@ -248,8 +215,6 @@ claim_metadata:
     denominator: Merged PRs in the main repository
     measurement_method: Company-reported production usage
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: medium
     valid_at: 2026-07
     reported_by: PostHog

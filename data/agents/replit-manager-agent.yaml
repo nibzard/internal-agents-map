@@ -4,7 +4,6 @@ company: Replit
 agent_name: Manager agent (agent-of-agents)
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: replit-manager-agent-source-1
@@ -69,7 +68,6 @@ sources:
 - id: replit-manager-agent-source-1
   title: The Self-Driving Company
   url: https://ld.replit.com/blog/self-driving-company
-  canonical_url: https://ld.replit.com/blog/self-driving-company
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -79,95 +77,55 @@ sources:
 evidence:
   operating_models.0:
   - source_id: replit-manager-agent-source-1
-    relation: supports
   operating_models.1:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 50 (assesses risk levels; second human reviewer only when necessary)
+  - locator: Preserved content.md, line 50 (assesses risk levels; second human reviewer only when necessary)
   summary:
   - source_id: replit-manager-agent-source-1
-    relation: supports
   headline_metric:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10, 38–56
+  - locator: Preserved content.md, lines 10, 38–56
   architecture.sandbox:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 34
+  - locator: Preserved content.md, lines 34
   architecture.harness:
   - source_id: replit-manager-agent-source-1
-    relation: supports
   architecture.model:
   - source_id: replit-manager-agent-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: replit-manager-agent-source-1
-    relation: supports
   architecture.context_mgmt:
   - source_id: replit-manager-agent-source-1
-    relation: supports
   architecture.knowledge:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 120, 132
+  - locator: Preserved content.md, lines 120, 132
   architecture.credentials:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 34
+  - locator: Preserved content.md, line 34
   primitives.0:
   - source_id: replit-manager-agent-source-1
-    relation: supports
   primitives.1:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 16, 34
+  - locator: Preserved content.md, lines 16, 34
   primitives.2:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 78
+  - locator: Preserved content.md, line 78
   primitives.3:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 16
+  - locator: Preserved content.md, line 16
   key_metrics.0:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10, 38–56
+  - locator: Preserved content.md, lines 10, 38–56
   key_metrics.1:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 50–56
+  - locator: Preserved content.md, lines 50–56
   key_metrics.2:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 50
+  - locator: Preserved content.md, line 50
   key_metrics.3:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 168
+  - locator: Preserved content.md, line 168
   lessons_learned.0:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 50-62,78
+  - locator: Preserved content.md, lines 50-62,78
   lessons_learned.1:
-  - source_id: replit-manager-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10,50-62
+  - locator: Preserved content.md, lines 10,50-62
   architecture.interfaces:
   - source_id: replit-manager-agent-source-1
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source describes autonomous parallel execution followed by human judgment on the resulting
       work; human code review remains a documented mode alongside the agent review lane.
     valid_at: '2026'
   operating_models.1:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source states the agent assesses risk levels and only calls in a second human reviewer
       when necessary inside the agent review lane.
@@ -200,14 +158,10 @@ claim_metadata:
     metric_scope: Company code review latency, PR reversion rates, and incidents opened during increased code output
     measurement_method: Company comparison of review latency, PR reversion rates, and incident trends
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Replit reported the saving in its own blog; the measurement method and window are not described.
     metric_scope: Human pull-request review time in the agent review lane; saved share stated as 30% and growing
   key_metrics.3:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Replit reported the figure in its own blog without a method or baseline description.
     metric_scope: Support tickets escalated to humans; closure time stated 60% faster

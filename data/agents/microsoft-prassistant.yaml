@@ -4,7 +4,6 @@ company: Microsoft
 agent_name: AI-powered code review assistant
 approach_type: agent
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: 2025-07
   source_id: microsoft-prassistant-source-1
@@ -44,7 +43,6 @@ sources:
 - id: microsoft-prassistant-source-1
   title: Enhancing code quality at scale with AI-powered code reviews
   url: https://devblogs.microsoft.com/engineering-at-microsoft/enhancing-code-quality-at-scale-with-ai-powered-code-reviews/
-  canonical_url: https://devblogs.microsoft.com/engineering-at-microsoft/enhancing-code-quality-at-scale-with-ai-powered-code-reviews/
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -56,51 +54,37 @@ sources:
 evidence:
   operating_models.0:
   - source_id: microsoft-prassistant-source-1
-    relation: supports
   summary:
   - source_id: microsoft-prassistant-source-1
-    relation: supports
   headline_metric:
-  - source_id: microsoft-prassistant-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10
+  - locator: Preserved content.md, lines 10
   architecture.knowledge:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, line 41'}
+  - {locator: 'Preserved content.md, line 41'}
   primitives.0:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, lines 16, 29'}
+  - {locator: 'Preserved content.md, lines 16, 29'}
   primitives.1:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, lines 18, 23'}
+  - {locator: 'Preserved content.md, lines 18, 23'}
   primitives.2:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, line 19'}
+  - {locator: 'Preserved content.md, line 19'}
   primitives.3:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, line 19'}
+  - {locator: 'Preserved content.md, line 19'}
   primitives.4:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, line 27'}
+  - {locator: 'Preserved content.md, line 27'}
   key_metrics.0:
-  - source_id: microsoft-prassistant-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10
+  - locator: Preserved content.md, lines 10
   key_metrics.1:
-  - source_id: microsoft-prassistant-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10
+  - locator: Preserved content.md, lines 10
   key_metrics.2:
-  - source_id: microsoft-prassistant-source-1
-    relation: supports
-    locator: Preserved content.md, lines 35
+  - locator: Preserved content.md, lines 35
   key_metrics.3:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, line 35'}
+  - {locator: 'Preserved content.md, line 35'}
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The engineering blog describes engineers acting on PRAssistant review comments, which locates
       human attention at work-product review.
     valid_at: 2025-07
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Microsoft reported the figures in its own engineering blog without independent verification.
     valid_at: 2025-07
@@ -108,29 +92,21 @@ claim_metadata:
     metric_scope: PRs supported by the internal AI review assistant across Microsoft
     denominator: Company pull requests for coverage share
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Microsoft reported the figures in its own engineering blog.
     metric_scope: PRs supported by the internal AI review assistant across Microsoft
     denominator: Company pull requests for coverage share
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Microsoft reported the figures in its own engineering blog.
     metric_scope: PRs supported by the internal AI review assistant across Microsoft
     denominator: Company pull requests for coverage share
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Microsoft reported the figures in its own engineering blog.
     metric_scope: Repositories onboarded in early AI code-review experiments
     measurement_method: Early experiments and data science studies across onboarded repositories
   key_metrics.3:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Microsoft reports an early observational result without an independent study or causal design.
     valid_at: 2025-07

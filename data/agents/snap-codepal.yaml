@@ -7,7 +7,6 @@ relationships:
   approach_id: snap-casper
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026-06-05'
   source_id: snap-codepal-source-1
@@ -131,7 +130,6 @@ sources:
 - id: snap-codepal-source-1
   title: 'CodePal: How Snap Built an AI Code Reviewer for the Age of AI-Written Code'
   url: https://eng.snap.com/codepal
-  canonical_url: https://eng.snap.com/codepal
   kind: engineering-blog
   provenance_class: first-party
   publisher: Snap Engineering
@@ -144,167 +142,90 @@ sources:
 
 evidence:
   summary:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 18, 20, 60, 66, 92, 155
+  - locator: Preserved content.md, lines 18, 20, 60, 66, 92, 155
   headline_metric:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: The Numbers, first bullet; preserved content.md, line 147
+  - locator: The Numbers, first bullet; preserved content.md, line 147
   operating_models.0:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 121, 125, 155
+  - locator: Preserved content.md, lines 121, 125, 155
   architecture.sandbox:
-  - source_id: snap-codepal-source-1
-    relation: contextualizes
+  - relation: contextualizes
     locator: 'Preserved content.md, lines 64-68: in-memory, no-clone repository access, with no execution or
       isolation boundary described'
   architecture.harness:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 68, 82-92
+  - locator: Preserved content.md, lines 68, 82-92
   architecture.interfaces:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 20, 66
+  - locator: Preserved content.md, lines 20, 66
   architecture.tool_access:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 40, 66
+  - locator: Preserved content.md, lines 40, 66
   architecture.knowledge:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 44, 139
+  - locator: Preserved content.md, lines 44, 139
   architecture.context_mgmt:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 60, 66, 135
+  - locator: Preserved content.md, lines 60, 66, 135
   primitives.0:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 34, 52, 68
+  - locator: Preserved content.md, lines 34, 52, 68
   primitives.1:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 66
+  - locator: Preserved content.md, line 66
   primitives.2:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 60
+  - locator: Preserved content.md, line 60
   primitives.3:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 68
+  - locator: Preserved content.md, line 68
   primitives.4:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 82
+  - locator: Preserved content.md, line 82
   primitives.5:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 86
+  - locator: Preserved content.md, line 86
   primitives.6:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 90
+  - locator: Preserved content.md, line 90
   primitives.7:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 44, 114
+  - locator: Preserved content.md, lines 44, 114
   primitives.8:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 40
+  - locator: Preserved content.md, line 40
   primitives.9:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 115
+  - locator: Preserved content.md, line 115
   primitives.10:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 92, 123
+  - locator: Preserved content.md, lines 92, 123
   primitives.11:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 125-127
+  - locator: Preserved content.md, lines 125-127
   primitives.12:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 108
+  - locator: Preserved content.md, line 108
   key_metrics.0:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 100, 149
+  - locator: Preserved content.md, lines 100, 149
   key_metrics.1:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 100
+  - locator: Preserved content.md, line 100
   key_metrics.2:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 100, 117
+  - locator: Preserved content.md, lines 100, 117
   key_metrics.3:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 117
+  - locator: Preserved content.md, line 117
   key_metrics.4:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 117
+  - locator: Preserved content.md, line 117
   key_metrics.5:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 100, 117, 150
+  - locator: Preserved content.md, lines 100, 117, 150
   key_metrics.6:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 148
+  - locator: Preserved content.md, line 148
   key_metrics.7:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 151
+  - locator: Preserved content.md, line 151
   key_metrics.8:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 46
+  - locator: Preserved content.md, line 46
   key_metrics.9:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10-12
+  - locator: Preserved content.md, lines 10-12
   lessons_learned.0:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 135
+  - locator: Preserved content.md, line 135
   lessons_learned.1:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 137-139
+  - locator: Preserved content.md, lines 137-139
   lessons_learned.2:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 143, 155
+  - locator: Preserved content.md, lines 143, 155
   lessons_learned.3:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, lines 26-30
+  - locator: Preserved content.md, lines 26-30
   lessons_learned.4:
-  - source_id: snap-codepal-source-1
-    relation: supports
-    locator: Preserved content.md, line 141
+  - locator: Preserved content.md, line 141
 
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source states that engineers judge each posted finding, that their reactions are
       recorded as ground truth, and that every pull request still requires a final engineering approval, so
       attention returns on the review output rather than on an outcome or an exception.
     valid_at: '2026-06'
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Snap reports the review count and the coverage share in its own engineering blog; the
       thousands of confirmed issues carry no counting rule and none of the figures are independently reviewed.
@@ -314,8 +235,6 @@ claim_metadata:
       relatively and gives no calendar range
     denominator: 90% of all pull requests at Snap
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Snap states the start and end points of the ramp in its own blog; the quarter is named
       only as a single quarter and no rollout dates are given.
@@ -325,8 +244,6 @@ claim_metadata:
       to over 90%, within a single unnamed quarter
     denominator: All pull requests at Snap
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: The adoption narrative gives the 9% starting point, the 300-repository figure, and the
       sentiment share, but does not date the stages or say how sentiment was collected at that point.
@@ -335,8 +252,6 @@ claim_metadata:
     metric_scope: The opt-in phase of the CodePal rollout, before teams were auto opted in
     denominator: Pull requests at Snap for the 9% figure; repositories for the 300-repository figure
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Snap reports the recall change twice and names the evaluation framework behind it, but
       publishes neither the dataset size nor its definition of a recallable bug.
@@ -347,8 +262,6 @@ claim_metadata:
     measurement_method: An evaluation framework with a ground truth dataset formed from real engineer feedback,
       used to AB test CodePal changes
   key_metrics.3:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Snap states the 0% rate and volunteers the limit that it was measured on a held-out golden
       dataset rather than on live traffic, which bounds what the number shows.
@@ -357,8 +270,6 @@ claim_metadata:
     metric_scope: False positive rate on the held-out golden dataset, explicitly not on live traffic
     measurement_method: Measurement against the held-out golden dataset in the evaluation framework
   key_metrics.4:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: Snap reports the relative increase without naming the baseline period, the absolute counts,
       or whether review volume grew over the same span.
@@ -366,8 +277,6 @@ claim_metadata:
     reported_by: Snap
     metric_scope: Bugs found with a positive rating, compared with an unnamed earlier period
   key_metrics.5:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: The 80% sentiment figure appears in both the adoption section and the closing numbers; the
       source does not state how the sentiment share is collected or over how many findings.
@@ -375,8 +284,6 @@ claim_metadata:
     reported_by: Snap
     metric_scope: Engineer sentiment on CodePal bug findings
   key_metrics.6:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Snap gives a completion bound for CodePal and a median for the human comparison; the
       CodePal figure is stated as within 10 minutes rather than as a median, and neither figure is dated.
@@ -385,8 +292,6 @@ claim_metadata:
     metric_scope: CodePal review completion time against the median wait for the first human review on a Snap
       pull request
   key_metrics.7:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Snap reports an average unit cost without a measurement window or a statement of what the
       cost includes.
@@ -394,8 +299,6 @@ claim_metadata:
     reported_by: Snap
     metric_scope: Average cost of one CodePal review
   key_metrics.8:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: Snap describes the severity split as a majority and defines an accepted bug as one with a
       +1 vote, but gives no share, no count, and no severity-rating method.
@@ -404,8 +307,6 @@ claim_metadata:
     metric_scope: Severity of CodePal findings that engineers accepted with a +1 vote in the pull request review
     denominator: Accepted CodePal bug findings
   key_metrics.9:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Snap reports this as a company-wide velocity figure behind the review bottleneck that
       prompted CodePal; the article attributes it to AI coding tool use, not to CodePal, and gives no method.

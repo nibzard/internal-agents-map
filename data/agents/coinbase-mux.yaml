@@ -4,7 +4,6 @@ company: Coinbase
 agent_name: Mux
 approach_type: platform
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: coinbase-mux-source-1
@@ -35,7 +34,6 @@ sources:
 - id: coinbase-mux-source-1
   title: 'Coding had a concurrency problem: how Mux helped solve it'
   url: https://www.coinbase.com/de/blog/coding-had-a-concurrency-problem-how-mux-helped-solve-it
-  canonical_url: https://www.coinbase.com/de/blog/coding-had-a-concurrency-problem-how-mux-helped-solve-it
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -43,45 +41,25 @@ sources:
   duplicate_of: coinbase-forge-mux-source-1
 evidence:
   summary:
-  - source_id: coinbase-mux-source-1
-    relation: supports
-    locator: Mux workspace and concurrent-agent sections
+  - locator: Mux workspace and concurrent-agent sections
   operating_models.0:
-  - source_id: coinbase-mux-source-1
-    relation: supports
-    locator: Mux workspace and concurrent-agent sections
+  - locator: Mux workspace and concurrent-agent sections
   architecture.sandbox:
-  - source_id: coinbase-mux-source-1
-    relation: supports
-    locator: Mux workspace and concurrent-agent sections
+  - locator: Mux workspace and concurrent-agent sections
   architecture.harness:
-  - source_id: coinbase-mux-source-1
-    relation: supports
-    locator: Mux workspace and concurrent-agent sections
+  - locator: Mux workspace and concurrent-agent sections
   primitives.0:
-  - source_id: coinbase-mux-source-1
-    relation: supports
-    locator: Mux workspace and concurrent-agent sections
+  - locator: Mux workspace and concurrent-agent sections
   primitives.1:
-  - source_id: coinbase-mux-source-1
-    relation: supports
-    locator: Mux workspace and concurrent-agent sections
+  - locator: Mux workspace and concurrent-agent sections
   key_metrics.0:
-  - source_id: coinbase-mux-source-1
-    relation: supports
-    locator: Mux adoption and merged-PR statistics; self-selection caveat
+  - locator: Mux adoption and merged-PR statistics; self-selection caveat
   key_metrics.1:
-  - source_id: coinbase-mux-source-1
-    relation: supports
-    locator: Mux adoption and merged-PR statistics; self-selection caveat
+  - locator: Mux adoption and merged-PR statistics; self-selection caveat
   key_metrics.2:
-  - source_id: coinbase-mux-source-1
-    relation: supports
-    locator: Mux adoption and merged-PR statistics; self-selection caveat
+  - locator: Mux adoption and merged-PR statistics; self-selection caveat
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The source documents this scoped human attention boundary; it is not a claim about every
       system at the company.
@@ -89,15 +67,11 @@ claim_metadata:
   key_metrics.0:
     metric_scope: Registered Mux users including engineers, PMs, and designers; 335 active and 197 power users
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Coinbase reported the aggregate in its own engineering blog without independent verification
       or a measurement window.
     metric_scope: Mux merged pull requests across repositories and organizations
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Self-reported comparison whose own text cautions that Mux users likely skew toward engineers
       who were already high-output and AI-forward; no cohort method is documented.

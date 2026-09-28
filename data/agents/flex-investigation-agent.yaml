@@ -4,7 +4,6 @@ company: Flex
 agent_name: AI Investigation Agent
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: flex-investigation-agent-source-1
@@ -66,7 +65,6 @@ sources:
 - id: flex-investigation-agent-source-1
   title: The Flex AI Investigation Agent for HSA/FSA payments
   url: https://www.withflex.com/blog/the-flex-ai-investigation-agent-for-hsa-fsa-payments
-  canonical_url: https://www.withflex.com/blog/the-flex-ai-investigation-agent-for-hsa-fsa-payments
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -76,57 +74,43 @@ sources:
 evidence:
   operating_models.0:
   - source_id: flex-investigation-agent-source-1
-    relation: supports
   summary:
   - source_id: flex-investigation-agent-source-1
-    relation: supports
   architecture.sandbox:
   - source_id: flex-investigation-agent-source-1
-    relation: supports
   architecture.harness:
   - source_id: flex-investigation-agent-source-1
-    relation: supports
   architecture.model:
   - source_id: flex-investigation-agent-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: flex-investigation-agent-source-1
-    relation: supports
   primitives.0:
   - source_id: flex-investigation-agent-source-1
-    relation: supports
   architecture.context_mgmt:
-  - {source_id: flex-investigation-agent-source-1, relation: supports, locator: 'Preserved content.md, lines 47,
+  - {locator: 'Preserved content.md, lines 47,
     172'}
   primitives.1:
-  - {source_id: flex-investigation-agent-source-1, relation: supports, locator: 'Preserved content.md, lines 45, 69'}
+  - {locator: 'Preserved content.md, lines 45, 69'}
   primitives.2:
-  - {source_id: flex-investigation-agent-source-1, relation: supports, locator: 'Preserved content.md, lines 45, 73'}
+  - {locator: 'Preserved content.md, lines 45, 73'}
   primitives.3:
-  - {source_id: flex-investigation-agent-source-1, relation: supports, locator: 'Preserved content.md, lines 93-94,
+  - {locator: 'Preserved content.md, lines 93-94,
     99'}
   primitives.4:
-  - {source_id: flex-investigation-agent-source-1, relation: supports, locator: 'Preserved content.md, lines 99-103'}
+  - {locator: 'Preserved content.md, lines 99-103'}
   primitives.5:
-  - {source_id: flex-investigation-agent-source-1, relation: supports, locator: 'Preserved content.md, lines 103,
+  - {locator: 'Preserved content.md, lines 103,
     169'}
   key_metrics.0:
-  - {source_id: flex-investigation-agent-source-1, relation: supports, locator: 'Preserved content.md, lines 24, 26'}
+  - {locator: 'Preserved content.md, lines 24, 26'}
   lessons_learned.0:
-  - source_id: flex-investigation-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 152-157
+  - locator: Preserved content.md, lines 152-157
   lessons_learned.1:
-  - source_id: flex-investigation-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 99-113
+  - locator: Preserved content.md, lines 99-113
   architecture.interfaces:
   - source_id: flex-investigation-agent-source-1
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source describes a trace, diagnosis, and proposed pull request returned for review.
     valid_at: '2026'

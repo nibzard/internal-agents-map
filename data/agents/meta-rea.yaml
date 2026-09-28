@@ -5,7 +5,6 @@ agent_name: Ranking Engineer Agent (REA)
 aliases: [REA]
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026-03-17'
   source_id: meta-rea-source-1
@@ -117,7 +116,6 @@ sources:
 - id: meta-rea-source-1
   title: "Ranking Engineer Agent (REA): The Autonomous AI Agent Accelerating Meta's Ads Ranking Innovation"
   url: https://engineering.fb.com/2026/03/17/developer-tools/ranking-engineer-agent-rea-autonomous-ai-system-accelerating-meta-ads-ranking-innovation/
-  canonical_url: https://engineering.fb.com/2026/03/17/developer-tools/ranking-engineer-agent-rea-autonomous-ai-system-accelerating-meta-ads-ranking-innovation/
   kind: engineering-blog
   publisher: Engineering at Meta
   authors:
@@ -138,94 +136,50 @@ sources:
 
 evidence:
   summary:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10-12, 23, 64, 80
+  - locator: Preserved content.md, lines 10-12, 23, 64, 80
   headline_metric:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 14, 90
+  - locator: Preserved content.md, lines 14, 90
   operating_models.0:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 12, 64, 70, 102
+  - locator: Preserved content.md, lines 12, 64, 70, 102
   architecture.sandbox:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 49, 72
+  - locator: Preserved content.md, lines 49, 72
   architecture.harness:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 49, 78, 80
+  - locator: Preserved content.md, lines 49, 78, 80
   architecture.tool_access:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 49, 72
+  - locator: Preserved content.md, lines 49, 72
   architecture.knowledge:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 55-56, 82
+  - locator: Preserved content.md, lines 55-56, 82
   architecture.context_mgmt:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 33, 47
+  - locator: Preserved content.md, lines 33, 47
   primitives.0:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 78, 80
+  - locator: Preserved content.md, lines 78, 80
   primitives.1:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 53-56, 58
+  - locator: Preserved content.md, lines 53-56, 58
   primitives.2:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, line 64
+  - locator: Preserved content.md, line 64
   primitives.3:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 66-68
+  - locator: Preserved content.md, lines 66-68
   primitives.4:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, line 47
+  - locator: Preserved content.md, line 47
   primitives.5:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, line 82
+  - locator: Preserved content.md, line 82
   primitives.6:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 70, 72, 84
+  - locator: Preserved content.md, lines 70, 72, 84
   key_metrics.0:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 15, 96
+  - locator: Preserved content.md, lines 15, 96
   key_metrics.1:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, line 96
+  - locator: Preserved content.md, line 96
   lessons_learned.0:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 70, 84
+  - locator: Preserved content.md, lines 70, 84
   lessons_learned.1:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 64, 72
+  - locator: Preserved content.md, lines 64, 72
   lessons_learned.2:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 34, 58
+  - locator: Preserved content.md, lines 34, 58
   lessons_learned.3:
-  - source_id: meta-rea-source-1
-    relation: supports
-    locator: Preserved content.md, lines 100-102
+  - locator: Preserved content.md, lines 100-102
 
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: >-
       The post places human attention at two points of a normal run: an engineer confirms the exploration
@@ -246,8 +200,6 @@ claim_metadata:
       The post names Meta internal job schedulers, access controls granted by preflight checklist review, and
       a codebase restriction, but no execution isolation boundary for the agent; unknown does not mean absent.
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: >-
       Meta reports the result in its own engineering blog with a stated denominator of six models and a
@@ -260,8 +212,6 @@ claim_metadata:
     measurement_method: >-
       Comparison of REA-driven iterations against baseline approaches; the accuracy measure is not defined
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: >-
       The 5x label is a ratio derived from a staffing comparison rather than a measured throughput: Meta sets
@@ -276,8 +226,6 @@ claim_metadata:
       Ratio derived from a stated historical staffing norm of two engineers per model; no measured baseline
       throughput is reported
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: >-
       Meta reports a rise from one to five model-improvement proposals per early adopter in its own

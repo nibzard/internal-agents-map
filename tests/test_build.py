@@ -1163,6 +1163,201 @@ class BuildTests(unittest.TestCase):
     def test_json_is_serializable(self) -> None:
         json.dumps(build.normalize(self.records, self.companies))
 
+    def shortest_record(self) -> dict:
+        """Give a valid record that omits every field the build can fill."""
+        return {
+            "id": "fixture-agent",
+            "company": self.records[0]["company"],
+            "agent_name": "Fixture agent",
+            "approach_type": "agent",
+            "deployment_stage": "deployed",
+            "first_public_evidence": {"date": "2025-11-20", "source_id": "fixture-source"},
+            "last_reviewed_at": "2026-09-28",
+            "status": "internal",
+            "domains": ["coding"],
+            "autonomy": "unknown",
+            "operating_models": [{"scope": "task to output", "attention_boundary": "unknown"}],
+            "rubric": {
+                "invocation": ["unknown"],
+                "state": "unknown",
+                "identity": "unknown",
+                "evidence_strength": "limited-primary",
+            },
+            "summary": "A fixture agent.",
+            "key_metrics": ["Ten runs a day."],
+            "sources": [
+                {
+                    "id": "fixture-source",
+                    "title": "Fixture source",
+                    "url": "https://example.com/article",
+                    "kind": "engineering-blog",
+                    "provenance_class": "first-party",
+                    "accessed_at": "2026-09-28",
+                    "last_verified_at": "2026-09-28",
+                }
+            ],
+            "evidence": {
+                "summary": [{"locator": "Paragraph 1"}],
+                "key_metrics.0": [{"source_id": "fixture-source"}],
+                "operating_models.0": [{"relation": "contextualizes", "locator": "Paragraph 2"}],
+            },
+            "claim_metadata": {
+                "operating_models.0": {
+                    "confidence": "unverified",
+                    "confidence_reason": "The source does not locate human attention.",
+                    "valid_at": "2025-11",
+                }
+            },
+        }
+
+    def export_of(self, record: dict) -> dict:
+        with tempfile.TemporaryDirectory() as directory:
+            build.validate_record(record, Path(directory) / f"{record['id']}.yaml", set())
+        return build.normalize([record], self.companies)
+
+    def second_source(self) -> dict:
+        return {
+            **self.shortest_record()["sources"][0],
+            "id": "fixture-source-2",
+            "url": "https://example.com/second",
+        }
+
+    def test_the_shortest_record_is_valid_and_exports_every_default(self) -> None:
+        catalog = self.export_of(self.shortest_record())
+        approach = catalog["approaches"][0]
+        self.assertEqual(approach["year"], 2025)
+        keys = list(approach)
+        self.assertEqual(keys.index("year"), keys.index("deployment_stage") + 1)
+        source = catalog["sources"][0]
+        self.assertEqual(source["canonical_url"], "https://example.com/article")
+        self.assertEqual(list(source)[:4], ["id", "title", "url", "canonical_url"])
+        claims = {claim["field"]: claim for claim in catalog["claims"]}
+        self.assertEqual(
+            claims["summary"]["evidence"],
+            [{"source_id": "fixture-source", "relation": "supports", "locator": "Paragraph 1"}],
+        )
+        self.assertEqual(
+            claims["key_metrics.0"]["evidence"],
+            [{"source_id": "fixture-source", "relation": "supports"}],
+        )
+        self.assertEqual(
+            claims["operating_models.0"]["evidence"],
+            [
+                {
+                    "source_id": "fixture-source",
+                    "relation": "contextualizes",
+                    "locator": "Paragraph 2",
+                }
+            ],
+        )
+        self.assertEqual(
+            (claims["operating_models.0"]["kind"], claims["operating_models.0"]["provenance"]),
+            ("inference", "catalog-judgment"),
+        )
+        self.assertEqual(
+            (claims["key_metrics.0"]["kind"], claims["key_metrics.0"]["provenance"]),
+            ("metric", "reported"),
+        )
+
+    def test_headline_metric_defaults_to_a_reported_metric(self) -> None:
+        record = self.shortest_record()
+        record["headline_metric"] = "Half of all reviews."
+        record["evidence"]["headline_metric"] = [{"locator": "Paragraph 3"}]
+        record["claim_metadata"]["headline_metric"] = {"confidence": "medium"}
+        claims = {claim["field"]: claim for claim in self.export_of(record)["claims"]}
+        self.assertEqual(
+            (claims["headline_metric"]["kind"], claims["headline_metric"]["provenance"]),
+            ("metric", "reported"),
+        )
+
+    def test_authored_defaults_give_the_same_export_as_omitted_defaults(self) -> None:
+        # The records write year after deployment_stage and canonical_url after url.
+        fields = list(self.shortest_record().items())
+        explicit = dict(fields[:5] + [("year", 2025)] + fields[5:])
+        source = list(explicit["sources"][0].items())
+        explicit["sources"][0] = dict(
+            source[:3] + [("canonical_url", "https://example.com/article")] + source[3:]
+        )
+        explicit["evidence"] = {
+            "summary": [
+                {"source_id": "fixture-source", "relation": "supports", "locator": "Paragraph 1"}
+            ],
+            "key_metrics.0": [{"source_id": "fixture-source", "relation": "supports"}],
+            "operating_models.0": [
+                {
+                    "source_id": "fixture-source",
+                    "relation": "contextualizes",
+                    "locator": "Paragraph 2",
+                }
+            ],
+        }
+        explicit["claim_metadata"]["operating_models.0"] = {
+            "kind": "inference",
+            "provenance": "catalog-judgment",
+            **explicit["claim_metadata"]["operating_models.0"],
+        }
+        explicit["claim_metadata"]["key_metrics.0"] = {"kind": "metric", "provenance": "reported"}
+        self.assertEqual(
+            json.dumps(self.export_of(explicit), indent=2),
+            json.dumps(self.export_of(self.shortest_record()), indent=2),
+        )
+
+    def test_a_year_that_differs_from_the_first_public_evidence_fails(self) -> None:
+        record = self.shortest_record()
+        record["year"] = 2026
+        message = self.assert_record_error(record)
+        self.assertIn("fixture-agent.yaml: 'year' is 2026", message)
+        self.assertIn("'2025-11-20'", message)
+
+    def test_a_link_without_a_source_fails_when_the_record_has_several_sources(self) -> None:
+        record = self.shortest_record()
+        record["sources"].append(self.second_source())
+        record["evidence"]["summary"].append({"source_id": "fixture-source-2"})
+        message = self.assert_record_error(record)
+        self.assertIn(
+            "fixture-agent.yaml: evidence.summary.0 must name a source_id, "
+            "because the record has more than one source.",
+            message,
+        )
+
+    def test_links_in_a_record_with_several_sources_can_name_each_source(self) -> None:
+        record = self.shortest_record()
+        record["sources"].append(self.second_source())
+        for links in record["evidence"].values():
+            for link in links:
+                link["source_id"] = "fixture-source"
+        record["evidence"]["summary"].append({"source_id": "fixture-source-2"})
+        claims = {claim["field"]: claim for claim in self.export_of(record)["claims"]}
+        self.assertEqual(
+            claims["summary"]["evidence"][1],
+            {"source_id": "fixture-source-2", "relation": "supports"},
+        )
+
+    def test_an_empty_or_relation_only_evidence_link_fails(self) -> None:
+        for link in ({}, {"relation": "supports"}):
+            with self.subTest(link=link):
+                record = self.shortest_record()
+                record["evidence"]["summary"] = [link]
+                message = self.assert_record_error(record)
+                self.assertIn("fixture-agent.yaml: evidence.summary.0:", message)
+
+    def test_operating_model_metadata_rejects_another_kind_or_provenance(self) -> None:
+        for field, value, expected in (
+            ("kind", "fact", "must be an inference"),
+            ("provenance", "reported", "must be a catalog judgment"),
+        ):
+            with self.subTest(field=field):
+                record = self.shortest_record()
+                record["claim_metadata"]["operating_models.0"][field] = value
+                self.assertIn(expected, self.assert_record_error(record))
+
+    def test_operating_model_metadata_still_requires_the_assessment_fields(self) -> None:
+        for field in ("confidence", "confidence_reason", "valid_at"):
+            with self.subTest(field=field):
+                record = self.shortest_record()
+                del record["claim_metadata"]["operating_models.0"][field]
+                self.assertIn(f"requires '{field}'", self.assert_record_error(record))
+
     def test_template_matches_schema(self) -> None:
         template = yaml.safe_load((ROOT / "templates" / "agent.yaml").read_text(encoding="utf-8"))
         with tempfile.TemporaryDirectory() as directory:

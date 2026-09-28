@@ -4,7 +4,6 @@ company: Databricks
 agent_name: coSTAR
 approach_type: supporting-pattern
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: '2025'
   source_id: databricks-costar-source-1
@@ -59,7 +58,6 @@ sources:
 - id: databricks-costar-source-1
   title: 'coSTAR: how we ship AI agents at Databricks fast'
   url: https://www.databricks.com/blog/costar-how-we-ship-ai-agents-databricks-fast-without-breaking-things
-  canonical_url: https://www.databricks.com/blog/costar-how-we-ship-ai-agents-databricks-fast-without-breaking-things
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -70,7 +68,6 @@ sources:
 - id: databricks-costar-source-2
   title: Benchmarking coding agents on a multi-million line codebase
   url: https://www.databricks.com/blog/benchmarking-coding-agents-databricks-multi-million-line-codebase
-  canonical_url: https://www.databricks.com/blog/benchmarking-coding-agents-databricks-multi-million-line-codebase
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -81,64 +78,46 @@ sources:
 evidence:
   operating_models.0:
   - source_id: databricks-costar-source-1
-    relation: supports
   summary:
   - source_id: databricks-costar-source-1
-    relation: supports
   - source_id: databricks-costar-source-2
-    relation: supports
   architecture.harness:
   - source_id: databricks-costar-source-1
-    relation: supports
   architecture.knowledge:
   - source_id: databricks-costar-source-2
-    relation: supports
   key_metrics.0:
   - source_id: databricks-costar-source-1
-    relation: supports
     locator: Preserved content.md, line 11
   key_metrics.1:
   - source_id: databricks-costar-source-2
-    relation: supports
   architecture.tool_access:
   - source_id: databricks-costar-source-1
-    relation: supports
     locator: Preserved content.md, line 133
   primitives.0:
   - source_id: databricks-costar-source-1
-    relation: supports
     locator: Preserved content.md, lines 62–64
   primitives.1:
   - source_id: databricks-costar-source-1
-    relation: supports
     locator: Preserved content.md, lines 70–74
   primitives.2:
   - source_id: databricks-costar-source-1
-    relation: supports
     locator: Preserved content.md, lines 119–121
   primitives.3:
   - source_id: databricks-costar-source-1
-    relation: supports
     locator: Preserved content.md, lines 113–117
   primitives.4:
   - source_id: databricks-costar-source-1
-    relation: supports
     locator: Preserved content.md, lines 12, 135
   lessons_learned.0:
   - source_id: databricks-costar-source-1
-    relation: supports
     locator: Preserved content.md, lines 72–74, 180
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The record covers several internal engineering agents with different workflows, so no single
       human-attention boundary applies.
     valid_at: '2025'
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Databricks reported the reduction in its own engineering blog; the measurement method is
       not described.

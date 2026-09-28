@@ -4,7 +4,6 @@ company: monday.com
 agent_name: Sphera / Atlas / Morphex
 approach_type: agent-system
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: monday-sphera-atlas-morphex-source-1
@@ -85,7 +84,6 @@ sources:
 - id: monday-sphera-atlas-morphex-source-1
   title: 'AI Teammates: how monday.com runs production AI agents on Amazon Bedrock'
   url: https://aws.amazon.com/blogs/machine-learning/ai-teammates-how-monday-com-runs-production-ai-agents-on-amazon-bedrock/
-  canonical_url: https://aws.amazon.com/blogs/machine-learning/ai-teammates-how-monday-com-runs-production-ai-agents-on-amazon-bedrock/
   kind: case-study
   provenance_class: independent-secondary
   accessed_at: '2026-08-12'
@@ -94,119 +92,76 @@ sources:
     manifest_path: archive/sources/monday-sphera-atlas-morphex-source-1/metadata.json
 evidence:
   operating_models.0:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, lines 150, 169 (19 of 20 Morphex PRs merge automatically; above threshold merges,
+  - locator: Preserved content.md, lines 150, 169 (19 of 20 Morphex PRs merge automatically; above threshold merges,
       below routes to a human)
   operating_models.1:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, line 124 (Atlas tests run before he asks for human review)
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: contextualizes
+  - locator: Preserved content.md, line 124 (Atlas tests run before he asks for human review)
+  - relation: contextualizes
     locator: Preserved content.md, line 169 (threshold routing described as driven out over the next two quarters)
   summary:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, lines 114-130,150
+  - locator: Preserved content.md, lines 114-130,150
   headline_metric:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, lines 148–152
+  - locator: Preserved content.md, lines 148–152
   architecture.sandbox:
   - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
   architecture.harness:
   - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
   architecture.model:
   - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
   architecture.knowledge:
   - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
   architecture.credentials:
   - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
   architecture.context_mgmt:
   - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
   primitives.0:
   - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
   primitives.1:
   - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
   primitives.2:
   - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
   primitives.3:
   - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
   primitives.4:
-  - {source_id: monday-sphera-atlas-morphex-source-1, relation: supports, locator: 'Preserved content.md, lines 40,
+  - {locator: 'Preserved content.md, lines 40,
     46, 50'}
   primitives.5:
-  - {source_id: monday-sphera-atlas-morphex-source-1, relation: supports, locator: 'Preserved content.md, line 28'}
+  - {locator: 'Preserved content.md, line 28'}
   primitives.6:
-  - {source_id: monday-sphera-atlas-morphex-source-1, relation: supports, locator: 'Preserved content.md, line 124'}
+  - {locator: 'Preserved content.md, line 124'}
   primitives.7:
-  - {source_id: monday-sphera-atlas-morphex-source-1, relation: supports, locator: 'Preserved content.md, lines 150,
+  - {locator: 'Preserved content.md, lines 150,
     169'}
   key_metrics.0:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, lines 148–152
+  - locator: Preserved content.md, lines 148–152
   key_metrics.1:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10, 16, 22
+  - locator: Preserved content.md, lines 10, 16, 22
   key_metrics.2:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10, 23
+  - locator: Preserved content.md, lines 10, 23
   key_metrics.3:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, lines 154–158
+  - locator: Preserved content.md, lines 154–158
   lessons_learned.0:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, lines 114-116,188
+  - locator: Preserved content.md, lines 114-116,188
   lessons_learned.1:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, lines 118-120
+  - locator: Preserved content.md, lines 118-120
   lessons_learned.2:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, lines 122-124
+  - locator: Preserved content.md, lines 122-124
   lessons_learned.3:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, lines 150
+  - locator: Preserved content.md, lines 150
   lessons_learned.4:
-  - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
-    locator: Preserved content.md, lines 116,128-130
+  - locator: Preserved content.md, lines 116,128-130
   architecture.interfaces:
   - source_id: monday-sphera-atlas-morphex-source-1
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source states that nineteen of every twenty Morphex PRs merge automatically by passing
       every gate and that approved PRs ship to production with no human in the loop; a PR below the confidence
       threshold routes to a human.
     valid_at: '2026'
   operating_models.1:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The evidence is two-sided for Atlas; the source describes tests running before a request
       for human review while also describing confidence-threshold auto-merge as being driven out over the following

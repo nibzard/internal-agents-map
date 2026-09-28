@@ -4,7 +4,6 @@ company: Shopify
 agent_name: River
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: shopify-river-source-1
@@ -40,7 +39,6 @@ sources:
 - id: shopify-river-source-1
   title: Under the River
   url: https://shopify.engineering/under-the-river
-  canonical_url: https://shopify.engineering/under-the-river
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -48,49 +46,27 @@ sources:
   duplicate_of: shopify-internal-agents-source-1
 evidence:
   summary:
-  - source_id: shopify-river-source-1
-    relation: supports
-    locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - locator: 'Part II: River only works in the open; At scale; River is one profile'
   operating_models.0:
-  - source_id: shopify-river-source-1
-    relation: supports
-    locator: 'River only works in the open: well-going thread includes a colleague redirect and continued collaboration'
+  - locator: 'River only works in the open: well-going thread includes a colleague redirect and continued collaboration'
   architecture.harness:
-  - source_id: shopify-river-source-1
-    relation: supports
-    locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - locator: 'Part II: River only works in the open; At scale; River is one profile'
   architecture.tool_access:
-  - source_id: shopify-river-source-1
-    relation: supports
-    locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - locator: 'Part II: River only works in the open; At scale; River is one profile'
   architecture.knowledge:
-  - source_id: shopify-river-source-1
-    relation: supports
-    locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - locator: 'Part II: River only works in the open; At scale; River is one profile'
   architecture.interfaces:
-  - source_id: shopify-river-source-1
-    relation: supports
-    locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - locator: 'Part II: River only works in the open; At scale; River is one profile'
   primitives.0:
-  - source_id: shopify-river-source-1
-    relation: supports
-    locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - locator: 'Part II: River only works in the open; At scale; River is one profile'
   primitives.1:
-  - source_id: shopify-river-source-1
-    relation: supports
-    locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - locator: 'Part II: River only works in the open; At scale; River is one profile'
   primitives.2:
-  - source_id: shopify-river-source-1
-    relation: supports
-    locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - locator: 'Part II: River only works in the open; At scale; River is one profile'
   key_metrics.0:
-  - source_id: shopify-river-source-1
-    relation: supports
-    locator: 'At scale: recent 30-day river_sessions domain-table counts'
+  - locator: 'At scale: recent 30-day river_sessions domain-table counts'
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes a colleague optionally redirecting a public thread, but does not require
       continuous steering or a universal PR approval checkpoint.

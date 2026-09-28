@@ -4,7 +4,6 @@ company: Plaid
 agent_name: Fix My Connection
 approach_type: agent
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: 2025-06
   source_id: plaid-fix-my-connection-source-1
@@ -37,7 +36,6 @@ sources:
 - id: plaid-fix-my-connection-source-1
   title: AI agents at Plaid (June 2025)
   url: https://plaid.com/blog/ai-agents-june-2025/
-  canonical_url: https://plaid.com/blog/ai-agents-june-2025/
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -49,40 +47,27 @@ sources:
 evidence:
   operating_models.0:
   - source_id: plaid-fix-my-connection-source-1
-    relation: supports
   summary:
   - source_id: plaid-fix-my-connection-source-1
-    relation: supports
   headline_metric:
-  - source_id: plaid-fix-my-connection-source-1
-    relation: supports
-    locator: Preserved content.md, lines 26–32
+  - locator: Preserved content.md, lines 26–32
   architecture.tool_access:
   - source_id: plaid-fix-my-connection-source-1
-    relation: supports
   primitives.0:
-  - {source_id: plaid-fix-my-connection-source-1, relation: supports, locator: 'Preserved content.md, line 30'}
+  - {locator: 'Preserved content.md, line 30'}
   primitives.1:
-  - {source_id: plaid-fix-my-connection-source-1, relation: supports, locator: 'Preserved content.md, line 30'}
+  - {locator: 'Preserved content.md, line 30'}
   key_metrics.0:
-  - source_id: plaid-fix-my-connection-source-1
-    relation: supports
-    locator: Preserved content.md, lines 26–32
+  - locator: Preserved content.md, lines 26–32
   key_metrics.1:
-  - source_id: plaid-fix-my-connection-source-1
-    relation: supports
-    locator: Preserved content.md, lines 26–32
+  - locator: Preserved content.md, lines 26–32
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source reports aggregate impact such as successful logins and repair time; it does not
       document that a person reviews outcomes, work products, or exceptions on any run.
     valid_at: 2025-06
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Plaid reported the figures in its own blog without independent verification.
     valid_at: 2025-06
@@ -90,15 +75,11 @@ claim_metadata:
     metric_scope: Automated repair of bank connections and the successful user-permissioned logins enabled by those
       repairs
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Plaid reported the figure in its own blog.
     metric_scope: Automated repair of bank connections and the successful user-permissioned logins enabled by those
       repairs
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Plaid reported the figure in its own blog.
     metric_scope: Automated repair of bank connections and the successful user-permissioned logins enabled by those

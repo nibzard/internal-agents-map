@@ -4,7 +4,6 @@ company: Ramp
 agent_name: Inspect
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: ramp-inspect-source-1
@@ -83,7 +82,6 @@ sources:
 - id: ramp-inspect-source-1
   title: Why We Built Our Own Background Agent (Inspect)
   url: https://engineering.ramp.com/post/why-we-built-our-background-agent
-  canonical_url: https://engineering.ramp.com/post/why-we-built-our-background-agent
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -93,7 +91,6 @@ sources:
 - id: ramp-inspect-source-2
   title: Ramp x Linear (75% of merged PRs via Inspect)
   url: https://linear.app/customers/ramp
-  canonical_url: https://linear.app/customers/ramp
   kind: case-study
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -103,7 +100,6 @@ sources:
 - id: ramp-inspect-source-3
   title: Hacker News project discussion inspired by Ramp Inspect
   url: https://news.ycombinator.com/item?id=48042123
-  canonical_url: https://news.ycombinator.com/item?id=48042123
   kind: hn-thread
   provenance_class: community
   role: discovery
@@ -115,7 +111,6 @@ sources:
 - id: ramp-inspect-source-4
   title: Why We Built Our Own Background Agent (Inspect) (Ramp Builders URL)
   url: https://builders.ramp.com/post/why-we-built-our-background-agent
-  canonical_url: https://builders.ramp.com/post/why-we-built-our-background-agent
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -127,7 +122,6 @@ sources:
 - id: ramp-inspect-source-5
   title: Why Ramp built its own in-house coding agent, Inspect
   url: https://newsletter.pragmaticengineer.com/p/why-ramp-built-inspect
-  canonical_url: https://newsletter.pragmaticengineer.com/p/why-ramp-built-inspect
   kind: news
   provenance_class: independent-secondary
   publisher: The Pragmatic Engineer
@@ -143,130 +137,96 @@ sources:
 evidence:
   operating_models.0:
   - source_id: ramp-inspect-source-1
-    relation: supports
   summary:
   - source_id: ramp-inspect-source-1
-    relation: supports
   - source_id: ramp-inspect-source-4
-    relation: supports
   - source_id: ramp-inspect-source-5
-    relation: supports
     locator: What is Inspect? section
   headline_metric:
   - source_id: ramp-inspect-source-5
-    relation: supports
     locator: Preserved content.md, lines 58–68
   architecture.sandbox:
   - source_id: ramp-inspect-source-1
-    relation: supports
   architecture.harness:
   - source_id: ramp-inspect-source-1
-    relation: supports
   architecture.model:
   - source_id: ramp-inspect-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: ramp-inspect-source-1
-    relation: supports
   architecture.knowledge:
   - source_id: ramp-inspect-source-1
-    relation: supports
   architecture.context_mgmt:
-  - {source_id: ramp-inspect-source-1, relation: supports, locator: 'Preserved content.md, lines 20, 44'}
+  - {source_id: ramp-inspect-source-1, locator: 'Preserved content.md, lines 20, 44'}
   architecture.credentials:
   - source_id: ramp-inspect-source-1
-    relation: supports
   primitives.0:
   - source_id: ramp-inspect-source-1
-    relation: supports
     locator: Preserved content.md, lines 32-43
   primitives.1:
   - source_id: ramp-inspect-source-1
-    relation: supports
     locator: Preserved content.md, lines 46-54
   primitives.2:
   - source_id: ramp-inspect-source-1
-    relation: supports
   primitives.3:
-  - {source_id: ramp-inspect-source-5, relation: supports, locator: 'Preserved content.md, line 109'}
-  - {source_id: ramp-inspect-source-2, relation: supports, locator: 'Preserved content.md, line 22'}
+  - {source_id: ramp-inspect-source-5, locator: 'Preserved content.md, line 109'}
+  - {source_id: ramp-inspect-source-2, locator: 'Preserved content.md, line 22'}
   primitives.4:
-  - {source_id: ramp-inspect-source-1, relation: supports, locator: 'Preserved content.md, lines 10–12'}
-  - {source_id: ramp-inspect-source-5, relation: supports, locator: 'Preserved content.md, lines 51–54'}
+  - {source_id: ramp-inspect-source-1, locator: 'Preserved content.md, lines 10–12'}
+  - {source_id: ramp-inspect-source-5, locator: 'Preserved content.md, lines 51–54'}
   key_metrics.0:
   - source_id: ramp-inspect-source-5
-    relation: supports
     locator: Preserved content.md, lines 58–68
   key_metrics.1:
   - source_id: ramp-inspect-source-5
-    relation: supports
     locator: Preserved content.md, lines 58–68
   - source_id: ramp-inspect-source-2
-    relation: supports
     locator: Preserved content.md, lines 10
   key_metrics.2:
   - source_id: ramp-inspect-source-1
-    relation: supports
     locator: Preserved content.md, lines 24
   key_metrics.3:
   - source_id: ramp-inspect-source-5
-    relation: supports
     locator: Preserved content.md, lines 96–102
   key_metrics.4:
   - source_id: ramp-inspect-source-5
-    relation: supports
     locator: Preserved content.md, lines 66–72
   key_metrics.5:
   - source_id: ramp-inspect-source-5
-    relation: supports
     locator: Preserved content.md, lines 100
   key_metrics.6:
   - source_id: ramp-inspect-source-5
-    relation: supports
     locator: Preserved content.md, lines 134–141
   key_metrics.7:
   - source_id: ramp-inspect-source-5
-    relation: supports
     locator: Preserved content.md, lines 102
   key_metrics.8:
   - source_id: ramp-inspect-source-5
-    relation: supports
     locator: Preserved content.md, lines 101
   key_metrics.9:
   - source_id: ramp-inspect-source-5
-    relation: supports
     locator: Preserved content.md, lines 111
   key_metrics.10:
   - source_id: ramp-inspect-source-1
-    relation: supports
     locator: Preserved content.md, lines 22
   lessons_learned.0:
   - source_id: ramp-inspect-source-1
-    relation: supports
     locator: Preserved content.md, lines 26
   lessons_learned.1:
   - source_id: ramp-inspect-source-1
-    relation: supports
     locator: Preserved content.md, lines 24,104
   lessons_learned.2:
   - source_id: ramp-inspect-source-1
-    relation: supports
     locator: Preserved content.md, lines 16-22
   lessons_learned.3:
   - source_id: ramp-inspect-source-1
-    relation: supports
     locator: Preserved content.md, lines 36-43,69-72
   lessons_learned.4:
   - source_id: ramp-inspect-source-5
-    relation: supports
     locator: Preserved content.md, lines 58-66,82-90
   architecture.interfaces:
   - source_id: ramp-inspect-source-1
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source explicitly states that Inspect cannot self-approve and production merges retain
       human review.

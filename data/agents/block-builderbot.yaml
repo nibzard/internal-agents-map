@@ -4,7 +4,6 @@ company: Block
 agent_name: Builderbot
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: block-builderbot-source-1
@@ -70,7 +69,6 @@ sources:
 - id: block-builderbot-source-1
   title: Block rolls out Builderbot, a new suite of AI-native tools that changes the way we ship
   url: https://block.xyz/inside/block-rolls-out-builderbot-a-new-suite-of-ai-native-tools-that-changes-the-way-we-ship
-  canonical_url: https://block.xyz/inside/block-rolls-out-builderbot-a-new-suite-of-ai-native-tools-that-changes-the-way-we-ship
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -80,7 +78,6 @@ sources:
 - id: block-builderbot-source-2
   title: Protecting our systems with intelligence (Builderbot architecture)
   url: https://engineering.block.xyz/blog/protecting-our-systems-with-intelligence
-  canonical_url: https://engineering.block.xyz/blog/protecting-our-systems-with-intelligence
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -90,7 +87,6 @@ sources:
 - id: block-builderbot-source-3
   title: block/builderbot source repository
   url: https://github.com/block/builderbot
-  canonical_url: https://github.com/block/builderbot
   kind: repository
   provenance_class: first-party
   role: evidence
@@ -101,7 +97,6 @@ sources:
 - id: block-builderbot-source-4
   title: Hacker News discussion of the Builderbot announcement
   url: https://news.ycombinator.com/item?id=48618973
-  canonical_url: https://news.ycombinator.com/item?id=48618973
   kind: hn-thread
   provenance_class: community
   role: commentary
@@ -115,7 +110,6 @@ sources:
 - id: block-builderbot-source-5
   title: Hacker News comment that points to the Builderbot repository
   url: https://news.ycombinator.com/item?id=48619052
-  canonical_url: https://news.ycombinator.com/item?id=48619052
   kind: hn-comment
   provenance_class: community
   role: discovery
@@ -129,90 +123,65 @@ sources:
 evidence:
   operating_models.0:
   - source_id: block-builderbot-source-1
-    relation: supports
   summary:
   - source_id: block-builderbot-source-1
-    relation: supports
   - source_id: block-builderbot-source-2
-    relation: supports
   - source_id: block-builderbot-source-3
     relation: contextualizes
   - source_id: block-builderbot-source-4
     relation: contextualizes
   headline_metric:
   - source_id: block-builderbot-source-1
-    relation: supports
     locator: Preserved content.md, lines 24
   architecture.sandbox:
   - source_id: block-builderbot-source-1
-    relation: supports
   architecture.harness:
   - source_id: block-builderbot-source-1
-    relation: supports
   architecture.model:
   - source_id: block-builderbot-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: block-builderbot-source-1
-    relation: supports
   architecture.knowledge:
   - source_id: block-builderbot-source-1
-    relation: supports
   - source_id: block-builderbot-source-2
-    relation: supports
   architecture.context_mgmt:
   - source_id: block-builderbot-source-2
-    relation: supports
     locator: Preserved content.md, lines 32–40
   primitives.0:
   - source_id: block-builderbot-source-1
-    relation: supports
   primitives.1:
   - source_id: block-builderbot-source-1
-    relation: supports
   primitives.2:
   - source_id: block-builderbot-source-1
-    relation: supports
     locator: Preserved content.md, line 16
   primitives.3:
   - source_id: block-builderbot-source-1
-    relation: supports
     locator: Preserved content.md, line 18
   primitives.4:
   - source_id: block-builderbot-source-2
-    relation: supports
     locator: Preserved content.md, lines 46–58
   key_metrics.0:
   - source_id: block-builderbot-source-1
-    relation: supports
     locator: Preserved content.md, lines 24
   key_metrics.1:
   - source_id: block-builderbot-source-1
-    relation: supports
     locator: Preserved content.md, lines 24
   key_metrics.2:
   - source_id: block-builderbot-source-1
-    relation: supports
     locator: Preserved content.md, lines 24–26
   lessons_learned.0:
   - source_id: block-builderbot-source-1
-    relation: supports
     locator: Preserved content.md, lines 26
   lessons_learned.1:
   - source_id: block-builderbot-source-1
-    relation: supports
     locator: Preserved content.md, lines 16
   lessons_learned.2:
   - source_id: block-builderbot-source-1
-    relation: supports
     locator: Preserved content.md, lines 16
   architecture.interfaces:
   - source_id: block-builderbot-source-1
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source explicitly describes end-to-end implementation ending in a reviewed pull request.
     valid_at: '2026-06-21'

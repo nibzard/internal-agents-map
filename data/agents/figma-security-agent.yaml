@@ -6,7 +6,6 @@ aliases:
 - Tines Security Slackbot
 approach_type: agent-system
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026-07-29'
   source_id: figma-security-agent-source-1
@@ -159,7 +158,6 @@ sources:
 - id: figma-security-agent-source-1
   title: How we secure Figma's internal systems with agents
   url: https://www.figma.com/blog/how-we-secure-figmas-internal-systems-with-agents/
-  canonical_url: https://www.figma.com/blog/how-we-secure-figmas-internal-systems-with-agents/
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -175,187 +173,106 @@ sources:
 
 evidence:
   summary:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 28, 32, 100-104
+  - locator: Preserved content.md, lines 28, 32, 100-104
   headline_metric:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 212 (Where we are now, and what's next)
-  - source_id: figma-security-agent-source-1
-    relation: contextualizes
+  - locator: Preserved content.md, line 212 (Where we are now, and what's next)
+  - relation: contextualizes
     locator: Article standfirst under the title, which states the same result as cutting time-to-resolution by
       71% and omits the complex-alerts scope; the standfirst is outside the preserved capture and was read on the
       live page on 2026-09-21
   operating_models.0:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 210
+  - locator: Preserved content.md, line 210
   operating_models.1:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 176, 184
+  - locator: Preserved content.md, lines 176, 184
   operating_models.2:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 84-94
+  - locator: Preserved content.md, lines 84-94
   operating_models.3:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 104
+  - locator: Preserved content.md, line 104
   architecture.sandbox:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 100, 121
+  - locator: Preserved content.md, lines 100, 121
   architecture.harness:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 32, 100-104, 205
+  - locator: Preserved content.md, lines 32, 100-104, 205
   architecture.model:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 104, 110, 127, 158
+  - locator: Preserved content.md, lines 104, 110, 127, 158
   architecture.interfaces:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 102, 104, 180
+  - locator: Preserved content.md, lines 102, 104, 180
   architecture.tool_access:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 104, 112-121
+  - locator: Preserved content.md, lines 104, 112-121
   architecture.knowledge:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 46-48, 137, 149, 151
+  - locator: Preserved content.md, lines 46-48, 137, 149, 151
   architecture.credentials:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 178, 186, 206
+  - locator: Preserved content.md, lines 178, 186, 206
   architecture.context_mgmt:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 110, 139, 188
+  - locator: Preserved content.md, lines 110, 139, 188
   primitives.0:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 28
+  - locator: Preserved content.md, line 28
   primitives.1:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 32, 38, 46-48
+  - locator: Preserved content.md, lines 32, 38, 46-48
   primitives.2:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 102
+  - locator: Preserved content.md, line 102
   primitives.3:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 104
+  - locator: Preserved content.md, line 104
   primitives.4:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 110-119
+  - locator: Preserved content.md, lines 110-119
   primitives.5:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 121, 127-129
+  - locator: Preserved content.md, lines 121, 127-129
   primitives.6:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 135-151
+  - locator: Preserved content.md, lines 135-151
   primitives.7:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 176, 180
+  - locator: Preserved content.md, lines 176, 180
   primitives.8:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 184-186
+  - locator: Preserved content.md, lines 184-186
   key_metrics.0:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 84-94, 212
+  - locator: Preserved content.md, lines 84-94, 212
   key_metrics.1:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 212
+  - locator: Preserved content.md, line 212
   key_metrics.2:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 212
+  - locator: Preserved content.md, line 212
   key_metrics.3:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 158
+  - locator: Preserved content.md, line 158
   key_metrics.4:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 210
+  - locator: Preserved content.md, line 210
   lessons_learned.0:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 147
+  - locator: Preserved content.md, line 147
   lessons_learned.1:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 204
+  - locator: Preserved content.md, line 204
   lessons_learned.2:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 205
+  - locator: Preserved content.md, line 205
   lessons_learned.3:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 184
+  - locator: Preserved content.md, line 184
   lessons_learned.4:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 178
+  - locator: Preserved content.md, line 178
   lessons_learned.5:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 190
+  - locator: Preserved content.md, line 190
   lessons_learned.6:
-  - source_id: figma-security-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 206
+  - locator: Preserved content.md, line 206
 
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The post states that the on-call engineer's job shifted to reviewing what the agent found
       and confirming or correcting it, which locates human attention at the investigation write-up rather than
       during it.
     valid_at: '2026-07'
   operating_models.1:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The post says the agent opens pull requests and that a deterministic post-step sets every
       one of them to draft, so the review of the change is the documented boundary. Opening a pull request is the
       agent's authority; nothing in the post says the agent merges or deploys.
     valid_at: '2026-07'
   operating_models.2:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The severity-downgrade code path runs on a retrieval confidence score without a described
       human checkpoint, and Figma credits it with fewer on-call pages. The post does not say what happens to a
       downgraded alert afterwards, so the exception boundary is inferred from the reduced paging rather than stated.
     valid_at: '2026-07'
   operating_models.3:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The post names platform security questions and app approval inquiries as separate routed
       agents with their own tools and prompts, but describes no review step for their answers. The boundary is
       undocumented, and the triage boundary must not be assumed to carry over.
     valid_at: '2026-07'
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: 'Figma reports the figure in its own engineering blog with no measurement method, denominator,
       or interval, and hedges it as "around 70%". The page also states the result two ways: the standfirst says
@@ -365,8 +282,6 @@ claim_metadata:
     reported_by: Figma
     metric_scope: Time-to-resolution on complex security alerts handled by the agent system
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Figma attributes the drop to the automatic severity downgrade alone and repeats it in the
       results paragraph, but reports no baseline period, denominator, or method. The downgrade runs in the retrieval
@@ -376,8 +291,6 @@ claim_metadata:
     metric_scope: On-call pages, after automatically downgrading high or critical alerts scored as high-confidence
       benign or duplicate
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: The figure appears only in the summary list of results, with the mechanism Figma credits
       for it but no baseline, denominator, or method.
@@ -385,8 +298,6 @@ claim_metadata:
     reported_by: Figma
     metric_scope: Endpoint software approval requests reaching the security team
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: Figma states engineer confidence is meaningfully higher but gives no survey, scale, or other
       measurement, so this is a qualitative impression reported alongside the numeric results.
@@ -394,8 +305,6 @@ claim_metadata:
     reported_by: Figma
     metric_scope: On-call engineer confidence in resolution quality
   key_metrics.3:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: The before-and-after query counts come from one worked example about Zoom activity that
       Figma uses to illustrate procedural memory; the post says the pattern repeated across data sources but gives
@@ -405,8 +314,6 @@ claim_metadata:
     metric_scope: Queries the investigation sub-agent needed for one repeated data-lake question, before and after
       it saved a schema memory
   key_metrics.4:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Figma states the coverage directly, but gives no alert counts, exclusions, or period, so
       the scope of "all initial security response work" rests on the team's own characterization.

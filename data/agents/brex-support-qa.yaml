@@ -4,7 +4,6 @@ company: Brex
 agent_name: Support quality agent
 approach_type: agent
 deployment_stage: deployed
-year: 2025
 first_public_evidence:
   date: '2025-09-25'
   source_id: brex-support-qa-source-1
@@ -35,7 +34,6 @@ sources:
 - id: brex-support-qa-source-1
   title: 'Agent, Human, Ops: How Brex Is Changing Roles and Workflows'
   url: https://www.firstround.com/ai/brex
-  canonical_url: https://www.firstround.com/ai/brex
   kind: case-study
   provenance_class: independent-secondary
   published_at: '2025-09-25'
@@ -44,29 +42,17 @@ sources:
   duplicate_of: brex-agent-platform-source-1
 evidence:
   summary:
-  - source_id: brex-support-qa-source-1
-    relation: supports
-    locator: 'Redesign roles: support quality assurance'
+  - locator: 'Redesign roles: support quality assurance'
   operating_models.0:
-  - source_id: brex-support-qa-source-1
-    relation: supports
-    locator: 'Redesign roles: support quality assurance'
+  - locator: 'Redesign roles: support quality assurance'
   architecture.knowledge:
-  - source_id: brex-support-qa-source-1
-    relation: supports
-    locator: 'Redesign roles: support quality assurance'
+  - locator: 'Redesign roles: support quality assurance'
   primitives.0:
-  - source_id: brex-support-qa-source-1
-    relation: supports
-    locator: 'Redesign roles: support quality assurance'
+  - locator: 'Redesign roles: support quality assurance'
   primitives.1:
-  - source_id: brex-support-qa-source-1
-    relation: supports
-    locator: 'Redesign roles: support quality assurance'
+  - locator: 'Redesign roles: support quality assurance'
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes Support quality agent and its work, but does not establish whether a
       person must approve or inspect each successful output.

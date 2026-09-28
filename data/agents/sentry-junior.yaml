@@ -4,7 +4,6 @@ company: Sentry
 agent_name: Junior
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: sentry-junior-source-2
@@ -81,7 +80,6 @@ sources:
 - id: sentry-junior-source-1
   title: Building an Intern (Junior at Sentry)
   url: https://cra.mr/building-an-intern/
-  canonical_url: https://cra.mr/building-an-intern/
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -91,7 +89,6 @@ sources:
 - id: sentry-junior-source-2
   title: getsentry/junior source repository
   url: https://github.com/getsentry/junior
-  canonical_url: https://github.com/getsentry/junior
   kind: repository
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -101,7 +98,6 @@ sources:
 - id: sentry-junior-source-3
   title: Sentry Labs
   url: https://labs.sentry.dev/
-  canonical_url: https://labs.sentry.dev/
   kind: documentation
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -111,7 +107,6 @@ sources:
 - id: sentry-junior-source-4
   title: getsentry/junior Apache 2.0 license
   url: https://github.com/getsentry/junior/blob/main/LICENSE?plain=1
-  canonical_url: https://github.com/getsentry/junior/blob/main/LICENSE?plain=1
   kind: source-code
   provenance_class: first-party
   role: evidence
@@ -122,111 +117,83 @@ sources:
 evidence:
   operating_models.0:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 12, 91 (steer-and-review framing; mid-run messages ingested as the worker
       continues)
   operating_models.1:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 261, 279 (scheduled tasks and inbound events; the agent decides what to
       do)
   summary:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 28-34,64-95,261-281
   - source_id: sentry-junior-source-2
-    relation: supports
   - source_id: sentry-junior-source-3
     relation: contextualizes
   headline_metric:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 10–24, 34–60
   - source_id: sentry-junior-source-4
-    relation: supports
     locator: Preserved content.md, lines 412–414
   architecture.sandbox:
   - source_id: sentry-junior-source-1
-    relation: supports
   architecture.harness:
   - source_id: sentry-junior-source-1
-    relation: supports
   architecture.model:
   - source_id: sentry-junior-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: sentry-junior-source-1
-    relation: supports
   architecture.knowledge:
   - source_id: sentry-junior-source-1
-    relation: supports
   architecture.credentials:
   - source_id: sentry-junior-source-1
-    relation: supports
   architecture.context_mgmt:
   - source_id: sentry-junior-source-1
-    relation: supports
   primitives.0:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 226-236
   primitives.1:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 144-180
   primitives.2:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 136
   primitives.3:
-  - {source_id: sentry-junior-source-1, relation: supports, locator: 'Preserved content.md, line 34'}
+  - {source_id: sentry-junior-source-1, locator: 'Preserved content.md, line 34'}
   primitives.4:
-  - {source_id: sentry-junior-source-1, relation: supports, locator: 'Preserved content.md, lines 40, 218–220'}
+  - {source_id: sentry-junior-source-1, locator: 'Preserved content.md, lines 40, 218–220'}
   primitives.5:
-  - {source_id: sentry-junior-source-1, relation: supports, locator: 'Preserved content.md, line 42'}
+  - {source_id: sentry-junior-source-1, locator: 'Preserved content.md, line 42'}
   primitives.6:
-  - {source_id: sentry-junior-source-1, relation: supports, locator: 'Preserved content.md, lines 263–279'}
+  - {source_id: sentry-junior-source-1, locator: 'Preserved content.md, lines 263–279'}
   key_metrics.0:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 22
   key_metrics.1:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 10–22
   lessons_learned.0:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 28-32
   lessons_learned.1:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 247-257
   lessons_learned.2:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 136
   lessons_learned.3:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 311-337
   lessons_learned.4:
   - source_id: sentry-junior-source-1
-    relation: supports
     locator: Preserved content.md, lines 212-216
   architecture.interfaces:
   - source_id: sentry-junior-source-1
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source explicitly describes humans steering and reviewing the agent throughout its work.
     valid_at: '2026'
   operating_models.1:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: Webhook and scheduler inputs become synthetic messages the agent decides on alone; no passage
       documents a person reviewing the agent-initiated thread updates.

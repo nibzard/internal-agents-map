@@ -32,7 +32,6 @@ To add an allowed value, add it to the schema and to this document. A test fails
 | `agent_name` | string | The reported name. Use a clear description if no name is public. |
 | `approach_type` | enum | The type of approach. See the values below. |
 | `deployment_stage` | enum | `research`, `prototype`, `pilot`, `deployed`, `scaled`, or `unknown`. |
-| `year` | integer | The year of the earliest verified public evidence. |
 | `first_public_evidence` | map | The evidence `date` and its `source_id`. |
 | `last_reviewed_at` | date | The last catalog review date. |
 | `status` | enum | `internal`, `open-sourced`, `commercialized`, or `mixed` for a combined record. |
@@ -43,6 +42,8 @@ To add an allowed value, add it to the schema and to this document. A test fails
 | `summary` | string | A short, factual description. |
 | `sources` | list | Structured public sources. |
 | `evidence` | map | A link from each authored claim to one or more sources. |
+
+The build derives `year`, the year of the earliest verified public evidence, from `first_public_evidence.date`. The export always contains `year`. Do not write it. If a record writes `year` and the value does not agree with that date, the build fails.
 
 Set the optional `featured` field to `true` to show a record before all others in the default directory order. Featured records come after the bookmarks of the reader and before the other well-documented records. Give this field only to a record that is well documented. The A–Z order does not use it.
 
@@ -95,7 +96,7 @@ The boundary describes required human attention, not tool authority or elapsed u
 execution. Record permissions and publication controls in the supported claims. A Level 5
 workflow can still be unable to merge, deploy, spend, or act in production without approval.
 
-Each `operating_models.N` item is an evidence-linked inference with `catalog-judgment` provenance. Its claim metadata must include `confidence`, `confidence_reason`, and `valid_at`. The level itself is generated and is never authored as a reported company fact.
+Each `operating_models.N` item is an evidence-linked inference with `catalog-judgment` provenance. The build fills this `kind` and `provenance`, so do not write them. Any other `kind` or `provenance` fails the build. Its claim metadata must include `confidence`, `confidence_reason`, and `valid_at`. The level itself is generated and is never authored as a reported company fact.
 
 ## Comparison rubric
 
@@ -158,12 +159,13 @@ Every source requires these fields:
 | `id` | A repository-wide unique kebab-case ID. |
 | `title` | The source title. |
 | `url` | The immutable original publisher URL. It must use HTTPS and must never be replaced with an archive URL. |
-| `canonical_url` | The normalized publisher URL after redirects and tracking removal. |
 | `kind` | The source format. |
 | `provenance_class` | The relationship between the publisher and the approach. |
 | `accessed_at` | The collection date. |
 | `last_verified_at` | The last successful review date. |
 | `role` | `evidence`, `commentary`, or `discovery`. The default is `evidence`. |
+
+`canonical_url` is optional. It is the normalized publisher URL after redirects and tracking removal. The default is `url`, and the export always contains it. Write it only when it is different from `url`.
 
 Optional fields include `publisher`, `authors`, `published_at`, `archived_url`, `capture`, and `duplicate_of`. `archived_url` is the preferred verified external archive URL and must use HTTPS. `capture` points to a repository-owned Steel capture manifest:
 
@@ -205,13 +207,22 @@ Every descriptive field becomes a claim in the generated JSON file. The `evidenc
 evidence:
   summary:
     - source_id: acme-agent-source-1
-      relation: supports
       locator: "Architecture, paragraph 3"
   key_metrics.0:
     - source_id: acme-agent-source-2
-      relation: supports
+      relation: contextualizes
       locator: "12:40"
 ```
+
+Each link has these fields:
+
+| Field | Description |
+| --- | --- |
+| `source_id` | The source of this record that the link refers to. It is optional only when the record has one source; the build then uses that source. When the record has more than one source, every link must name its source, or the build fails. |
+| `relation` | `supports`, `contradicts`, or `contextualizes`. The default is `supports`. |
+| `locator` | The exact passage in the source. |
+
+A link must contain `source_id`, `locator`, or both. The export always contains `source_id` and `relation` for each link.
 
 The relation is `supports`, `contradicts`, or `contextualizes`. Use a stable locator when one exists. For preserved sources, `Preserved content.md, lines 23–27` refers to the immutable artifact in that source's capture bundle, including its archive header. A locator must identify the supporting passage, not merely a broad topic. For source code, record the commit, path, and line. For a talk, record the timestamp.
 
@@ -222,13 +233,20 @@ observation and any missing link in the reasoning. A generic claim that the sour
 supports the lesson does not explain that reasoning. The lesson text must also carry
 its scope: a team's implementation is not a recommendation for every organization.
 
-Use `claim_metadata` when the default classification is not correct:
+Use `claim_metadata` when the default classification is not correct. The build gives each claim path a default `kind` and `provenance`:
+
+| Claim path | Default `kind` | Default `provenance` |
+| --- | --- | --- |
+| `summary`, `architecture.*`, `primitives.N` | `fact` | `reported` |
+| `headline_metric`, `key_metrics.N` | `metric` | `reported` |
+| `lessons_learned.N` | `inference` | `catalog-judgment` |
+| `operating_models.N` | `inference` (fixed) | `catalog-judgment` (fixed) |
+
+Do not write a `kind` or `provenance` that is equal to its default. The export always contains both.
 
 ```yaml
 claim_metadata:
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: "A direct participant reported the number without a method."
     valid_at: 2026-04

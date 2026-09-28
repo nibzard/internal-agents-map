@@ -4,7 +4,6 @@ company: Uber
 agent_name: Internal coding agent (unnamed)
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: uber-coding-agent-source-1
@@ -44,7 +43,6 @@ sources:
 - id: uber-coding-agent-source-1
   title: Uber's CTO on AI coding agents (Business Insider)
   url: https://www.businessinsider.com/uber-cto-ai-coding-agentic-software-engineers-2026-3
-  canonical_url: https://www.businessinsider.com/uber-cto-ai-coding-agentic-software-engineers-2026-3
   kind: news
   provenance_class: independent-secondary
   accessed_at: '2026-08-12'
@@ -53,44 +51,31 @@ sources:
     manifest_path: archive/sources/uber-coding-agent-source-1/metadata.json
 evidence:
   operating_models.0:
-  - source_id: uber-coding-agent-source-1
-    relation: supports
-    locator: Preserved content.md, line 26 (zero human authoring; engineers review and approve)
+  - locator: Preserved content.md, line 26 (zero human authoring; engineers review and approve)
   summary:
   - source_id: uber-coding-agent-source-1
-    relation: supports
   headline_metric:
-  - source_id: uber-coding-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 24–26
+  - locator: Preserved content.md, lines 24–26
   architecture.sandbox:
   - source_id: uber-coding-agent-source-1
-    relation: supports
   architecture.harness:
   - source_id: uber-coding-agent-source-1
-    relation: supports
   key_metrics.0:
-  - source_id: uber-coding-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 24–26
+  - locator: Preserved content.md, lines 24–26
   key_metrics.1:
-  - source_id: uber-coding-agent-source-1
-    relation: supports
-    locator: Preserved content.md, lines 18
+  - locator: Preserved content.md, lines 18
   primitives.0:
-  - {source_id: uber-coding-agent-source-1, relation: supports, locator: 'Preserved content.md, line 24'}
+  - {locator: 'Preserved content.md, line 24'}
   primitives.1:
-  - {source_id: uber-coding-agent-source-1, relation: supports, locator: 'Preserved content.md, lines 24–26'}
+  - {locator: 'Preserved content.md, lines 24–26'}
   primitives.2:
-  - {source_id: uber-coding-agent-source-1, relation: supports, locator: 'Preserved content.md, line 26'}
+  - {locator: 'Preserved content.md, line 26'}
   lessons_learned.0:
-  - {source_id: uber-coding-agent-source-1, relation: supports, locator: 'Preserved content.md, line 36'}
+  - {locator: 'Preserved content.md, line 36'}
   lessons_learned.1:
-  - {source_id: uber-coding-agent-source-1, relation: supports, locator: 'Preserved content.md, line 30'}
+  - {locator: 'Preserved content.md, line 30'}
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The CTO states there is zero human authoring and that engineers review and approve the
       agent-written code, which locates human attention at review of the work product.

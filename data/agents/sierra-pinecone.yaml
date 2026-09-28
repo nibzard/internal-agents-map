@@ -4,7 +4,6 @@ company: Sierra
 agent_name: Pinecone
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: sierra-pinecone-source-1
@@ -79,7 +78,6 @@ sources:
 - id: sierra-pinecone-source-1
   title: 'Pinecone: harnessing the wisdom of the workforce'
   url: https://sierra.ai/jp/blog/pinecone-harnessing-the-wisdom-of-the-workforce
-  canonical_url: https://sierra.ai/jp/blog/pinecone-harnessing-the-wisdom-of-the-workforce
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -89,7 +87,6 @@ sources:
 - id: sierra-pinecone-source-2
   title: Building Sierra's MCP Gateway
   url: https://sierra.ai/blog/building-sierras-mcp-gateway-an-engineering-iceberg
-  canonical_url: https://sierra.ai/blog/building-sierras-mcp-gateway-an-engineering-iceberg
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -99,7 +96,6 @@ sources:
 - id: sierra-pinecone-source-3
   title: 'Agency: secure, scalable sandboxes for agents'
   url: https://sierra.ai/es/blog/agency-secure-scalable-sandboxes-for-agents
-  canonical_url: https://sierra.ai/es/blog/agency-secure-scalable-sandboxes-for-agents
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -109,95 +105,69 @@ sources:
 evidence:
   operating_models.0:
   - source_id: sierra-pinecone-source-1
-    relation: supports
   summary:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 56-74
   - source_id: sierra-pinecone-source-2
-    relation: supports
     locator: Preserved content.md, lines 14-32
   headline_metric:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 134–139
   architecture.sandbox:
   - source_id: sierra-pinecone-source-3
-    relation: supports
   architecture.harness:
   - source_id: sierra-pinecone-source-1
-    relation: supports
   - source_id: sierra-pinecone-source-3
-    relation: supports
   architecture.model:
   - source_id: sierra-pinecone-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: sierra-pinecone-source-2
-    relation: supports
   architecture.knowledge:
   - source_id: sierra-pinecone-source-1
-    relation: supports
   - source_id: sierra-pinecone-source-3
-    relation: supports
   architecture.credentials:
   - source_id: sierra-pinecone-source-2
-    relation: supports
   - source_id: sierra-pinecone-source-3
-    relation: supports
   architecture.context_mgmt:
   - source_id: sierra-pinecone-source-3
-    relation: supports
   primitives.0:
   - source_id: sierra-pinecone-source-2
-    relation: supports
   primitives.1:
   - source_id: sierra-pinecone-source-3
-    relation: supports
   primitives.2:
   - source_id: sierra-pinecone-source-1
-    relation: supports
   primitives.3:
-  - {source_id: sierra-pinecone-source-1, relation: supports, locator: 'Preserved content.md, line 44'}
+  - {source_id: sierra-pinecone-source-1, locator: 'Preserved content.md, line 44'}
   primitives.4:
-  - {source_id: sierra-pinecone-source-1, relation: supports, locator: 'Preserved content.md, line 49'}
+  - {source_id: sierra-pinecone-source-1, locator: 'Preserved content.md, line 49'}
   primitives.5:
-  - {source_id: sierra-pinecone-source-1, relation: supports, locator: 'Preserved content.md, lines 49, 104'}
+  - {source_id: sierra-pinecone-source-1, locator: 'Preserved content.md, lines 49, 104'}
   key_metrics.0:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 134–139
   key_metrics.1:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 138
   key_metrics.2:
-  - {source_id: sierra-pinecone-source-1, relation: supports, locator: 'Preserved content.md, line 137'}
+  - {source_id: sierra-pinecone-source-1, locator: 'Preserved content.md, line 137'}
   key_metrics.3:
-  - {source_id: sierra-pinecone-source-1, relation: supports, locator: 'Preserved content.md, line 139'}
+  - {source_id: sierra-pinecone-source-1, locator: 'Preserved content.md, line 139'}
   lessons_learned.0:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 56-60
   lessons_learned.1:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 120-124
   lessons_learned.2:
   - source_id: sierra-pinecone-source-2
-    relation: supports
     locator: Preserved content.md, lines 52-66,93
   lessons_learned.3:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 118,136-141
   architecture.interfaces:
   - source_id: sierra-pinecone-source-1
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The source documents delegated work through a company-wide agent without establishing outcome-only
       supervision.
@@ -234,16 +204,12 @@ claim_metadata:
     metric_scope: Company PRs opened through Pinecone in the month preceding the report
     denominator: Sierra PRs opened in that month; not merged PRs
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Sierra reported the adoption shares in its engineering blog without a method.
     valid_at: '2026'
     reported_by: Sierra
     metric_scope: Engineering use of Pinecone and company-wide daily use at report time
   key_metrics.3:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Sierra reported monthly growth multiples and a cost trend without absolute figures or a method.
     valid_at: '2026'

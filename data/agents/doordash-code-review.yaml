@@ -7,7 +7,6 @@ relationships:
   approach_id: doordash-flux
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: doordash-code-review-source-1
@@ -59,7 +58,6 @@ sources:
 - id: doordash-code-review-source-1
   title: How DoorDash built an AI code reviewer engineers actually listen to
   url: https://careersatdoordash.com/blog/doordash-built-an-ai-code-reviewer-engineers-actually-listen-to/
-  canonical_url: https://careersatdoordash.com/blog/doordash-built-an-ai-code-reviewer-engineers-actually-listen-to/
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -69,69 +67,48 @@ sources:
 evidence:
   operating_models.0:
   - source_id: doordash-code-review-source-1
-    relation: supports
   summary:
   - source_id: doordash-code-review-source-1
-    relation: supports
   headline_metric:
-  - source_id: doordash-code-review-source-1
-    relation: supports
-    locator: Preserved content.md, lines 23
+  - locator: Preserved content.md, lines 23
   architecture.harness:
   - source_id: doordash-code-review-source-1
-    relation: supports
   architecture.model:
   - source_id: doordash-code-review-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: doordash-code-review-source-1
-    relation: supports
   architecture.knowledge:
   - source_id: doordash-code-review-source-1
-    relation: supports
   primitives.0:
-  - source_id: doordash-code-review-source-1
-    relation: supports
-    locator: Preserved content.md, lines 56-68,166
+  - locator: Preserved content.md, lines 56-68,166
   primitives.1:
-  - {source_id: doordash-code-review-source-1, relation: supports, locator: 'Preserved content.md, line 23'}
+  - {locator: 'Preserved content.md, line 23'}
   primitives.2:
-  - {source_id: doordash-code-review-source-1, relation: supports, locator: 'Preserved content.md, lines 42–44'}
+  - {locator: 'Preserved content.md, lines 42–44'}
   primitives.3:
-  - {source_id: doordash-code-review-source-1, relation: supports, locator: 'Preserved content.md, lines 42–46'}
+  - {locator: 'Preserved content.md, lines 42–46'}
   primitives.4:
-  - {source_id: doordash-code-review-source-1, relation: supports, locator: 'Preserved content.md, lines 58–68'}
+  - {locator: 'Preserved content.md, lines 58–68'}
   primitives.5:
-  - {source_id: doordash-code-review-source-1, relation: supports, locator: 'Preserved content.md, lines 131–144'}
+  - {locator: 'Preserved content.md, lines 131–144'}
   primitives.6:
-  - {source_id: doordash-code-review-source-1, relation: supports, locator: 'Preserved content.md, lines 170–180'}
+  - {locator: 'Preserved content.md, lines 170–180'}
   key_metrics.0:
-  - source_id: doordash-code-review-source-1
-    relation: supports
-    locator: Preserved content.md, lines 23
+  - locator: Preserved content.md, lines 23
   key_metrics.1:
-  - source_id: doordash-code-review-source-1
-    relation: supports
-    locator: Preserved content.md, lines 27
+  - locator: Preserved content.md, lines 27
   key_metrics.2:
-  - {source_id: doordash-code-review-source-1, relation: supports, locator: 'Preserved content.md, lines 29, 129'}
+  - {locator: 'Preserved content.md, lines 29, 129'}
   key_metrics.3:
-  - {source_id: doordash-code-review-source-1, relation: supports, locator: 'Preserved content.md, line 30'}
+  - {locator: 'Preserved content.md, line 30'}
   lessons_learned.0:
-  - source_id: doordash-code-review-source-1
-    relation: supports
-    locator: Preserved content.md, lines 56-68,166
+  - locator: Preserved content.md, lines 56-68,166
   lessons_learned.1:
-  - source_id: doordash-code-review-source-1
-    relation: supports
-    locator: Preserved content.md, lines 56-68
+  - locator: Preserved content.md, lines 56-68
   architecture.interfaces:
   - source_id: doordash-code-review-source-1
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source describes automated findings that engineers evaluate within the pull-request workflow.
     valid_at: '2026'
@@ -156,15 +133,11 @@ claim_metadata:
     denominator: 2,256 settled high and critical findings
     measurement_method: Whether the human changed the code before merge in response to the finding
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: DoorDash reports its current average review cost without an independent audit.
     metric_scope: Average cost of the current staged review workflow
     unit: USD per review
   key_metrics.3:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: DoorDash reports average posting latency without a distribution or independent audit.
     metric_scope: Time from pull-request opening to a posted finding

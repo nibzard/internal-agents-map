@@ -4,7 +4,6 @@ company: Y Combinator
 agent_name: Internal operations agent
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: ycombinator-operations-source-1
@@ -38,7 +37,6 @@ sources:
 - id: ycombinator-operations-source-1
   title: Inside YC's AI Playbook (Lightcone podcast, with Pete Koomen)
   url: https://www.ycombinator.com/library/Qh-inside-yc-s-ai-playbook
-  canonical_url: https://www.ycombinator.com/library/Qh-inside-yc-s-ai-playbook
   kind: podcast
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -46,37 +44,21 @@ sources:
   duplicate_of: ycombinator-agent-infra-source-1
 evidence:
   summary:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
   operating_models.0:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
   architecture.harness:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
   architecture.knowledge:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
   architecture.tool_access:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
   primitives.0:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
   primitives.1:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes Internal operations agent and its work, but does not establish whether
       a person must approve or inspect each successful output.

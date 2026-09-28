@@ -4,7 +4,6 @@ company: Duolingo
 agent_name: Agentic workflows
 approach_type: platform
 deployment_stage: deployed
-year: 2025
 first_public_evidence:
   date: "2025-12-11"
   source_id: duolingo-agentic-workflows-source-1
@@ -81,7 +80,6 @@ sources:
 - id: duolingo-agentic-workflows-source-1
   title: Scaling Engineering with Agentic Workflows
   url: https://blog.duolingo.com/agentic-workflows/
-  canonical_url: https://blog.duolingo.com/agentic-workflows/
   kind: corporate-article
   provenance_class: first-party
   role: evidence
@@ -96,113 +94,64 @@ sources:
     manifest_path: archive/sources/duolingo-agentic-workflows-source-1/metadata.json
 evidence:
   summary:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10, 36, 52-58
+  - locator: Preserved content.md, lines 10, 36, 52-58
   operating_models.0:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, lines 44, 48
+  - locator: Preserved content.md, lines 44, 48
   operating_models.1:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, lines 22-28
+  - locator: Preserved content.md, lines 22-28
   architecture.sandbox:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: contextualizes
+  - relation: contextualizes
     locator: Preserved content.md, line 102 (Docker in Docker on Temporal named as a blocker, with no execution
       environment described)
   architecture.harness:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, lines 54, 58
+  - locator: Preserved content.md, lines 54, 58
   architecture.interfaces:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, lines 48, 90
+  - locator: Preserved content.md, lines 48, 90
   architecture.tool_access:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, lines 90, 106
+  - locator: Preserved content.md, lines 90, 106
   architecture.credentials:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, lines 58, 90
+  - locator: Preserved content.md, lines 58, 90
   primitives.0:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, line 36
+  - locator: Preserved content.md, line 36
   primitives.1:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, line 44
+  - locator: Preserved content.md, line 44
   primitives.2:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, line 48
+  - locator: Preserved content.md, line 48
   primitives.3:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, lines 22-28
+  - locator: Preserved content.md, lines 22-28
   primitives.4:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, lines 58-86
+  - locator: Preserved content.md, lines 58-86
   primitives.5:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, line 90
+  - locator: Preserved content.md, line 90
   primitives.6:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, line 94
+  - locator: Preserved content.md, line 94
   key_metrics.0:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10, 30 (TL;DR sentence and section heading)
+  - locator: Preserved content.md, lines 10, 30 (TL;DR sentence and section heading)
   key_metrics.1:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, line 54
+  - locator: Preserved content.md, line 54
   lessons_learned.0:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, lines 22-32
+  - locator: Preserved content.md, lines 22-32
   lessons_learned.1:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, line 94
+  - locator: Preserved content.md, line 94
   lessons_learned.2:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, line 90
+  - locator: Preserved content.md, line 90
   lessons_learned.3:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, line 102
+  - locator: Preserved content.md, line 102
   lessons_learned.4:
-  - source_id: duolingo-agentic-workflows-source-1
-    relation: supports
-    locator: Preserved content.md, lines 114-116
+  - locator: Preserved content.md, lines 114-116
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The post says Duos test the prompt until they judge it successful and stage the workflow
       for end-to-end testing before merging the form. It does not say who else reviews a form, so the boundary covers
       the creator only.
     valid_at: "2025-12"
   operating_models.1:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The post describes the run pattern as commit and optionally open a pull request, but never
       says whether a person must review the change before it takes effect.
     valid_at: "2025-12"
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: The five-minute figure appears as a section heading and in the TL;DR of a Duolingo blog post.
       No sample, period, or timing method is reported, so it states an expected creation time rather than a measured
@@ -212,8 +161,6 @@ claim_metadata:
     metric_scope: Time for a Duo to create a workflow that follows the common clone-change-commit pattern through
       the JSON form
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: Duolingo reports this as an average in its own blog post, but gives a one-day range with
       no sample size, period, or collection method, so it reads as a rough in-house figure.

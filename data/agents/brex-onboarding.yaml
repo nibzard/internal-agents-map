@@ -4,7 +4,6 @@ company: Brex
 agent_name: Onboarding decision system
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026-01-20'
   source_id: brex-onboarding-source-1
@@ -38,7 +37,6 @@ sources:
 - id: brex-onboarding-source-1
   title: 'The end of the trade-off: How AI agents broke the onboarding trilemma'
   url: https://www.brex.com/journal/rebuilding-onboarding-ai-native
-  canonical_url: https://www.brex.com/journal/rebuilding-onboarding-ai-native
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-09-17'
@@ -47,43 +45,25 @@ sources:
   duplicate_of: brex-onboarding-source
 evidence:
   summary:
-  - source_id: brex-onboarding-source-1
-    relation: supports
-    locator: Encoding human judgment at scale; How the onboarding agents work together
+  - locator: Encoding human judgment at scale; How the onboarding agents work together
   operating_models.0:
-  - source_id: brex-onboarding-source-1
-    relation: supports
-    locator: 'How the onboarding agents work together: Decision agent makes high-confidence decisions and escalates
+  - locator: 'How the onboarding agents work together: Decision agent makes high-confidence decisions and escalates
       below-threshold cases'
   architecture.harness:
-  - source_id: brex-onboarding-source-1
-    relation: supports
-    locator: Encoding human judgment at scale; How the onboarding agents work together
+  - locator: Encoding human judgment at scale; How the onboarding agents work together
   architecture.knowledge:
-  - source_id: brex-onboarding-source-1
-    relation: supports
-    locator: Encoding human judgment at scale; How the onboarding agents work together
+  - locator: Encoding human judgment at scale; How the onboarding agents work together
   primitives.0:
-  - source_id: brex-onboarding-source-1
-    relation: supports
-    locator: Encoding human judgment at scale; How the onboarding agents work together
+  - locator: Encoding human judgment at scale; How the onboarding agents work together
   primitives.1:
-  - source_id: brex-onboarding-source-1
-    relation: supports
-    locator: Encoding human judgment at scale; How the onboarding agents work together
+  - locator: Encoding human judgment at scale; How the onboarding agents work together
   primitives.2:
-  - source_id: brex-onboarding-source-1
-    relation: supports
-    locator: 'Encoding human judgment at scale: historical cases re-reviewed and labeled as the benchmark'
+  - locator: 'Encoding human judgment at scale: historical cases re-reviewed and labeled as the benchmark'
   key_metrics.0:
-  - source_id: brex-onboarding-source-1
-    relation: supports
-    locator: 'What we learned: SME and builder partnership raised card-application auto-approval from 0% to 40%
+  - locator: 'What we learned: SME and builder partnership raised card-application auto-approval from 0% to 40%
       in weeks'
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: Brex explicitly distinguishes instant high-confidence decisions from uncertain cases escalated
       to analysts.

@@ -4,7 +4,6 @@ company: Y Combinator
 agent_name: Internal agent infrastructure
 approach_type: platform
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: ycombinator-agent-infra-source-1
@@ -56,7 +55,6 @@ sources:
 - id: ycombinator-agent-infra-source-1
   title: Inside YC's AI Playbook (Lightcone podcast, with Pete Koomen)
   url: https://www.ycombinator.com/library/Qh-inside-yc-s-ai-playbook
-  canonical_url: https://www.ycombinator.com/library/Qh-inside-yc-s-ai-playbook
   kind: podcast
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -66,60 +64,34 @@ sources:
 evidence:
   operating_models.0:
   - source_id: ycombinator-agent-infra-source-1
-    relation: supports
   summary:
   - source_id: ycombinator-agent-infra-source-1
-    relation: supports
   architecture.sandbox:
   - source_id: ycombinator-agent-infra-source-1
-    relation: supports
   architecture.harness:
   - source_id: ycombinator-agent-infra-source-1
-    relation: supports
   architecture.tool_access:
-  - source_id: ycombinator-agent-infra-source-1
-    relation: supports
-    locator: Preserved content.md, lines 124, 154
+  - locator: Preserved content.md, lines 124, 154
   architecture.interfaces:
-  - source_id: ycombinator-agent-infra-source-1
-    relation: supports
-    locator: Preserved content.md, lines 190–192
+  - locator: Preserved content.md, lines 190–192
   architecture.knowledge:
-  - source_id: ycombinator-agent-infra-source-1
-    relation: supports
-    locator: Preserved content.md, line 154
+  - locator: Preserved content.md, line 154
   architecture.context_mgmt:
-  - source_id: ycombinator-agent-infra-source-1
-    relation: supports
-    locator: Preserved content.md, lines 154–158
+  - locator: Preserved content.md, lines 154–158
   primitives.0:
-  - source_id: ycombinator-agent-infra-source-1
-    relation: supports
-    locator: Preserved content.md, lines 120–124
+  - locator: Preserved content.md, lines 120–124
   primitives.1:
-  - source_id: ycombinator-agent-infra-source-1
-    relation: supports
-    locator: Preserved content.md, lines 124, 154
+  - locator: Preserved content.md, lines 124, 154
   primitives.2:
-  - source_id: ycombinator-agent-infra-source-1
-    relation: supports
-    locator: Preserved content.md, lines 190–192
+  - locator: Preserved content.md, lines 190–192
   primitives.3:
-  - source_id: ycombinator-agent-infra-source-1
-    relation: supports
-    locator: Preserved content.md, lines 162–166
+  - locator: Preserved content.md, lines 162–166
   lessons_learned.0:
-  - source_id: ycombinator-agent-infra-source-1
-    relation: supports
-    locator: Preserved content.md, lines 154
+  - locator: Preserved content.md, lines 154
   lessons_learned.1:
-  - source_id: ycombinator-agent-infra-source-1
-    relation: supports
-    locator: Preserved content.md, lines 120
+  - locator: Preserved content.md, lines 120
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes internal agent infrastructure but not a sufficiently specific human
       attention boundary.

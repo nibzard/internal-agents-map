@@ -4,7 +4,6 @@ company: Airbnb
 agent_name: Airchat (airchat-cli)
 approach_type: platform
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: '2025'
   source_id: airbnb-airchat-source-1
@@ -56,7 +55,6 @@ sources:
 - id: airbnb-airchat-source-1
   title: Agentic coding at Airbnb (DPE.org)
   url: https://dpe.org/sessions/szczepan-faber-mike-nakhimovich/agentic-coding-at-airbnb/
-  canonical_url: https://dpe.org/sessions/szczepan-faber-mike-nakhimovich/agentic-coding-at-airbnb/
   kind: talk
   provenance_class: direct-participant
   role: evidence
@@ -67,7 +65,6 @@ sources:
 - id: airbnb-airchat-source-2
   title: Beyond the CLI (DX podcast)
   url: https://getdx.com/podcast/beyond-the-cli-agentic-ai-for-async-workloads-and-non-developers/
-  canonical_url: https://getdx.com/podcast/beyond-the-cli-agentic-ai-for-async-workloads-and-non-developers/
   kind: podcast
   provenance_class: direct-participant
   role: evidence
@@ -79,7 +76,6 @@ sources:
 - id: airbnb-airchat-source-3
   title: How to get your team past the AI (The AI Thinker)
   url: https://www.theaithinker.com/p/how-to-get-your-team-past-the-ai
-  canonical_url: https://www.theaithinker.com/p/how-to-get-your-team-past-the-ai
   kind: news
   provenance_class: independent-secondary
   role: evidence
@@ -90,7 +86,6 @@ sources:
 evidence:
   operating_models.0:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, lines 82, 250
   - source_id: airbnb-airchat-source-2
     relation: contextualizes
@@ -98,72 +93,52 @@ evidence:
   - source_id: airbnb-airchat-source-1
     relation: contextualizes
   - source_id: airbnb-airchat-source-2
-    relation: supports
   - source_id: airbnb-airchat-source-3
-    relation: supports
   headline_metric:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, lines 16, 24, 194
   architecture.harness:
   - source_id: airbnb-airchat-source-2
-    relation: supports
   architecture.model:
   - source_id: airbnb-airchat-source-2
-    relation: supports
     locator: Preserved content.md, lines 114, 214
   architecture.tool_access:
   - source_id: airbnb-airchat-source-2
-    relation: supports
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, line 166
   architecture.sandbox:
   - source_id: airbnb-airchat-source-2
-    relation: supports
     locator: Preserved content.md, line 232
   architecture.credentials:
   - source_id: airbnb-airchat-source-2
-    relation: supports
     locator: Preserved content.md, line 118
   architecture.context_mgmt:
   - source_id: airbnb-airchat-source-2
-    relation: supports
     locator: Preserved content.md, line 118
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, line 82
   architecture.interfaces:
   - source_id: airbnb-airchat-source-2
-    relation: supports
     locator: Preserved content.md, lines 188–192, 214
   primitives.0:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, lines 82, 104
   - source_id: airbnb-airchat-source-2
-    relation: supports
     locator: Preserved content.md, line 118
   primitives.1:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, line 82
   primitives.2:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, lines 178–182
   lessons_learned.0:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, lines 202–210
   key_metrics.0:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, lines 16, 24, 194
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: Airbnb engineers describe agents producing pull requests that engineers review, which locates
       human attention at work-product review.
@@ -173,8 +148,6 @@ claim_metadata:
     confidence_reason: The build is described by Airbnb engineers in talks and podcasts, not in a first-party engineering
       blog.
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: The 64% figure comes from a third-party newsletter that quotes the engineers, not from a
       first-party Airbnb source.
@@ -183,8 +156,6 @@ claim_metadata:
     valid_at: 2025-10
     denominator: Airbnb pull requests; exact count not supplied
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: The figure comes from a third-party newsletter, not a first-party Airbnb source.
     metric_scope: Airbnb PRs materialized through agentic coding by the October 2025 talk

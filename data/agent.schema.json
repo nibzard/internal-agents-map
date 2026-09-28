@@ -11,7 +11,6 @@
     "agent_name",
     "approach_type",
     "deployment_stage",
-    "year",
     "first_public_evidence",
     "last_reviewed_at",
     "status",
@@ -61,7 +60,7 @@
     "deployment_stage": { "$ref": "#/definitions/deploymentStage" },
     "year": {
       "type": "integer",
-      "description": "The year of the earliest verified public evidence."
+      "description": "The year of the earliest verified public evidence. The build derives it from first_public_evidence.date. If you write it, it must agree with that date."
     },
     "first_public_evidence": {
       "type": "object",
@@ -319,7 +318,6 @@
         "id",
         "title",
         "url",
-        "canonical_url",
         "kind",
         "provenance_class",
         "accessed_at",
@@ -335,7 +333,10 @@
           "$ref": "#/definitions/httpsUrl",
           "description": "The original publisher URL. Never replace it with an archive URL."
         },
-        "canonical_url": { "$ref": "#/definitions/httpsUrl" },
+        "canonical_url": {
+          "$ref": "#/definitions/httpsUrl",
+          "description": "The default is url."
+        },
         "kind": { "$ref": "#/definitions/sourceKind" },
         "provenance_class": { "$ref": "#/definitions/provenanceClass" },
         "role": {
@@ -369,9 +370,12 @@
     "evidenceLink": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["source_id"],
+      "anyOf": [{ "required": ["source_id"] }, { "required": ["locator"] }],
       "properties": {
-        "source_id": { "$ref": "#/definitions/text" },
+        "source_id": {
+          "$ref": "#/definitions/text",
+          "description": "The default is the only source of the record. A record with more than one source must name it."
+        },
         "relation": {
           "$ref": "#/definitions/evidenceRelation",
           "description": "The default is supports."
@@ -386,8 +390,14 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "kind": { "$ref": "#/definitions/claimKind" },
-        "provenance": { "$ref": "#/definitions/claimProvenance" },
+        "kind": {
+          "$ref": "#/definitions/claimKind",
+          "description": "The default comes from the claim path. data/schema.md lists the defaults."
+        },
+        "provenance": {
+          "$ref": "#/definitions/claimProvenance",
+          "description": "The default comes from the claim path. data/schema.md lists the defaults."
+        },
         "confidence": { "$ref": "#/definitions/confidence" },
         "confidence_reason": { "$ref": "#/definitions/text" },
         "valid_at": { "$ref": "#/definitions/partialDate" },

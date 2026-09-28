@@ -4,7 +4,6 @@ company: Notion
 agent_name: Custom Agents
 approach_type: platform
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: 2026-04
   source_id: notion-custom-agents-source-1
@@ -55,7 +54,6 @@ sources:
 - id: notion-custom-agents-source-1
   title: 'Notion''s Token Town: 5 Rebuilds, 100+ Tools (Latent Space)'
   url: https://latent.space/p/notion
-  canonical_url: https://latent.space/p/notion
   kind: podcast
   provenance_class: direct-participant
   role: evidence
@@ -67,7 +65,6 @@ sources:
 - id: notion-custom-agents-source-2
   title: How we built security into Custom Agents
   url: https://www.notion.com/en-gb/blog/how-we-built-security-into-custom-agents
-  canonical_url: https://www.notion.com/en-gb/blog/how-we-built-security-into-custom-agents
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -78,7 +75,6 @@ sources:
 - id: notion-scruff-source
   title: Meet Scruff, Security’s New AI Teammate
   url: https://www.notion.com/blog/meet-scruff-securitys-new-ai-teammate
-  canonical_url: https://www.notion.com/blog/meet-scruff-securitys-new-ai-teammate
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-09-17'
@@ -89,86 +85,64 @@ sources:
 evidence:
   operating_models.0:
   - source_id: notion-custom-agents-source-1
-    relation: supports
   summary:
   - source_id: notion-custom-agents-source-1
-    relation: supports
   - source_id: notion-custom-agents-source-2
-    relation: supports
   - source_id: notion-scruff-source
     relation: contextualizes
     locator: 'Separate documented implementation: see dedicated agent record; not evidence of identical builder
       version.'
   headline_metric:
   - source_id: notion-custom-agents-source-2
-    relation: supports
     locator: Preserved content.md, lines 51
   architecture.harness:
   - source_id: notion-custom-agents-source-1
-    relation: supports
     locator: Preserved content.md, lines 405, 609
   architecture.tool_access:
   - source_id: notion-custom-agents-source-2
-    relation: supports
     locator: Preserved content.md, lines 22–37
   architecture.interfaces:
   - source_id: notion-custom-agents-source-1
-    relation: supports
     locator: Preserved content.md, line 609
   architecture.knowledge:
   - source_id: notion-custom-agents-source-2
-    relation: supports
     locator: Preserved content.md, lines 30–37
   architecture.credentials:
   - source_id: notion-custom-agents-source-2
-    relation: supports
     locator: Preserved content.md, lines 22–45
   architecture.context_mgmt:
   - source_id: notion-custom-agents-source-1
-    relation: supports
     locator: Preserved content.md, lines 707–717
   primitives.0:
   - source_id: notion-custom-agents-source-1
-    relation: supports
     locator: Preserved content.md, line 609
   primitives.1:
   - source_id: notion-custom-agents-source-2
-    relation: supports
     locator: Preserved content.md, lines 22–37
   primitives.2:
   - source_id: notion-custom-agents-source-2
-    relation: supports
     locator: Preserved content.md, lines 41–47
   key_metrics.0:
   - source_id: notion-custom-agents-source-2
-    relation: supports
     locator: Preserved content.md, lines 51
   key_metrics.1:
   - source_id: notion-custom-agents-source-2
-    relation: supports
     locator: Preserved content.md, lines 57
   key_metrics.2:
   - source_id: notion-custom-agents-source-1
-    relation: supports
     locator: Preserved content.md, lines 115, 275–277, 819
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: Custom Agents spans many teams and workflows, so no single human-attention boundary applies.
     valid_at: 2026-04
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Notion reported the agent count in its own engineering blog without independent verification.
     valid_at: 2026-04
     reported_by: Notion
     metric_scope: Internal Notion Custom Agents at the end of alpha; excludes the separate customer alpha count
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Notion reported the agent count in its own engineering blog.
     metric_scope: Internal Notion Custom Agents at the end of alpha; excludes the separate customer alpha count

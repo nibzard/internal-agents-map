@@ -7706,7 +7706,7 @@
       "agent_name": "Agentic software factory",
       "approach_type": "agent-system",
       "deployment_stage": "scaled",
-      "year": 2026,
+      "year": 2025,
       "first_public_evidence": {
         "date": "2025-10-09",
         "source_id": "venturebeat-devday-codex"
@@ -7959,7 +7959,7 @@
       "agent_name": "Sevbot",
       "approach_type": "agent",
       "deployment_stage": "deployed",
-      "year": 2026,
+      "year": 2025,
       "first_public_evidence": {
         "date": "2025-11-20",
         "source_id": "crtsh-sevbot-certificates"

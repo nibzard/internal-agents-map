@@ -4,7 +4,6 @@ company: Brex
 agent_name: Dispute preparation agent
 approach_type: agent
 deployment_stage: deployed
-year: 2025
 first_public_evidence:
   date: '2025-09-25'
   source_id: brex-disputes-source-1
@@ -35,7 +34,6 @@ sources:
 - id: brex-disputes-source-1
   title: 'Agent, Human, Ops: How Brex Is Changing Roles and Workflows'
   url: https://www.firstround.com/ai/brex
-  canonical_url: https://www.firstround.com/ai/brex
   kind: case-study
   provenance_class: independent-secondary
   published_at: '2025-09-25'
@@ -44,37 +42,21 @@ sources:
   duplicate_of: brex-agent-platform-source-1
 evidence:
   summary:
-  - source_id: brex-disputes-source-1
-    relation: supports
-    locator: Understanding complex rules and guides
+  - locator: Understanding complex rules and guides
   operating_models.0:
-  - source_id: brex-disputes-source-1
-    relation: supports
-    locator: Understanding complex rules and guides
+  - locator: Understanding complex rules and guides
   architecture.harness:
-  - source_id: brex-disputes-source-1
-    relation: supports
-    locator: Understanding complex rules and guides
+  - locator: Understanding complex rules and guides
   architecture.knowledge:
-  - source_id: brex-disputes-source-1
-    relation: supports
-    locator: Understanding complex rules and guides
+  - locator: Understanding complex rules and guides
   primitives.0:
-  - source_id: brex-disputes-source-1
-    relation: supports
-    locator: Understanding complex rules and guides
+  - locator: Understanding complex rules and guides
   primitives.1:
-  - source_id: brex-disputes-source-1
-    relation: supports
-    locator: Understanding complex rules and guides
+  - locator: Understanding complex rules and guides
   key_metrics.0:
-  - source_id: brex-disputes-source-1
-    relation: supports
-    locator: Understanding complex rules and guides
+  - locator: Understanding complex rules and guides
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes Dispute preparation agent and its work, but does not establish whether
       a person must approve or inspect each successful output.

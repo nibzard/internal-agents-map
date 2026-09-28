@@ -4,7 +4,6 @@ company: Brex
 agent_name: Collections response agent
 approach_type: agent
 deployment_stage: deployed
-year: 2025
 first_public_evidence:
   date: '2025-09-25'
   source_id: brex-collections-source-1
@@ -36,7 +35,6 @@ sources:
 - id: brex-collections-source-1
   title: 'Agent, Human, Ops: How Brex Is Changing Roles and Workflows'
   url: https://www.firstround.com/ai/brex
-  canonical_url: https://www.firstround.com/ai/brex
   kind: case-study
   provenance_class: independent-secondary
   published_at: '2025-09-25'
@@ -45,33 +43,19 @@ sources:
   duplicate_of: brex-agent-platform-source-1
 evidence:
   summary:
-  - source_id: brex-collections-source-1
-    relation: supports
-    locator: 'Subjective judgement: delinquent account servicing'
+  - locator: 'Subjective judgement: delinquent account servicing'
   operating_models.0:
-  - source_id: brex-collections-source-1
-    relation: supports
-    locator: 'Subjective judgement: staff pick a proposed draft and customize or send it'
+  - locator: 'Subjective judgement: staff pick a proposed draft and customize or send it'
   architecture.knowledge:
-  - source_id: brex-collections-source-1
-    relation: supports
-    locator: 'Subjective judgement: delinquent account servicing'
+  - locator: 'Subjective judgement: delinquent account servicing'
   primitives.0:
-  - source_id: brex-collections-source-1
-    relation: supports
-    locator: 'Subjective judgement: delinquent account servicing'
+  - locator: 'Subjective judgement: delinquent account servicing'
   primitives.1:
-  - source_id: brex-collections-source-1
-    relation: supports
-    locator: 'Subjective judgement: delinquent account servicing'
+  - locator: 'Subjective judgement: delinquent account servicing'
   primitives.2:
-  - source_id: brex-collections-source-1
-    relation: supports
-    locator: 'Subjective judgement: delinquent account servicing'
+  - locator: 'Subjective judgement: delinquent account servicing'
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The follow-up response workflow returns options to the servicing team to select, edit or
       send. Initial automated outreach is a separate step.

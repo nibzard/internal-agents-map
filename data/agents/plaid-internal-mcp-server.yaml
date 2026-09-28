@@ -4,7 +4,6 @@ company: Plaid
 agent_name: Internal MCP server
 approach_type: supporting-pattern
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: '2025'
   source_id: plaid-internal-mcp-server-source-1
@@ -55,7 +54,6 @@ sources:
 - id: plaid-internal-mcp-server-source-1
   title: The Plaid internal MCP server
   url: https://engineering.plaid.com/the-plaid-internal-mcp-server-8eff08bb6bdb
-  canonical_url: https://engineering.plaid.com/the-plaid-internal-mcp-server-8eff08bb6bdb
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -66,62 +64,36 @@ sources:
 evidence:
   operating_models.0:
   - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
   summary:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 38–45, 65–89
+  - locator: Preserved content.md, lines 38–45, 65–89
   headline_metric:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 38, 89
+  - locator: Preserved content.md, lines 38, 89
   architecture.harness:
   - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
   architecture.credentials:
   - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
   primitives.0:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 38–40, 67
+  - locator: Preserved content.md, lines 38–40, 67
   primitives.1:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, line 59
+  - locator: Preserved content.md, line 59
   primitives.2:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 57, 59
+  - locator: Preserved content.md, lines 57, 59
   primitives.3:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 61–63, 82, 87
+  - locator: Preserved content.md, lines 61–63, 82, 87
   primitives.4:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 14–16
+  - locator: Preserved content.md, lines 14–16
   key_metrics.0:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 38, 89
+  - locator: Preserved content.md, lines 38, 89
   key_metrics.1:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 89
+  - locator: Preserved content.md, lines 89
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The MCP server is a tool-access layer, not a workflow with a single human-attention boundary.
     valid_at: '2025'
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Plaid reported the figures in its own engineering blog without independent verification.
     valid_at: '2025'
@@ -129,15 +101,11 @@ claim_metadata:
     metric_scope: Claude Code and Cursor adoption among Plaid engineers; separate from internal MCP server adoption
     denominator: Plaid engineers for the AI-client usage share
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Plaid reported the figures in its own engineering blog.
     metric_scope: Claude Code and Cursor adoption among Plaid engineers; separate from internal MCP server adoption
     denominator: Plaid engineers for the AI-client usage share
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Plaid reported the figures in its own engineering blog.
     metric_scope: Tool calls and agents relying on the internal MCP server across engineering, product, and support

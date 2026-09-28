@@ -7,7 +7,6 @@ aliases:
 - HULA
 approach_type: agent
 deployment_stage: scaled
-year: 2024
 first_public_evidence:
   date: 2024-11
   source_id: atlassian-rovo-dev-source-3
@@ -52,7 +51,6 @@ sources:
 - id: atlassian-rovo-dev-source-1
   title: Improving the coding agent experience
   url: https://www.atlassian.com/blog/atlassian-engineering/improving-coding-agent-experience
-  canonical_url: https://www.atlassian.com/blog/atlassian-engineering/improving-coding-agent-experience
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -63,7 +61,6 @@ sources:
 - id: atlassian-rovo-dev-source-2
   title: Developer productivity improved with Rovo Dev
   url: https://www.atlassian.com/blog/atlassian-engineering/developer-productivity-improved-with-rovo-dev
-  canonical_url: https://www.atlassian.com/blog/atlassian-engineering/developer-productivity-improved-with-rovo-dev
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -74,7 +71,6 @@ sources:
 - id: atlassian-rovo-dev-source-3
   title: 'HULA: Human-in-the-loop software development agents (arXiv 2411.12924)'
   url: https://arxiv.org/abs/2411.12924
-  canonical_url: https://arxiv.org/abs/2411.12924
   kind: paper
   provenance_class: first-party
   role: evidence
@@ -86,84 +82,65 @@ sources:
 evidence:
   operating_models.0:
   - source_id: atlassian-rovo-dev-source-1
-    relation: supports
   summary:
   - source_id: atlassian-rovo-dev-source-1
-    relation: supports
   - source_id: atlassian-rovo-dev-source-2
-    relation: supports
   - source_id: atlassian-rovo-dev-source-3
-    relation: supports
   headline_metric:
   - source_id: atlassian-rovo-dev-source-2
-    relation: supports
     locator: Preserved content.md, lines 66, 87
   architecture.harness:
   - source_id: atlassian-rovo-dev-source-1
-    relation: supports
   architecture.model:
-  - {source_id: atlassian-rovo-dev-source-2, relation: supports, locator: 'Preserved content.md, lines 41, 60'}
+  - {source_id: atlassian-rovo-dev-source-2, locator: 'Preserved content.md, lines 41, 60'}
   architecture.context_mgmt:
-  - {source_id: atlassian-rovo-dev-source-1, relation: supports, locator: 'Preserved content.md, lines 67–74'}
+  - {source_id: atlassian-rovo-dev-source-1, locator: 'Preserved content.md, lines 67–74'}
   architecture.interfaces:
   - source_id: atlassian-rovo-dev-source-1
-    relation: supports
-  - {source_id: atlassian-rovo-dev-source-2, relation: supports, locator: 'Preserved content.md, lines 41, 83'}
+  - {source_id: atlassian-rovo-dev-source-2, locator: 'Preserved content.md, lines 41, 83'}
   primitives.0:
-  - {source_id: atlassian-rovo-dev-source-1, relation: supports, locator: 'Preserved content.md, line 46'}
+  - {source_id: atlassian-rovo-dev-source-1, locator: 'Preserved content.md, line 46'}
   primitives.1:
-  - {source_id: atlassian-rovo-dev-source-1, relation: supports, locator: 'Preserved content.md, line 47'}
+  - {source_id: atlassian-rovo-dev-source-1, locator: 'Preserved content.md, line 47'}
   primitives.2:
-  - {source_id: atlassian-rovo-dev-source-1, relation: supports, locator: 'Preserved content.md, line 48'}
+  - {source_id: atlassian-rovo-dev-source-1, locator: 'Preserved content.md, line 48'}
   primitives.3:
-  - {source_id: atlassian-rovo-dev-source-1, relation: supports, locator: 'Preserved content.md, line 49'}
+  - {source_id: atlassian-rovo-dev-source-1, locator: 'Preserved content.md, line 49'}
   primitives.4:
-  - {source_id: atlassian-rovo-dev-source-2, relation: supports, locator: 'Preserved content.md, lines 60–70'}
+  - {source_id: atlassian-rovo-dev-source-2, locator: 'Preserved content.md, lines 60–70'}
   key_metrics.0:
   - source_id: atlassian-rovo-dev-source-2
-    relation: supports
     locator: Preserved content.md, lines 87
   key_metrics.1:
   - source_id: atlassian-rovo-dev-source-2
-    relation: supports
     locator: Preserved content.md, lines 66
   key_metrics.2:
-  - {source_id: atlassian-rovo-dev-source-2, relation: supports, locator: 'Preserved content.md, lines 16, 87–91'}
+  - {source_id: atlassian-rovo-dev-source-2, locator: 'Preserved content.md, lines 16, 87–91'}
   key_metrics.3:
-  - {source_id: atlassian-rovo-dev-source-2, relation: supports, locator: 'Preserved content.md, lines 16, 87–89'}
+  - {source_id: atlassian-rovo-dev-source-2, locator: 'Preserved content.md, lines 16, 87–89'}
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The HULA framework and engineering blog describe a human-in-the-loop cycle that ends in a
       reviewed pull request.
     valid_at: 2024-11
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Atlassian reported the dogfooding scale in its own engineering blog without independent verification.
     valid_at: '2026'
     reported_by: Atlassian
     metric_scope: Internal code-review dogfooding repositories and Rovo Dev-generated classifier training comments
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Atlassian reported the dogfooding scale in its own engineering blog.
     metric_scope: Internal code-review evaluation across 1,900+ repositories spanning over a year
     measurement_method: Year-long online evaluation across internal repositories
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Atlassian reported the dataset size in its own engineering blog.
     metric_scope: ModernBERT classifier training dataset of internally sourced Rovo Dev-generated comments
     measurement_method: Internal dogfooding comments labeled by whether they led to a code resolution
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: 'Atlassian reported the reduction from a year-long internal evaluation accepted at ICSE 2026;
       no independent replication exists.'
@@ -171,8 +148,6 @@ claim_metadata:
     metric_scope: Median PR cycle time in the code-reviewer dogfooding evaluation
     measurement_method: Year-long online evaluation across 1,900+ internal repositories
   key_metrics.3:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: 'Atlassian reported the comment reduction from the same internal evaluation; no independent
       replication exists.'

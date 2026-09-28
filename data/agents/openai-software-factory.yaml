@@ -4,7 +4,6 @@ company: OpenAI
 agent_name: Agentic software factory
 approach_type: agent-system
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: "2025-10-09"
   source_id: venturebeat-devday-codex
@@ -93,7 +92,6 @@ sources:
 - id: openai-factory-article
   title: "Inside OpenAI's agentic software factory"
   url: https://newsletter.pragmaticengineer.com/p/openai-software-factory
-  canonical_url: https://newsletter.pragmaticengineer.com/p/openai-software-factory
   kind: news
   provenance_class: independent-secondary
   role: evidence
@@ -108,7 +106,6 @@ sources:
 - id: venturebeat-devday-codex
   title: "The most important OpenAI announcement you probably missed at DevDay 2025"
   url: https://venturebeat.com/infrastructure/the-most-important-openai-announcement-you-probably-missed-at-devday-2025
-  canonical_url: https://venturebeat.com/infrastructure/the-most-important-openai-announcement-you-probably-missed-at-devday-2025
   kind: news
   provenance_class: independent-secondary
   role: evidence
@@ -123,7 +120,6 @@ sources:
 - id: openai-harness-engineering-post
   title: "Harness engineering: leveraging Codex in an agent-first world"
   url: https://openai.com/index/harness-engineering/
-  canonical_url: https://openai.com/index/harness-engineering/
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -138,7 +134,6 @@ sources:
 - id: hn-harness-engineering-thread
   title: "Harness engineering: Leveraging Codex in an agent-first world (discussion)"
   url: https://news.ycombinator.com/item?id=48416264
-  canonical_url: https://news.ycombinator.com/item?id=48416264
   kind: hn-thread
   provenance_class: community
   role: commentary
@@ -151,7 +146,6 @@ sources:
 - id: hn-zbrock-internal-prototype
   title: "zbrock: the Codex app began as an internal prototype"
   url: https://news.ycombinator.com/item?id=48435137
-  canonical_url: https://news.ycombinator.com/item?id=48435137
   kind: hn-comment
   provenance_class: direct-participant
   role: evidence
@@ -166,7 +160,6 @@ sources:
 - id: hn-zbrock-internal-adoption
   title: "zbrock: many internal teams adopted the same practices"
   url: https://news.ycombinator.com/item?id=48435213
-  canonical_url: https://news.ycombinator.com/item?id=48435213
   kind: hn-comment
   provenance_class: direct-participant
   role: evidence
@@ -181,7 +174,6 @@ sources:
 - id: openai-agents-api-post
   title: "Introducing the Agents API"
   url: https://openai.com/index/introducing-the-agents-api/
-  canonical_url: https://openai.com/index/introducing-the-agents-api/
   kind: corporate-article
   provenance_class: first-party
   role: evidence
@@ -194,7 +186,6 @@ sources:
 - id: openai-chatgpt-work-post
   title: "ChatGPT is now a partner for your most ambitious work"
   url: https://openai.com/index/chatgpt-for-your-most-ambitious-work/
-  canonical_url: https://openai.com/index/chatgpt-for-your-most-ambitious-work/
   kind: corporate-article
   provenance_class: first-party
   role: evidence
@@ -207,7 +198,6 @@ sources:
 - id: every-codex-team-interview
   title: "Transcript: 'How OpenAI's Codex Team Uses Their Coding Agent'"
   url: https://every.to/podcast/transcript-how-openai-s-codex-team-uses-their-coding-agent
-  canonical_url: https://every.to/podcast/transcript-how-openai-s-codex-team-uses-their-coding-agent
   kind: transcript
   provenance_class: independent-secondary
   role: evidence
@@ -224,7 +214,6 @@ sources:
 evidence:
   summary:
   - source_id: openai-factory-article
-    relation: supports
     locator: Preserved content.md, lines 141-177
   - source_id: openai-harness-engineering-post
     relation: contextualizes
@@ -232,89 +221,68 @@ evidence:
       a single team's account, not the company-wide pipeline)
   headline_metric:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, line 46"
   - source_id: openai-chatgpt-work-post
-    relation: supports
     locator: "Preserved content.md, line 34 (OpenAI's own launch post: nearly 100% of teams inside OpenAI, including finance and sales, use ChatGPT Work and Codex; teams denominator, OpenAI self-report)"
   - source_id: every-codex-team-interview
     relation: contextualizes
     locator: "Preserved content.md, line 486 (Codex lead, February 2026: 'almost everyone technical at the company uses Codex')"
   operating_models.0:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, line 159 (risk classification; low-risk areas can opt in to an agent that auto-approves pull requests)"
   - source_id: openai-harness-engineering-post
     relation: contextualizes
     locator: "Preserved content.md, line 199 (background Codex tasks 'reviewed in under a minute and automerged' in one repository; no risk-tiered routing described)"
   operating_models.1:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, lines 165-175 (after a human approves production, an assigned agent handholds the rollout)"
   operating_models.2:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, line 186 (Perf Factory proposes fixes)"
   architecture.sandbox:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, lines 138-186 describe the pipeline without documenting an execution sandbox"
   architecture.harness:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, line 48 (internal Codex is a lot more advanced than its external counterpart; ChatGPT Work is powered by the Codex harness)"
   - source_id: openai-agents-api-post
-    relation: supports
     locator: "Preserved content.md, lines 12-14 (OpenAI scaled Codex and ChatGPT for Work on the same harness; the Agents API exposes 'that same harness and infrastructure that powers Codex')"
   - source_id: hn-zbrock-internal-prototype
-    relation: supports
     locator: "Preserved content.md, line 12 (harness-engineering co-author: 'It was an internal prototype that looked very much like the current Codex app')"
   architecture.model:
   - source_id: openai-factory-article
-    relation: supports
     locator: "The preserved article names no underlying models for the internal Codex harness"
   architecture.interfaces:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, lines 48, 80, and 140-145 (Codex app and CLI, GitHub, Slack, internal skills)"
   architecture.tool_access:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, lines 140-145"
   architecture.knowledge:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, lines 140-147 (documentation inside the source code; internal skills; onboarding)"
   - source_id: openai-harness-engineering-post
-    relation: supports
     locator: "Preserved content.md, lines 30, 73, and 117 (structured docs/ directory as the system of record; a roughly 100-line AGENTS.md serving as a map; a recurring doc-gardening agent; the initial AGENTS.md was written by Codex)"
   - source_id: every-codex-team-interview
-    relation: supports
     locator: "Preserved content.md, lines 236, 258, and 274 (automations that keep PRs mergeable by resolving merge conflicts, a random-file bug-finder that runs multiple times a day, and a bot that quietly fixes bugs in recently merged PRs)"
   architecture.context_mgmt:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, lines 52-56 (/goal setting; long-running threads)"
   - source_id: openai-harness-engineering-post
     relation: contextualizes
     locator: "Preserved content.md, line 58 (single Codex runs 'upwards of six hours' while humans sleep; hours, not the days the article reports)"
   primitives.0:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, lines 155-157 (domain-specialist review agents)"
   - source_id: venturebeat-devday-codex
-    relation: supports
     locator: "Preserved content.md, line 44 (DevDay 2025, October 2025: nearly every pull request at OpenAI is reviewed by Codex, catching hundreds of issues daily; OpenAI's own figure relayed by press)"
   - source_id: openai-harness-engineering-post
-    relation: supports
     locator: "Preserved content.md, lines 46 and 48 (Codex requests additional specific agent reviews locally and in the cloud until all agent reviewers are satisfied; 'almost all review effort' handled agent-to-agent; one repository)"
   primitives.1:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, line 159 (risk classification and auto-approve)"
   primitives.2:
   - source_id: openai-factory-article
-    relation: supports
     locator: Preserved content.md, lines 159-177
   - source_id: hn-zbrock-internal-adoption
     relation: contextualizes
@@ -323,65 +291,48 @@ evidence:
       monitor CI; no self-built deploy dashboards described)'
   primitives.3:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, line 153 (perf harness sends problematic PRs to the Synthetics A/B framework)"
   primitives.4:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, line 186 (Perf Factory)"
   primitives.5:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, lines 149-153 (implements changes; builds, tests, fixes CI failures until green)"
   key_metrics.0:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, line 46 (non-engineering orgs went from ~0% to 90% usage in a four-month period)"
   - source_id: openai-chatgpt-work-post
     relation: contextualizes
     locator: "Preserved content.md, line 37 (OpenAI's finance org uses ChatGPT Work for month-end close and forecasting, reduced from days to hours; corroborates non-engineering adoption, not the 0%-to-90% trajectory)"
   key_metrics.1:
   - source_id: openai-factory-article
-    relation: supports
     locator: "Preserved content.md, line 92 (roughly 10x load increase on some systems in about six months)"
   key_metrics.2:
   - source_id: venturebeat-devday-codex
-    relation: supports
     locator: "Preserved content.md, line 32 (company-reported 92% daily technical-staff use, relayed by press at DevDay)"
   key_metrics.3:
   - source_id: venturebeat-devday-codex
-    relation: supports
     locator: "Preserved content.md, line 32 (company-reported 70% more pull requests per week for engineers using Codex)"
   lessons_learned.0:
   - source_id: openai-factory-article
-    relation: supports
     locator: Preserved content.md, lines 52-56
   lessons_learned.1:
   - source_id: openai-factory-article
-    relation: supports
     locator: Preserved content.md, lines 64-66
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: "The article documents agent auto-approve for low-risk pull requests in opted-in areas and risk classification that routes high-risk changes to stricter review; the run-time exception path is not described. The harness-engineering post corroborates agent automerge of low-friction pull requests in one repository but describes no risk tiering, so the routing mechanism itself stays single-sourced."
     valid_at: "2026-09"
   operating_models.1:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: "Pipeline step 6 states that a human approves a change to go to production before the deploy agent takes over."
     valid_at: "2026-09"
   operating_models.2:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: "The article documents Perf Factory only up to agents that de-duplicate signals, identify real latency regressions, root-cause them, and propose fixes; whether a human reviews, applies, or lands those proposals is not stated."
     valid_at: "2026-09"
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: "Company usage claim relayed by an independent reporter; no method or denominator published. OpenAI's own 2026-09-10 launch post states nearly 100% of teams inside OpenAI, including finance and sales, use ChatGPT Work and Codex (a teams denominator, not employees)."
     valid_at: "2026-09"
@@ -389,32 +340,24 @@ claim_metadata:
     metric_scope: Weekly Codex and ChatGPT Work use across OpenAI employees
     measurement_method: Internal token-usage tracking by department, chart sourced to OpenAI
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: "Company adoption figures relayed by an independent reporter; the four-month window carries no calendar dates. OpenAI's launch post corroborates finance-org use (month-end close reduced from days to hours) but not the 0%-to-90% trajectory."
     valid_at: "2026-09"
     reported_by: OpenAI
     metric_scope: Weekly Codex use in non-engineering orgs such as finance, recruitment, and legal
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: "A VP of Engineering load estimate relayed by an independent reporter."
     valid_at: "2026-09"
     reported_by: OpenAI
     metric_scope: Load on build-test-deploy pipeline systems
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: "OpenAI's own figure relayed by press at DevDay 2025; no method or denominator published."
     valid_at: "2025-10"
     reported_by: OpenAI
     metric_scope: Daily Codex use by OpenAI technical staff in October 2025
   key_metrics.3:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: "OpenAI's own figure relayed by press at DevDay 2025; the comparison group and counting method are not stated."
     valid_at: "2025-10"

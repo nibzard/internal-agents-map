@@ -4,7 +4,6 @@ company: HubSpot
 agent_name: Sidekick
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: 2026-03
   source_id: hubspot-sidekick-source-1
@@ -51,7 +50,6 @@ sources:
 - id: hubspot-sidekick-source-1
   title: Automated code review, the 6-month evolution
   url: https://product.hubspot.com/blog/automated-code-review-the-6-month-evolution
-  canonical_url: https://product.hubspot.com/blog/automated-code-review-the-6-month-evolution
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -63,7 +61,6 @@ sources:
 - id: hubspot-sidekick-source-2
   title: Cloud coding agents at HubSpot
   url: https://product.hubspot.com/blog/cloud-coding-agents-at-hubspot
-  canonical_url: https://product.hubspot.com/blog/cloud-coding-agents-at-hubspot
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -74,103 +71,76 @@ sources:
 evidence:
   operating_models.0:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
   summary:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, lines 14, 24–45, 75–87
   - source_id: hubspot-sidekick-source-2
     relation: contextualizes
     locator: Preserved content.md, lines 30–57 (earlier Crucible implementation)
   headline_metric:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, lines 14–18
   architecture.harness:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, lines 24–45
   architecture.sandbox:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, lines 39–45
   architecture.tool_access:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
   architecture.interfaces:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
   architecture.knowledge:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, line 129
   primitives.0:
   - source_id: hubspot-sidekick-source-2
-    relation: supports
     locator: Preserved content.md, line 57
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, line 14
   primitives.1:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, lines 65, 79
   primitives.2:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, lines 79–83
   primitives.3:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, line 85
   key_metrics.0:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, lines 14
   key_metrics.1:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, lines 14–18
   key_metrics.2:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, lines 99–116
   lessons_learned.0:
   - source_id: hubspot-sidekick-source-1
-    relation: supports
     locator: Preserved content.md, lines 71–87
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The engineering blog describes engineers acting on Sidekick review comments, which locates
       human attention at work-product review.
     valid_at: 2026-03
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: HubSpot reported the figures in its own engineering blog without independent verification.
     valid_at: 2026-03
     reported_by: HubSpot
     metric_scope: Time for engineers to receive code feedback from Sidekick; not overall PR completion time
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: HubSpot reported the figures in its own engineering blog.
     metric_scope: Pull-request coverage after the six-month rollout
     denominator: HubSpot pull requests
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: HubSpot reported the figures in its own engineering blog.
     metric_scope: Time for engineers to receive code feedback from Sidekick; not overall PR completion time
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: HubSpot reported the figures in its own engineering blog.
     metric_scope: Developer emoji reactions on review comments during the preceding couple of months

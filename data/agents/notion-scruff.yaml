@@ -4,7 +4,6 @@ company: Notion
 agent_name: Scruff
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026-01-12'
   source_id: notion-scruff-source-1
@@ -40,7 +39,6 @@ sources:
 - id: notion-scruff-source-1
   title: Meet Scruff, Security’s New AI Teammate
   url: https://www.notion.com/blog/meet-scruff-securitys-new-ai-teammate
-  canonical_url: https://www.notion.com/blog/meet-scruff-securitys-new-ai-teammate
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-09-17'
@@ -49,50 +47,28 @@ sources:
   duplicate_of: notion-scruff-source
 evidence:
   summary:
-  - source_id: notion-scruff-source-1
-    relation: supports
-    locator: Building Scruff; Putting It All Together; The Results
+  - locator: Building Scruff; Putting It All Together; The Results
   operating_models.0:
-  - source_id: notion-scruff-source-1
-    relation: supports
-    locator: 'Opening example and The Results: DART decides whether to declare an incident or mark a false positive;
+  - locator: 'Opening example and The Results: DART decides whether to declare an incident or mark a false positive;
       analysts review Scruff investigations'
   architecture.harness:
-  - source_id: notion-scruff-source-1
-    relation: supports
-    locator: Building Scruff; Putting It All Together; The Results
+  - locator: Building Scruff; Putting It All Together; The Results
   architecture.knowledge:
-  - source_id: notion-scruff-source-1
-    relation: supports
-    locator: Building Scruff; Putting It All Together; The Results
+  - locator: Building Scruff; Putting It All Together; The Results
   architecture.context_mgmt:
-  - source_id: notion-scruff-source-1
-    relation: supports
-    locator: 'Building Scruff: Notes page'
+  - locator: 'Building Scruff: Notes page'
   architecture.tool_access:
-  - source_id: notion-scruff-source-1
-    relation: supports
-    locator: Building Scruff; Putting It All Together; The Results
+  - locator: Building Scruff; Putting It All Together; The Results
   primitives.0:
-  - source_id: notion-scruff-source-1
-    relation: supports
-    locator: Building Scruff; Putting It All Together; The Results
+  - locator: Building Scruff; Putting It All Together; The Results
   primitives.1:
-  - source_id: notion-scruff-source-1
-    relation: supports
-    locator: Building Scruff; Putting It All Together; The Results
+  - locator: Building Scruff; Putting It All Together; The Results
   primitives.2:
-  - source_id: notion-scruff-source-1
-    relation: supports
-    locator: Building Scruff; Putting It All Together; The Results
+  - locator: Building Scruff; Putting It All Together; The Results
   key_metrics.0:
-  - source_id: notion-scruff-source-1
-    relation: supports
-    locator: 'The Results, first bullet: 6+ hours saved per week across DART'
+  - locator: 'The Results, first bullet: 6+ hours saved per week across DART'
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The source explicitly places the incident/false-positive decision with DART after Scruff
       gathers and analyzes evidence.

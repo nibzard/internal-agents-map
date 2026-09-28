@@ -4,7 +4,6 @@ company: Airbnb
 agent_name: Datako
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026-06-22'
   source_id: airbnb-datako-source-1
@@ -36,7 +35,6 @@ sources:
 - id: airbnb-datako-source-1
   title: Beyond the CLI (DX podcast)
   url: https://getdx.com/podcast/beyond-the-cli-agentic-ai-for-async-workloads-and-non-developers/
-  canonical_url: https://getdx.com/podcast/beyond-the-cli-agentic-ai-for-async-workloads-and-non-developers/
   kind: podcast
   provenance_class: direct-participant
   role: evidence
@@ -46,37 +44,21 @@ sources:
   published_at: '2026-06-22'
 evidence:
   summary:
-  - source_id: airbnb-datako-source-1
-    relation: supports
-    locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
+  - locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
   operating_models.0:
-  - source_id: airbnb-datako-source-1
-    relation: supports
-    locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
+  - locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
   architecture.harness:
-  - source_id: airbnb-datako-source-1
-    relation: supports
-    locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
+  - locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
   architecture.tool_access:
-  - source_id: airbnb-datako-source-1
-    relation: supports
-    locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
+  - locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
   primitives.0:
-  - source_id: airbnb-datako-source-1
-    relation: supports
-    locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
+  - locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
   primitives.1:
-  - source_id: airbnb-datako-source-1
-    relation: supports
-    locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
+  - locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
   key_metrics.0:
-  - source_id: airbnb-datako-source-1
-    relation: supports
-    locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
+  - locator: 'Transcript 15:39 and 30:18: internal data-query application and Datako on AirChat SDK'
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes Datako and its work, but does not establish whether a person must approve
       or inspect each successful output.

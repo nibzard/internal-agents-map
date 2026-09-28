@@ -4,7 +4,6 @@ company: Linear
 agent_name: Linear Agent
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: linear-agent-source-1
@@ -76,7 +75,6 @@ sources:
 - id: linear-agent-source-1
   title: How we built Linear Agent
   url: https://linear.app/now/how-we-built-linear-agent
-  canonical_url: https://linear.app/now/how-we-built-linear-agent
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -86,7 +84,6 @@ sources:
 - id: linear-agent-source-2
   title: How we use Linear Agent at Linear
   url: https://linear.app/now/how-we-use-linear-agent-at-linear
-  canonical_url: https://linear.app/now/how-we-use-linear-agent-at-linear
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -96,7 +93,6 @@ sources:
 - id: linear-agent-source-3
   title: Our approach to building the Agent Interaction SDK
   url: https://linear.app/now/our-approach-to-building-the-agent-interaction-sdk
-  canonical_url: https://linear.app/now/our-approach-to-building-the-agent-interaction-sdk
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -106,7 +102,6 @@ sources:
 - id: linear-agent-source-4
   title: Hacker News submission for how Linear built its agent
   url: https://news.ycombinator.com/item?id=49252304
-  canonical_url: https://news.ycombinator.com/item?id=49252304
   kind: hn-thread
   provenance_class: community
   role: discovery
@@ -120,7 +115,6 @@ sources:
 - id: linear-agent-source-5
   title: Hacker News submission for the Linear Agent public beta
   url: https://news.ycombinator.com/item?id=48503334
-  canonical_url: https://news.ycombinator.com/item?id=48503334
   kind: hn-thread
   provenance_class: community
   role: discovery
@@ -134,7 +128,6 @@ sources:
 - id: linear-agent-source-6
   title: Introducing Linear Agent
   url: https://linear.app/changelog/2026-03-24-introducing-linear-agent
-  canonical_url: https://linear.app/changelog/2026-03-24-introducing-linear-agent
   kind: release
   provenance_class: first-party
   role: evidence
@@ -146,82 +139,60 @@ sources:
 evidence:
   operating_models.0:
   - source_id: linear-agent-source-1
-    relation: supports
   summary:
   - source_id: linear-agent-source-1
-    relation: supports
   - source_id: linear-agent-source-2
-    relation: supports
   - source_id: linear-agent-source-6
-    relation: supports
   architecture.sandbox:
   - source_id: linear-agent-source-1
-    relation: supports
   architecture.harness:
   - source_id: linear-agent-source-1
-    relation: supports
   - source_id: linear-agent-source-2
-    relation: supports
   architecture.model:
   - source_id: linear-agent-source-2
-    relation: supports
   architecture.tool_access:
   - source_id: linear-agent-source-2
-    relation: supports
   architecture.knowledge:
   - source_id: linear-agent-source-2
-    relation: supports
   architecture.credentials:
   - source_id: linear-agent-source-3
-    relation: supports
   primitives.0:
   - source_id: linear-agent-source-2
-    relation: supports
   primitives.1:
   - source_id: linear-agent-source-3
-    relation: supports
   primitives.2:
   - source_id: linear-agent-source-1
-    relation: supports
   architecture.context_mgmt:
-  - {source_id: linear-agent-source-1, relation: supports, locator: 'Preserved content.md, lines 62–72'}
+  - {source_id: linear-agent-source-1, locator: 'Preserved content.md, lines 62–72'}
   primitives.3:
-  - {source_id: linear-agent-source-2, relation: supports, locator: 'Preserved content.md, lines 28–34'}
+  - {source_id: linear-agent-source-2, locator: 'Preserved content.md, lines 28–34'}
   primitives.4:
-  - {source_id: linear-agent-source-2, relation: supports, locator: 'Preserved content.md, lines 60, 114'}
+  - {source_id: linear-agent-source-2, locator: 'Preserved content.md, lines 60, 114'}
   primitives.5:
-  - {source_id: linear-agent-source-2, relation: supports, locator: 'Preserved content.md, line 66'}
+  - {source_id: linear-agent-source-2, locator: 'Preserved content.md, line 66'}
   primitives.6:
-  - {source_id: linear-agent-source-1, relation: supports, locator: 'Preserved content.md, lines 94–96'}
+  - {source_id: linear-agent-source-1, locator: 'Preserved content.md, lines 94–96'}
   primitives.7:
-  - {source_id: linear-agent-source-2, relation: supports, locator: 'Preserved content.md, lines 70, 102'}
+  - {source_id: linear-agent-source-2, locator: 'Preserved content.md, lines 70, 102'}
   lessons_learned.0:
   - source_id: linear-agent-source-2
-    relation: supports
     locator: Preserved content.md, lines 28-38,60
   lessons_learned.1:
   - source_id: linear-agent-source-2
-    relation: supports
     locator: Preserved content.md, lines 134
   lessons_learned.2:
   - source_id: linear-agent-source-2
-    relation: supports
     locator: Preserved content.md, lines 98
   lessons_learned.3:
   - source_id: linear-agent-source-2
-    relation: supports
     locator: Preserved content.md, lines 60
   lessons_learned.4:
   - source_id: linear-agent-source-2
-    relation: supports
     locator: Preserved content.md, lines 70,102
   architecture.interfaces:
   - source_id: linear-agent-source-2
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The source documents delegated coding output while a human remains accountable for the assigned
       issue.

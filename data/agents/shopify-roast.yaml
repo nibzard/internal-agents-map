@@ -4,7 +4,6 @@ company: Shopify
 agent_name: Roast
 approach_type: platform
 deployment_stage: deployed
-year: 2025
 first_public_evidence:
   date: '2025-06-18'
   source_id: shopify-roast-source-1
@@ -92,7 +91,6 @@ sources:
 - id: shopify-roast-source-1
   title: 'Introducing Roast: Structured AI workflows made easy'
   url: https://shopify.engineering/introducing-roast
-  canonical_url: https://shopify.engineering/introducing-roast
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -107,7 +105,6 @@ sources:
 - id: shopify-roast-source-2
   title: 'Shopify/roast: Structured AI workflows made easy'
   url: https://github.com/Shopify/roast
-  canonical_url: https://github.com/Shopify/roast
   kind: repository
   provenance_class: first-party
   role: evidence
@@ -119,22 +116,18 @@ sources:
 evidence:
   summary:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 12, 16, 170: the DX team built and open-sourced Roast, extracted it from
       internal AI tools, and reports internal deployment'
   operating_models.0:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 94, 174: the Boba workflow runs deterministic cleanup and autocorrect,
       then the CodingAgent iterates until tests and type checking pass'
   architecture.sandbox:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 70-77: the tool list names file and command restrictions, not an execution
       boundary'
   architecture.harness:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 16, 26-64: convention-oriented framework, workflow.yml plus prompt files,
       command-line tool usable from any language'
   - source_id: shopify-roast-source-2
@@ -143,7 +136,6 @@ evidence:
       with bin/roast execute, a later redesign of the 2025 YAML configuration'
   architecture.model:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 50, 146-154: OpenAI API key or OpenRouter prerequisite, Raix provider
       abstraction, CodingAgent powered by Claude Code'
   - source_id: shopify-roast-source-2
@@ -152,111 +144,86 @@ evidence:
       Gemini chat providers and Pi or Claude Code agent CLIs'
   architecture.tool_access:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 68-77: the built-in toolkit list with its restriction notes'
   architecture.knowledge:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 34-40, 54-58: prompt.md files with ERB templating and BaseStep Ruby step
       classes'
   architecture.credentials:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 146-150, 156-162: the API key prerequisite and Raix initializers adding
       custom authentication schemes'
   architecture.context_mgmt:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 96-98, 118-124: shared conversation transcript and saved executions that
       resume from any step'
   architecture.interfaces:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 16, 142-144: Roast is a command line tool distributed as a Ruby gem'
   primitives.0:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, line 174: Boba performs cleanup with sed'
   primitives.1:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, line 174: Boba bumps tests to strict typing'
   primitives.2:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 94, 174: Boba runs Sorbet autocorrect'
   primitives.3:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 94, 174: remaining issues are fed to the coding agent, which iteratively
       fixes type errors'
   primitives.4:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 94, 174: the agent runs tests and ensures both tests and type checking
       pass'
   primitives.5:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 24-36: convention over configuration, workflow.yml and directory-based
       prompt.md steps'
   primitives.6:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 30-64: the five step formats Roast interprets by structure'
   primitives.7:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 102-116: iteration over collections, conditional execution and case statements'
   primitives.8:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 66-76: the built-in toolkit list'
   primitives.9:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 77, 79-92: the CodingAgent integrates Claude Code and has autonomy within
       the guardrails the author sets'
   primitives.10:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 96-98: steps share their conversation transcript'
   primitives.11:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 118-124: session replay saves every execution and resumes from any step'
   key_metrics.0:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, line 172: engineers have analyzed thousands of test files'
   key_metrics.1:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, line 20: a dozen Engineers have already contributed features and workflows
       on GitHub'
   lessons_learned.0:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, line 10: AI agents need help staying on track; allowing AI to roam free around
       millions of lines of code did not work very well'
   lessons_learned.1:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 94, 174: deterministic steps clean up and autocorrect, then remaining
       issues go to the CodingAgent'
   lessons_learned.2:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, lines 120-124: session replay eliminates the need to rerun expensive AI operations'
   lessons_learned.3:
   - source_id: shopify-roast-source-1
-    relation: supports
     locator: 'Preserved content.md, line 190: use AI as a placeholder to keep the workflow moving, then replace
       it with deterministic code'
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The post follows the Boba workflow to a file where tests and type checking pass and says
       the team pursued unit-test work with minimal human intervention, but it names no point at which a person
@@ -283,8 +250,6 @@ claim_metadata:
       never names the model a plain AI step uses; the repository captured in 2026 lists a different provider set.
     valid_at: '2025-06'
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: Shopify reported an approximate scale in its own engineering blog with no count, measurement
       window, coverage baseline or method.
@@ -292,8 +257,6 @@ claim_metadata:
     reported_by: Shopify
     metric_scope: Test files analyzed with Roast workflows inside Shopify
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: Shopify reported an approximate contributor count for its public repository without a period,
       and without saying whether the contributors are Shopify employees or outside developers.

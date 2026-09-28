@@ -4,7 +4,6 @@ company: Salesforce
 agent_name: Slackbot
 approach_type: agent
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: '2025-12-01'
   source_id: salesforce-slackbot-source-2
@@ -54,7 +53,6 @@ sources:
 - id: salesforce-slackbot-source-1
   title: Salesforce announces general availability of Slackbot
   url: https://www.salesforce.com/ap/news/press-releases/2026/01/14/salesforce-announces-the-general-availability-of-slackbot-your-personal-agent-for-work-sg/
-  canonical_url: https://www.salesforce.com/ap/news/press-releases/2026/01/14/salesforce-announces-the-general-availability-of-slackbot-your-personal-agent-for-work-sg/
   kind: release
   provenance_class: first-party
   published_at: '2026-01-14'
@@ -65,7 +63,6 @@ sources:
 - id: salesforce-slackbot-source-2
   title: Interview with Slackbot about connected work context
   url: https://www.salesforce.com/in/news/stories/salesforce-slackbot-ai-interview/
-  canonical_url: https://www.salesforce.com/in/news/stories/salesforce-slackbot-ai-interview/
   kind: corporate-article
   provenance_class: first-party
   role: evidence
@@ -77,7 +74,6 @@ sources:
 - id: salesforce-slackbot-source-3
   title: Salesforce rolls out new Slackbot AI agent
   url: https://venturebeat.com/technology/salesforce-rolls-out-new-slackbot-ai-agent-as-it-battles-microsoft-and
-  canonical_url: https://venturebeat.com/technology/salesforce-rolls-out-new-slackbot-ai-agent-as-it-battles-microsoft-and
   kind: news
   provenance_class: independent-secondary
   role: commentary
@@ -88,7 +84,6 @@ sources:
 - id: salesforce-slackbot-source-4
   title: Hacker News submission for the Salesforce Slackbot rollout
   url: https://news.ycombinator.com/item?id=46600760
-  canonical_url: https://news.ycombinator.com/item?id=46600760
   kind: hn-thread
   provenance_class: community
   role: discovery
@@ -99,55 +94,41 @@ sources:
 evidence:
   operating_models.0:
   - source_id: salesforce-slackbot-source-1
-    relation: supports
   summary:
   - source_id: salesforce-slackbot-source-1
-    relation: supports
   - source_id: salesforce-slackbot-source-2
-    relation: supports
   architecture.harness:
   - source_id: salesforce-slackbot-source-1
-    relation: supports
     locator: Preserved content.md, lines 22-24, 38
   architecture.model:
   - source_id: salesforce-slackbot-source-3
-    relation: supports
     locator: Preserved content.md, lines 32, 34
   architecture.tool_access:
   - source_id: salesforce-slackbot-source-1
-    relation: supports
   architecture.knowledge:
   - source_id: salesforce-slackbot-source-1
-    relation: supports
   architecture.credentials:
   - source_id: salesforce-slackbot-source-1
-    relation: supports
   primitives.0:
   - source_id: salesforce-slackbot-source-1
-    relation: supports
   lessons_learned.0:
   - source_id: salesforce-slackbot-source-1
-    relation: supports
     locator: Preserved content.md, lines 88-90,104-108
   lessons_learned.1:
   - source_id: salesforce-slackbot-source-1
-    relation: supports
     locator: Preserved content.md, lines 36,72
   architecture.interfaces:
   - source_id: salesforce-slackbot-source-1
-    relation: supports
   primitives.1:
-  - {source_id: salesforce-slackbot-source-1, relation: supports, locator: 'Preserved content.md, lines 64–66'}
+  - {source_id: salesforce-slackbot-source-1, locator: 'Preserved content.md, lines 64–66'}
   primitives.2:
-  - {source_id: salesforce-slackbot-source-3, relation: supports, locator: 'Preserved content.md, lines 52–58'}
+  - {source_id: salesforce-slackbot-source-3, locator: 'Preserved content.md, lines 52–58'}
   key_metrics.0:
-  - {source_id: salesforce-slackbot-source-3, relation: supports, locator: 'Preserved content.md, lines 42–44'}
+  - {source_id: salesforce-slackbot-source-3, locator: 'Preserved content.md, lines 42–44'}
   key_metrics.1:
-  - {source_id: salesforce-slackbot-source-3, relation: supports, locator: 'Preserved content.md, line 44'}
+  - {source_id: salesforce-slackbot-source-3, locator: 'Preserved content.md, line 44'}
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: 'The source describes an employee agent that prepares drafts and contextual work for human use.'
     valid_at: '2026-01-14'
@@ -164,16 +145,12 @@ claim_metadata:
     confidence_reason: The product announcement makes this permission claim but does not expose the enforcement
       implementation or independently test its effectiveness.
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Salesforce internal adoption figures relayed by VentureBeat without a measurement method
       or window.
     valid_at: '2026-01'
     metric_scope: Salesforce employees during the internal rollout; continuation measured among those who tried it
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Salesforce internal satisfaction and self-reported time savings relayed by VentureBeat;
       no survey method or baseline is given.

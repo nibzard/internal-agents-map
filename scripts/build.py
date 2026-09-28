@@ -382,6 +382,52 @@ def claim_fields(record: dict) -> dict[str, tuple[str, str, str]]:
     return claims
 
 
+def insert_after(mapping: dict, key: str, new_key: str, value: Any) -> None:
+    """Put new_key immediately after key, so that the export keeps its field order."""
+    items = list(mapping.items())
+    mapping.clear()
+    for existing_key, existing_value in items:
+        mapping[existing_key] = existing_value
+        if existing_key == key:
+            mapping[new_key] = value
+
+
+def apply_defaults(record: dict, filename: str) -> None:
+    """Fill the fields that a record can omit, so that the export always contains them.
+
+    The kind and provenance of claim metadata keep their defaults in claim_fields().
+    """
+    first_date = record["first_public_evidence"]["date"]
+    derived_year = int(first_date[:4])
+    if "year" not in record:
+        insert_after(record, "deployment_stage", "year", derived_year)
+    elif record["year"] != derived_year:
+        die(
+            f"{filename}: 'year' is {record['year']}, but first_public_evidence.date "
+            f"{first_date!r} gives {derived_year}. Remove 'year' or make it agree."
+        )
+    for source in record["sources"]:
+        if "canonical_url" not in source:
+            insert_after(source, "url", "canonical_url", source["url"])
+    only_source = record["sources"][0]["id"] if len(record["sources"]) == 1 else None
+    for path, links in record["evidence"].items():
+        for index, link in enumerate(links):
+            source_id = link.get("source_id", only_source)
+            if source_id is None:
+                die(
+                    f"{filename}: evidence.{path}.{index} must name a source_id, "
+                    "because the record has more than one source."
+                )
+            rest = {
+                key: value for key, value in link.items() if key not in {"source_id", "relation"}
+            }
+            links[index] = {
+                "source_id": source_id,
+                "relation": link.get("relation", "supports"),
+                **rest,
+            }
+
+
 def validate_source(source: dict, filename: str, seen: set[str]) -> None:
     source_id = source["id"]
     if source_id in seen:
@@ -478,6 +524,7 @@ def validate_record(record: dict, path: Path, global_sources: set[str]) -> None:
     errors = schema_errors(record, filename)
     if errors:
         die("\n".join(errors))
+    apply_defaults(record, filename)
     if record["id"] != path.stem:
         die(f"{filename}: 'id' must match the filename stem.")
     local_sources: set[str] = set()

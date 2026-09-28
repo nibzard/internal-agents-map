@@ -23,6 +23,7 @@ verification gate, and update the status row when finished.
 | [013](013-add-company-pages.md) | Add company pages within the existing design | P2 | M | 012 + approved UI removals | DONE on 2026-09-17; independent full verification and desktop/mobile design review passed; merged to main in `8ee1c13` and published at `/organizations/<id>` |
 | [014](014-search-discovery.md) | Make the catalog findable through search | P1 | L | 013, the SEO pulse skill and its 2026-09 report | TODO; planned 2026-09-21, five phases with their own approval gates; no execution requested |
 | [015](015-social-preview-cards.md) | Give every page its own link preview card | P2 | M | 007, 013 | DONE on 2026-09-22; merged to main through pull request #11; licence follow-up scheduled |
+| [018](018-simplify-record-schema.md) | Simplify the record schema without losing the evidence chain | P2 | L | 011, 012 | PROPOSED on 2026-09-28; no execution requested |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) |
 REJECTED (with one-line rationale)

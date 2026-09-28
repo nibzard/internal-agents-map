@@ -4,7 +4,6 @@ company: Stripe
 agent_name: Minions
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: stripe-minions-source-1
@@ -74,7 +73,6 @@ sources:
 - id: stripe-minions-source-1
   title: 'Minions: Stripe''s one-shot end-to-end coding agents'
   url: https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents
-  canonical_url: https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -84,7 +82,6 @@ sources:
 - id: stripe-minions-source-2
   title: Minions - Part Two
   url: https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2
-  canonical_url: https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -94,7 +91,6 @@ sources:
 - id: stripe-minions-source-3
   title: Hacker News discussion of Minions part two
   url: https://news.ycombinator.com/item?id=47086557
-  canonical_url: https://news.ycombinator.com/item?id=47086557
   kind: hn-thread
   provenance_class: community
   role: commentary
@@ -108,7 +104,6 @@ sources:
 - id: stripe-minions-source-4
   title: Hacker News comment asking for examples and review evidence
   url: https://news.ycombinator.com/item?id=47086907
-  canonical_url: https://news.ycombinator.com/item?id=47086907
   kind: hn-comment
   provenance_class: community
   role: commentary
@@ -122,7 +117,6 @@ sources:
 - id: stripe-minions-source-5
   title: Hacker News comment questioning the level of technical detail
   url: https://news.ycombinator.com/item?id=47086953
-  canonical_url: https://news.ycombinator.com/item?id=47086953
   kind: hn-comment
   provenance_class: community
   role: commentary
@@ -136,7 +130,6 @@ sources:
 - id: stripe-minions-source-6
   title: Hacker News comment asking about shipped and maintained output
   url: https://news.ycombinator.com/item?id=47087114
-  canonical_url: https://news.ycombinator.com/item?id=47087114
   kind: hn-comment
   provenance_class: community
   role: commentary
@@ -150,7 +143,6 @@ sources:
 - id: stripe-minions-source-7
   title: Hacker News comment questioning the value of pull request counts
   url: https://news.ycombinator.com/item?id=47111453
-  canonical_url: https://news.ycombinator.com/item?id=47111453
   kind: hn-comment
   provenance_class: community
   role: commentary
@@ -164,10 +156,8 @@ sources:
 evidence:
   operating_models.0:
   - source_id: stripe-minions-source-1
-    relation: supports
   summary:
   - source_id: stripe-minions-source-1
-    relation: supports
   - source_id: stripe-minions-source-3
     relation: contextualizes
     locator: Preserved content.md, lines 146–158, 190–194
@@ -185,7 +175,6 @@ evidence:
     locator: Preserved content.md, lines 10–14
   headline_metric:
   - source_id: stripe-minions-source-2
-    relation: supports
     locator: Preserved content.md, lines 12
   - &id001
     source_id: stripe-minions-source-3
@@ -209,37 +198,28 @@ evidence:
     locator: Preserved content.md, lines 10–14
   architecture.sandbox:
   - source_id: stripe-minions-source-2
-    relation: supports
     locator: Preserved content.md, lines 24–30, 84
   architecture.harness:
   - source_id: stripe-minions-source-2
-    relation: supports
     locator: Preserved content.md, lines 38–56
   architecture.model:
   - source_id: stripe-minions-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: stripe-minions-source-2
-    relation: supports
     locator: Preserved content.md, lines 72–84
   architecture.knowledge:
   - source_id: stripe-minions-source-2
-    relation: supports
     locator: Preserved content.md, lines 64–76
   architecture.credentials:
   - source_id: stripe-minions-source-2
-    relation: supports
     locator: Preserved content.md, lines 40–42, 84
   primitives.0:
   - source_id: stripe-minions-source-1
-    relation: supports
     locator: Preserved content.md, lines 50
   - source_id: stripe-minions-source-2
-    relation: supports
     locator: Preserved content.md, lines 94-98
   key_metrics.0:
   - source_id: stripe-minions-source-1
-    relation: supports
     locator: Preserved content.md, lines 14
   - *id001
   - *id002
@@ -248,39 +228,32 @@ evidence:
   - *id005
   lessons_learned.0:
   - source_id: stripe-minions-source-1
-    relation: supports
     locator: Preserved content.md, lines 14-18,50
   lessons_learned.1:
   - source_id: stripe-minions-source-2
-    relation: supports
     locator: Preserved content.md, lines 24-32
   architecture.interfaces:
   - source_id: stripe-minions-source-1
-    relation: supports
     locator: Preserved content.md, lines 34–48
   architecture.context_mgmt:
   - source_id: stripe-minions-source-1
-    relation: supports
     locator: Preserved content.md, line 64
   - source_id: stripe-minions-source-2
-    relation: supports
     locator: Preserved content.md, lines 60, 68
   primitives.1:
-  - {source_id: stripe-minions-source-1, relation: supports, locator: 'Preserved content.md, lines 36, 42'}
+  - {source_id: stripe-minions-source-1, locator: 'Preserved content.md, lines 36, 42'}
   primitives.2:
-  - {source_id: stripe-minions-source-1, relation: supports, locator: 'Preserved content.md, line 64'}
-  - {source_id: stripe-minions-source-2, relation: supports, locator: 'Preserved content.md, line 68'}
+  - {source_id: stripe-minions-source-1, locator: 'Preserved content.md, line 64'}
+  - {source_id: stripe-minions-source-2, locator: 'Preserved content.md, line 68'}
   primitives.3:
-  - {source_id: stripe-minions-source-2, relation: supports, locator: 'Preserved content.md, lines 30, 52–56, 94'}
+  - {source_id: stripe-minions-source-2, locator: 'Preserved content.md, lines 30, 52–56, 94'}
   primitives.4:
-  - {source_id: stripe-minions-source-1, relation: supports, locator: 'Preserved content.md, lines 72–74'}
-  - {source_id: stripe-minions-source-2, relation: supports, locator: 'Preserved content.md, line 96'}
+  - {source_id: stripe-minions-source-1, locator: 'Preserved content.md, lines 72–74'}
+  - {source_id: stripe-minions-source-2, locator: 'Preserved content.md, line 96'}
   primitives.5:
-  - {source_id: stripe-minions-source-1, relation: supports, locator: 'Preserved content.md, line 50'}
+  - {source_id: stripe-minions-source-1, locator: 'Preserved content.md, line 50'}
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source explicitly states that humans review and approve production pull requests.
     valid_at: '2026-02-20'

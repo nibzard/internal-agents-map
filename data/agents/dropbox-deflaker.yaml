@@ -4,7 +4,6 @@ company: Dropbox
 agent_name: Deflaker
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: dropbox-deflaker-source-1
@@ -40,7 +39,6 @@ sources:
 - id: dropbox-deflaker-source-1
   title: Introducing Nova, our internal platform for coding agents
   url: https://dropbox.tech/machine-learning/introducing-nova-our-internal-platform-for-coding-agents
-  canonical_url: https://dropbox.tech/machine-learning/introducing-nova-our-internal-platform-for-coding-agents
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -48,42 +46,24 @@ sources:
   duplicate_of: dropbox-nova-source-1
 evidence:
   summary:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'How we’re using the platform: Flaky test remediation; What we learned'
+  - locator: 'How we’re using the platform: Flaky test remediation; What we learned'
   operating_models.0:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'Flaky test remediation: workflow lands a working fix or reaches five attempts; diagram describes the
+  - locator: 'Flaky test remediation: workflow lands a working fix or reaches five attempts; diagram describes the
       automatic retry loop'
   architecture.harness:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'How we’re using the platform: Flaky test remediation; What we learned'
+  - locator: 'How we’re using the platform: Flaky test remediation; What we learned'
   architecture.context_mgmt:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'How we’re using the platform: Flaky test remediation; What we learned'
+  - locator: 'How we’re using the platform: Flaky test remediation; What we learned'
   primitives.0:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'How we’re using the platform: Flaky test remediation; What we learned'
+  - locator: 'How we’re using the platform: Flaky test remediation; What we learned'
   primitives.1:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'How we’re using the platform: Flaky test remediation; What we learned'
+  - locator: 'How we’re using the platform: Flaky test remediation; What we learned'
   primitives.2:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'Flaky test remediation: CI runs the proposed change 100 or more times depending on failure rate'
+  - locator: 'Flaky test remediation: CI runs the proposed change 100 or more times depending on failure rate'
   primitives.3:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'How we’re using the platform: Flaky test remediation; What we learned'
+  - locator: 'How we’re using the platform: Flaky test remediation; What we learned'
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes an automated fix-and-validate loop and publication outside the agent,
       but does not state the required human approval or exception-handling policy.

@@ -4,7 +4,6 @@ company: Deel
 agent_name: Four-stage payroll sync triage pipeline
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026-08-31'
   source_id: deel-payroll-incident-agents-source-1
@@ -78,7 +77,6 @@ sources:
 - id: deel-payroll-incident-agents-source-1
   title: How Deel Eliminated 900 Engineering Hours of Firefighting with a 4-Agent AI System
   url: https://www.deel.com/blog/900-engineering-hours-eliminated-with-akai/
-  canonical_url: https://www.deel.com/blog/900-engineering-hours-eliminated-with-akai/
   kind: corporate-article
   provenance_class: first-party
   role: evidence
@@ -92,105 +90,57 @@ sources:
     manifest_path: archive/sources/deel-payroll-incident-agents-source-1/metadata.json
 evidence:
   summary:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 30, 46, 52-64
+  - locator: Preserved content.md, lines 30, 46, 52-64
   headline_metric:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, line 77
+  - locator: Preserved content.md, line 77
   operating_models.0:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 56, 79
+  - locator: Preserved content.md, lines 56, 79
   operating_models.1:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 60, 64, 79
+  - locator: Preserved content.md, lines 60, 64, 79
   architecture.sandbox:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 46, 85-91
+  - locator: Preserved content.md, lines 46, 85-91
   architecture.harness:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 46, 85
+  - locator: Preserved content.md, lines 46, 85
   architecture.interfaces:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 52, 64
+  - locator: Preserved content.md, lines 52, 64
   architecture.tool_access:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 52, 56, 60, 64
+  - locator: Preserved content.md, lines 52, 56, 60, 64
   architecture.knowledge:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 60, 87
+  - locator: Preserved content.md, lines 60, 87
   architecture.context_mgmt:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, line 89
+  - locator: Preserved content.md, line 89
   primitives.0:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 50-52
+  - locator: Preserved content.md, lines 50-52
   primitives.1:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 54-56
+  - locator: Preserved content.md, lines 54-56
   primitives.2:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 58-60
+  - locator: Preserved content.md, lines 58-60
   primitives.3:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 62-64
+  - locator: Preserved content.md, lines 62-64
   key_metrics.0:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 34, 74
+  - locator: Preserved content.md, lines 34, 74
   key_metrics.1:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 76, 79
+  - locator: Preserved content.md, lines 76, 79
   key_metrics.2:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 36, 75
+  - locator: Preserved content.md, lines 36, 75
   lessons_learned.0:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, line 85
+  - locator: Preserved content.md, line 85
   lessons_learned.1:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, line 87
+  - locator: Preserved content.md, line 87
   lessons_learned.2:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, line 89
+  - locator: Preserved content.md, line 89
   lessons_learned.3:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 40, 91
+  - locator: Preserved content.md, lines 40, 91
   lessons_learned.4:
-  - source_id: deel-payroll-incident-agents-source-1
-    relation: supports
-    locator: Preserved content.md, lines 97, 99
+  - locator: Preserved content.md, lines 97, 99
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The post reports that the retry stage clears about 55% of failures and that those cases
       self-resolve without anyone touching them, which places human attention at the exception only. Deel does not
       say who watches the retries or whether a failed retry ever pages someone directly.
     valid_at: '2026-08'
   operating_models.1:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The post says the remaining cases still reach an engineer and arrive as a 30-second review
       with the exact fix command, so a person reviews the work product before it takes effect. The post does not
@@ -203,8 +153,6 @@ claim_metadata:
     confidence_reason: The post names Akai as the platform the pipeline runs on but documents no execution isolation
       boundary; unknown does not mean absent.
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: Deel reports the annual figure in its own marketing-adjacent blog as a single table row with
       no measurement window, no case count, and no method for converting saved triage time into annual hours.
@@ -214,8 +162,6 @@ claim_metadata:
     reported_by: Deel
     metric_scope: Engineering hours Deel reports it no longer spends investigating failed US PEO payroll syncs
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Deel reports the before-and-after pair in its own blog. The 45 minutes matches the narrative
       description of the old triage, and the under-10-seconds figure matches the parallel-fetch description, but
@@ -224,8 +170,6 @@ claim_metadata:
     reported_by: Deel
     metric_scope: Time to triage one failed US PEO payroll sync, before and after the pipeline
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Deel reports both the 0% to 55% table row and the matching prose, and separately reports
       that about 55% of failures were transient, which makes the number internally consistent. It is self-reported
@@ -235,8 +179,6 @@ claim_metadata:
     metric_scope: Share of failed US PEO payroll syncs resolved without an engineer, before and after the pipeline
     denominator: All failed US PEO payroll syncs the pipeline picks up
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: Both sides of this comparison are ranges rather than counts, the post gives no measured peak
       day, and 20+ cases is an open-ended figure.

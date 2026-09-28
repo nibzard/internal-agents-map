@@ -4,7 +4,6 @@ company: DoorDash
 agent_name: Analytics AI Marketplace
 approach_type: platform
 deployment_stage: deployed
-year: 2025
 first_public_evidence:
   date: '2025-11-11'
   source_id: doordash-ai-marketplace-source-1
@@ -42,7 +41,6 @@ sources:
 - id: doordash-ai-marketplace-source-1
   title: 'Beyond single agents: DoorDash''s collaborative AI ecosystem'
   url: https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/
-  canonical_url: https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/
   kind: engineering-blog
   provenance_class: first-party
   published_at: '2025-11-11'
@@ -51,45 +49,25 @@ sources:
   duplicate_of: doordash-flux-source-2
 evidence:
   summary:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   operating_models.0:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   architecture.harness:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   architecture.knowledge:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   architecture.tool_access:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   architecture.interfaces:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   primitives.0:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   primitives.1:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   primitives.2:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes Analytics AI Marketplace and its work, but does not establish whether
       a person must approve or inspect each successful output.

@@ -7,7 +7,6 @@ relationships:
   approach_id: uber-coding-agent
 approach_type: agent
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: '2025-08-12'
   source_id: uber-ureview-source-1
@@ -72,7 +71,6 @@ sources:
 - id: uber-ureview-source-1
   title: 'uReview: Scalable, Trustworthy GenAI for Code Review at Uber'
   url: https://www.uber.com/us/en/blog/ureview/
-  canonical_url: https://www.uber.com/us/en/blog/ureview/
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -84,104 +82,59 @@ sources:
 evidence:
   operating_models.0:
   - source_id: uber-ureview-source-1
-    relation: supports
   summary:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Introduction; How It Works
+  - locator: Introduction; How It Works
   headline_metric:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Preserved content.md, lines 34, 98
-  - source_id: uber-ureview-source-1
-    relation: contradicts
+  - locator: Preserved content.md, lines 34, 98
+  - relation: contradicts
     locator: Preserved content.md, lines 120 (65,000 per month, versus weekly in line 34)
   architecture.harness:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: How It Works; Comment Generation; Post-Processing
+  - locator: How It Works; Comment Generation; Post-Processing
   architecture.model:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Empirical Model Evaluation
+  - locator: Empirical Model Evaluation
   architecture.interfaces:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Comment Delivery and Feedback Collection; Impact and Evaluation
+  - locator: Comment Delivery and Feedback Collection; Impact and Evaluation
   architecture.tool_access:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Impact and Evaluation; Better at Catching Bugs than Assessing System Design
+  - locator: Impact and Evaluation; Better at Catching Bugs than Assessing System Design
   architecture.knowledge:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Ingestion and Preprocessing; Comment Generation by Specialized Assistants
+  - locator: Ingestion and Preprocessing; Comment Generation by Specialized Assistants
   architecture.context_mgmt:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Comment Delivery and Feedback Collection
+  - locator: Comment Delivery and Feedback Collection
   primitives.0:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Comment Generation by Specialized Assistants
+  - locator: Comment Generation by Specialized Assistants
   primitives.1:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Post-Processing and Quality Filtering
+  - locator: Post-Processing and Quality Filtering
   primitives.2:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Evaluation and Continuous Improvement
+  - locator: Evaluation and Continuous Improvement
   primitives.3:
-  - {source_id: uber-ureview-source-1, relation: supports, locator: 'Preserved content.md, lines 50–54'}
+  - {locator: 'Preserved content.md, lines 50–54'}
   primitives.4:
-  - {source_id: uber-ureview-source-1, relation: supports, locator: 'Preserved content.md, lines 74–76'}
+  - {locator: 'Preserved content.md, lines 74–76'}
   key_metrics.0:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Preserved content.md, lines 34
-  - source_id: uber-ureview-source-1
-    relation: contradicts
+  - locator: Preserved content.md, lines 34
+  - relation: contradicts
     locator: Preserved content.md, lines 120 (65,000 per month, versus weekly in line 34)
   key_metrics.1:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Preserved content.md, lines 76, 98
+  - locator: Preserved content.md, lines 76, 98
   key_metrics.2:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Preserved content.md, lines 82, 98
+  - locator: Preserved content.md, lines 82, 98
   key_metrics.3:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Preserved content.md, lines 94
+  - locator: Preserved content.md, lines 94
   key_metrics.4:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Preserved content.md, lines 104
+  - locator: Preserved content.md, lines 104
   lessons_learned.0:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Preserved content.md, lines 128-140
+  - locator: Preserved content.md, lines 128-140
   lessons_learned.1:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Preserved content.md, lines 132-138
+  - locator: Preserved content.md, lines 132-138
   lessons_learned.2:
-  - source_id: uber-ureview-source-1
-    relation: supports
-    locator: Preserved content.md, lines 146-148
+  - locator: Preserved content.md, lines 146-148
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source describes AI-generated review findings while engineers remain in control of the
       change.
     valid_at: '2025-08-12'
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: The opening paragraph reports approximately 65,000 weekly diffs, but the cost discussion
       says 65,000 per month. These conflicting periods remain unresolved; neither is independently verified.
@@ -193,8 +146,6 @@ claim_metadata:
       covers rated comments; addressed rate covers posted comments
     measurement_method: Production coverage, developer ratings, and automatic addressed-comment detection
   key_metrics.0:
-    kind: metric
-    provenance: reported
     confidence: low
     valid_at: 2025-08
     reported_by: Uber
@@ -205,8 +156,6 @@ claim_metadata:
     confidence_reason: The opening paragraph reports approximately 65,000 weekly diffs, but the cost discussion
       says 65,000 per month. These conflicting periods remain unresolved; neither is independently verified.
   key_metrics.1:
-    kind: metric
-    provenance: reported
     confidence: medium
     valid_at: 2025-08
     reported_by: Uber
@@ -214,8 +163,6 @@ claim_metadata:
     denominator: Comments with engineer interaction
     measurement_method: Useful / Not Useful rating links
   key_metrics.2:
-    kind: metric
-    provenance: reported
     confidence: medium
     valid_at: 2025-08
     reported_by: Uber
@@ -223,16 +170,12 @@ claim_metadata:
     denominator: Posted comments
     measurement_method: Five reruns on the final commit and semantic-similarity matching
   key_metrics.3:
-    kind: metric
-    provenance: reported
     confidence: medium
     valid_at: 2025-08
     reported_by: Uber
     metric_scope: Reviews across all six Uber monorepos
     measurement_method: Production latency telemetry
   key_metrics.4:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: The source estimates about 1,500 hours using over 10,000 commits and a 10-minute assumption;
       the rounded figures do not arithmetically reconcile exactly and are not observed time savings.

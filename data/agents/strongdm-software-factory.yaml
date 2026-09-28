@@ -6,7 +6,6 @@ aliases:
 - StrongDM AI Software Factory
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026-02-06'
   source_id: strongdm-factory-overview
@@ -79,7 +78,6 @@ sources:
 - id: strongdm-factory-overview
   title: Software Factories And The Agentic Moment
   url: https://factory.strongdm.ai/
-  canonical_url: https://factory.strongdm.ai/
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -94,7 +92,6 @@ sources:
 - id: strongdm-factory-principles
   title: Principles
   url: https://factory.strongdm.ai/principles
-  canonical_url: https://factory.strongdm.ai/principles
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -106,7 +103,6 @@ sources:
 - id: strongdm-factory-techniques
   title: Techniques
   url: https://factory.strongdm.ai/techniques
-  canonical_url: https://factory.strongdm.ai/techniques
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -118,7 +114,6 @@ sources:
 - id: strongdm-factory-products
   title: Products
   url: https://factory.strongdm.ai/products
-  canonical_url: https://factory.strongdm.ai/products
   kind: documentation
   provenance_class: first-party
   role: evidence
@@ -130,7 +125,6 @@ sources:
 - id: strongdm-attractor-spec
   title: Attractor
   url: https://factory.strongdm.ai/products/attractor
-  canonical_url: https://factory.strongdm.ai/products/attractor
   kind: documentation
   provenance_class: first-party
   role: evidence
@@ -142,7 +136,6 @@ sources:
 - id: strongdm-factory-weather-report
   title: Weather Report
   url: https://factory.strongdm.ai/weather-report
-  canonical_url: https://factory.strongdm.ai/weather-report
   kind: documentation
   provenance_class: first-party
   role: evidence
@@ -154,7 +147,6 @@ sources:
 - id: strongdm-attractor-repo
   title: strongdm/attractor
   url: https://github.com/strongdm/attractor
-  canonical_url: https://github.com/strongdm/attractor
   kind: repository
   provenance_class: first-party
   role: evidence
@@ -166,117 +158,86 @@ sources:
 evidence:
   summary:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: 'Definition: non-interactive development where specs + scenarios drive agents that write code, run
       harnesses, and converge without human review'
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: 'Rules: Code must not be written by humans; Code must not be reviewed by humans'
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: 'Validation constraint: zero hand-written code and zero traditional review'
   operating_models.0:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Agents that write code, run harnesses, and converge without human review
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: Grow from cascades of natural-language specifications; be validated automatically without semantic
       inspection of source
   - source_id: strongdm-factory-principles
-    relation: supports
     locator: 'Termination: the loop runs until the holdout scenarios pass (and stay passing)'
   architecture.sandbox:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: The overview describes the workflow end to end without documenting an execution sandbox
   architecture.harness:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Scenarios, Satisfaction, and Digital Twin Universe sections
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: 'Digital Twin Universe: validate at volumes and rates far exceeding production limits'
   architecture.model:
   - source_id: strongdm-factory-weather-report
-    relation: supports
     locator: Current configuration table, 2026-06-04
   architecture.tool_access:
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: The Filesystem; Digital Twin Universe
   architecture.knowledge:
   - source_id: strongdm-factory-products
-    relation: supports
     locator: CXDB entry
   architecture.credentials:
   - source_id: strongdm-factory-products
-    relation: supports
     locator: StrongDM ID entry
   architecture.context_mgmt:
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: Pyramid Summaries; The Filesystem
   primitives.0:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Scenarios section
   primitives.1:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Satisfaction section
   primitives.2:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Digital Twin Universe section
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: Digital Twin Universe technique
   primitives.3:
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: Shift Work technique
   primitives.4:
   - source_id: strongdm-attractor-spec
-    relation: supports
     locator: Graph structure and key properties
   - source_id: strongdm-attractor-repo
-    relation: supports
     locator: Repository description
   primitives.5:
   - source_id: strongdm-factory-principles
-    relation: supports
     locator: Preserved content.md, lines 16–18
   primitives.6:
   - source_id: strongdm-factory-principles
-    relation: supports
     locator: Preserved content.md, lines 22–32
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Preserved content.md, line 10
   primitives.7:
   - source_id: strongdm-factory-principles
-    relation: supports
     locator: Preserved content.md, line 34
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Preserved content.md, line 10
   lessons_learned.0:
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: Preserved content.md, lines 45
   lessons_learned.1:
   - source_id: strongdm-factory-principles
-    relation: supports
     locator: Preserved content.md, lines 12-34
   lessons_learned.2:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Preserved content.md, lines 23
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The site documents zero human code-writing and review with automatic scenario validation,
       but no passage states that a person is summoned when scenarios fail to converge; what happens on non-convergence
