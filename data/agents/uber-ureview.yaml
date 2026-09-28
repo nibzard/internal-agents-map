@@ -173,6 +173,8 @@ claim_metadata:
       says 65,000 per month. These conflicting periods remain unresolved; neither is independently verified.
   key_metrics.comments-rated-useful-engineers-interact-tool:
     confidence: medium
+    confidence_reason: The usefulness rate comes from engineers who submitted ratings. The source does not
+      establish whether those ratings represent all posted comments.
     valid_at: 2025-08
     reported_by: Uber
     metric_scope: Comments rated useful by engineers who provide feedback
@@ -180,6 +182,8 @@ claim_metadata:
     measurement_method: Useful / Not Useful rating links
   key_metrics.posted-comments-addressed-same-changeset:
     confidence: medium
+    confidence_reason: Uber estimates addressed comments by rerunning generators and matching comments by
+      semantic similarity. This supports an estimated response rate, not confirmation that each issue was fixed.
     valid_at: 2025-08
     reported_by: Uber
     metric_scope: Posted comments considered addressed in the same changeset
@@ -187,6 +191,8 @@ claim_metadata:
     measurement_method: Five reruns on the final commit and semantic-similarity matching
   key_metrics.median-review-latency-minutes-all-six:
     confidence: medium
+    confidence_reason: Uber reports a four-minute median across six monorepos without a measurement period
+      or sample size, limiting comparisons with other review systems.
     valid_at: 2025-08
     reported_by: Uber
     metric_scope: Reviews across all six Uber monorepos

@@ -567,6 +567,35 @@ class BuildTests(unittest.TestCase):
             self.assertEqual(normalized_source["capture"], manifest)
             self.assertNotIn("manifest_path", normalized_source["capture"])
 
+    def test_alias_exports_and_links_to_the_original_capture_without_relabeling_it(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            record = copy.deepcopy(self.records[0])
+            for source in record["sources"]:
+                source.pop("capture", None)
+            original, manifest, _ = self.write_capture(root, source=record["sources"][0])
+            alias = {
+                **original,
+                "id": "fixture-alias",
+                "duplicate_of": original["id"],
+                "accessed_at": "2026-09-28",
+            }
+            alias.pop("capture")
+            record["sources"][0] = original
+            record["sources"].append(alias)
+            with mock.patch.object(build, "ROOT", root):
+                export = build.normalize([record], [self.company_fixture(name=record["company"])])
+                citation = build.render_source_reference(
+                    alias, {source["id"]: source for source in record["sources"]}
+                )
+            exported_alias = next(
+                source for source in export["sources"] if source["id"] == alias["id"]
+            )
+            self.assertEqual(exported_alias["capture"], manifest)
+            self.assertIn(f"../archive/sources/{original['id']}/content.md", citation)
+            self.assertIn("captured 2026-08-31", citation)
+            self.assertNotIn("capture", alias)
+
     def test_source_reference_renders_all_archive_combinations(self) -> None:
         original = "[Fixture source](https://example.com/article)"
         self.assertEqual(build.render_source_reference(self.source_fixture()), original)
@@ -1284,11 +1313,46 @@ class BuildTests(unittest.TestCase):
         record = self.shortest_record()
         record["headline_metric"] = "Half of all reviews."
         record["evidence"]["headline_metric"] = [{"locator": "Paragraph 3"}]
-        record["claim_metadata"]["headline_metric"] = {"confidence": "medium"}
         claims = {claim["field"]: claim for claim in self.export_of(record)["claims"]}
         self.assertEqual(
             (claims["headline_metric"]["kind"], claims["headline_metric"]["provenance"]),
             ("metric", "reported"),
+        )
+
+    def test_source_provenance_never_supplies_a_confidence_rating(self) -> None:
+        for provenance in build.schema_values("provenanceClass"):
+            with self.subTest(provenance=provenance):
+                record = self.shortest_record()
+                record["sources"][0]["provenance_class"] = provenance
+                claims = {claim["field"]: claim for claim in self.export_of(record)["claims"]}
+                self.assertEqual(claims["summary"]["confidence"], "not-assessed")
+                self.assertEqual(
+                    claims["summary"]["confidence_reason"],
+                    "No explicit confidence assessment is recorded for this claim.",
+                )
+                self.assertEqual(claims["operating_models.0"]["confidence"], "unverified")
+
+    def test_authored_confidence_requires_a_claim_specific_reason(self) -> None:
+        for reason in (None, "", "   "):
+            with self.subTest(reason=reason):
+                record = self.shortest_record()
+                record["claim_metadata"]["summary"] = {"confidence": "high"}
+                if reason is not None:
+                    record["claim_metadata"]["summary"]["confidence_reason"] = reason
+                with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                    self.export_of(record)
+
+    def test_an_explicit_assessment_survives_normalization(self) -> None:
+        record = self.shortest_record()
+        record["claim_metadata"]["summary"] = {
+            "confidence": "high",
+            "confidence_reason": "Paragraph 1 describes this internal task directly.",
+        }
+        claims = {claim["field"]: claim for claim in self.export_of(record)["claims"]}
+        self.assertEqual(claims["summary"]["confidence"], "high")
+        self.assertEqual(
+            claims["summary"]["confidence_reason"],
+            record["claim_metadata"]["summary"]["confidence_reason"],
         )
 
     def test_authored_defaults_give_the_same_export_as_omitted_defaults(self) -> None:

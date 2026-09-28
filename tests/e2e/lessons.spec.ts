@@ -244,7 +244,9 @@ test.describe('the Methodology guide', () => {
     );
     await expect(page.locator('a[href="/definitions"]')).not.toHaveCount(0);
     await expect(page.locator('a[href="/lessons"]')).not.toHaveCount(0);
-    await expect(page.locator('main section')).toHaveCount(8);
+    await expect(page.locator('#confidence table')).toContainText('Not assessed');
+    await expect(page.locator('#uncertainty table')).toContainText('Not reviewed');
+    await assertFragmentsResolve(page);
   });
 });
 

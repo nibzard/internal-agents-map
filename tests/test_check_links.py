@@ -211,6 +211,37 @@ class DiscoveryTests(unittest.TestCase):
             ],
         )
 
+    def test_alias_uses_the_original_snapshot_when_the_publisher_page_is_gone(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            agents = root / "data" / "agents"
+            agents.mkdir(parents=True)
+            original = {
+                "id": "original",
+                "url": "https://publisher.example/article",
+                "capture": {"manifest_path": "archive/sources/original/metadata.json"},
+            }
+            alias = {"id": "alias", "url": original["url"], "duplicate_of": "original"}
+            (agents / "original.yaml").write_text(json.dumps({"sources": [original]}))
+            (agents / "alias.yaml").write_text(json.dumps({"sources": [alias]}))
+            with (
+                patch.object(check_links, "ROOT", root),
+                patch.object(check_links, "AGENTS_DIR", agents),
+            ):
+                targets = {target.source_id: target for target in check_links.catalog_sources()}
+                write_snapshot(root, targets["original"])
+                target = targets["alias"]
+                self.assertEqual(target.capture_source_id, "original")
+                snapshot = check_links.local_snapshot_result(target)
+                self.assertEqual(snapshot.status, "healthy")
+                result = check_links.classify_source(
+                    target, link_result(target.url, "missing"), snapshot
+                )
+                self.assertEqual(result.status, "archived")
+                # Sharing never bypasses artifact integrity checks.
+                (root / "archive/sources/original/content.md").write_text("Changed evidence")
+                self.assertEqual(check_links.local_snapshot_result(target).status, "invalid")
+
     def test_normal_project_markdown_still_reports_missing_local_target(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

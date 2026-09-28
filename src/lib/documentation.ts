@@ -12,21 +12,26 @@ export const WELL_DOCUMENTED_LABEL = 'In depth';
 /**
  * A record is well documented when all of these are true:
  * - its evidence strength is detailed primary evidence,
- * - no claim has low confidence,
  * - every claim has at least one source that supports it,
  * - every source has a saved copy,
- * - every scoped operating model has a known human attention boundary.
+ * - all reader questions and implementation fields have been reviewed,
+ * - the record documents its purpose and implementation.
+ * Reported gaps, conflicting evidence and inapplicable questions can be reviewed.
  * The rule measures the evidence. It does not say that the claims are true.
  */
 export function isWellDocumented(catalog: Catalog, approach: Approach): boolean {
   if (approach.rubric.evidence_strength !== 'detailed-primary') return false;
   const claims = catalog.claims.filter((claim) => claim.approach_id === approach.id);
-  if (claims.some((claim) => claim.confidence === 'low')) return false;
+  if (claims.length === 0) return false;
   if (claims.some((claim) => !claim.evidence.some((item) => item.relation === 'supports'))) return false;
   const sources = catalog.sources.filter((source) => source.approach_id === approach.id);
   if (sources.length === 0 || sources.some((source) => !source.capture)) return false;
-  const models = approach.operating_models;
-  return models.length > 0 && models.every((model) => model.attention_boundary !== 'unknown');
+  const review = approach.page_content;
+  if (!review) return false;
+  if (sources.some((source) => !review.source_ids.includes(source.id))) return false;
+  if (review.questions.purpose.state !== 'reported' || review.questions.implementation.state !== 'reported') return false;
+  return [...Object.values(review.questions), ...Object.values(review.implementation_fields)]
+    .every((answer) => answer.state !== 'not-reviewed');
 }
 
 /** Put the featured items first, then the well-documented items. Each group keeps the order it was given. */

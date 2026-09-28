@@ -6,6 +6,16 @@ describes the current schema.
 
 ## Catalog schema 8 / compact index 4
 
+Methodology updates within schema 8:
+
+- Missing claim confidence now exports as `not-assessed`, with an explicit reason, instead
+  of receiving a rating from source provenance. Authored ratings require a reason and retain
+  their value until their evidence is reviewed.
+- A source alias with the same original URL can inherit the capture of its `duplicate_of`
+  target. The resolved manifest retains its original identity and timestamp.
+- The “In depth” badge requires a completed source and page-content review. Low confidence,
+  reviewed gaps, and questions that do not apply no longer disqualify a record by themselves.
+
 Schema 8 gives each list item a stable ID, so that a claim keeps its evidence when a list
 changes order. Before schema 8, a claim path such as `primitives.3` used the position of
 the item. A reordered list kept every reference valid but attached the evidence to a

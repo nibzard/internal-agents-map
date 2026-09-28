@@ -64,7 +64,10 @@ For an assessment, stop after the report. For an authorized catalog change:
 
 Link each claim to source evidence. Distinguish reported claims from catalog judgments and
 assess confidence from the support for each claim. Source type alone does not determine confidence.
-Company metrics remain self-reported unless independently verified. Unknown means undocumented.
+Use the confidence rubric in `data/schema.md` and give every authored rating a reason. Leave
+unassessed claims unrated; the build exports `not-assessed`. Company metrics remain self-reported
+unless independently verified. `unknown` means the catalog has not established a classification;
+review states distinguish missing reporting, unfinished review, and an inapplicable question.
 
 Write the record in the shortest form that `data/schema.md` allows:
 
@@ -86,8 +89,10 @@ Write the record in the shortest form that `data/schema.md` allows:
   other absent field `unreported`, so give a field that you did not check the state
   `not-reviewed` and a next action.
 
-Preserve accepted sources using the contribution guide's source-preservation procedure. Review
-the captured text before linking it. The original URL remains the citation. A capture preserves
+Preserve accepted sources using the contribution guide's source-preservation procedure. Reuse an
+existing capture through `duplicate_of` only for the same source version and exact original URL.
+Mirrors, translations, and changed versions need their own captures. Review the captured text
+before linking it. The original URL remains the citation. A capture preserves
 what was available; it does not make a claim more reliable. Do not save an error or access-control
 page as evidence. If preservation fails, report the collection blocker separately from eligibility
 and leave the change incomplete. Retain any local draft and list its path and blocker in the
@@ -98,6 +103,8 @@ For operating models, record the task scope and documented human review boundary
 needs dated claim metadata with `catalog-judgment` provenance. Levels are derived by the build.
 Do not derive them from autonomy labels or average different workflows. Human attention is not
 tool authority or unattended runtime; record permissions and publication controls as separate claims.
+For infrastructure without one workflow-wide review boundary, mark human involvement
+`not-applicable` with a reason. A reviewed question that does not apply can qualify for “In depth.”
 
 Regenerate the data and the repository documents with `uv run python scripts/build.py`. Then run
 `npm run verify`, which holds the archive, generated-output, website build, artifact, privacy,
