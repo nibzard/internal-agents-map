@@ -37,11 +37,9 @@ summary: An agent system built around OpenAI's internal Codex. A person defines 
 headline_metric: Almost all OpenAI employees used Codex and ChatGPT Work weekly as of
   the September 2026 report (self-reported).
 architecture:
-  sandbox: unknown
   harness: Internal Codex, described as much more advanced than the external product
     because it is plugged into almost every OpenAI system; ChatGPT Work runs on the
     same harness
-  model: unknown
   interfaces:
   - desktop
   - cli
@@ -239,9 +237,6 @@ evidence:
   operating_models.2:
   - source_id: openai-factory-article
     locator: "Preserved content.md, line 186 (Perf Factory proposes fixes)"
-  architecture.sandbox:
-  - source_id: openai-factory-article
-    locator: "Preserved content.md, lines 138-186 describe the pipeline without documenting an execution sandbox"
   architecture.harness:
   - source_id: openai-factory-article
     locator: "Preserved content.md, line 48 (internal Codex is a lot more advanced than its external counterpart; ChatGPT Work is powered by the Codex harness)"
@@ -249,9 +244,6 @@ evidence:
     locator: "Preserved content.md, lines 12-14 (OpenAI scaled Codex and ChatGPT for Work on the same harness; the Agents API exposes 'that same harness and infrastructure that powers Codex')"
   - source_id: hn-zbrock-internal-prototype
     locator: "Preserved content.md, line 12 (harness-engineering co-author: 'It was an internal prototype that looked very much like the current Codex app')"
-  architecture.model:
-  - source_id: openai-factory-article
-    locator: "The preserved article names no underlying models for the internal Codex harness"
   architecture.interfaces:
   - source_id: openai-factory-article
     locator: "Preserved content.md, lines 48, 80, and 140-145 (Codex app and CLI, GitHub, Slack, internal skills)"
@@ -363,16 +355,6 @@ claim_metadata:
     valid_at: "2025-10"
     reported_by: OpenAI
     metric_scope: Weekly pull requests completed by OpenAI engineers using Codex, relative to unstated baseline
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: "The article does not document an execution sandbox; unknown does not mean absent."
-  architecture.model:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: "The article names no underlying models for the internal harness; unknown does not mean absent."
   lessons_learned.0:
     kind: opinion
     provenance: reported
@@ -417,7 +399,8 @@ page_content:
       does not state the current internal harness model.'}
     harness: {state: reported, claim_paths: [architecture.harness]}
     sandbox: {state: unreported, claim_paths: [], note: 'The pipeline article documents no execution sandbox.
-      The Agents API post documents sandboxing for the external product, not this internal pipeline boundary.'}
+      The Agents API post documents sandboxing for the external product, not this internal pipeline
+      boundary.'}
     tool_access: {state: reported, claim_paths: [architecture.tool_access]}
     knowledge: {state: reported, claim_paths: [architecture.knowledge]}
     context_mgmt: {state: reported, claim_paths: [architecture.context_mgmt]}

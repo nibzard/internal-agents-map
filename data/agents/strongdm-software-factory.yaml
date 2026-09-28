@@ -26,7 +26,6 @@ rubric:
 summary: An internal agent system in which natural-language seeds and end-to-end scenario harnesses drive agents
   that write, validate, and iterate on code under standing rules that humans neither write nor review code.
 architecture:
-  sandbox: unknown
   harness: End-to-end scenario harness with user-story-style scenarios kept outside the codebase as a holdout set
     and checked by an LLM; satisfaction measured as the fraction of observed scenario trajectories that likely satisfy
     the user; Digital Twin Universe clones of Okta, Jira, Slack, Google Docs, Google Drive, and Google Sheets absorb
@@ -172,9 +171,6 @@ evidence:
       inspection of source
   - source_id: strongdm-factory-principles
     locator: 'Termination: the loop runs until the holdout scenarios pass (and stay passing)'
-  architecture.sandbox:
-  - source_id: strongdm-factory-overview
-    locator: The overview describes the workflow end to end without documenting an execution sandbox
   architecture.harness:
   - source_id: strongdm-factory-overview
     locator: Scenarios, Satisfaction, and Digital Twin Universe sections
@@ -243,11 +239,6 @@ claim_metadata:
       but no passage states that a person is summoned when scenarios fail to converge; what happens on non-convergence
       is undocumented.
     valid_at: 2026-09
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: The preserved sources do not document an execution sandbox; unknown does not mean absent.
   architecture.model:
     kind: fact
     provenance: reported
@@ -341,7 +332,6 @@ page_content:
     sandbox:
       state: unreported
       claim_paths: []
-      note: No execution or isolation boundary is documented; the legacy unknown claim stays in research details.
     tool_access:
       state: reported
       claim_paths:

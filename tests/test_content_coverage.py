@@ -43,6 +43,17 @@ class ContentCoverageTests(unittest.TestCase):
         self.assertEqual(entry["raw_observation_count"], 2)
         self.assertEqual(entry["canonical_observation_count"], 1)
 
+    def test_implementation_field_is_reported_iff_its_architecture_field_is_present(self) -> None:
+        for record in coverage_module.build.load_agents():
+            page = record.get("page_content")
+            if page is None:
+                continue
+            architecture = record.get("architecture") or {}
+            for key, value in page["implementation_fields"].items():
+                with self.subTest(record=record["id"], field=key):
+                    present = architecture.get(key) not in (None, "", [])
+                    self.assertEqual(present, value["state"] == "reported")
+
 
 if __name__ == "__main__":
     unittest.main()

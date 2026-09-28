@@ -35,17 +35,11 @@ SOURCE_VALIDATOR = build.Draft7Validator(
 
 
 class BuildTests(unittest.TestCase):
-    def test_environment_count_excludes_undocumented_legacy_values(self) -> None:
+    def test_environment_count_counts_present_sandbox_values(self) -> None:
         values = [
             None,
             "",
             "  ",
-            "unknown",
-            "UNKNOWN",
-            "Not specified in source",
-            "NOT DETAILED",
-            "n/a - platform",
-            "not applicable",
             "AWS EC2 devbox",
             "Docker container",
         ]
@@ -342,6 +336,65 @@ class BuildTests(unittest.TestCase):
                     self.assertRaises(SystemExit),
                 ):
                     build.validate_record(record_with(slot, key, state), path, set())
+
+    def test_architecture_rejects_placeholder_and_empty_values(self) -> None:
+        record = next(item for item in self.records if item["id"] == "github-qubot")
+        rejected = (
+            ("sandbox", "unknown"),
+            ("sandbox", "UNKNOWN"),
+            ("sandbox", ""),
+            ("sandbox", "  "),
+            ("model", "Not specified"),
+            ("model", "Not named. A template picks the model."),
+            ("model", "Not documented by name"),
+            ("model", "Sources name no model or provider"),
+            ("harness", "Not specified publicly"),
+            ("credentials", "n/a"),
+            ("credentials", "Undisclosed"),
+            ("interfaces", []),
+        )
+        for key, value in rejected:
+            with self.subTest(key=key, value=value):
+                fixture = {**record, "architecture": {**record["architecture"], key: value}}
+                errors = build.schema_errors(fixture, "github-qubot.yaml")
+                self.assertTrue(any(f": architecture.{key}: " in error for error in errors))
+        for key, value in (
+            ("sandbox", "Docker container"),
+            ("model", "Claude; no model version is named"),
+            ("credentials", "None of the user's credentials reach the sandbox"),
+        ):
+            with self.subTest(key=key, value=value):
+                fixture = {**record, "architecture": {**record["architecture"], key: value}}
+                self.assertEqual(build.schema_errors(fixture, "github-qubot.yaml"), [])
+
+    def test_an_implementation_field_is_reported_if_and_only_if_its_field_is_present(
+        self,
+    ) -> None:
+        path = build.AGENTS_DIR / "github-qubot.yaml"
+        base = next(item for item in self.records if item["id"] == "github-qubot")
+
+        present_but_unreported = copy.deepcopy(base)
+        present_but_unreported["page_content"]["implementation_fields"]["model"] = {
+            "state": "unreported",
+            "claim_paths": [],
+        }
+        stderr = io.StringIO()
+        with contextlib.redirect_stderr(stderr), self.assertRaises(SystemExit):
+            build.validate_record(present_but_unreported, path, set())
+        self.assertIn(
+            "implementation_fields.model must be reported if and only if architecture.model "
+            "is present",
+            stderr.getvalue(),
+        )
+
+        absent_but_reported = copy.deepcopy(base)
+        self.assertNotIn("sandbox", absent_but_reported["architecture"])
+        absent_but_reported["page_content"]["implementation_fields"]["sandbox"] = {
+            "state": "reported",
+            "claim_paths": ["architecture.sandbox"],
+        }
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            build.validate_record(absent_but_reported, path, set())
 
     def test_valid_markdown_only_capture(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -722,14 +775,14 @@ class BuildTests(unittest.TestCase):
                     {"attention_boundary": "unknown"},
                 ],
                 "rubric": {"state": "mixed"},
-                "architecture": {"interfaces": ["slack"], "sandbox": "unknown"},
+                "architecture": {"interfaces": ["slack"]},
             },
             {
                 "approach_type": "supporting-pattern",
                 "autonomy": "unknown",
                 "operating_models": [{"attention_boundary": "unknown"}],
                 "rubric": {"state": "unknown"},
-                "architecture": {"interfaces": [], "sandbox": "Docker container"},
+                "architecture": {"sandbox": "Docker container"},
             },
         ]
         stats = build.catalog_statistics(fixture)

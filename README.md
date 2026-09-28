@@ -28,7 +28,7 @@ undocumented details stay unknown.
 
 <!-- BEGIN OVERVIEW -->
 
-**Current map: 51 agents across 41 organizations, plus 15 infrastructure records. The complete catalog is backed by 120 distinct sources and 1172 evidence-linked claims.**
+**Current map: 51 agents across 41 organizations, plus 15 infrastructure records. The complete catalog is backed by 120 distinct sources and 1139 evidence-linked claims.**
 
 ## Agents
 

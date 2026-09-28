@@ -486,7 +486,13 @@ def validate_page_content(record: dict, filename: str, source_ids: set[str]) -> 
     for key, value in page["questions"].items():
         disposition(value, f"page_content.questions.{key}")
     for key, value in page["implementation_fields"].items():
-        disposition(value, f"page_content.implementation_fields.{key}", {f"architecture.{key}"})
+        field = f"page_content.implementation_fields.{key}"
+        disposition(value, field, {f"architecture.{key}"})
+        if (f"architecture.{key}" in claims) != (value["state"] == "reported"):
+            die(
+                f"{filename}: {field} must be reported if and only if architecture.{key} "
+                "is present."
+            )
 
     roles = page["primitive_roles"]
     expected_primitives = {f"primitives.{i}" for i, _ in enumerate(record.get("primitives") or [])}
@@ -958,13 +964,8 @@ def count_table(counts: Counter[str], labels: dict[str, str]) -> str:
 
 
 def documented_environment(value: Any) -> bool:
-    if not isinstance(value, str) or not value.strip():
-        return False
-    return not re.match(
-        r"^(?:unknown|n/a|not (?:specified|detailed|documented|applicable))(?:\b|$)",
-        value.strip(),
-        flags=re.IGNORECASE,
-    )
+    """The schema rejects placeholder values, so a present sandbox value is documented."""
+    return isinstance(value, str) and bool(value.strip())
 
 
 def catalog_statistics(records: list[dict]) -> dict[str, Any]:

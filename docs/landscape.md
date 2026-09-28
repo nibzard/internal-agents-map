@@ -274,7 +274,6 @@ Last reviewed: 2026-09-17.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [amplitude-design-agent-source-1](#amplitude-design-agent-source-1).</small>
 - Harness: Claude Managed Agents supplies reasoning, tool use, and multi-step generation; Amplitude wrote no state machine, prompt chain, or tool-calling logic. A thin wrapper of Cloudflare Workers serves the web interface and the agent interaction endpoint. <small>Sources: [amplitude-design-agent-source-1](#amplitude-design-agent-source-1).</small>
 - Model: Claude, through Claude Managed Agents; no model version is named. <small>Sources: [amplitude-design-agent-source-1](#amplitude-design-agent-source-1).</small>
 - Interfaces: web <small>Sources: [amplitude-design-agent-source-1](#amplitude-design-agent-source-1).</small>
@@ -468,9 +467,7 @@ Last reviewed: 2026-09-21.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [block-builderbot-source-1](#block-builderbot-source-1).</small>
 - Harness: Multi-agent orchestration built on goose (open-source agent framework) + MCP; multi-player, real-time, operating inside Slack threads <small>Sources: [block-builderbot-source-1](#block-builderbot-source-1).</small>
-- Model: goose framework; model not specified <small>Sources: [block-builderbot-source-1](#block-builderbot-source-1).</small>
 - Interfaces: slack, linear, jira, github <small>Sources: [block-builderbot-source-1](#block-builderbot-source-1).</small>
 - Tool access: MCP connects agents to internal tools and data; picks up Linear/Jira tickets, creates the branch, writes code, opens the PR, watches CI <small>Sources: [block-builderbot-source-1](#block-builderbot-source-1).</small>
 - Knowledge: Company-wide code context across hundreds of millions of lines and hundreds of services; Block also frames Builderbot as an 'agentic protector' around its software world model <small>Sources: [block-builderbot-source-1](#block-builderbot-source-1), [block-builderbot-source-2](#block-builderbot-source-2).</small>
@@ -632,7 +629,6 @@ Last reviewed: 2026-09-17.
 
 - Sandbox: Retool-hosted runtime (no bespoke execution env described) <small>Sources: [brex-agent-platform-source-1](#brex-agent-platform-source-1).</small>
 - Harness: Retool-based builder with prompt management and multi-model testing/evaluation; built by a ~25-person systems-engineering team <small>Sources: [brex-agent-platform-source-1](#brex-agent-platform-source-1).</small>
-- Model: Not documented for deployed agents; the platform provides multi-model testing and evaluation at build time <small>Sources: [brex-agent-platform-source-1](#brex-agent-platform-source-1).</small>
 - Interfaces: slack, internal-ui <small>Sources: [brex-agent-platform-source-1](#brex-agent-platform-source-1).</small>
 - Tool access: An MCP server exposes product capabilities to internal agents. Separately, Slack /c1 requests access to AI tools through ConductorOne; it is not evidence of invoking an operations agent. <small>Sources: [brex-agent-platform-source-1](#brex-agent-platform-source-1).</small>
 - Knowledge: Standard operating procedures uploaded as a knowledge base, such as 100-page dispute guides; customer account data <small>Sources: [brex-agent-platform-source-1](#brex-agent-platform-source-1).</small>
@@ -911,7 +907,6 @@ Last reviewed: 2026-09-16.
 
 ### Architecture
 
-- Sandbox: Separate Mux platform context: concurrent agents receive separate git worktrees, branches and terminals. The sources do not establish this as Forge’s execution environment. <small>Sources: [coinbase-forge-mux-source-1](#coinbase-forge-mux-source-1).</small>
 - Harness: Portfolio approach; Claude Code, OpenCode, Cursor, and Copilot rather than one harness; Forge is a custom Slack-native harness with the same tools and context as engineers, invokable from Slack, GitHub, and Linear; built in-house because security requirements blocked cloud background agents <small>Sources: [coinbase-forge-mux-source-1](#coinbase-forge-mux-source-1), [coinbase-forge-mux-source-2](#coinbase-forge-mux-source-2), [coinbase-forge-mux-source-3](#coinbase-forge-mux-source-3), [coinbase-forge-mux-source-5](#coinbase-forge-mux-source-5).</small>
 - Model: The Slack agent Claude bot can use multiple underlying models despite its name; the documented portfolio spans harnesses (Claude Code, OpenCode, Cursor, Copilot), and no source names the models' providers <small>Sources: [coinbase-forge-mux-source-1](#coinbase-forge-mux-source-1), [coinbase-forge-mux-source-5](#coinbase-forge-mux-source-5).</small>
 - Interfaces: slack, github, linear <small>Sources: [coinbase-forge-mux-source-1](#coinbase-forge-mux-source-1).</small>
@@ -1034,7 +1029,6 @@ Last reviewed: 2026-09-17.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [cursor-support-workflow-source-1](#cursor-support-workflow-source-1).</small>
 - Harness: Cursor's own editor and agent product configured for support investigations: multi-root workspaces over several repositories, Ask Mode investigations, MCP servers for support systems, slash commands, Rules and Skills, subagents, and a Slack-triggered cloud agent that opens documentation pull requests <small>Sources: [cursor-support-workflow-source-1](#cursor-support-workflow-source-1).</small>
 - Interfaces: cursor, slack <small>Sources: [cursor-support-workflow-source-1](#cursor-support-workflow-source-1).</small>
 - Tool access: MCP servers reach customer databases holding subscription tier and team and privacy settings, streamed event logs covering services used, telemetry errors, and network issues, Slack threads, engineering ticket platforms, an internal documentation service of runbooks and troubleshooting guides, and an account management service; the named integrations are Datadog for logs and traces, the support platform and Slack for prior cases, Notion for runbooks, and Linear for escalations <small>Sources: [cursor-support-workflow-source-1](#cursor-support-workflow-source-1).</small>
@@ -1160,7 +1154,6 @@ Last reviewed: 2026-09-17.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [deel-payroll-incident-agents-source-1](#deel-payroll-incident-agents-source-1).</small>
 - Harness: Four stages run in sequence on Akai, described as Deel's internal AI orchestration platform. Each stage owns one job and hands off to the next with no manual intervention and no engineer to start the run. <small>Sources: [deel-payroll-incident-agents-source-1](#deel-payroll-incident-agents-source-1).</small>
 - Interfaces: slack <small>Sources: [deel-payroll-incident-agents-source-1](#deel-payroll-incident-agents-source-1).</small>
 - Tool access: Scans the payroll system for failed syncs and fires retries against them. For failures that survive a retry it checks hire record state, pulls logs from monitoring systems, queries the payroll database, and cross-references employment compliance rules. It writes the fix command rather than running it, and posts the result to Slack with direct log links. <small>Sources: [deel-payroll-incident-agents-source-1](#deel-payroll-incident-agents-source-1).</small>
@@ -1289,7 +1282,6 @@ Last reviewed: 2026-09-16.
 ### Architecture
 
 - Harness: Three architecture versions; emphasis on attention and grounded, high-confidence findings rather than commenting everywhere <small>Sources: [doordash-code-review-source-1](#doordash-code-review-source-1).</small>
-- Model: Not specified <small>Sources: [doordash-code-review-source-1](#doordash-code-review-source-1).</small>
 - Interfaces: github <small>Sources: [doordash-code-review-source-1](#doordash-code-review-source-1).</small>
 - Tool access: Reviews Go, iOS, Android, web, infrastructure, and data code <small>Sources: [doordash-code-review-source-1](#doordash-code-review-source-1).</small>
 - Knowledge: Grounded findings tied to evidence <small>Sources: [doordash-code-review-source-1](#doordash-code-review-source-1).</small>
@@ -1445,7 +1437,6 @@ Last reviewed: 2026-09-17.
 
 - Sandbox: Firecracker microVMs; <5s p95 end-to-end setup (boot, clone repos, install tools, configure harness) <small>Sources: [doordash-flux-source-3](#doordash-flux-source-3).</small>
 - Harness: Separate analytics AI Marketplace context (not a Flux capability): Maturity model: deterministic workflows → ReAct agents → hierarchical deep agents → experimental swarms <small>Sources: [doordash-flux-source-2](#doordash-flux-source-2).</small>
-- Model: Sources name no model or provider; the documented primitives are modular, allowing the best third-party tool for each job or in-house builds, with multiple supported coding agent harnesses <small>Sources: [doordash-flux-source-3](#doordash-flux-source-3).</small>
 - Interfaces: slack, github, scheduled, cli, skill <small>Sources: [doordash-flux-source-3](#doordash-flux-source-3).</small>
 - Tool access: Flux Agent Gateway brokers playbook-declared tools with scoped, logged permissions. The separately documented analytics AI Marketplace uses LangGraph and explores A2A. <small>Sources: [doordash-flux-source-2](#doordash-flux-source-2), [doordash-flux-source-3](#doordash-flux-source-3).</small>
 - Knowledge: Flux playbooks package DoorDash-specific context. The separate analytics AI Marketplace hosts DataExplorer. <small>Sources: [doordash-flux-source-2](#doordash-flux-source-2), [doordash-flux-source-3](#doordash-flux-source-3).</small>
@@ -1567,7 +1558,6 @@ Last reviewed: 2026-09-17.
 - Interfaces: web, cli, api, slack <small>Sources: [dropbox-nova-source-1](#dropbox-nova-source-1).</small>
 - Tool access: Skills/plugins to gather evidence, read logs, inspect failures; MCP integrations; Bazel-aware selectivity tools <small>Sources: [dropbox-nova-source-1](#dropbox-nova-source-1).</small>
 - Knowledge: Localized AGENTS.md per service; Dash (Dropbox context engineering); passing + failing test logs <small>Sources: [dropbox-nova-source-1](#dropbox-nova-source-1).</small>
-- Credentials: Operates within Dropbox's existing infra and validation paths; same auth/authz as engineers <small>Sources: [dropbox-nova-source-1](#dropbox-nova-source-1).</small>
 - Context mgmt: Session history (notes/logs) carried across retry attempts <small>Sources: [dropbox-nova-source-1](#dropbox-nova-source-1).</small>
 
 ### Primitives
@@ -1629,7 +1619,6 @@ Last reviewed: 2026-09-16.
 
 ### Architecture
 
-- Sandbox: unknown <small>Context: [duolingo-agentic-workflows-source-1](#duolingo-agentic-workflows-source-1).</small>
 - Harness: Temporal runs the workflows; a shared CodingAgent library wraps the Codex CLI and the Claude Code SDK behind one interface. <small>Sources: [duolingo-agentic-workflows-source-1](#duolingo-agentic-workflows-source-1).</small>
 - Interfaces: internal-ui, slack, github <small>Sources: [duolingo-agentic-workflows-source-1](#duolingo-agentic-workflows-source-1).</small>
 - Tool access: Workflows clone repositories and open pull requests through a shared GitHub utility package. Prototype agents use the GitHub MCP server, and an Atlassian server is named as planned work. <small>Sources: [duolingo-agentic-workflows-source-1](#duolingo-agentic-workflows-source-1).</small>
@@ -1697,7 +1686,6 @@ Last reviewed: 2026-09-21.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [figma-security-agent-source-1](#figma-security-agent-source-1).</small>
 - Harness: Agent loops run inside Tines, a commercial workflow-automation product, which supplies the LLM loop and the explicit tool interfaces; Figma built the surrounding system: AWS Lambda handlers that index and post each Panther alert, a retrieval layer on AWS Bedrock Knowledge Bases and Amazon Kendra, webhook-triggered intent routing to specialized agents, the deterministic tool-calling contracts, and the memory stores. The core tool set is managed outside any individual agent as configuration-as-code. <small>Sources: [figma-security-agent-source-1](#figma-security-agent-source-1).</small>
 - Model: Claude models, named by tier rather than by version. A lighter model such as Claude Sonnet performs intent routing and memory formatting; a model such as Claude Opus runs the alert triage agent and the Panther investigation sub-agent. <small>Sources: [figma-security-agent-source-1](#figma-security-agent-source-1).</small>
 - Interfaces: slack, github, webhook <small>Sources: [figma-security-agent-source-1](#figma-security-agent-source-1).</small>
@@ -1771,7 +1759,6 @@ Last reviewed: 2026-09-21.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [flex-investigation-agent-source-1](#flex-investigation-agent-source-1).</small>
 - Harness: Investigation-to-fix loop running as a serverless application on Modal; Slack requests are acknowledged, the investigation runs in a spawned background function, and fixes come from a spawned coding sub-agent <small>Sources: [flex-investigation-agent-source-1](#flex-investigation-agent-source-1).</small>
 - Model: Anthropic (named for the tool-calling investigation loop and the coding sub-agent); specific model version not named <small>Sources: [flex-investigation-agent-source-1](#flex-investigation-agent-source-1).</small>
 - Interfaces: slack <small>Sources: [flex-investigation-agent-source-1](#flex-investigation-agent-source-1).</small>
@@ -1936,7 +1923,6 @@ Last reviewed: 2026-09-17.
 
 - Sandbox: Isolated ephemeral execution environments; durable runs <small>Sources: [harvey-spectre-source-1](#harvey-spectre-source-1).</small>
 - Harness: Collaborative cloud agent platform with explicit boundaries around GitHub, Datadog, Linear, and other connected systems <small>Sources: [harvey-spectre-source-1](#harvey-spectre-source-1).</small>
-- Model: Not specified <small>Sources: [harvey-spectre-source-1](#harvey-spectre-source-1).</small>
 - Interfaces: slack, web, automation, cli <small>Sources: [harvey-spectre-source-1](#harvey-spectre-source-1).</small>
 - Tool access: Explicit tool boundaries; tool configuration injected at run start; requests start from Slack, the web app, or automations; connects to systems like GitHub, Datadog, and Linear <small>Sources: [harvey-spectre-source-1](#harvey-spectre-source-1).</small>
 - Credentials: Short-lived, scoped credentials injected at run start; no ambient access to the control plane or a user's machine <small>Sources: [harvey-spectre-source-1](#harvey-spectre-source-1).</small>
@@ -1995,7 +1981,6 @@ Last reviewed: 2026-09-16.
 ### Architecture
 
 - Harness: Aviator, an internal Java agent framework; replaced the earlier Claude Code review implementation on Crucible <small>Sources: [hubspot-sidekick-source-1](#hubspot-sidekick-source-1).</small>
-- Sandbox: unknown <small>Sources: [hubspot-sidekick-source-1](#hubspot-sidekick-source-1).</small>
 - Tool access: Aviator framework for precise tool control <small>Sources: [hubspot-sidekick-source-1](#hubspot-sidekick-source-1).</small>
 - Interfaces: github <small>Sources: [hubspot-sidekick-source-1](#hubspot-sidekick-source-1).</small>
 - Knowledge: Optional repo-specific custom instructions can be incorporated into the review prompt; the feature recently launched <small>Sources: [hubspot-sidekick-source-1](#hubspot-sidekick-source-1).</small>
@@ -2053,7 +2038,6 @@ Last reviewed: 2026-09-16.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [linear-agent-source-1](#linear-agent-source-1).</small>
 - Harness: Separate planning agent (triage/issue creation) and coding agent (code generation); Code Intelligence for codebase knowledge; scheduled/event-driven 'Loops' <small>Sources: [linear-agent-source-1](#linear-agent-source-1), [linear-agent-source-2](#linear-agent-source-2).</small>
 - Model: Codex was used for internal pull-request review; other model choices are not detailed in the preserved sources <small>Sources: [linear-agent-source-2](#linear-agent-source-2).</small>
 - Interfaces: slack, intercom, linear, github <small>Sources: [linear-agent-source-2](#linear-agent-source-2).</small>
@@ -2122,7 +2106,6 @@ Last reviewed: 2026-09-16.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [meta-rea-source-1](#meta-rea-source-1).</small>
 - Harness: Built on Confucius, an internal Meta AI agent framework for complex, multistep reasoning that supplies code generation and an SDK for integrating with Meta internal tooling; REA itself splits into a REA Planner and a REA Executor over a shared skill, knowledge and tool system, with the executor running an agent loop and a wait state <small>Sources: [meta-rea-source-1](#meta-rea-source-1).</small>
 - Tool access: Integrates through the Confucius SDK with Meta internal job schedulers, experiment tracking infrastructure, and codebase navigation tools; launches and manages training jobs and works exclusively on the Meta ads ranking model codebase under engineer-granted access controls and a confirmed compute budget <small>Sources: [meta-rea-source-1](#meta-rea-source-1).</small>
 - Knowledge: A curated historical insights database of past experiments supports in-context learning across prior successes and failures; a dedicated experiment logger writes outcomes, key metrics, and configurations into a centralized hypothesis experiment insight database that both the deep ML research agent and the hypothesis generator read <small>Sources: [meta-rea-source-1](#meta-rea-source-1).</small>
@@ -2467,9 +2450,7 @@ Last reviewed: 2026-09-17.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [openai-factory-article](#openai-factory-article).</small>
 - Harness: Internal Codex, described as much more advanced than the external product because it is plugged into almost every OpenAI system; ChatGPT Work runs on the same harness <small>Sources: [openai-factory-article](#openai-factory-article), [openai-agents-api-post](#openai-agents-api-post), [hn-zbrock-internal-prototype](#hn-zbrock-internal-prototype).</small>
-- Model: unknown <small>Sources: [openai-factory-article](#openai-factory-article).</small>
 - Interfaces: desktop, cli, slack, github, skill <small>Sources: [openai-factory-article](#openai-factory-article).</small>
 - Tool access: Git repositories and GitHub, Slack, Notion, Databricks, Datadog, and internal logs and data sources <small>Sources: [openai-factory-article](#openai-factory-article).</small>
 - Knowledge: OpenAI moved its documentation inside the source code; internal Codex skills, some maintained by Codex itself; new engineers are directed to ask Codex during onboarding <small>Sources: [openai-factory-article](#openai-factory-article), [openai-harness-engineering-post](#openai-harness-engineering-post), [every-codex-team-interview](#every-codex-team-interview).</small>
@@ -2540,9 +2521,7 @@ Last reviewed: 2026-09-16.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [openai-sevbot-article](#openai-sevbot-article).</small>
 - Harness: Built on top of Codex <small>Sources: [openai-sevbot-article](#openai-sevbot-article).</small>
-- Model: unknown <small>Sources: [openai-sevbot-article](#openai-sevbot-article).</small>
 - Interfaces: slack <small>Sources: [openai-sevbot-article](#openai-sevbot-article).</small>
 
 ### Primitives
@@ -2889,7 +2868,6 @@ Last reviewed: 2026-09-16.
 
 - Sandbox: microVMs and remote filesystems behind access policies, token proxies, audit logging, and a ZeroTrust network <small>Sources: [replit-manager-agent-source-1](#replit-manager-agent-source-1).</small>
 - Harness: Fleet/loop orchestration: a manager agent launches parallel agents for verifiable work and escalates judgment <small>Sources: [replit-manager-agent-source-1](#replit-manager-agent-source-1).</small>
-- Model: Not specified <small>Sources: [replit-manager-agent-source-1](#replit-manager-agent-source-1).</small>
 - Interfaces: slack <small>Sources: [replit-manager-agent-source-1](#replit-manager-agent-source-1).</small>
 - Tool access: Investigates incidents, reviews PRs, answers questions, analyzes company data, triages support, researches sales accounts, improves Replit Agent itself <small>Sources: [replit-manager-agent-source-1](#replit-manager-agent-source-1).</small>
 - Context mgmt: Manager agent coordinates parallel sub-agents and routes results <small>Sources: [replit-manager-agent-source-1](#replit-manager-agent-source-1).</small>
@@ -3202,7 +3180,6 @@ Last reviewed: 2026-09-17.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [shopify-roast-source-1](#shopify-roast-source-1).</small>
 - Harness: As released in 2025: a Ruby command-line framework that reads a workflow.yml file and matching markdown prompt files, interprets each step from its structure, and can be used with any programming language. <small>Sources: [shopify-roast-source-1](#shopify-roast-source-1); Context: [shopify-roast-source-2](#shopify-roast-source-2).</small>
 - Model: An OpenAI API key is a prerequisite, or OpenRouter for other models; the Raix library abstracts AI providers and adds retry, caching and structured output; the built-in CodingAgent tool is powered by Claude Code. <small>Sources: [shopify-roast-source-1](#shopify-roast-source-1); Context: [shopify-roast-source-2](#shopify-roast-source-2).</small>
 - Tool access: Built-in ReadFile, WriteFile, UpdateFiles, Grep, SearchFile, Cmd, Bash and CodingAgent tools; WriteFile carries security restrictions and Cmd carries configurable restrictions. <small>Sources: [shopify-roast-source-1](#shopify-roast-source-1).</small>
@@ -3346,7 +3323,6 @@ Last reviewed: 2026-09-16.
 ### Architecture
 
 - Harness: Coordinator/dispatcher: a central coordinator dispatches to expert agents and to critic agents <small>Sources: [slack-context-system-source-1](#slack-context-system-source-1), [slack-context-system-source-2](#slack-context-system-source-2).</small>
-- Model: Not specified <small>Sources: [slack-context-system-source-1](#slack-context-system-source-1), [slack-context-system-source-2](#slack-context-system-source-2).</small>
 - Tool access: Expert agents produce reports; critic agents evaluate them using evidence-inspection tools <small>Sources: [slack-context-system-source-1](#slack-context-system-source-1), [slack-context-system-source-2](#slack-context-system-source-2).</small>
 - Context mgmt: Three channels; Director's Journal (working memory), Critic's Review (credibility-weighted findings), Critic's Timeline (deduped chronological synthesis) <small>Sources: [slack-context-system-source-1](#slack-context-system-source-1), [slack-context-system-source-2](#slack-context-system-source-2).</small>
 
@@ -3412,7 +3388,7 @@ Last reviewed: 2026-09-17.
 
 - Sandbox: A fresh, isolated, disposable sandbox container per session; Casper skips per-command approvals because the blast radius is a throwaway container, and it has no access to a user's filesystem, SSH keys, or credentials. A Casper Agent Template can supply a custom container image. <small>Sources: [snap-casper-source-1](#snap-casper-source-1).</small>
 - Harness: A remote runner around the same agentic loop a local tool such as Claude Code or Codex runs - gather context, act, verify, repeat - held open as a durable session; Snap names harness-family independence as a build requirement. The workspace lifetime is separated from the compute, so the idle runtime can be torn down between turns. <small>Sources: [snap-casper-source-1](#snap-casper-source-1).</small>
-- Model: Not named. A Casper Agent Template picks the model that balances quality, speed, and cost and attributes usage to a team; Snap names model-family independence as a build requirement. <small>Sources: [snap-casper-source-1](#snap-casper-source-1).</small>
+- Model: A Casper Agent Template picks the model that balances quality, speed, and cost and attributes usage to a team; Snap names model-family independence as a build requirement. <small>Sources: [snap-casper-source-1](#snap-casper-source-1).</small>
 - Interfaces: slack, web, jira, api, scheduled <small>Sources: [snap-casper-source-1](#snap-casper-source-1).</small>
 - Tool access: Snap's MCP Gateway is the standardized interface to every MCP and tool available at Snap, so a new MCP reaches every Casper agent without per-agent integration work. Source-control work goes through a narrow tool interface - checkout, Code Search, push, and pull-request operations - exposed by a trusted controller. A template can narrow the tool set for a role. <small>Sources: [snap-casper-source-1](#snap-casper-source-1).</small>
 - Knowledge: Code Search, the org-wide retrieval layer described in Part 2 of the series and the same context substrate CodePal uses, plus the triggering Slack thread, linked Jira tickets and documents, repo-level rule files, repository guidance, and team-authored skills. <small>Sources: [snap-casper-source-1](#snap-casper-source-1).</small>
@@ -3484,7 +3460,6 @@ Last reviewed: 2026-09-21.
 
 ### Architecture
 
-- Sandbox: unknown <small>Context: [snap-codepal-source-1](#snap-codepal-source-1).</small>
 - Harness: A parent workflow builds the review context once and writes it to a shared store that three child workflows for code review, summary generation, and description generation all read; the review loop runs concurrent model passes under a supervisor with an agreement gate and an eager hand-off, alongside a separate long-running verifier conversation <small>Sources: [snap-codepal-source-1](#snap-codepal-source-1).</small>
 - Interfaces: github <small>Sources: [snap-codepal-source-1](#snap-codepal-source-1).</small>
 - Tool access: Reads git tree diffs and only the required source blobs through the GitHub Enterprise API without cloning, and for a growing share of reviews queries Code Search, Snap's internal semantic search over the full codebase <small>Sources: [snap-codepal-source-1](#snap-codepal-source-1).</small>
@@ -3634,7 +3609,6 @@ Last reviewed: 2026-09-17.
 
 - Sandbox: Pre-warmed AWS EC2 devboxes in the QA environment, isolated from real user data, production services, and arbitrary network egress <small>Sources: [stripe-minions-source-2](#stripe-minions-source-2).</small>
 - Harness: Fork of Block's goose, orchestrated by code-defined blueprints that interleave agent loops with deterministic lint, git, and CI steps <small>Sources: [stripe-minions-source-2](#stripe-minions-source-2).</small>
-- Model: Not specified <small>Sources: [stripe-minions-source-1](#stripe-minions-source-1).</small>
 - Interfaces: slack, github, cli, web, internal-ui <small>Sources: [stripe-minions-source-1](#stripe-minions-source-1).</small>
 - Tool access: Curated subsets of Toolshed MCP tools for internal documentation, tickets, build status, and code intelligence; security controls constrain destructive actions <small>Sources: [stripe-minions-source-2](#stripe-minions-source-2).</small>
 - Knowledge: Repository-scoped rule files shared with human-operated coding agents, plus internal context fetched through MCP <small>Sources: [stripe-minions-source-2](#stripe-minions-source-2).</small>
@@ -3700,7 +3674,6 @@ Last reviewed: 2026-09-16.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [strongdm-factory-overview](#strongdm-factory-overview).</small>
 - Harness: End-to-end scenario harness with user-story-style scenarios kept outside the codebase as a holdout set and checked by an LLM; satisfaction measured as the fraction of observed scenario trajectories that likely satisfy the user; Digital Twin Universe clones of Okta, Jira, Slack, Google Docs, Google Drive, and Google Sheets absorb scenario load <small>Sources: [strongdm-factory-overview](#strongdm-factory-overview), [strongdm-factory-techniques](#strongdm-factory-techniques).</small>
 - Model: Multi-provider routing by task as of 2026-06 (gpt-5.5 for everyday and DevOps tasks, QA orchestration, and security review; consensus of opus-4.8 and gpt-5.5 for sprint planning; opus-4.8 for frontend aesthetics and writing; gemini-3-flash-preview for image comprehension and agentic dialogues; gpt-image-2 and gpt-realtime-2 for UX ideation and voice) <small>Sources: [strongdm-factory-weather-report](#strongdm-factory-weather-report).</small>
 - Tool access: Filesystem that agents read and write to self-manage context; Digital Twin Universe as a stand-in for third-party services <small>Sources: [strongdm-factory-techniques](#strongdm-factory-techniques).</small>
@@ -3764,11 +3737,6 @@ Last reviewed: 2026-09-17.
 ### Operating model
 
 - **Level 3 · work-product-review** — coding request → complete code change (medium confidence; 2026) <small>Sources: [uber-coding-agent-source-1](#uber-coding-agent-source-1).</small>
-
-### Architecture
-
-- Sandbox: unknown <small>Sources: [uber-coding-agent-source-1](#uber-coding-agent-source-1).</small>
-- Harness: Not specified publicly <small>Sources: [uber-coding-agent-source-1](#uber-coding-agent-source-1).</small>
 
 ### Primitives
 
@@ -3889,7 +3857,6 @@ Last reviewed: 2026-09-16.
 
 - Sandbox: Cloudflare Containers + Sandbox SDK; disposable, tightly scoped sandboxes with explicit lifecycle APIs and egress controls; full monorepo stack in Docker dev containers <small>Sources: [workos-project-horizon-source-1](#workos-project-horizon-source-1).</small>
 - Harness: Modular by design; the core article runs OpenCode in the sandbox; the Applied AI Showcase runs Claude Remote Routines. The harness is swappable as agent tech changes; separate PM, implementation, and prospective verification/security roles <small>Sources: [workos-project-horizon-source-1](#workos-project-horizon-source-1), [workos-project-horizon-source-2](#workos-project-horizon-source-2).</small>
-- Model: Not documented by name; the harness is the swappable layer (OpenCode in the core article, Claude Remote Routines in the showcase), and no source names the underlying model <small>Sources: [workos-project-horizon-source-1](#workos-project-horizon-source-1), [workos-project-horizon-source-2](#workos-project-horizon-source-2).</small>
 - Interfaces: linear, github, slack, web <small>Sources: [workos-project-horizon-source-1](#workos-project-horizon-source-1).</small>
 - Tool access: A custom MCP server stitches internal data sources (Datadog, Sentry, Slack, WorkOS Pipes); all outbound traffic proxied through Workers with allowlists, limits, logging, and token injection <small>Sources: [workos-project-horizon-source-1](#workos-project-horizon-source-1), [workos-project-horizon-source-2](#workos-project-horizon-source-2).</small>
 - Knowledge: AGENTS.md and CLAUDE.md capture scripts, docs, conventions; MCP codifies the patterns engineers already follow; Notion + Figma for specs/mockups <small>Sources: [workos-project-horizon-source-1](#workos-project-horizon-source-1).</small>
@@ -3954,7 +3921,6 @@ Last reviewed: 2026-09-17.
 
 ### Architecture
 
-- Sandbox: unknown <small>Sources: [ycombinator-agent-infra-source-1](#ycombinator-agent-infra-source-1).</small>
 - Harness: Own harnesses built from the ground up for internal AI use <small>Sources: [ycombinator-agent-infra-source-1](#ycombinator-agent-infra-source-1).</small>
 - Tool access: Shared registry of more than 350 YC-specific tools, including read-only SQL access <small>Sources: [ycombinator-agent-infra-source-1](#ycombinator-agent-infra-source-1).</small>
 - Interfaces: slack <small>Sources: [ycombinator-agent-infra-source-1](#ycombinator-agent-infra-source-1).</small>
@@ -4054,9 +4020,7 @@ Last reviewed: 2026-09-17.
 ### Architecture
 
 - Harness: Constrained editing tools; state-management concerns; progressive levels of human oversight <small>Sources: [zup-codegen-source-1](#zup-codegen-source-1).</small>
-- Model: Not specified (see paper) <small>Sources: [zup-codegen-source-1](#zup-codegen-source-1).</small>
 - Tool access: Constrained editing tools rather than free-form code generation <small>Sources: [zup-codegen-source-1](#zup-codegen-source-1).</small>
-- Credentials: Layered safety controls <small>Sources: [zup-codegen-source-1](#zup-codegen-source-1).</small>
 
 ### Primitives
 

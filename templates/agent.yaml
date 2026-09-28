@@ -36,15 +36,9 @@ rubric:
 summary: "A factual description of the reported approach."
 headline_metric: "A self-reported metric with its date and scope."
 
-architecture:
-  sandbox: ""
-  harness: ""
-  model: ""
-  interfaces: []
-  tool_access: ""
-  knowledge: ""
-  credentials: ""
-  context_mgmt: ""
+# Add only the fields a source documents: sandbox, harness, model, interfaces,
+# tool_access, knowledge, credentials, and context_mgmt. Never write unknown or an empty value.
+architecture: {}
 
 primitives: []
 key_metrics: []

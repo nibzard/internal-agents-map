@@ -27,7 +27,6 @@ summary: Y Combinator built its own agent harness and infrastructure, led by par
   loop over a shared tool registry, now over 350 tools, including one that runs read-only SQL against YC's single
   Postgres database. Agent conversations are broadcast to a Slack channel.
 architecture:
-  sandbox: unknown
   harness: Own harnesses built from the ground up for internal AI use
   tool_access: Shared registry of more than 350 YC-specific tools, including read-only SQL access
   interfaces:
@@ -65,8 +64,6 @@ evidence:
   operating_models.0:
   - source_id: ycombinator-agent-infra-source-1
   summary:
-  - source_id: ycombinator-agent-infra-source-1
-  architecture.sandbox:
   - source_id: ycombinator-agent-infra-source-1
   architecture.harness:
   - source_id: ycombinator-agent-infra-source-1
@@ -111,11 +108,6 @@ claim_metadata:
   summary:
     confidence: low
     confidence_reason: Only limited public evidence supports this claim.
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: The preserved sources do not document an execution sandbox; unknown does not mean absent.
   architecture.harness:
     confidence: low
     confidence_reason: Only limited public evidence supports this claim.
@@ -175,7 +167,6 @@ page_content:
     sandbox:
       state: unreported
       claim_paths: []
-      note: The legacy unknown placeholder is retained in research details; isolation is not documented.
     tool_access:
       state: reported
       claim_paths:

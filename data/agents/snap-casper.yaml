@@ -50,7 +50,7 @@ architecture:
     context, act, verify, repeat - held open as a durable session; Snap names harness-family independence as a
     build requirement. The workspace lifetime is separated from the compute, so the idle runtime can be torn down
     between turns.
-  model: Not named. A Casper Agent Template picks the model that balances quality, speed, and cost and attributes
+  model: A Casper Agent Template picks the model that balances quality, speed, and cost and attributes
     usage to a team; Snap names model-family independence as a build requirement.
   interfaces:
   - slack

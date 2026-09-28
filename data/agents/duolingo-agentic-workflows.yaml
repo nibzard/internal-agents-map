@@ -27,7 +27,6 @@ summary: Duolingo built shared infrastructure that turns a tested prompt into an
   a coding-agent workflow against one repository, Temporal runs the workflows that need several steps, and a shared
   library wraps the Codex CLI and the Claude Code SDK.
 architecture:
-  sandbox: unknown
   harness: Temporal runs the workflows; a shared CodingAgent library wraps the Codex CLI and the Claude Code SDK
     behind one interface.
   interfaces:
@@ -99,10 +98,6 @@ evidence:
   - locator: Preserved content.md, lines 44, 48
   operating_models.1:
   - locator: Preserved content.md, lines 22-28
-  architecture.sandbox:
-  - relation: contextualizes
-    locator: Preserved content.md, line 102 (Docker in Docker on Temporal named as a blocker, with no execution
-      environment described)
   architecture.harness:
   - locator: Preserved content.md, lines 54, 58
   architecture.interfaces:
@@ -268,8 +263,8 @@ page_content:
     sandbox:
       state: unreported
       claim_paths: []
-      note: "No execution isolation is described. The unknown placeholder stays in research details; the Docker-in-Docker
-        blocker names a constraint, not the environment a workflow runs in."
+      note: 'No execution isolation is described; the Docker-in-Docker blocker names a constraint, not the
+        environment a workflow runs in.'
     tool_access:
       state: reported
       claim_paths:

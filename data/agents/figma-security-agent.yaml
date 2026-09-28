@@ -46,7 +46,6 @@ summary: >-
 headline_metric: Around 70% reduction in time-to-resolution on complex alerts, reported by Figma in July 2026
 
 architecture:
-  sandbox: unknown
   harness: 'Agent loops run inside Tines, a commercial workflow-automation product, which supplies the LLM loop
     and the explicit tool interfaces; Figma built the surrounding system: AWS Lambda handlers that index and post
     each Panther alert, a retrieval layer on AWS Bedrock Knowledge Bases and Amazon Kendra, webhook-triggered intent
@@ -188,8 +187,6 @@ evidence:
   - locator: Preserved content.md, lines 84-94
   operating_models.3:
   - locator: Preserved content.md, line 104
-  architecture.sandbox:
-  - locator: Preserved content.md, lines 100, 121
   architecture.harness:
   - locator: Preserved content.md, lines 32, 100-104, 205
   architecture.model:
@@ -320,12 +317,6 @@ claim_metadata:
     valid_at: '2026-07'
     reported_by: Figma
     metric_scope: Initial security response work for Figma's security team
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: The post places the agent loops in Tines and has the sub-agent execute SQL against Snowflake,
-      but documents no execution isolation boundary for agent-run code; unknown does not mean absent.
   lessons_learned.0:
     kind: fact
     provenance: reported
@@ -454,8 +445,8 @@ page_content:
     sandbox:
       state: unreported
       claim_paths: []
-      note: Tines runs the agent loops and the sub-agent executes SQL against Snowflake, but no execution isolation
-        boundary is described; the legacy unknown claim stays in research details.
+      note: 'Tines runs the agent loops and the sub-agent executes SQL against Snowflake, but no execution
+        isolation boundary is described.'
     tool_access:
       state: reported
       claim_paths:

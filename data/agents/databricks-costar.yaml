@@ -30,7 +30,6 @@ summary: Databricks runs internal engineering agents for work such as on-call su
 architecture:
   harness: coSTAR framework for shipping and testing internal agents
   knowledge: Private benchmark built from the Databricks multi-million line codebase
-  interfaces: []
   tool_access: Internal agents call MCP tools for data access, code execution, and environment setup
 primitives:
 - name: Run the scenario against the agent under test
@@ -211,8 +210,8 @@ page_content:
     interfaces:
       state: unreported
       claim_paths: []
-      note: The interfaces list is empty; captures name harnesses only as benchmark evaluation subjects, not as
-        surfaces of the internal agents.
+      note: 'The captures name harnesses only as benchmark evaluation subjects, not as surfaces of the
+        internal agents.'
   primitive_roles:
     primitives.0: workflow
     primitives.1: workflow

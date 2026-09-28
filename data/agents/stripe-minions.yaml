@@ -33,7 +33,6 @@ architecture:
     and arbitrary network egress
   harness: Fork of Block's goose, orchestrated by code-defined blueprints that interleave agent loops with deterministic
     lint, git, and CI steps
-  model: Not specified
   interfaces:
   - slack
   - github
@@ -202,8 +201,6 @@ evidence:
   architecture.harness:
   - source_id: stripe-minions-source-2
     locator: Preserved content.md, lines 38–56
-  architecture.model:
-  - source_id: stripe-minions-source-1
   architecture.tool_access:
   - source_id: stripe-minions-source-2
     locator: Preserved content.md, lines 72–84
@@ -305,8 +302,7 @@ page_content:
     observations: {state: reported, claim_paths: [headline_metric, key_metrics.0]}
     lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1]}
   implementation_fields:
-    model: {state: unreported, claim_paths: [], note: 'Neither part names a model; the legacy Not-specified claim
-      stays in research details.'}
+    model: {state: unreported, claim_paths: []}
     harness: {state: reported, claim_paths: [architecture.harness]}
     sandbox: {state: reported, claim_paths: [architecture.sandbox]}
     tool_access: {state: reported, claim_paths: [architecture.tool_access]}

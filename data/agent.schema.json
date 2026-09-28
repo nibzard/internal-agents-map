@@ -122,16 +122,20 @@
     "architecture": {
       "type": "object",
       "additionalProperties": false,
-      "description": "An empty string or list is the same as an omitted field.",
+      "description": "Omit a field that no source documents. Empty values and placeholder strings such as unknown or Not specified are not allowed.",
       "properties": {
-        "sandbox": { "type": "string" },
-        "harness": { "type": "string" },
-        "model": { "type": "string" },
-        "tool_access": { "type": "string" },
-        "knowledge": { "type": "string" },
-        "credentials": { "type": "string" },
-        "context_mgmt": { "type": "string" },
-        "interfaces": { "type": "array", "items": { "$ref": "#/definitions/interface" } }
+        "sandbox": { "$ref": "#/definitions/architectureText" },
+        "harness": { "$ref": "#/definitions/architectureText" },
+        "model": { "$ref": "#/definitions/architectureText" },
+        "tool_access": { "$ref": "#/definitions/architectureText" },
+        "knowledge": { "$ref": "#/definitions/architectureText" },
+        "credentials": { "$ref": "#/definitions/architectureText" },
+        "context_mgmt": { "$ref": "#/definitions/architectureText" },
+        "interfaces": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/interface" }
+        }
       }
     },
     "primitives": {
@@ -175,6 +179,12 @@
       "type": "string",
       "pattern": "\\S",
       "description": "A string that contains more than whitespace."
+    },
+    "architectureText": {
+      "type": "string",
+      "pattern": "\\S",
+      "not": { "pattern": "^\\s*(?:(?:[Uu]nknown|UNKNOWN|[Nn]/[Aa])\\b|(?:[Nn]one|NONE|TBD|[Tt]bd|[Uu]ndisclosed|[Uu]nspecified)\\s*\\.?\\s*$|[Nn]ot (?:specified|reported|documented|disclosed|named|stated|detailed|applicable|known|public|publicly|described)\\b|[Ss]ources? names? no\\b|[Nn]o (?:source|public source) names\\b)" },
+      "description": "A reported architecture value. It must not start with a placeholder such as unknown, Not specified, or Not documented."
     },
     "kebabId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "partialDate": {

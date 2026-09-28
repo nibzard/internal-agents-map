@@ -38,7 +38,6 @@ architecture:
   sandbox: Retool-hosted runtime (no bespoke execution env described)
   harness: Retool-based builder with prompt management and multi-model testing/evaluation; built by a ~25-person
     systems-engineering team
-  model: Not documented for deployed agents; the platform provides multi-model testing and evaluation at build time
   interfaces:
   - slack
   - internal-ui
@@ -122,8 +121,6 @@ evidence:
   architecture.sandbox:
   - source_id: brex-agent-platform-source-1
   architecture.harness:
-  - source_id: brex-agent-platform-source-1
-  architecture.model:
   - source_id: brex-agent-platform-source-1
   architecture.tool_access:
   - source_id: brex-agent-platform-source-1
@@ -299,8 +296,8 @@ page_content:
     model:
       state: unreported
       claim_paths: []
-      note: Deployed-agent models are not documented; multi-model testing is build time. The placeholder claim stays
-        in research details.
+      note: 'Deployed-agent models are not documented; the platform provides multi-model testing and
+        evaluation at build time.'
     harness:
       state: reported
       claim_paths:

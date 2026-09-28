@@ -28,9 +28,7 @@ summary: OpenAI's internal incident-response agent, built on Codex. When an inci
   context, proposes mitigations, and answers questions in the incident Slack channel. The report describes
   an engineer instructing it to apply a chosen mitigation.
 architecture:
-  sandbox: unknown
   harness: Built on top of Codex
-  model: unknown
   interfaces:
   - slack
 primitives:
@@ -98,15 +96,9 @@ evidence:
   operating_models.0:
   - source_id: openai-sevbot-article
     locator: "Preserved content.md, lines 190-193 (determines possible mitigations but never executes any; an engineer can tell it to apply a specific mitigation)"
-  architecture.sandbox:
-  - source_id: openai-sevbot-article
-    locator: "Preserved content.md, lines 188-195 describe Sevbot without documenting an execution sandbox"
   architecture.harness:
   - source_id: openai-sevbot-article
     locator: "Preserved content.md, line 188 (Sevbot is built on top of Codex)"
-  architecture.model:
-  - source_id: openai-sevbot-article
-    locator: "The preserved article names no underlying models for Sevbot"
   architecture.interfaces:
   - source_id: openai-sevbot-article
     locator: "Preserved content.md, line 192 (it is part of the Slack channel and answers devs' questions)"
@@ -127,16 +119,6 @@ claim_metadata:
     confidence: medium
     confidence_reason: "The article says Sevbot proposes mitigations and that an engineer can tell it to apply one. This supports an engineer-controlled mitigation path; the source's 'never executes any' wording is read as a limit on autonomous execution."
     valid_at: "2026-09"
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: "The article does not document an execution sandbox; unknown does not mean absent."
-  architecture.model:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: "The article names no underlying models; unknown does not mean absent."
   lessons_learned.0:
     kind: fact
     provenance: reported
@@ -164,11 +146,9 @@ page_content:
       reviewed captures. The certificate and commit records evidence a deployed service, not results.'}
     lessons: {state: reported, claim_paths: [lessons_learned.0]}
   implementation_fields:
-    model: {state: unreported, claim_paths: [], note: 'The article names no underlying model for Sevbot; the legacy
-      unknown placeholder stays in research details.'}
+    model: {state: unreported, claim_paths: []}
     harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: [], note: 'The article describes no execution or isolation boundary;
-      the legacy unknown placeholder stays in research details.'}
+    sandbox: {state: unreported, claim_paths: []}
     tool_access: {state: unreported, claim_paths: []}
     knowledge: {state: unreported, claim_paths: [], note: 'No knowledge source is named for Sevbot; the article''s
       factory-wide Codex context access is not attributed to Sevbot.'}

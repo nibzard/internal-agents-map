@@ -114,6 +114,49 @@ Each step is a separate pull request with its own verification. Steps 1 and 2 le
   contradict it (the 27 `drafts-reviewed` / `work-product-review` pairs agree; the
   16 `unknown` / `unknown` pairs agree). Deriving it is a later decision.
 
+### Step 3 export contract (schema 8)
+
+Authored record:
+
+- `primitives[]`: each item has `id` (kebab-case, unique in the record), `name`, `desc`,
+  and `role` (`workflow`, `mechanism`, or `validation`).
+- `key_metrics[]` and `lessons_learned[]`: lists of `{id, text}` maps.
+- Claim paths everywhere (`evidence`, `claim_metadata`, `page_content`) use
+  `primitives.<id>`, `key_metrics.<id>`, `lessons_learned.<id>`. Index paths are
+  rejected.
+- `claim_metadata.<metric path>` may carry `category`, `basis`, and `subject`
+  (the values that `page_content.observations` carried). Every headline and key
+  metric must carry them, or be listed as an alias.
+- `page_content.aliases`: map of metric path to `{duplicate_of, reason}`. Replaces
+  `page_content.observations`. `page_content.primitive_roles` is removed.
+- `page_content.questions.<q>.claim_paths` is authored only for `workflow`,
+  `human_involvement`, and `validation`. The build derives `purpose` (summary),
+  `implementation` (every present architecture field), `observations` (headline
+  and every non-alias key metric), and `lessons` (every lesson). Authoring a
+  `claim_paths` on those four is rejected.
+- `page_content.implementation_fields` lists only fields whose state is
+  `not-applicable`, `not-reviewed`, or `unreported` with a note. The build derives
+  `reported` for every present architecture field and `unreported` for the rest.
+- `rubric.state`, `rubric.identity`, `family_id`, and source `archived_url` are
+  removed from the schema.
+
+Export (`data/agents.json`, `schema_version: 8`):
+
+- Claim `id` keeps the shape `<record>--<path with dots and underscores as dashes>`,
+  so `github-qubot--primitives-start-a-qubot-run`. Claim `field` is the ID path.
+- Primitive claims carry `item_id`, `display_name`, and `role`. Metric and lesson
+  claims carry `item_id`. Metric claims carry `category`, `basis`, and `subject`
+  when they are canonical, or `duplicate_of` (a claim ID) and `reason` when they
+  are aliases.
+- Top-level `claim_aliases`: map of every schema 7 claim ID to its schema 8 claim
+  ID. Kept for one release. The site resolves an old anchor through it.
+- `page_content` in the export carries all seven `questions` with their full
+  derived `claim_paths`, all eight `implementation_fields` with derived states,
+  and `aliases`. It carries no `primitive_roles` and no `observations`.
+- `approaches[].rubric` has only `invocation` and `evidence_strength`.
+- The compact index (`/agents/index.json`) becomes schema 4 with the same rubric
+  change.
+
 ### Step 4: documentation
 
 - Move the migration paragraphs ("Schema 6 replaces…", "catalog 7 / compact index 3")

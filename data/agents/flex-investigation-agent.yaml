@@ -27,7 +27,6 @@ summary: Flex runs an internal Slack agent that support, operations, and enginee
   problems. Given an email, order number, or error string, it traces the transaction across systems and answers in
   plain English. On high-confidence bugs it opens a pull request for review.
 architecture:
-  sandbox: unknown
   harness: Investigation-to-fix loop running as a serverless application on Modal; Slack requests are acknowledged,
     the investigation runs in a spawned background function, and fixes come from a spawned coding sub-agent
   model: Anthropic (named for the tool-calling investigation loop and the coding sub-agent); specific model version
@@ -75,8 +74,6 @@ evidence:
   operating_models.0:
   - source_id: flex-investigation-agent-source-1
   summary:
-  - source_id: flex-investigation-agent-source-1
-  architecture.sandbox:
   - source_id: flex-investigation-agent-source-1
   architecture.harness:
   - source_id: flex-investigation-agent-source-1
@@ -126,11 +123,6 @@ claim_metadata:
     confidence: medium
     confidence_reason: The three confidence branches are described explicitly, including validation before a
       PR and the prohibition on the agent merging or deploying.
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: The preserved sources do not document an execution sandbox; unknown does not mean absent.
   key_metrics.0:
     kind: fact
     provenance: reported
@@ -157,7 +149,7 @@ page_content:
     model: {state: reported, claim_paths: [architecture.model]}
     harness: {state: reported, claim_paths: [architecture.harness]}
     sandbox: {state: unreported, claim_paths: [], note: 'The capture names the Modal serverless runtime but no
-      execution isolation boundary; the legacy unknown claim stays in research details.'}
+      execution isolation boundary.'}
     tool_access: {state: reported, claim_paths: [architecture.tool_access]}
     knowledge: {state: unreported, claim_paths: [], note: 'Records arrive through scoped tools (a read-only replica,
       payment infrastructure, logs, Sentry, Linear, GitHub, PostHog); no separate knowledge store is documented.'}

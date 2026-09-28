@@ -29,7 +29,6 @@ summary: A native agent that synthesizes workspace context, scopes customer feed
   work, runs coding sessions, and can be triggered automatically when issues enter triage; used by Linear's own
   CX, Product, and Engineering teams.
 architecture:
-  sandbox: unknown
   harness: Separate planning agent (triage/issue creation) and coding agent (code generation); Code Intelligence
     for codebase knowledge; scheduled/event-driven 'Loops'
   model: Codex was used for internal pull-request review; other model choices are not detailed in the preserved
@@ -143,8 +142,6 @@ evidence:
   - source_id: linear-agent-source-1
   - source_id: linear-agent-source-2
   - source_id: linear-agent-source-6
-  architecture.sandbox:
-  - source_id: linear-agent-source-1
   architecture.harness:
   - source_id: linear-agent-source-1
   - source_id: linear-agent-source-2
@@ -227,11 +224,6 @@ claim_metadata:
     confidence: medium
     confidence_reason: Completed issues reopen related Intercom requests or notify the Slack thread. In both
       examples, the support team performs the customer follow-up.
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: The preserved sources do not document an execution sandbox; unknown does not mean absent.
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -259,8 +251,8 @@ page_content:
     model: {state: reported, claim_paths: [architecture.model], note: 'Codex is named for internal pull-request review;
       the captures say only frontier language models elsewhere.'}
     harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: [], note: 'The captures describe a custom owned stack but no execution
-      or isolation boundary; the placeholder claim stays in research details.'}
+    sandbox: {state: unreported, claim_paths: [], note: 'The captures describe a custom owned stack but no
+      execution or isolation boundary.'}
     tool_access: {state: reported, claim_paths: [architecture.tool_access], note: 'Code Intelligence and custom MCP
       servers are named as internal tests with a planned launch.'}
     knowledge: {state: reported, claim_paths: [architecture.knowledge], note: 'The Datadog and Sentry customer context

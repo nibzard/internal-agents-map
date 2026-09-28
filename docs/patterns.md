@@ -18,7 +18,7 @@ The catalog currently contains 66 entries. These are catalog classifications, no
 | Orchestration system | 0 |
 | Supporting pattern | 2 |
 
-- 19 entries document a concrete execution environment.
+- 18 entries document a concrete execution environment.
 - 33 entries list Slack as an interface.
 - State duration is unknown for 39, durable-session for 14, cross-session-memory for 6, mixed for 5, and run-only for 2 approaches.
 - Agent autonomy (51 records; infrastructure excluded) is classified as drafts-reviewed for 28, human-in-loop for 5, autonomous for 6, assistive for 1, and unknown for 11 approaches.
@@ -53,7 +53,7 @@ No catalog rule requires this exact design. Some entries implement only part of 
 
 ## Execution environments
 
-Some entries document a concrete execution environment. Reported examples include Firecracker micro virtual machines at DoorDash, Modal sandboxes at Ramp, Kubernetes containers at Spotify, AWS EC2 devboxes at Stripe, microVMs at Replit, and isolated worktrees at Coinbase. The earlier HubSpot reviewer used Crucible Kubernetes workloads; the later Aviator reviewer does not document its execution isolation. See the [evidence review](evidence-review.md) for the preserved passages and unresolved gaps.
+Some entries document a concrete execution environment. Reported examples include Firecracker micro virtual machines at DoorDash, Modal sandboxes at Ramp, Kubernetes containers at Spotify, AWS EC2 devboxes at Stripe, and microVMs at Replit. The earlier HubSpot reviewer used Crucible Kubernetes workloads; the later Aviator reviewer does not document its execution isolation. See the [evidence review](evidence-review.md) for the preserved passages and unresolved gaps.
 
 The remaining entries either omit the detail or describe no separate execution environment. This absence is an evidence gap. It is not proof that no isolation exists.
 

@@ -33,8 +33,6 @@ architecture:
   harness: Modular by design; the core article runs OpenCode in the sandbox; the Applied AI Showcase runs Claude
     Remote Routines. The harness is swappable as agent tech changes; separate PM, implementation, and prospective
     verification/security roles
-  model: Not documented by name; the harness is the swappable layer (OpenCode in the core article, Claude Remote
-    Routines in the showcase), and no source names the underlying model
   interfaces:
   - linear
   - github
@@ -135,9 +133,6 @@ evidence:
   architecture.sandbox:
   - source_id: workos-project-horizon-source-1
   architecture.harness:
-  - source_id: workos-project-horizon-source-1
-  - source_id: workos-project-horizon-source-2
-  architecture.model:
   - source_id: workos-project-horizon-source-1
   - source_id: workos-project-horizon-source-2
   architecture.tool_access:
@@ -293,8 +288,8 @@ page_content:
     model:
       state: unreported
       claim_paths: []
-      note: No source names the underlying model; the harness is the swappable layer, and the placeholder claim
-        stays in research details.
+      note: 'No source names the underlying model; the harness is the swappable layer (OpenCode in the core
+        article, Claude Remote Routines in the showcase).'
     harness:
       state: reported
       claim_paths:

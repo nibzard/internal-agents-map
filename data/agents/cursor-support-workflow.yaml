@@ -29,7 +29,6 @@ headline_metric: "Cursor reports that over 75% of its support interactions run t
   engineer throughput increased 5-10x; the post gives no measurement period, denominator definition, or method."
 
 architecture:
-  sandbox: unknown
   harness: "Cursor's own editor and agent product configured for support investigations: multi-root workspaces over
     several repositories, Ask Mode investigations, MCP servers for support systems, slash commands, Rules and Skills,
     subagents, and a Slack-triggered cloud agent that opens documentation pull requests"
@@ -125,8 +124,6 @@ evidence:
     - locator: "Preserved content.md, lines 16, 22, 37, 41, 45"
   operating_models.1:
     - locator: "Preserved content.md, lines 67-74"
-  architecture.sandbox:
-    - locator: "Preserved content.md, lines 16, 53"
   architecture.harness:
     - locator: "Preserved content.md, lines 16-18, 22, 53, 59-67"
   architecture.interfaces:
@@ -183,12 +180,6 @@ claim_metadata:
       team reviews and sends, which locates the return of attention at the merged work product; the post does not
       say how long the parallel run proceeds unattended."
     valid_at: "2026-03"
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: "The post says the full codebase is available locally and that a cloud agent opens docs pull
-      requests, but documents no execution isolation boundary for either; unknown does not mean absent."
   headline_metric:
     confidence: low
     confidence_reason: "Cursor states both figures in one sentence of its own blog post with no measurement period,
@@ -263,9 +254,8 @@ page_content:
     model: {state: unreported, claim_paths: [], note: "The post names Ask Mode, subagents, and cloud agents, but no
       model or model version anywhere."}
     harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: [], note: "The codebase is described as available locally and a cloud
-      agent opens docs pull requests, but no execution isolation boundary is described for either; the legacy
-      unknown claim stays in research details."}
+    sandbox: {state: unreported, claim_paths: [], note: 'The post says the codebase is available locally and a
+      cloud agent opens docs pull requests, but describes no execution isolation boundary for either.'}
     tool_access: {state: reported, claim_paths: [architecture.tool_access]}
     knowledge: {state: reported, claim_paths: [architecture.knowledge]}
     context_mgmt: {state: reported, claim_paths: [architecture.context_mgmt]}

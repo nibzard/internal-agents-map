@@ -34,7 +34,6 @@ summary: >-
 headline_metric: "REA-driven iterations doubled average model accuracy over baseline approaches across six ads ranking models in the first production validation (self-reported, March 2026)."
 
 architecture:
-  sandbox: unknown
   harness: >-
     Built on Confucius, an internal Meta AI agent framework for complex, multistep reasoning that supplies
     code generation and an SDK for integrating with Meta internal tooling; REA itself splits into a REA
@@ -141,8 +140,6 @@ evidence:
   - locator: Preserved content.md, lines 14, 90
   operating_models.0:
   - locator: Preserved content.md, lines 12, 64, 70, 102
-  architecture.sandbox:
-  - locator: Preserved content.md, lines 49, 72
   architecture.harness:
   - locator: Preserved content.md, lines 49, 78, 80
   architecture.tool_access:
@@ -192,13 +189,6 @@ claim_metadata:
       move the boundary. The post also states it covers only the ML experimentation capability, so this
       assessment does not extend to other REA capabilities.
     valid_at: '2026-03'
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: >-
-      The post names Meta internal job schedulers, access controls granted by preflight checklist review, and
-      a codebase restriction, but no execution isolation boundary for the agent; unknown does not mean absent.
   headline_metric:
     confidence: medium
     confidence_reason: >-
@@ -312,7 +302,8 @@ page_content:
     sandbox:
       state: unreported
       claim_paths: []
-      note: "The post names Meta internal job schedulers, a codebase restriction, and access controls granted by preflight checklist review, but no execution isolation boundary; the legacy unknown claim stays in research details."
+      note: 'The post names Meta internal job schedulers, a codebase restriction, and access controls granted
+        by preflight checklist review, but no execution isolation boundary.'
     tool_access:
       state: reported
       claim_paths: [architecture.tool_access]

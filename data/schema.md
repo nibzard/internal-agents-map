@@ -117,7 +117,7 @@ Do not infer either field from the other, and use `unknown` when the source is s
 
 ## Optional description fields
 
-`architecture` can contain short strings for `sandbox`, `harness`, `model`, `tool_access`, `knowledge`, `credentials`, and `context_mgmt`. Its `interfaces` field is a list. For a reviewed but undocumented execution sandbox, use the canonical string `unknown`; omit an inapplicable sandbox for a supporting pattern. An earlier implementation's environment must be labeled as historical, not attributed to its replacement.
+`architecture` can contain short strings for `sandbox`, `harness`, `model`, `tool_access`, `knowledge`, `credentials`, and `context_mgmt`. Its `interfaces` field is a list. Omit a field that no reviewed source documents. Do not write `unknown`, `Not specified`, an empty string, or an empty list; the schema rejects them. `page_content.implementation_fields` records that the sources were read and name nothing. An earlier implementation's environment must be labeled as historical, not attributed to its replacement.
 
 Domain values are `coding`, `code-review`, `support`, `on-call`, `research`, `customer-success`, `security`, `finance-ops`, `data`, `ci-triage`, `maintenance`, `ops`, `recruitment`, `migrations`, and `design`.
 
@@ -278,7 +278,9 @@ next research action. An `unreported` question or implementation field is the on
 exception: the state already says the captures were read and name nothing, so the note
 is optional there and must be left out unless it adds a fact the state does not carry —
 what the source says instead, which claim stays in research details, or the scope that
-limits the answer. A reported workflow also requires `workflow_scope`.
+limits the answer. A reported workflow also requires `workflow_scope`. An implementation
+field is `reported` if and only if its architecture field is present; an absent field is
+`unreported`, `not-applicable`, or `not-reviewed`.
 
 `primitive_roles` classifies every primitive as `workflow`, `mechanism`, or
 `validation`; the workflow question lists every workflow primitive in reading order.

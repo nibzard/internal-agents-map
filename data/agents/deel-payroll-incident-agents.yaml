@@ -31,7 +31,6 @@ summary: Deel runs a four-stage pipeline that triages failed US PEO payroll sync
   the post calls the company's internal AI orchestration platform.
 headline_metric: Deel reports 900+ engineering hours reclaimed annually
 architecture:
-  sandbox: unknown
   harness: Four stages run in sequence on Akai, described as Deel's internal AI orchestration platform. Each stage
     owns one job and hands off to the next with no manual intervention and no engineer to start the run.
   interfaces:
@@ -97,8 +96,6 @@ evidence:
   - locator: Preserved content.md, lines 56, 79
   operating_models.1:
   - locator: Preserved content.md, lines 60, 64, 79
-  architecture.sandbox:
-  - locator: Preserved content.md, lines 46, 85-91
   architecture.harness:
   - locator: Preserved content.md, lines 46, 85
   architecture.interfaces:
@@ -146,12 +143,6 @@ claim_metadata:
       with the exact fix command, so a person reviews the work product before it takes effect. The post does not
       say whether an engineer may also reject or edit the proposed command.
     valid_at: '2026-08'
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: The post names Akai as the platform the pipeline runs on but documents no execution isolation
-      boundary; unknown does not mean absent.
   headline_metric:
     confidence: low
     confidence_reason: Deel reports the annual figure in its own marketing-adjacent blog as a single table row with
@@ -286,8 +277,7 @@ page_content:
     sandbox:
       state: unreported
       claim_paths: []
-      note: The post names Akai as the host platform but documents no execution isolation boundary; the legacy
-        unknown claim stays in research details.
+      note: 'The post names Akai as the host platform but documents no execution isolation boundary.'
     tool_access:
       state: reported
       claim_paths:

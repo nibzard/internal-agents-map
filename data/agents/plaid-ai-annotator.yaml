@@ -28,7 +28,6 @@ headline_metric: Greater than 95% human alignment at lower cost and time than ma
 architecture:
   knowledge: Anonymized Plaid transaction data
   harness: Internally hosted platform
-  interfaces: []
 key_metrics:
 - Greater than 95% human alignment with labeled data
 - Lower cost and time than manual labeling

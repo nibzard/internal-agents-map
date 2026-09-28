@@ -23,7 +23,6 @@ summary: "Amplitude built Design Agent, an internal web tool that anyone in the 
 headline_metric: "Over 2,219 session snapshots in Design Agent's first few weeks, with repeat usage across multiple teams (self-reported)"
 
 architecture:
-  sandbox: unknown
   harness: "Claude Managed Agents supplies reasoning, tool use, and multi-step generation; Amplitude wrote no state machine, prompt chain, or tool-calling logic. A thin wrapper of Cloudflare Workers serves the web interface and the agent interaction endpoint."
   model: "Claude, through Claude Managed Agents; no model version is named."
   interfaces: [web]
@@ -79,8 +78,6 @@ evidence:
     - locator: "Preserved content.md, line 64"
   operating_models.0:
     - locator: "Preserved content.md, lines 71, 73, 75"
-  architecture.sandbox:
-    - locator: "Preserved content.md, lines 28, 81"
   architecture.harness:
     - locator: "Preserved content.md, lines 28-29, 81, 85"
   architecture.model:
@@ -151,11 +148,6 @@ claim_metadata:
     metric_scope: "Elapsed time from starting the build to a working Design Agent for Amplitude product and engineering teams"
     denominator: "Not applicable"
     measurement_method: "Not stated; the author reports the duration without a record of hours or a defined start"
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: "The post says Claude Managed Agents handles execution behind the scenes but names no execution isolation boundary for the agent's work; unknown records the gap, not an absent sandbox."
   lessons_learned.0:
     kind: fact
     provenance: reported
@@ -215,7 +207,7 @@ page_content:
     sandbox:
       state: unreported
       claim_paths: []
-      note: "The post names Claude Managed Agents as the runtime but no execution isolation boundary; the legacy unknown claim stays in the research details."
+      note: 'The post names Claude Managed Agents as the runtime but no execution isolation boundary.'
     tool_access:
       state: reported
       claim_paths: [architecture.tool_access]

@@ -30,8 +30,6 @@ summary: Forge, previously Claudebot, turns employee discussions into Linear iss
   returned for review. Coinbase separately uses Mux to host concurrent coding-agent workspaces.
 headline_metric: 5% of all PRs merged come from in-house background agents (Feb 2026)
 architecture:
-  sandbox: 'Separate Mux platform context: concurrent agents receive separate git worktrees, branches and terminals.
-    The sources do not establish this as Forge’s execution environment.'
   harness: Portfolio approach; Claude Code, OpenCode, Cursor, and Copilot rather than one harness; Forge is a custom
     Slack-native harness with the same tools and context as engineers, invokable from Slack, GitHub, and Linear;
     built in-house because security requirements blocked cloud background agents
@@ -135,8 +133,6 @@ evidence:
   headline_metric:
   - source_id: coinbase-forge-mux-source-3
     locator: Preserved content.md, line 11
-  architecture.sandbox:
-  - source_id: coinbase-forge-mux-source-1
   architecture.harness:
   - source_id: coinbase-forge-mux-source-1
   - source_id: coinbase-forge-mux-source-2
@@ -328,7 +324,6 @@ page_content:
       claim_paths:
       - architecture.harness
       - architecture.model
-      - architecture.sandbox
       - architecture.tool_access
       - architecture.knowledge
       - architecture.context_mgmt
@@ -366,8 +361,8 @@ page_content:
     sandbox:
       state: unreported
       claim_paths: []
-      note: The old worktree claim concerns Mux and is retained in research details; Forge sandbox implementation
-        is unreported.
+      note: 'The sources describe separate git worktrees, branches, and terminals for concurrent agents in
+        Mux, a separate platform; they do not establish this as the Forge execution environment.'
     tool_access:
       state: reported
       claim_paths:

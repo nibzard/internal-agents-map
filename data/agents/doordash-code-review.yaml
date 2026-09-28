@@ -31,7 +31,6 @@ headline_metric: 10,000+ pull requests reviewed per week across 56 repositories
 architecture:
   harness: Three architecture versions; emphasis on attention and grounded, high-confidence findings rather than
     commenting everywhere
-  model: Not specified
   interfaces:
   - github
   tool_access: Reviews Go, iOS, Android, web, infrastructure, and data code
@@ -72,8 +71,6 @@ evidence:
   headline_metric:
   - locator: Preserved content.md, lines 23
   architecture.harness:
-  - source_id: doordash-code-review-source-1
-  architecture.model:
   - source_id: doordash-code-review-source-1
   architecture.tool_access:
   - source_id: doordash-code-review-source-1
@@ -151,12 +148,13 @@ page_content:
     purpose: {state: reported, claim_paths: [summary]}
     workflow: {state: reported, claim_paths: [primitives.1, primitives.2, primitives.3, primitives.5]}
     human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.5]}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.model, architecture.tool_access, architecture.knowledge, architecture.interfaces]}
+    implementation: {state: reported, claim_paths: [architecture.harness, architecture.tool_access, architecture.knowledge, architecture.interfaces]}
     validation: {state: reported, claim_paths: [primitives.4, primitives.6]}
     observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1, key_metrics.2, key_metrics.3]}
     lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1]}
   implementation_fields:
-    model: {state: unreported, claim_paths: [], note: The legacy placeholder is retained in research details; the source says the design is model-agnostic but names no current model.}
+    model: {state: unreported, claim_paths: [], note: 'The source says the design is model-agnostic but names
+      no current model.'}
     harness: {state: reported, claim_paths: [architecture.harness]}
     sandbox: {state: unreported, claim_paths: [], note: "The remote VM is documented, but its isolation guarantees are not."}
     tool_access: {state: reported, claim_paths: [architecture.tool_access]}

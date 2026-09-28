@@ -602,7 +602,7 @@
           "sandbox": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The post names Claude Managed Agents as the runtime but no execution isolation boundary; the legacy unknown claim stays in the research details."
+            "note": "The post names Claude Managed Agents as the runtime but no execution isolation boundary."
           },
           "tool_access": {
             "state": "reported",
@@ -666,7 +666,6 @@
       "claim_ids": [
         "amplitude-design-agent--summary",
         "amplitude-design-agent--headline-metric",
-        "amplitude-design-agent--architecture-sandbox",
         "amplitude-design-agent--architecture-harness",
         "amplitude-design-agent--architecture-model",
         "amplitude-design-agent--architecture-interfaces",
@@ -1247,8 +1246,7 @@
           },
           "sandbox": {
             "state": "unreported",
-            "claim_paths": [],
-            "note": "No capture documents an execution or isolation boundary; the legacy unknown claim stays in research details."
+            "claim_paths": []
           },
           "tool_access": {
             "state": "reported",
@@ -1316,9 +1314,7 @@
       "claim_ids": [
         "block-builderbot--summary",
         "block-builderbot--headline-metric",
-        "block-builderbot--architecture-sandbox",
         "block-builderbot--architecture-harness",
-        "block-builderbot--architecture-model",
         "block-builderbot--architecture-interfaces",
         "block-builderbot--architecture-tool-access",
         "block-builderbot--architecture-knowledge",
@@ -1761,7 +1757,7 @@
           "model": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "Deployed-agent models are not documented; multi-model testing is build time. The placeholder claim stays in research details."
+            "note": "Deployed-agent models are not documented; the platform provides multi-model testing and evaluation at build time."
           },
           "harness": {
             "state": "reported",
@@ -1849,7 +1845,6 @@
         "brex-agent-platform--headline-metric",
         "brex-agent-platform--architecture-sandbox",
         "brex-agent-platform--architecture-harness",
-        "brex-agent-platform--architecture-model",
         "brex-agent-platform--architecture-interfaces",
         "brex-agent-platform--architecture-tool-access",
         "brex-agent-platform--architecture-knowledge",
@@ -2645,7 +2640,6 @@
             "claim_paths": [
               "architecture.harness",
               "architecture.model",
-              "architecture.sandbox",
               "architecture.tool_access",
               "architecture.knowledge",
               "architecture.context_mgmt",
@@ -2691,7 +2685,7 @@
           "sandbox": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The old worktree claim concerns Mux and is retained in research details; Forge sandbox implementation is unreported."
+            "note": "The sources describe separate git worktrees, branches, and terminals for concurrent agents in Mux, a separate platform; they do not establish this as the Forge execution environment."
           },
           "tool_access": {
             "state": "reported",
@@ -2771,7 +2765,6 @@
       "claim_ids": [
         "coinbase-forge-mux--summary",
         "coinbase-forge-mux--headline-metric",
-        "coinbase-forge-mux--architecture-sandbox",
         "coinbase-forge-mux--architecture-harness",
         "coinbase-forge-mux--architecture-model",
         "coinbase-forge-mux--architecture-interfaces",
@@ -3095,7 +3088,7 @@
           "sandbox": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The codebase is described as available locally and a cloud agent opens docs pull requests, but no execution isolation boundary is described for either; the legacy unknown claim stays in research details."
+            "note": "The post says the codebase is available locally and a cloud agent opens docs pull requests, but describes no execution isolation boundary for either."
           },
           "tool_access": {
             "state": "reported",
@@ -3165,7 +3158,6 @@
       "claim_ids": [
         "cursor-support-workflow--summary",
         "cursor-support-workflow--headline-metric",
-        "cursor-support-workflow--architecture-sandbox",
         "cursor-support-workflow--architecture-harness",
         "cursor-support-workflow--architecture-interfaces",
         "cursor-support-workflow--architecture-tool-access",
@@ -3331,7 +3323,7 @@
           "interfaces": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The interfaces list is empty; captures name harnesses only as benchmark evaluation subjects, not as surfaces of the internal agents."
+            "note": "The captures name harnesses only as benchmark evaluation subjects, not as surfaces of the internal agents."
           }
         },
         "primitive_roles": {
@@ -3497,7 +3489,7 @@
           "sandbox": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The post names Akai as the host platform but documents no execution isolation boundary; the legacy unknown claim stays in research details."
+            "note": "The post names Akai as the host platform but documents no execution isolation boundary."
           },
           "tool_access": {
             "state": "reported",
@@ -3563,7 +3555,6 @@
       "claim_ids": [
         "deel-payroll-incident-agents--summary",
         "deel-payroll-incident-agents--headline-metric",
-        "deel-payroll-incident-agents--architecture-sandbox",
         "deel-payroll-incident-agents--architecture-harness",
         "deel-payroll-incident-agents--architecture-interfaces",
         "deel-payroll-incident-agents--architecture-tool-access",
@@ -3874,7 +3865,6 @@
             "state": "reported",
             "claim_paths": [
               "architecture.harness",
-              "architecture.model",
               "architecture.tool_access",
               "architecture.knowledge",
               "architecture.interfaces"
@@ -3909,7 +3899,7 @@
           "model": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The legacy placeholder is retained in research details; the source says the design is model-agnostic but names no current model."
+            "note": "The source says the design is model-agnostic but names no current model."
           },
           "harness": {
             "state": "reported",
@@ -3991,7 +3981,6 @@
         "doordash-code-review--summary",
         "doordash-code-review--headline-metric",
         "doordash-code-review--architecture-harness",
-        "doordash-code-review--architecture-model",
         "doordash-code-review--architecture-interfaces",
         "doordash-code-review--architecture-tool-access",
         "doordash-code-review--architecture-knowledge",
@@ -4429,7 +4418,7 @@
           "model": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "No model or provider is named for either platform. The modular-primitives design claim stays in research details."
+            "note": "No model or provider is named for either platform. The sources describe modular primitives that allow the best third-party tool or an in-house build for each job, with multiple supported coding agent harnesses."
           },
           "harness": {
             "state": "reported",
@@ -4517,7 +4506,6 @@
         "doordash-flux--headline-metric",
         "doordash-flux--architecture-sandbox",
         "doordash-flux--architecture-harness",
-        "doordash-flux--architecture-model",
         "doordash-flux--architecture-interfaces",
         "doordash-flux--architecture-tool-access",
         "doordash-flux--architecture-knowledge",
@@ -4852,7 +4840,7 @@
           "credentials": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The capture states agents operate within existing infrastructure and validation paths but names no authentication or authorization mechanism; the legacy same-as-engineers claim stays in research details."
+            "note": "The capture states that agents operate within existing infrastructure and validation paths but names no authentication or authorization mechanism."
           },
           "interfaces": {
             "state": "reported",
@@ -4902,7 +4890,6 @@
         "dropbox-nova--architecture-interfaces",
         "dropbox-nova--architecture-tool-access",
         "dropbox-nova--architecture-knowledge",
-        "dropbox-nova--architecture-credentials",
         "dropbox-nova--architecture-context-mgmt",
         "dropbox-nova--primitives-0",
         "dropbox-nova--primitives-1",
@@ -5048,7 +5035,7 @@
           "sandbox": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "No execution isolation is described. The unknown placeholder stays in research details; the Docker-in-Docker blocker names a constraint, not the environment a workflow runs in."
+            "note": "No execution isolation is described; the Docker-in-Docker blocker names a constraint, not the environment a workflow runs in."
           },
           "tool_access": {
             "state": "reported",
@@ -5107,7 +5094,6 @@
       "catalog_section": "infrastructure",
       "claim_ids": [
         "duolingo-agentic-workflows--summary",
-        "duolingo-agentic-workflows--architecture-sandbox",
         "duolingo-agentic-workflows--architecture-harness",
         "duolingo-agentic-workflows--architecture-interfaces",
         "duolingo-agentic-workflows--architecture-tool-access",
@@ -5288,7 +5274,7 @@
           "sandbox": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "Tines runs the agent loops and the sub-agent executes SQL against Snowflake, but no execution isolation boundary is described; the legacy unknown claim stays in research details."
+            "note": "Tines runs the agent loops and the sub-agent executes SQL against Snowflake, but no execution isolation boundary is described."
           },
           "tool_access": {
             "state": "reported",
@@ -5372,7 +5358,6 @@
       "claim_ids": [
         "figma-security-agent--summary",
         "figma-security-agent--headline-metric",
-        "figma-security-agent--architecture-sandbox",
         "figma-security-agent--architecture-harness",
         "figma-security-agent--architecture-model",
         "figma-security-agent--architecture-interfaces",
@@ -5526,7 +5511,7 @@
           "sandbox": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The capture names the Modal serverless runtime but no execution isolation boundary; the legacy unknown claim stays in research details."
+            "note": "The capture names the Modal serverless runtime but no execution isolation boundary."
           },
           "tool_access": {
             "state": "reported",
@@ -5577,7 +5562,6 @@
       "catalog_section": "agents",
       "claim_ids": [
         "flex-investigation-agent--summary",
-        "flex-investigation-agent--architecture-sandbox",
         "flex-investigation-agent--architecture-harness",
         "flex-investigation-agent--architecture-model",
         "flex-investigation-agent--architecture-interfaces",
@@ -6052,7 +6036,7 @@
           "model": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The post names providers and multi-provider support but no model; the placeholder claim stays in research details."
+            "note": "The post describes provider adapters and multi-provider support but names no model."
           },
           "harness": {
             "state": "reported",
@@ -6113,7 +6097,6 @@
         "harvey-spectre--summary",
         "harvey-spectre--architecture-sandbox",
         "harvey-spectre--architecture-harness",
-        "harvey-spectre--architecture-model",
         "harvey-spectre--architecture-interfaces",
         "harvey-spectre--architecture-tool-access",
         "harvey-spectre--architecture-credentials",
@@ -6309,7 +6292,6 @@
         "hubspot-sidekick--summary",
         "hubspot-sidekick--headline-metric",
         "hubspot-sidekick--architecture-harness",
-        "hubspot-sidekick--architecture-sandbox",
         "hubspot-sidekick--architecture-tool-access",
         "hubspot-sidekick--architecture-interfaces",
         "hubspot-sidekick--architecture-knowledge",
@@ -6458,7 +6440,7 @@
           "sandbox": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The captures describe a custom owned stack but no execution or isolation boundary; the placeholder claim stays in research details."
+            "note": "The captures describe a custom owned stack but no execution or isolation boundary."
           },
           "tool_access": {
             "state": "reported",
@@ -6511,7 +6493,6 @@
       "catalog_section": "agents",
       "claim_ids": [
         "linear-agent--summary",
-        "linear-agent--architecture-sandbox",
         "linear-agent--architecture-harness",
         "linear-agent--architecture-model",
         "linear-agent--architecture-interfaces",
@@ -6669,7 +6650,7 @@
           "sandbox": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The post names Meta internal job schedulers, a codebase restriction, and access controls granted by preflight checklist review, but no execution isolation boundary; the legacy unknown claim stays in research details."
+            "note": "The post names Meta internal job schedulers, a codebase restriction, and access controls granted by preflight checklist review, but no execution isolation boundary."
           },
           "tool_access": {
             "state": "reported",
@@ -6732,7 +6713,6 @@
       "claim_ids": [
         "meta-rea--summary",
         "meta-rea--headline-metric",
-        "meta-rea--architecture-sandbox",
         "meta-rea--architecture-harness",
         "meta-rea--architecture-tool-access",
         "meta-rea--architecture-knowledge",
@@ -6882,7 +6862,7 @@
           "interfaces": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The source says the existing PR workflow but does not establish a specific hosting interface."
+            "note": "The source names the existing PR workflow but does not establish a specific hosting interface."
           }
         },
         "primitive_roles": {
@@ -7911,9 +7891,7 @@
       "claim_ids": [
         "openai-software-factory--summary",
         "openai-software-factory--headline-metric",
-        "openai-software-factory--architecture-sandbox",
         "openai-software-factory--architecture-harness",
-        "openai-software-factory--architecture-model",
         "openai-software-factory--architecture-interfaces",
         "openai-software-factory--architecture-tool-access",
         "openai-software-factory--architecture-knowledge",
@@ -8052,8 +8030,7 @@
         "implementation_fields": {
           "model": {
             "state": "unreported",
-            "claim_paths": [],
-            "note": "The article names no underlying model for Sevbot; the legacy unknown placeholder stays in research details."
+            "claim_paths": []
           },
           "harness": {
             "state": "reported",
@@ -8063,8 +8040,7 @@
           },
           "sandbox": {
             "state": "unreported",
-            "claim_paths": [],
-            "note": "The article describes no execution or isolation boundary; the legacy unknown placeholder stays in research details."
+            "claim_paths": []
           },
           "tool_access": {
             "state": "unreported",
@@ -8102,9 +8078,7 @@
       "catalog_section": "agents",
       "claim_ids": [
         "openai-sevbot--summary",
-        "openai-sevbot--architecture-sandbox",
         "openai-sevbot--architecture-harness",
-        "openai-sevbot--architecture-model",
         "openai-sevbot--architecture-interfaces",
         "openai-sevbot--primitives-0",
         "openai-sevbot--primitives-1",
@@ -9235,8 +9209,7 @@
         "implementation_fields": {
           "model": {
             "state": "unreported",
-            "claim_paths": [],
-            "note": "The capture names no model; the placeholder claim stays in research details."
+            "claim_paths": []
           },
           "harness": {
             "state": "reported",
@@ -9323,7 +9296,6 @@
         "replit-manager-agent--headline-metric",
         "replit-manager-agent--architecture-sandbox",
         "replit-manager-agent--architecture-harness",
-        "replit-manager-agent--architecture-model",
         "replit-manager-agent--architecture-interfaces",
         "replit-manager-agent--architecture-tool-access",
         "replit-manager-agent--architecture-context-mgmt",
@@ -10283,7 +10255,7 @@
           "sandbox": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The reviewed sources document WriteFile security restrictions and configurable Cmd restrictions, not an execution or isolation boundary; the unknown claim stays in research details."
+            "note": "The reviewed sources document WriteFile security restrictions and configurable Cmd restrictions, not an execution or isolation boundary."
           },
           "tool_access": {
             "state": "reported",
@@ -10349,7 +10321,6 @@
       "catalog_section": "infrastructure",
       "claim_ids": [
         "shopify-roast--summary",
-        "shopify-roast--architecture-sandbox",
         "shopify-roast--architecture-harness",
         "shopify-roast--architecture-model",
         "shopify-roast--architecture-tool-access",
@@ -10792,7 +10763,6 @@
         "slack-context-system--summary",
         "slack-context-system--headline-metric",
         "slack-context-system--architecture-harness",
-        "slack-context-system--architecture-model",
         "slack-context-system--architecture-tool-access",
         "slack-context-system--architecture-context-mgmt",
         "slack-context-system--primitives-0",
@@ -11198,7 +11168,7 @@
           "sandbox": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The article documents in-memory, no-clone repository access through the GitHub Enterprise API but no execution or isolation boundary; the unknown claim stays in the research details."
+            "note": "The article documents in-memory, no-clone repository access through the GitHub Enterprise API but no execution or isolation boundary."
           },
           "tool_access": {
             "state": "reported",
@@ -11308,7 +11278,6 @@
       "claim_ids": [
         "snap-codepal--summary",
         "snap-codepal--headline-metric",
-        "snap-codepal--architecture-sandbox",
         "snap-codepal--architecture-harness",
         "snap-codepal--architecture-interfaces",
         "snap-codepal--architecture-tool-access",
@@ -11465,9 +11434,11 @@
             ]
           },
           "sandbox": {
-            "state": "unreported",
-            "claim_paths": [],
-            "note": "Kubernetes pods and containerized jobs are documented as the execution environment (Honk Part 1 line 26; Code with Claude line 56) but the isolation boundary is not stated; sandboxing is named as an open challenge (Honk Part 1 line 101)."
+            "state": "reported",
+            "claim_paths": [
+              "architecture.sandbox"
+            ],
+            "note": "The isolation boundary inside the pods and containers is not stated; sandboxing is named as an open challenge (Honk Part 1 line 101)."
           },
           "tool_access": {
             "state": "reported",
@@ -11677,8 +11648,7 @@
         "implementation_fields": {
           "model": {
             "state": "unreported",
-            "claim_paths": [],
-            "note": "Neither part names a model; the legacy Not-specified claim stays in research details."
+            "claim_paths": []
           },
           "harness": {
             "state": "reported",
@@ -11752,7 +11722,6 @@
         "stripe-minions--headline-metric",
         "stripe-minions--architecture-sandbox",
         "stripe-minions--architecture-harness",
-        "stripe-minions--architecture-model",
         "stripe-minions--architecture-interfaces",
         "stripe-minions--architecture-tool-access",
         "stripe-minions--architecture-knowledge",
@@ -11904,8 +11873,7 @@
           },
           "sandbox": {
             "state": "unreported",
-            "claim_paths": [],
-            "note": "No execution or isolation boundary is documented; the legacy unknown claim stays in research details."
+            "claim_paths": []
           },
           "tool_access": {
             "state": "reported",
@@ -11954,7 +11922,6 @@
       "catalog_section": "agents",
       "claim_ids": [
         "strongdm-software-factory--summary",
-        "strongdm-software-factory--architecture-sandbox",
         "strongdm-software-factory--architecture-harness",
         "strongdm-software-factory--architecture-model",
         "strongdm-software-factory--architecture-tool-access",
@@ -12050,8 +12017,7 @@
           },
           "implementation": {
             "state": "unreported",
-            "claim_paths": [],
-            "note": "The capture names no model, harness, tools, or interfaces; the sandbox and harness claims in research details are placeholders."
+            "claim_paths": []
           },
           "validation": {
             "state": "reported",
@@ -12084,13 +12050,11 @@
           },
           "harness": {
             "state": "unreported",
-            "claim_paths": [],
-            "note": "No execution environment is described; the placeholder claim stays in research details."
+            "claim_paths": []
           },
           "sandbox": {
             "state": "unreported",
-            "claim_paths": [],
-            "note": "No isolation boundary is described; the unknown claim stays in research details."
+            "claim_paths": []
           },
           "tool_access": {
             "state": "unreported",
@@ -12140,8 +12104,6 @@
       "claim_ids": [
         "uber-coding-agent--summary",
         "uber-coding-agent--headline-metric",
-        "uber-coding-agent--architecture-sandbox",
-        "uber-coding-agent--architecture-harness",
         "uber-coding-agent--primitives-0",
         "uber-coding-agent--primitives-1",
         "uber-coding-agent--primitives-2",
@@ -12493,7 +12455,7 @@
           "model": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "No source names the underlying model; the harness is the swappable layer, and the placeholder claim stays in research details."
+            "note": "No source names the underlying model; the harness is the swappable layer (OpenCode in the core article, Claude Remote Routines in the showcase)."
           },
           "harness": {
             "state": "reported",
@@ -12557,7 +12519,6 @@
         "workos-project-horizon--summary",
         "workos-project-horizon--architecture-sandbox",
         "workos-project-horizon--architecture-harness",
-        "workos-project-horizon--architecture-model",
         "workos-project-horizon--architecture-interfaces",
         "workos-project-horizon--architecture-tool-access",
         "workos-project-horizon--architecture-knowledge",
@@ -12696,8 +12657,7 @@
           },
           "sandbox": {
             "state": "unreported",
-            "claim_paths": [],
-            "note": "The legacy unknown placeholder is retained in research details; isolation is not documented."
+            "claim_paths": []
           },
           "tool_access": {
             "state": "reported",
@@ -12741,7 +12701,6 @@
       "catalog_section": "infrastructure",
       "claim_ids": [
         "ycombinator-agent-infra--summary",
-        "ycombinator-agent-infra--architecture-sandbox",
         "ycombinator-agent-infra--architecture-harness",
         "ycombinator-agent-infra--architecture-tool-access",
         "ycombinator-agent-infra--architecture-interfaces",
@@ -12996,7 +12955,7 @@
           "model": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "The abstract names no model and argues the surrounding engineering matters more; the legacy placeholder claim stays in research details."
+            "note": "The abstract names no model and argues that the surrounding engineering matters more."
           },
           "harness": {
             "state": "reported",
@@ -13026,7 +12985,7 @@
           "credentials": {
             "state": "unreported",
             "claim_paths": [],
-            "note": "Layered safety guardrails are safety enforcement, not credential handling; the existing claim keeps its place in research details."
+            "note": "The paper names layered safety guardrails, which are safety enforcement, not credential handling."
           },
           "interfaces": {
             "state": "unreported",
@@ -13045,9 +13004,7 @@
       "claim_ids": [
         "zup-codegen--summary",
         "zup-codegen--architecture-harness",
-        "zup-codegen--architecture-model",
         "zup-codegen--architecture-tool-access",
-        "zup-codegen--architecture-credentials",
         "zup-codegen--primitives-0",
         "zup-codegen--primitives-1",
         "zup-codegen--lessons-learned-0",
@@ -13645,24 +13602,6 @@
       "metric_scope": "Design Agent session snapshots across Amplitude teams in the first few weeks of use, as reported in the May 2026 post",
       "denominator": "None reported; the post gives no user, team, or session total to divide by",
       "measurement_method": "Amplitude product analytics instrumented on Design Agent, which the post says tracks every session, output, and tool call"
-    },
-    {
-      "id": "amplitude-design-agent--architecture-sandbox",
-      "approach_id": "amplitude-design-agent",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The post says Claude Managed Agents handles execution behind the scenes but names no execution isolation boundary for the agent's work; unknown records the gap, not an absent sandbox.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "amplitude-design-agent-source-1",
-          "relation": "supports",
-          "locator": "Preserved content.md, lines 28, 81"
-        }
-      ]
     },
     {
       "id": "amplitude-design-agent--architecture-harness",
@@ -14905,44 +14844,10 @@
       "denominator": "All production code changes across Block for the approximately 15% share"
     },
     {
-      "id": "block-builderbot--architecture-sandbox",
-      "approach_id": "block-builderbot",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The preserved sources do not document an execution sandbox; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "block-builderbot-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
       "id": "block-builderbot--architecture-harness",
       "approach_id": "block-builderbot",
       "field": "architecture.harness",
       "text": "Multi-agent orchestration built on goose (open-source agent framework) + MCP; multi-player, real-time, operating inside Slack threads",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "high",
-      "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "block-builderbot-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
-      "id": "block-builderbot--architecture-model",
-      "approach_id": "block-builderbot",
-      "field": "architecture.model",
-      "text": "goose framework; model not specified",
       "kind": "fact",
       "provenance": "reported",
       "confidence": "high",
@@ -15557,23 +15462,6 @@
       "approach_id": "brex-agent-platform",
       "field": "architecture.harness",
       "text": "Retool-based builder with prompt management and multi-model testing/evaluation; built by a ~25-person systems-engineering team",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "medium",
-      "confidence_reason": "A linked participant or independent source reports the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "brex-agent-platform-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
-      "id": "brex-agent-platform--architecture-model",
-      "approach_id": "brex-agent-platform",
-      "field": "architecture.model",
-      "text": "Not documented for deployed agents; the platform provides multi-model testing and evaluation at build time",
       "kind": "fact",
       "provenance": "reported",
       "confidence": "medium",
@@ -16904,23 +16792,6 @@
       "denominator": "All PRs merged; the scope beyond engineering is not documented in the preserved capture"
     },
     {
-      "id": "coinbase-forge-mux--architecture-sandbox",
-      "approach_id": "coinbase-forge-mux",
-      "field": "architecture.sandbox",
-      "text": "Separate Mux platform context: concurrent agents receive separate git worktrees, branches and terminals. The sources do not establish this as Forge’s execution environment.",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "high",
-      "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "coinbase-forge-mux-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
       "id": "coinbase-forge-mux--architecture-harness",
       "approach_id": "coinbase-forge-mux",
       "field": "architecture.harness",
@@ -17583,24 +17454,6 @@
       ],
       "reported_by": "Cursor",
       "metric_scope": "Cursor support interactions and support engineer throughput, as stated in March 2026"
-    },
-    {
-      "id": "cursor-support-workflow--architecture-sandbox",
-      "approach_id": "cursor-support-workflow",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The post says the full codebase is available locally and that a cloud agent opens docs pull requests, but documents no execution isolation boundary for either; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "cursor-support-workflow-source-1",
-          "relation": "supports",
-          "locator": "Preserved content.md, lines 16, 53"
-        }
-      ]
     },
     {
       "id": "cursor-support-workflow--architecture-harness",
@@ -18312,24 +18165,6 @@
       "value": 900,
       "unit": "engineering hours per year",
       "metric_scope": "Engineering hours Deel reports it no longer spends investigating failed US PEO payroll syncs"
-    },
-    {
-      "id": "deel-payroll-incident-agents--architecture-sandbox",
-      "approach_id": "deel-payroll-incident-agents",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The post names Akai as the platform the pipeline runs on but documents no execution isolation boundary; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "deel-payroll-incident-agents-source-1",
-          "relation": "supports",
-          "locator": "Preserved content.md, lines 46, 85-91"
-        }
-      ]
     },
     {
       "id": "deel-payroll-incident-agents--architecture-harness",
@@ -19096,23 +18931,6 @@
       ]
     },
     {
-      "id": "doordash-code-review--architecture-model",
-      "approach_id": "doordash-code-review",
-      "field": "architecture.model",
-      "text": "Not specified",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "high",
-      "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "doordash-code-review-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
       "id": "doordash-code-review--architecture-interfaces",
       "approach_id": "doordash-code-review",
       "field": "architecture.interfaces",
@@ -19800,23 +19618,6 @@
       ]
     },
     {
-      "id": "doordash-flux--architecture-model",
-      "approach_id": "doordash-flux",
-      "field": "architecture.model",
-      "text": "Sources name no model or provider; the documented primitives are modular, allowing the best third-party tool for each job or in-house builds, with multiple supported coding agent harnesses",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "high",
-      "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "doordash-flux-source-3",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
       "id": "doordash-flux--architecture-interfaces",
       "approach_id": "doordash-flux",
       "field": "architecture.interfaces",
@@ -20492,23 +20293,6 @@
       ]
     },
     {
-      "id": "dropbox-nova--architecture-credentials",
-      "approach_id": "dropbox-nova",
-      "field": "architecture.credentials",
-      "text": "Operates within Dropbox's existing infra and validation paths; same auth/authz as engineers",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "high",
-      "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "dropbox-nova-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
       "id": "dropbox-nova--architecture-context-mgmt",
       "approach_id": "dropbox-nova",
       "field": "architecture.context_mgmt",
@@ -20827,24 +20611,6 @@
           "source_id": "duolingo-agentic-workflows-source-1",
           "relation": "supports",
           "locator": "Preserved content.md, lines 10, 36, 52-58"
-        }
-      ]
-    },
-    {
-      "id": "duolingo-agentic-workflows--architecture-sandbox",
-      "approach_id": "duolingo-agentic-workflows",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "low",
-      "confidence_reason": "Only community or aggregate evidence supports the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "duolingo-agentic-workflows-source-1",
-          "relation": "contextualizes",
-          "locator": "Preserved content.md, line 102 (Docker in Docker on Temporal named as a blocker, with no execution environment described)"
         }
       ]
     },
@@ -21261,24 +21027,6 @@
       ],
       "reported_by": "Figma",
       "metric_scope": "Time-to-resolution on complex security alerts handled by the agent system"
-    },
-    {
-      "id": "figma-security-agent--architecture-sandbox",
-      "approach_id": "figma-security-agent",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The post places the agent loops in Tines and has the sub-agent execute SQL against Snowflake, but documents no execution isolation boundary for agent-run code; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "figma-security-agent-source-1",
-          "relation": "supports",
-          "locator": "Preserved content.md, lines 100, 121"
-        }
-      ]
     },
     {
       "id": "figma-security-agent--architecture-harness",
@@ -21884,23 +21632,6 @@
       "provenance": "reported",
       "confidence": "high",
       "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "flex-investigation-agent-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
-      "id": "flex-investigation-agent--architecture-sandbox",
-      "approach_id": "flex-investigation-agent",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The preserved sources do not document an execution sandbox; unknown does not mean absent.",
       "valid_at": null,
       "evidence": [
         {
@@ -22691,23 +22422,6 @@
       ]
     },
     {
-      "id": "harvey-spectre--architecture-model",
-      "approach_id": "harvey-spectre",
-      "field": "architecture.model",
-      "text": "Not specified",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "high",
-      "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "harvey-spectre-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
       "id": "harvey-spectre--architecture-interfaces",
       "approach_id": "harvey-spectre",
       "field": "architecture.interfaces",
@@ -23022,24 +22736,6 @@
       ]
     },
     {
-      "id": "hubspot-sidekick--architecture-sandbox",
-      "approach_id": "hubspot-sidekick",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "Current review runs on Aviator; its execution isolation is not specified. Crucible Kubernetes workloads describe the predecessor implementation.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "hubspot-sidekick-source-1",
-          "relation": "supports",
-          "locator": "Preserved content.md, lines 39–45"
-        }
-      ]
-    },
-    {
       "id": "hubspot-sidekick--architecture-tool-access",
       "approach_id": "hubspot-sidekick",
       "field": "architecture.tool_access",
@@ -23291,23 +22987,6 @@
         },
         {
           "source_id": "linear-agent-source-6",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
-      "id": "linear-agent--architecture-sandbox",
-      "approach_id": "linear-agent",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The preserved sources do not document an execution sandbox; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "linear-agent-source-1",
           "relation": "supports"
         }
       ]
@@ -23731,24 +23410,6 @@
       "metric_scope": "Average model accuracy of REA-driven iterations in the first production validation",
       "denominator": "A set of six ads ranking models",
       "measurement_method": "Comparison of REA-driven iterations against baseline approaches; the accuracy measure is not defined"
-    },
-    {
-      "id": "meta-rea--architecture-sandbox",
-      "approach_id": "meta-rea",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The post names Meta internal job schedulers, access controls granted by preflight checklist review, and a codebase restriction, but no execution isolation boundary for the agent; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "meta-rea-source-1",
-          "relation": "supports",
-          "locator": "Preserved content.md, lines 49, 72"
-        }
-      ]
     },
     {
       "id": "meta-rea--architecture-harness",
@@ -25553,24 +25214,6 @@
       "measurement_method": "Internal token-usage tracking by department, chart sourced to OpenAI"
     },
     {
-      "id": "openai-software-factory--architecture-sandbox",
-      "approach_id": "openai-software-factory",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The article does not document an execution sandbox; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "openai-factory-article",
-          "relation": "supports",
-          "locator": "Preserved content.md, lines 138-186 describe the pipeline without documenting an execution sandbox"
-        }
-      ]
-    },
-    {
       "id": "openai-software-factory--architecture-harness",
       "approach_id": "openai-software-factory",
       "field": "architecture.harness",
@@ -25595,24 +25238,6 @@
           "source_id": "hn-zbrock-internal-prototype",
           "relation": "supports",
           "locator": "Preserved content.md, line 12 (harness-engineering co-author: 'It was an internal prototype that looked very much like the current Codex app')"
-        }
-      ]
-    },
-    {
-      "id": "openai-software-factory--architecture-model",
-      "approach_id": "openai-software-factory",
-      "field": "architecture.model",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The article names no underlying models for the internal harness; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "openai-factory-article",
-          "relation": "supports",
-          "locator": "The preserved article names no underlying models for the internal Codex harness"
         }
       ]
     },
@@ -26041,24 +25666,6 @@
       ]
     },
     {
-      "id": "openai-sevbot--architecture-sandbox",
-      "approach_id": "openai-sevbot",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The article does not document an execution sandbox; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "openai-sevbot-article",
-          "relation": "supports",
-          "locator": "Preserved content.md, lines 188-195 describe Sevbot without documenting an execution sandbox"
-        }
-      ]
-    },
-    {
       "id": "openai-sevbot--architecture-harness",
       "approach_id": "openai-sevbot",
       "field": "architecture.harness",
@@ -26073,24 +25680,6 @@
           "source_id": "openai-sevbot-article",
           "relation": "supports",
           "locator": "Preserved content.md, line 188 (Sevbot is built on top of Codex)"
-        }
-      ]
-    },
-    {
-      "id": "openai-sevbot--architecture-model",
-      "approach_id": "openai-sevbot",
-      "field": "architecture.model",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The article names no underlying models; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "openai-sevbot-article",
-          "relation": "supports",
-          "locator": "The preserved article names no underlying models for Sevbot"
         }
       ]
     },
@@ -27906,23 +27495,6 @@
       ]
     },
     {
-      "id": "replit-manager-agent--architecture-model",
-      "approach_id": "replit-manager-agent",
-      "field": "architecture.model",
-      "text": "Not specified",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "high",
-      "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "replit-manager-agent-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
       "id": "replit-manager-agent--architecture-interfaces",
       "approach_id": "replit-manager-agent",
       "field": "architecture.interfaces",
@@ -29661,24 +29233,6 @@
       ]
     },
     {
-      "id": "shopify-roast--architecture-sandbox",
-      "approach_id": "shopify-roast",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The reviewed sources describe WriteFile security restrictions and configurable Cmd restrictions but no execution or isolation boundary; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "shopify-roast-source-1",
-          "relation": "supports",
-          "locator": "Preserved content.md, lines 70-77: the tool list names file and command restrictions, not an execution boundary"
-        }
-      ]
-    },
-    {
       "id": "shopify-roast--architecture-harness",
       "approach_id": "shopify-roast",
       "field": "architecture.harness",
@@ -30712,27 +30266,6 @@
       ]
     },
     {
-      "id": "slack-context-system--architecture-model",
-      "approach_id": "slack-context-system",
-      "field": "architecture.model",
-      "text": "Not specified",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "high",
-      "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "slack-context-system-source-1",
-          "relation": "supports"
-        },
-        {
-          "source_id": "slack-context-system-source-2",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
       "id": "slack-context-system--architecture-tool-access",
       "approach_id": "slack-context-system",
       "field": "architecture.tool_access",
@@ -31086,7 +30619,7 @@
       "id": "snap-casper--architecture-model",
       "approach_id": "snap-casper",
       "field": "architecture.model",
-      "text": "Not named. A Casper Agent Template picks the model that balances quality, speed, and cost and attributes usage to a team; Snap names model-family independence as a build requirement.",
+      "text": "A Casper Agent Template picks the model that balances quality, speed, and cost and attributes usage to a team; Snap names model-family independence as a build requirement.",
       "kind": "fact",
       "provenance": "reported",
       "confidence": "high",
@@ -31622,24 +31155,6 @@
       "reported_by": "Snap",
       "metric_scope": "CodePal reviews over the last 4 months before publication; the source dates the window relatively and gives no calendar range",
       "denominator": "90% of all pull requests at Snap"
-    },
-    {
-      "id": "snap-codepal--architecture-sandbox",
-      "approach_id": "snap-codepal",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The article documents in-memory, no-clone repository access but no execution or isolation boundary; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "snap-codepal-source-1",
-          "relation": "contextualizes",
-          "locator": "Preserved content.md, lines 64-68: in-memory, no-clone repository access, with no execution or isolation boundary described"
-        }
-      ]
     },
     {
       "id": "snap-codepal--architecture-harness",
@@ -32878,23 +32393,6 @@
       ]
     },
     {
-      "id": "stripe-minions--architecture-model",
-      "approach_id": "stripe-minions",
-      "field": "architecture.model",
-      "text": "Not specified",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "high",
-      "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "stripe-minions-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
       "id": "stripe-minions--architecture-interfaces",
       "approach_id": "stripe-minions",
       "field": "architecture.interfaces",
@@ -33241,24 +32739,6 @@
           "source_id": "strongdm-factory-techniques",
           "relation": "supports",
           "locator": "Validation constraint: zero hand-written code and zero traditional review"
-        }
-      ]
-    },
-    {
-      "id": "strongdm-software-factory--architecture-sandbox",
-      "approach_id": "strongdm-software-factory",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The preserved sources do not document an execution sandbox; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "strongdm-factory-overview",
-          "relation": "supports",
-          "locator": "The overview describes the workflow end to end without documenting an execution sandbox"
         }
       ]
     },
@@ -33666,40 +33146,6 @@
       "reported_by": "Uber",
       "metric_scope": "Code changes written entirely by the internal coding agent and human reviewed",
       "denominator": "All Uber code changes for the reported 8% share"
-    },
-    {
-      "id": "uber-coding-agent--architecture-sandbox",
-      "approach_id": "uber-coding-agent",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The preserved sources do not document an execution sandbox; unknown does not mean absent.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "uber-coding-agent-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
-      "id": "uber-coding-agent--architecture-harness",
-      "approach_id": "uber-coding-agent",
-      "field": "architecture.harness",
-      "text": "Not specified publicly",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "medium",
-      "confidence_reason": "Only limited public evidence supports this claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "uber-coding-agent-source-1",
-          "relation": "supports"
-        }
-      ]
     },
     {
       "id": "uber-coding-agent--primitives-0",
@@ -34351,27 +33797,6 @@
       ]
     },
     {
-      "id": "workos-project-horizon--architecture-model",
-      "approach_id": "workos-project-horizon",
-      "field": "architecture.model",
-      "text": "Not documented by name; the harness is the swappable layer (OpenCode in the core article, Claude Remote Routines in the showcase), and no source names the underlying model",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "high",
-      "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "workos-project-horizon-source-1",
-          "relation": "supports"
-        },
-        {
-          "source_id": "workos-project-horizon-source-2",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
       "id": "workos-project-horizon--architecture-interfaces",
       "approach_id": "workos-project-horizon",
       "field": "architecture.interfaces",
@@ -34752,23 +34177,6 @@
       "provenance": "reported",
       "confidence": "low",
       "confidence_reason": "Only limited public evidence supports this claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "ycombinator-agent-infra-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
-      "id": "ycombinator-agent-infra--architecture-sandbox",
-      "approach_id": "ycombinator-agent-infra",
-      "field": "architecture.sandbox",
-      "text": "unknown",
-      "kind": "inference",
-      "provenance": "catalog-judgment",
-      "confidence": "medium",
-      "confidence_reason": "The preserved sources do not document an execution sandbox; unknown does not mean absent.",
       "valid_at": null,
       "evidence": [
         {
@@ -35159,44 +34567,10 @@
       ]
     },
     {
-      "id": "zup-codegen--architecture-model",
-      "approach_id": "zup-codegen",
-      "field": "architecture.model",
-      "text": "Not specified (see paper)",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "high",
-      "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "zup-codegen-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
       "id": "zup-codegen--architecture-tool-access",
       "approach_id": "zup-codegen",
       "field": "architecture.tool_access",
       "text": "Constrained editing tools rather than free-form code generation",
-      "kind": "fact",
-      "provenance": "reported",
-      "confidence": "high",
-      "confidence_reason": "A linked first-party source states the claim.",
-      "valid_at": null,
-      "evidence": [
-        {
-          "source_id": "zup-codegen-source-1",
-          "relation": "supports"
-        }
-      ]
-    },
-    {
-      "id": "zup-codegen--architecture-credentials",
-      "approach_id": "zup-codegen",
-      "field": "architecture.credentials",
-      "text": "Layered safety controls",
       "kind": "fact",
       "provenance": "reported",
       "confidence": "high",

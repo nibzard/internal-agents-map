@@ -26,7 +26,6 @@ summary: Microsoft's internal AI-powered code review assistant, built in close c
   specific lines with suggested edits the author applies. Microsoft says it shaped GitHub's Copilot code review.
 headline_metric: Supports more than 90% of Microsoft PRs, impacting over 600,000 pull requests per month
 architecture:
-  interfaces: []
   knowledge: Repository-specific guidelines and custom review prompts can guide specialized reviews
 primitives:
 - {name: Automatic first review, desc: Creating a pull request can automatically start the assistant as a reviewer}
@@ -135,7 +134,8 @@ page_content:
     knowledge: {state: reported, claim_paths: [architecture.knowledge]}
     context_mgmt: {state: unreported, claim_paths: []}
     credentials: {state: unreported, claim_paths: []}
-    interfaces: {state: unreported, claim_paths: [], note: The source says the existing PR workflow but does not establish a specific hosting interface.}
+    interfaces: {state: unreported, claim_paths: [], note: 'The source names the existing PR workflow but does
+      not establish a specific hosting interface.'}
   primitive_roles: {primitives.0: workflow, primitives.1: workflow, primitives.2: workflow, primitives.3: workflow, primitives.4: workflow}
   observations:
     headline_metric: {category: adoption-output, basis: reported-measurement, subject: Pull requests supported across Microsoft per month}

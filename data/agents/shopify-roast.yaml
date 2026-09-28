@@ -30,7 +30,6 @@ summary: Roast is the workflow orchestration framework Shopify's Augmented Engin
   extracted from its internal AI tools and open-sourced; Shopify runs Roast workflows internally to interleave
   AI steps with deterministic code.
 architecture:
-  sandbox: unknown
   harness: "As released in 2025: a Ruby command-line framework that reads a workflow.yml file and matching markdown
     prompt files, interprets each step from its structure, and can be used with any programming language."
   model: An OpenAI API key is a prerequisite, or OpenRouter for other models; the Raix library abstracts AI providers
@@ -122,10 +121,6 @@ evidence:
   - source_id: shopify-roast-source-1
     locator: 'Preserved content.md, lines 94, 174: the Boba workflow runs deterministic cleanup and autocorrect,
       then the CodingAgent iterates until tests and type checking pass'
-  architecture.sandbox:
-  - source_id: shopify-roast-source-1
-    locator: 'Preserved content.md, lines 70-77: the tool list names file and command restrictions, not an execution
-      boundary'
   architecture.harness:
   - source_id: shopify-roast-source-1
     locator: 'Preserved content.md, lines 16, 26-64: convention-oriented framework, workflow.yml plus prompt files,
@@ -229,12 +224,6 @@ claim_metadata:
       the team pursued unit-test work with minimal human intervention, but it names no point at which a person
       reviews the result.
     valid_at: '2025-06'
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: The reviewed sources describe WriteFile security restrictions and configurable Cmd restrictions
-      but no execution or isolation boundary; unknown does not mean absent.
   architecture.harness:
     kind: fact
     provenance: reported
@@ -358,8 +347,8 @@ page_content:
     sandbox:
       state: unreported
       claim_paths: []
-      note: "The reviewed sources document WriteFile security restrictions and configurable Cmd restrictions, not
-        an execution or isolation boundary; the unknown claim stays in research details."
+      note: 'The reviewed sources document WriteFile security restrictions and configurable Cmd restrictions,
+        not an execution or isolation boundary.'
     tool_access:
       state: reported
       claim_paths:

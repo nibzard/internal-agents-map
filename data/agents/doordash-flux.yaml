@@ -35,8 +35,6 @@ architecture:
   sandbox: Firecracker microVMs; <5s p95 end-to-end setup (boot, clone repos, install tools, configure harness)
   harness: 'Separate analytics AI Marketplace context (not a Flux capability): Maturity model: deterministic workflows
     → ReAct agents → hierarchical deep agents → experimental swarms'
-  model: Sources name no model or provider; the documented primitives are modular, allowing the best third-party
-    tool for each job or in-house builds, with multiple supported coding agent harnesses
   interfaces:
   - slack
   - github
@@ -122,8 +120,6 @@ evidence:
   - source_id: doordash-flux-source-3
   architecture.harness:
   - source_id: doordash-flux-source-2
-  architecture.model:
-  - source_id: doordash-flux-source-3
   architecture.tool_access:
   - source_id: doordash-flux-source-2
   - source_id: doordash-flux-source-3
@@ -297,8 +293,9 @@ page_content:
     model:
       state: unreported
       claim_paths: []
-      note: No model or provider is named for either platform. The modular-primitives design claim stays in research
-        details.
+      note: 'No model or provider is named for either platform. The sources describe modular primitives that
+        allow the best third-party tool or an in-house build for each job, with multiple supported coding
+        agent harnesses.'
     harness:
       state: reported
       claim_paths:

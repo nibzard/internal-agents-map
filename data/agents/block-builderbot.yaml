@@ -27,10 +27,8 @@ summary: A multi-agent orchestration layer built on goose + MCP that coordinates
   invoked in Slack to take a ticket end-to-end to a reviewed PR.
 headline_metric: ~1,500 PRs merged per week (~15% of all production code changes at Block)
 architecture:
-  sandbox: unknown
   harness: Multi-agent orchestration built on goose (open-source agent framework) + MCP; multi-player, real-time,
     operating inside Slack threads
-  model: goose framework; model not specified
   interfaces:
   - slack
   - linear
@@ -133,11 +131,7 @@ evidence:
   headline_metric:
   - source_id: block-builderbot-source-1
     locator: Preserved content.md, lines 24
-  architecture.sandbox:
-  - source_id: block-builderbot-source-1
   architecture.harness:
-  - source_id: block-builderbot-source-1
-  architecture.model:
   - source_id: block-builderbot-source-1
   architecture.tool_access:
   - source_id: block-builderbot-source-1
@@ -203,11 +197,6 @@ claim_metadata:
     confidence: medium
     confidence_reason: The reported collaboration happens during execution, so it includes more than a final artifact
       review.
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: The preserved sources do not document an execution sandbox; unknown does not mean absent.
   headline_metric:
     metric_scope: Builderbot merged pull requests per week at Block
     denominator: All production code changes across Block for the approximately 15% share
@@ -302,8 +291,8 @@ page_content:
     model:
       state: unreported
       claim_paths: []
-      note: The captures name the goose orchestration framework but no underlying model; the public repository README
-        names apps and crates only.
+      note: 'The captures name the goose orchestration framework but no underlying model; the public
+        repository README names apps and crates only.'
     harness:
       state: reported
       claim_paths:
@@ -311,8 +300,6 @@ page_content:
     sandbox:
       state: unreported
       claim_paths: []
-      note: No capture documents an execution or isolation boundary; the legacy unknown claim stays in research
-        details.
     tool_access:
       state: reported
       claim_paths:

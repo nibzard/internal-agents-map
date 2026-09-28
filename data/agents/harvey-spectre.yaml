@@ -32,7 +32,6 @@ architecture:
   sandbox: Isolated ephemeral execution environments; durable runs
   harness: Collaborative cloud agent platform with explicit boundaries around GitHub, Datadog, Linear, and other
     connected systems
-  model: Not specified
   interfaces:
   - slack
   - web
@@ -93,8 +92,6 @@ evidence:
   architecture.sandbox:
   - source_id: harvey-spectre-source-1
   architecture.harness:
-  - source_id: harvey-spectre-source-1
-  architecture.model:
   - source_id: harvey-spectre-source-1
   architecture.tool_access:
   - source_id: harvey-spectre-source-1
@@ -210,8 +207,7 @@ page_content:
     model:
       state: unreported
       claim_paths: []
-      note: The post names providers and multi-provider support but no model; the placeholder claim stays in research
-        details.
+      note: 'The post describes provider adapters and multi-provider support but names no model.'
     harness:
       state: reported
       claim_paths:

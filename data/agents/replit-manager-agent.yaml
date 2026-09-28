@@ -36,7 +36,6 @@ architecture:
     network
   harness: 'Fleet/loop orchestration: a manager agent launches parallel agents for verifiable work and escalates
     judgment'
-  model: Not specified
   interfaces:
   - slack
   tool_access: Investigates incidents, reviews PRs, answers questions, analyzes company data, triages support, researches
@@ -86,8 +85,6 @@ evidence:
   architecture.sandbox:
   - locator: Preserved content.md, lines 34
   architecture.harness:
-  - source_id: replit-manager-agent-source-1
-  architecture.model:
   - source_id: replit-manager-agent-source-1
   architecture.tool_access:
   - source_id: replit-manager-agent-source-1
@@ -221,7 +218,6 @@ page_content:
     model:
       state: unreported
       claim_paths: []
-      note: The capture names no model; the placeholder claim stays in research details.
     harness:
       state: reported
       claim_paths:

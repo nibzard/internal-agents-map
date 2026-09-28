@@ -277,11 +277,11 @@ page_content:
       claim_paths:
       - architecture.harness
     sandbox:
-      state: unreported
-      claim_paths: []
-      note: Kubernetes pods and containerized jobs are documented as the execution environment (Honk Part 1 line
-        26; Code with Claude line 56) but the isolation boundary is not stated; sandboxing is named as an open challenge
-        (Honk Part 1 line 101).
+      state: reported
+      claim_paths:
+      - architecture.sandbox
+      note: 'The isolation boundary inside the pods and containers is not stated; sandboxing is named as an
+        open challenge (Honk Part 1 line 101).'
     tool_access:
       state: reported
       claim_paths:

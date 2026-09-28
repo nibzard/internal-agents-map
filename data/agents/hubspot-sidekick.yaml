@@ -28,7 +28,6 @@ headline_metric: Reviews every pull request and cut engineer feedback time by 90
 architecture:
   harness: Aviator, an internal Java agent framework; replaced the earlier Claude Code review implementation on
     Crucible
-  sandbox: unknown
   tool_access: Aviator framework for precise tool control
   interfaces:
   - github
@@ -83,9 +82,6 @@ evidence:
   architecture.harness:
   - source_id: hubspot-sidekick-source-1
     locator: Preserved content.md, lines 24–45
-  architecture.sandbox:
-  - source_id: hubspot-sidekick-source-1
-    locator: Preserved content.md, lines 39–45
   architecture.tool_access:
   - source_id: hubspot-sidekick-source-1
   architecture.interfaces:
@@ -146,12 +142,6 @@ claim_metadata:
     metric_scope: Developer emoji reactions on review comments during the preceding couple of months
     denominator: Thumbs-up and thumbs-down reactions; not all developers or all reviews
     measurement_method: Emoji reactions and replies on review comments
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: Current review runs on Aviator; its execution isolation is not specified. Crucible Kubernetes
-      workloads describe the predecessor implementation.
   lessons_learned.0:
     kind: opinion
     provenance: reported
@@ -179,8 +169,9 @@ page_content:
       support (Claude, GPT, Gemini) is a capability of the Aviator framework (source 1, line 45), not a statement
       about this reviewer.'}
     harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: [], note: 'Execution isolation of the Aviator runtime is not documented.
-      The Kubernetes sandboxing described in source 2 (lines 30–37) covers the earlier Crucible implementation.'}
+    sandbox: {state: unreported, claim_paths: [], note: 'Execution isolation of the Aviator runtime is not
+      documented. The Kubernetes sandboxing described in source 2 (lines 30–37) covers the earlier Crucible
+      implementation.'}
     tool_access: {state: reported, claim_paths: [architecture.tool_access]}
     knowledge: {state: reported, claim_paths: [architecture.knowledge]}
     context_mgmt: {state: unreported, claim_paths: [], note: 'The captures describe no mechanism that maintains or

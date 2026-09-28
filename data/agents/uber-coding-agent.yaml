@@ -25,9 +25,6 @@ summary: Uber runs an internal coding agent that writes complete code changes wi
   and approve them. Its CTO reports that engineers now delegate tasks to the agent rather than accept its suggestions, and
   that its share of all code changes has grown from under 1%.
 headline_metric: ~1,800 complete code changes per week (~8% of changes)
-architecture:
-  sandbox: unknown
-  harness: Not specified publicly
 primitives:
 - {name: Delegate the task, desc: Engineers delegate coding tasks to the agent rather than accepting its suggestions}
 - {name: Write the complete change, desc: The agent writes the entire code change with zero human authoring}
@@ -56,10 +53,6 @@ evidence:
   - source_id: uber-coding-agent-source-1
   headline_metric:
   - locator: Preserved content.md, lines 24–26
-  architecture.sandbox:
-  - source_id: uber-coding-agent-source-1
-  architecture.harness:
-  - source_id: uber-coding-agent-source-1
   key_metrics.0:
   - locator: Preserved content.md, lines 24–26
   key_metrics.1:
@@ -88,14 +81,6 @@ claim_metadata:
     confidence_reason: Only limited public evidence supports this claim.
     metric_scope: Code changes written entirely by the internal coding agent and human reviewed
     denominator: All Uber code changes for the reported 8% share
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: The preserved sources do not document an execution sandbox; unknown does not mean absent.
-  architecture.harness:
-    confidence: medium
-    confidence_reason: Only limited public evidence supports this claim.
   key_metrics.0:
     confidence: medium
     confidence_reason: Only limited public evidence supports this claim.
@@ -143,8 +128,7 @@ page_content:
       the full delegation-to-approval arc the article describes; no other stage is documented.'}
     human_involvement: {state: reported, claim_paths: [summary, operating_models.0], note: 'Engineers review and
       approve every agent-written change; the CTO describes zero human authoring.'}
-    implementation: {state: unreported, claim_paths: [], note: 'The capture names no model, harness, tools, or
-      interfaces; the sandbox and harness claims in research details are placeholders.'}
+    implementation: {state: unreported, claim_paths: []}
     validation: {state: reported, claim_paths: [primitives.2], note: 'The documented check of the work is the human
       review gate cited with human involvement; no automated check is described.'}
     observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1]}
@@ -152,10 +136,8 @@ page_content:
       of the CTO, relayed by a single secondary article.'}
   implementation_fields:
     model: {state: unreported, claim_paths: []}
-    harness: {state: unreported, claim_paths: [], note: 'No execution environment is described; the placeholder claim
-      stays in research details.'}
-    sandbox: {state: unreported, claim_paths: [], note: 'No isolation boundary is described; the unknown claim stays
-      in research details.'}
+    harness: {state: unreported, claim_paths: []}
+    sandbox: {state: unreported, claim_paths: []}
     tool_access: {state: unreported, claim_paths: []}
     knowledge: {state: unreported, claim_paths: []}
     context_mgmt: {state: unreported, claim_paths: []}

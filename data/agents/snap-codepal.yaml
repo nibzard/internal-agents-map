@@ -34,7 +34,6 @@ headline_metric: More than 200,000 reviews across 90% of all pull requests over 
   thousands of confirmed issues that were corrected before human review and before reaching production
 
 architecture:
-  sandbox: unknown
   harness: A parent workflow builds the review context once and writes it to a shared store that three child
     workflows for code review, summary generation, and description generation all read; the review loop runs
     concurrent model passes under a supervisor with an agreement gate and an eager hand-off, alongside a separate
@@ -147,10 +146,6 @@ evidence:
   - locator: The Numbers, first bullet; preserved content.md, line 147
   operating_models.0:
   - locator: Preserved content.md, lines 121, 125, 155
-  architecture.sandbox:
-  - relation: contextualizes
-    locator: 'Preserved content.md, lines 64-68: in-memory, no-clone repository access, with no execution or
-      isolation boundary described'
   architecture.harness:
   - locator: Preserved content.md, lines 68, 82-92
   architecture.interfaces:
@@ -344,12 +339,6 @@ claim_metadata:
     confidence: medium
     confidence_reason: Snap describes the voting mechanism as fact and the flywheel as its own reading of it; the
       article shows no measurement that engagement improved later reviews for the engineers who voted.
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: The article documents in-memory, no-clone repository access but no execution or isolation
-      boundary; unknown does not mean absent.
 
 page_content:
   version: 1
@@ -430,8 +419,8 @@ page_content:
     sandbox:
       state: unreported
       claim_paths: []
-      note: The article documents in-memory, no-clone repository access through the GitHub Enterprise API but no
-        execution or isolation boundary; the unknown claim stays in the research details.
+      note: 'The article documents in-memory, no-clone repository access through the GitHub Enterprise API but
+        no execution or isolation boundary.'
     tool_access:
       state: reported
       claim_paths:
