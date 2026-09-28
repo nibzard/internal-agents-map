@@ -11,7 +11,6 @@ import {
   type Claim,
   type ClaimKind,
   type EvidenceRelation,
-  type PageContent,
   type Source,
 } from './catalog';
 import type { ObservationBasis } from './schema-values';
@@ -124,6 +123,8 @@ export interface CoverageAnswerView {
 export interface ClaimView {
   readonly id: string;
   readonly anchor: string;
+  /** The anchors of the old claim IDs of this claim, so an old link still lands on it. */
+  readonly aliasAnchors: readonly string[];
   readonly field: string;
   readonly label: string;
   readonly text: string;
@@ -168,7 +169,6 @@ export interface SourceView {
   readonly lastVerifiedAt: string | null;
   /** The preserved copy in the repository, when the source was captured. */
   readonly preservedUrl: string | null;
-  readonly archivedUrl: string | null;
 }
 
 export interface OperatingModelView {
@@ -228,7 +228,6 @@ export interface EntryView {
   readonly operatingModels: readonly OperatingModelView[];
   /** The distinct boundary labels of the scoped assessments, in record order. */
   readonly boundaryLabels: readonly string[];
-  readonly isPilot: boolean;
   readonly workflowScope: string | null;
   readonly coverageQuestions: Readonly<Record<string, CoverageAnswerView>>;
   readonly workflowClaims: readonly ClaimView[];
@@ -248,8 +247,6 @@ export interface EntryView {
   readonly aliasObservationClaims: readonly ClaimView[];
   readonly aliasObservationRelations: readonly { readonly claim: ClaimView; readonly target: ClaimView; readonly reason: string }[];
   readonly researchOnlyClaims: readonly ClaimView[];
-  /** Claims that no section above classifies. They keep every claim reachable. */
-  readonly otherClaims: readonly ClaimView[];
   readonly claims: readonly ClaimView[];
   readonly sources: readonly SourceView[];
   readonly relatedEntries: readonly RelatedEntryView[];
@@ -281,7 +278,6 @@ function sourceView(source: Source, number: number): SourceView {
     accessedAt: source.accessed_at ?? null,
     lastVerifiedAt: source.last_verified_at ?? null,
     preservedUrl: preservedUrl(source),
-    archivedUrl: source.archived_url ?? null,
   };
 }
 
@@ -357,15 +353,23 @@ function metadata(claim: Claim, basis: ObservationBasis | undefined): CaveatView
   return result;
 }
 
-/** Find the observation basis of a claim. An alias observation uses the basis of its target. */
-function observationBasis(page: PageContent | undefined, claim: Claim): ObservationBasis | undefined {
-  const observation = page?.observations[claim.field];
-  if (observation?.duplicate_of) return page?.observations[observation.duplicate_of]?.basis;
-  return observation?.basis;
+/** Find the observation basis of a claim. An alias metric uses the basis of its target. */
+function observationBasis(claims: ReadonlyMap<string, Claim>, claim: Claim): ObservationBasis | undefined {
+  return claim.duplicate_of ? claims.get(claim.duplicate_of)?.basis : claim.basis;
+}
+
+/** List the old claim IDs of every claim, keyed by the claim ID that replaces them. */
+function oldClaimIds(catalog: Catalog): Map<string, string[]> {
+  const result = new Map<string, string[]>();
+  for (const [old, current] of Object.entries(catalog.claim_aliases ?? {})) {
+    if (old !== current) result.set(current, [...(result.get(current) ?? []), old]);
+  }
+  return result;
 }
 
 function claimView(
   claim: Claim,
+  oldIds: readonly string[],
   basis: ObservationBasis | undefined,
   numbers: ReadonlyMap<string, number>,
   sources: ReadonlyMap<string, Source>,
@@ -393,6 +397,7 @@ function claimView(
   return {
     id: claim.id,
     anchor: `claim-${claim.id}`,
+    aliasAnchors: oldIds.map((id) => `claim-${id}`),
     field: claim.field,
     label: claim.display_name ?? fieldLabel(claim.field),
     text: claim.text,
@@ -457,6 +462,7 @@ export function entryView(catalog: Catalog, id: string): EntryView {
   const approach = requireApproach(catalog, id);
   const allSources = sourcesById(catalog);
   const allClaims = new Map(catalog.claims.map((claim) => [claim.id, claim]));
+  const oldIds = oldClaimIds(catalog);
 
   const numbers = new Map<string, number>();
   const sources: SourceView[] = approach.source_ids.map((sourceId, index) => {
@@ -469,7 +475,7 @@ export function entryView(catalog: Catalog, id: string): EntryView {
   const claims = approach.claim_ids.map((claimId) => {
     const claim = allClaims.get(claimId);
     if (!claim) throw new Error(`approach "${approach.id}" lists unknown claim "${claimId}".`);
-    return claimView(claim, observationBasis(approach.page_content, claim), numbers, allSources);
+    return claimView(claim, oldIds.get(claim.id) ?? [], observationBasis(allClaims, claim), numbers, allSources);
   });
 
   const of = (test: (claim: ClaimView) => boolean) => claims.filter(test);
@@ -480,50 +486,38 @@ export function entryView(catalog: Catalog, id: string): EntryView {
     paths
       .map((path) => byField.get(path))
       .filter((claim): claim is ClaimView => Boolean(claim));
-  const legacyWorkflowClaims = of((claim) => claim.field.startsWith('primitives.'));
-  const workflowClaims = page ? fromPaths(page.questions.workflow.claim_paths) : legacyWorkflowClaims;
-  const mechanismClaims = page
-    ? of((claim) => page.primitive_roles[claim.field] === 'mechanism')
-    : [];
-  const validationClaims = page
-    ? of((claim) => page.primitive_roles[claim.field] === 'validation')
-    : [];
+  const workflowClaims = fromPaths(page.questions.workflow.claim_paths);
+  const role = (claim: ClaimView) => allClaims.get(claim.id)!.role;
+  const mechanismClaims = of((claim) => role(claim) === 'mechanism');
+  const validationClaims = of((claim) => role(claim) === 'validation');
   const supervisionClaims = approach.catalog_section === 'agents' ? of((claim) => claim.field.startsWith('operating_models.')) : [];
-  const allArchitectureClaims = of((claim) => claim.field.startsWith('architecture.'));
-  const architectureClaims = page
-    ? allArchitectureClaims.filter((claim) => {
-        const key = claim.field.slice('architecture.'.length) as keyof typeof page.implementation_fields;
-        return page.implementation_fields[key]?.state === 'reported';
-      })
-    : allArchitectureClaims;
+  const architectureClaims = of((claim) => {
+    if (!claim.field.startsWith('architecture.')) return false;
+    const key = claim.field.slice('architecture.'.length) as keyof typeof page.implementation_fields;
+    return page.implementation_fields[key]?.state === 'reported';
+  });
   const resultClaims = of(
     (claim) => claim.field === 'headline_metric' || claim.field.startsWith('key_metrics.'),
   );
   const lessonClaims = of((claim) => claim.field.startsWith('lessons_learned.'));
-  const canonicalObservationClaims = page
-    ? resultClaims.filter((claim) => !page.observations[claim.field]?.duplicate_of)
-    : resultClaims;
-  const aliasObservationClaims = page
-    ? resultClaims.filter((claim) => Boolean(page.observations[claim.field]?.duplicate_of))
-    : [];
-  const aliasObservationRelations = page
-    ? aliasObservationClaims.map((claim) => ({
-        claim,
-        target: byField.get(page.observations[claim.field]!.duplicate_of!)!,
-        reason: page.observations[claim.field]!.reason ?? 'Duplicate representation.',
-      }))
-    : [];
-  const observationItems = page
-    ? canonicalObservationClaims.map((claim) => {
-        const observation = page.observations[claim.field]!;
-        return {
-          claim,
-          categoryLabel: termLabel(observation.category!),
-          basisLabel: termLabel(observation.basis!),
-          subject: observation.subject!,
-        };
-      })
-    : [];
+  const duplicateOf = (claim: ClaimView) => allClaims.get(claim.id)!.duplicate_of;
+  const canonicalObservationClaims = resultClaims.filter((claim) => !duplicateOf(claim));
+  const aliasObservationClaims = resultClaims.filter((claim) => Boolean(duplicateOf(claim)));
+  const byId = new Map(claims.map((claim) => [claim.id, claim]));
+  const aliasObservationRelations = aliasObservationClaims.map((claim) => ({
+    claim,
+    target: byId.get(duplicateOf(claim)!)!,
+    reason: allClaims.get(claim.id)!.reason ?? 'Duplicate representation.',
+  }));
+  const observationItems = canonicalObservationClaims.map((claim) => {
+    const metric = allClaims.get(claim.id)!;
+    return {
+      claim,
+      categoryLabel: termLabel(metric.category!),
+      basisLabel: termLabel(metric.basis!),
+      subject: metric.subject!,
+    };
+  });
   const metricClaims = canonicalObservationClaims.filter((claim) => claim.isMetric);
   const resultStatementClaims = canonicalObservationClaims.filter((claim) => !claim.isMetric);
   const placed = new Set(
@@ -531,9 +525,9 @@ export function entryView(catalog: Catalog, id: string): EntryView {
       .filter((claim): claim is ClaimView => claim !== null)
       .map((claim) => claim.id),
   );
-  const researchOnlyClaims = page ? claims.filter((claim) => !placed.has(claim.id)) : [];
+  const researchOnlyClaims = claims.filter((claim) => !placed.has(claim.id));
   const coverageQuestions = Object.fromEntries(
-    Object.entries(page?.questions ?? {}).map(([key, disposition]) => [
+    Object.entries(page.questions).map(([key, disposition]) => [
       key,
       {
         state: disposition.state,
@@ -579,8 +573,7 @@ export function entryView(catalog: Catalog, id: string): EntryView {
       levelLabel: levelLabel(model.level),
     })),
     boundaryLabels: [...new Set(approach.operating_models.map((model) => termLabel(model.attention_boundary)))],
-    isPilot: Boolean(page),
-    workflowScope: page?.workflow_scope ?? null,
+    workflowScope: page.workflow_scope ?? null,
     coverageQuestions,
     workflowClaims,
     mechanismClaims,
@@ -593,8 +586,8 @@ export function entryView(catalog: Catalog, id: string): EntryView {
         field,
         label: fieldLabel(field),
         claim: architectureClaims.find((claim) => claim.field === field) ?? null,
-        state: page?.implementation_fields[key].state,
-        note: page?.implementation_fields[key].note ?? null,
+        state: page.implementation_fields[key].state,
+        note: page.implementation_fields[key].note ?? null,
       };
     }),
     metricClaims,
@@ -605,7 +598,6 @@ export function entryView(catalog: Catalog, id: string): EntryView {
     aliasObservationClaims,
     aliasObservationRelations,
     researchOnlyClaims,
-    otherClaims: page ? [] : claims.filter((claim) => !placed.has(claim.id)),
     claims,
     sources,
     relatedEntries: relatedEntries(catalog, approach),

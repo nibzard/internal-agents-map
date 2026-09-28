@@ -18,18 +18,20 @@ operating_models:
 rubric:
   invocation:
   - unknown
-  state: unknown
-  identity: unknown
   evidence_strength: limited-primary
 summary: Brex’s Payment Operations team built an agent to prepare reasoned card-dispute submissions.
 architecture:
   harness: Brex’s internal Retool-based agent builder.
   knowledge: More than 100 pages of dispute guidance and the BPO standard operating procedure.
 primitives:
-- name: Apply dispute rules
+- id: apply-dispute-rules
+  name: Apply dispute rules
   desc: The agent uses the dispute guide and the outsourced team’s operating procedure.
-- name: Prepare the submission
+  role: workflow
+- id: prepare-the-submission
+  name: Prepare the submission
   desc: It finds applicable arguments and articulates the dispute rationale.
+  role: workflow
 sources:
 - id: brex-disputes-source-1
   title: 'Agent, Human, Ops: How Brex Is Changing Roles and Workflows'
@@ -49,11 +51,11 @@ evidence:
   - locator: Understanding complex rules and guides
   architecture.knowledge:
   - locator: Understanding complex rules and guides
-  primitives.0:
+  primitives.apply-dispute-rules:
   - locator: Understanding complex rules and guides
-  primitives.1:
+  primitives.prepare-the-submission:
   - locator: Understanding complex rules and guides
-  key_metrics.0:
+  key_metrics.preparation-time-fell:
   - locator: Understanding complex rules and guides
 claim_metadata:
   operating_models.0:
@@ -61,16 +63,21 @@ claim_metadata:
     confidence_reason: The source describes Dispute preparation agent and its work, but does not establish whether
       a person must approve or inspect each successful output.
     valid_at: '2025-09-25'
-  key_metrics.0:
+  key_metrics.preparation-time-fell:
     metric_scope: 'Dispute preparation agent: Brex reports preparation time fell from three hours to three seconds;
       measurement method is not provided.'
     confidence: medium
     confidence_reason: Self-reported by the source; no independent verification.
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Dispute preparation agent: Brex reports preparation time fell from three hours to three seconds;
+      measurement method is not provided.'
 relationships:
 - type: built-on
   approach_id: brex-agent-platform
 key_metrics:
-- Brex reports preparation time fell from three hours to three seconds; measurement method is not provided.
+- id: preparation-time-fell
+  text: Brex reports preparation time fell from three hours to three seconds; measurement method is not provided.
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -80,65 +87,19 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
+      - primitives.apply-dispute-rules
+      - primitives.prepare-the-submission
     human_involvement:
       state: unreported
-      claim_paths: []
       note: The source does not establish the required human review boundary.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.knowledge
     validation:
       state: unreported
-      claim_paths: []
     observations:
       state: reported
-      claim_paths:
-      - key_metrics.0
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: unreported
-      claim_paths: []
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: unreported
-      claim_paths: []
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: unreported
-      claim_paths: []
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-  observations:
-    key_metrics.0:
-      category: adoption-output
-      basis: reported-measurement
-      subject: 'Dispute preparation agent: Brex reports preparation time fell from three hours to three seconds;
-        measurement method is not provided.'

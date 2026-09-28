@@ -25,8 +25,6 @@ rubric:
   invocation:
   - event-driven
   - interactive
-  state: durable-session
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Nova is Dropbox's internal service for running coding agents in its cloud. Engineers launch parallel sessions
   from a web UI, CLI, or API, and internal systems call agents inside automated workflows like CI triage and migrations.
@@ -49,30 +47,49 @@ architecture:
   knowledge: Localized AGENTS.md per service; Dash (Dropbox context engineering); passing + failing test logs
   context_mgmt: Session history (notes/logs) carried across retry attempts
 primitives:
-- name: Validation loop
+- id: validation-loop
+  name: Validation loop
   desc: Bounded iteration with feedback on failure; deterministic systems control test execution
-- name: Dash
+  role: mechanism
+- id: dash
+  name: Dash
   desc: Nova is expanding its context sources, including Dash and MCP-based integrations
-- name: Ingest flaky-test evidence
+  role: mechanism
+- id: ingest-flaky-test-evidence
+  name: Ingest flaky-test evidence
   desc: Athena detects a flaky test; the Deflaker workflow sends its passing and failing logs to Nova as context
     and asks the agent to identify a likely root cause
-- name: Propose a root-cause fix
+  role: workflow
+- id: propose-a-root-cause-fix
+  name: Propose a root-cause fix
   desc: The Nova agent proposes a fix for the flaky test
-- name: Validate the fix in CI
+  role: workflow
+- id: validate-the-fix-in-ci
+  name: Validate the fix in CI
   desc: CI runs the test 100 or more times depending on its failure rate to check the proposed change
-- name: Retry with carried-forward notes
+  role: validation
+- id: retry-with-carried-forward-notes
+  name: Retry with carried-forward notes
   desc: A flake starts another attempt with new logs and notes from the previous one, until a working fix lands
     or attempts reach the cap of five
+  role: workflow
 key_metrics:
-- 'Flaky-test remediation (Deflaker): 100+ validation runs'
-- Predecessor Goose-based migrator used across thousands of migration entries before workflows moved onto Nova
-- Dozens of agents launchable from one runbook
+- id: flaky-test-remediation-deflaker-validation-runs
+  text: 'Flaky-test remediation (Deflaker): 100+ validation runs'
+- id: predecessor-goose-based-migrator-used-thousands
+  text: Predecessor Goose-based migrator used across thousands of migration entries before workflows moved onto Nova
+- id: dozens-agents-launchable-one-runbook
+  text: Dozens of agents launchable from one runbook
 lessons_learned:
-- Dropbox attributes much of Nova's usefulness to its surrounding execution and validation infrastructure.
-- Nova can return failed validation results to the agent and continue the session to repair the proposed change.
-- Dropbox moved CI triggering outside the agent after seeing waits of hours and validation against the wrong tests.
-- Nova reuses Dropbox's Bazel and on-premise validation paths because those systems support its monorepo development
-  workflow.
+- id: attributes-much-nova-usefulness-surrounding-execution
+  text: Dropbox attributes much of Nova's usefulness to its surrounding execution and validation infrastructure.
+- id: return-failed-validation-results-agent-continue
+  text: Nova can return failed validation results to the agent and continue the session to repair the proposed change.
+- id: moved-ci-triggering-outside-agent-seeing
+  text: Dropbox moved CI triggering outside the agent after seeing waits of hours and validation against the wrong tests.
+- id: reuses-dropbox-bazel-premise-validation-paths
+  text: Nova reuses Dropbox's Bazel and on-premise validation paths because those systems support its monorepo development
+    workflow.
 sources:
 - id: dropbox-nova-source-1
   title: Introducing Nova, our internal platform for coding agents
@@ -125,44 +142,44 @@ evidence:
   - source_id: dropbox-nova-source-1
   architecture.context_mgmt:
   - source_id: dropbox-nova-source-1
-  primitives.0:
+  primitives.validation-loop:
   - source_id: dropbox-nova-source-1
-  primitives.1:
+  primitives.dash:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, lines 30,82
-  key_metrics.0:
+  key_metrics.flaky-test-remediation-deflaker-validation-runs:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, lines 58–62
-  key_metrics.1:
+  key_metrics.predecessor-goose-based-migrator-used-thousands:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, lines 65–69
-  key_metrics.2:
+  key_metrics.dozens-agents-launchable-one-runbook:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, lines 65–69
-  lessons_learned.0:
+  lessons_learned.attributes-much-nova-usefulness-surrounding-execution:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, lines 78
-  lessons_learned.1:
+  lessons_learned.return-failed-validation-results-agent-continue:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, lines 26
-  lessons_learned.2:
+  lessons_learned.moved-ci-triggering-outside-agent-seeing:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, lines 80
-  lessons_learned.3:
+  lessons_learned.reuses-dropbox-bazel-premise-validation-paths:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, lines 20-22,55
   architecture.interfaces:
   - source_id: dropbox-nova-source-1
-  primitives.2:
+  primitives.ingest-flaky-test-evidence:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, lines 58, 62
-  primitives.3:
+  primitives.propose-a-root-cause-fix:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, line 58
-  primitives.4:
+  primitives.validate-the-fix-in-ci:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, line 58
-  primitives.5:
+  primitives.retry-with-carried-forward-notes:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, lines 58, 62
 claim_metadata:
@@ -176,25 +193,25 @@ claim_metadata:
     confidence_reason: The source describes standard interactive chat sessions in which engineers launch and steer
       agents; the exact review boundary of those sessions is not further specified.
     valid_at: '2026-05-22'
-  lessons_learned.0:
+  lessons_learned.attributes-much-nova-usefulness-surrounding-execution:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: The retrospective explicitly makes this assessment and names context files, tests, caching,
       isolation, and retry loops; it provides no controlled component comparison.
-  lessons_learned.1:
+  lessons_learned.return-failed-validation-results-agent-continue:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The session example describes optional validation commands and continuation on failure, making
       the feedback mechanism explicit.
-  lessons_learned.2:
+  lessons_learned.moved-ci-triggering-outside-agent-seeing:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The retrospective names these failure modes and explains that surrounding workflows trigger
       CI and call the agent back for repair.
-  lessons_learned.3:
+  lessons_learned.reuses-dropbox-bazel-premise-validation-paths:
     kind: fact
     provenance: reported
     confidence: medium
@@ -203,14 +220,23 @@ claim_metadata:
   headline_metric:
     metric_scope: Migration-owner orchestration of dozens of agents from a shared runbook; qualitative capacity
       description
-  key_metrics.2:
+    category: runtime-capacity
+    basis: qualitative
+    subject: Parallel agents a migration owner launches and manages from one runbook
+  key_metrics.dozens-agents-launchable-one-runbook:
     metric_scope: Migration-owner orchestration of dozens of agents from a shared runbook; qualitative capacity
       description
-  key_metrics.0:
+  key_metrics.flaky-test-remediation-deflaker-validation-runs:
     metric_scope: CI validation runs per proposed Deflaker flaky-test fix
     measurement_method: Run the test 100 or more times depending on its failure rate; retry capped at five fix attempts
-  key_metrics.1:
+    category: runtime-capacity
+    basis: reported-measurement
+    subject: CI validation runs per proposed Deflaker flaky-test fix
+  key_metrics.predecessor-goose-based-migrator-used-thousands:
     metric_scope: Predecessor Goose-based migrator, before workflows moved onto Nova
+    category: adoption-output
+    basis: reported-measurement
+    subject: Migration entries processed by the predecessor Goose-based migrator before workflows moved onto Nova
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -221,107 +247,39 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.2
-      - primitives.3
-      - primitives.5
+      - primitives.ingest-flaky-test-evidence
+      - primitives.propose-a-root-cause-fix
+      - primitives.retry-with-carried-forward-notes
       note: The Deflaker run is the documented operational workflow; interactive sessions and the crash-alert experiment
         are other modes on the platform, outside this scope.
     human_involvement:
       state: not-applicable
-      claim_paths: []
       note: There is no single platform-wide agent review boundary. Scoped downstream operating-model claims remain
         in research details; access controls are described separately.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.sandbox
-      - architecture.harness
-      - architecture.model
-      - architecture.tool_access
-      - architecture.knowledge
-      - architecture.context_mgmt
-      - architecture.interfaces
     validation:
       state: reported
       claim_paths:
-      - primitives.4
+      - primitives.validate-the-fix-in-ci
       note: Caller-attached validation commands run after each attempt; the Deflaker CI runs are the documented
         instance.
     observations:
       state: reported
-      claim_paths:
-      - headline_metric
-      - key_metrics.0
-      - key_metrics.1
-      - key_metrics.2
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
-      - lessons_learned.2
-      - lessons_learned.3
   implementation_fields:
     model:
-      state: reported
-      claim_paths:
-      - architecture.model
       note: Multiple coding agents run behind one interface; no specific model or provider is named.
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: reported
-      claim_paths:
-      - architecture.sandbox
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
     credentials:
       state: unreported
-      claim_paths: []
       note: 'The capture states that agents operate within existing infrastructure and validation paths but
         names no authentication or authorization mechanism.'
-    interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
-  primitive_roles:
-    primitives.0: mechanism
-    primitives.1: mechanism
-    primitives.2: workflow
-    primitives.3: workflow
-    primitives.4: validation
-    primitives.5: workflow
-  observations:
-    headline_metric:
-      category: runtime-capacity
-      basis: qualitative
-      subject: Parallel agents a migration owner launches and manages from one runbook
-    key_metrics.0:
-      category: runtime-capacity
-      basis: reported-measurement
-      subject: CI validation runs per proposed Deflaker flaky-test fix
-    key_metrics.1:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Migration entries processed by the predecessor Goose-based migrator before workflows moved onto Nova
-    key_metrics.2:
+  aliases:
+    key_metrics.dozens-agents-launchable-one-runbook:
       duplicate_of: headline_metric
       reason: Same dozens-of-agents capacity from the same runbook passage; identical scope with no separate period
         or qualification.

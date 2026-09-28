@@ -20,8 +20,6 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Salesforce was 'customer zero' for the rebuilt Slackbot; an employee agent that finds company context,
   drafts work, and connects Slack context with Salesforce data; now also an external product.
@@ -35,20 +33,26 @@ architecture:
   knowledge: Slack context joined with Salesforce CRM data
   credentials: Permission-aware by construction; sees what the employee can see, respects roles and access controls
 primitives:
-- name: Permission-aware context
+- id: permission-aware-context
+  name: Permission-aware context
   desc: Agent visibility is bounded by the invoking employee's permissions
-- {name: Prepare a customer-meeting briefing, desc: 'Pulls recent discussions, relevant documents, and customer
-    history into a single, clear briefing before a critical customer conversation'}
-- {name: Turn scattered analysis into a shared Canvas, desc: 'In a documented demonstration, it correlated pilot
+  role: mechanism
+- {id: prepare-a-customer-meeting-briefing, name: Prepare a customer-meeting briefing, desc: 'Pulls recent discussions, relevant documents, and customer
+    history into a single, clear briefing before a critical customer conversation', role: workflow}
+- {id: turn-scattered-analysis-shared-canvas, name: Turn scattered analysis into a shared Canvas, desc: 'In a documented demonstration, it correlated pilot
     feedback with an uploaded dashboard image, queried Salesforce for candidate accounts, and wrote the plan
-    into a shared Canvas'}
+    into a shared Canvas', role: workflow}
 key_metrics:
-- Two-thirds of Salesforce's roughly 80,000 employees tried the new Slackbot, and 80% of those users continued
-  using it regularly
-- Internal satisfaction reached 96%, and employees report saving between two and 20 hours per week
+- id: employees-who-tried-slackbot
+  text: Two-thirds of Salesforce's roughly 80,000 employees tried the new Slackbot, and 80% of those users continued
+    using it regularly
+- id: internal-satisfaction-reached-employees-report-saving
+  text: Internal satisfaction reached 96%, and employees report saving between two and 20 hours per week
 lessons_learned:
-- Salesforce used Slackbot internally before its phased customer rollout and describes itself as customer zero.
-- Salesforce says Slackbot uses Slack roles and access permissions to limit the information it surfaces.
+- id: used-slackbot-internally-phased-customer-rollout
+  text: Salesforce used Slackbot internally before its phased customer rollout and describes itself as customer zero.
+- id: uses-slack-roles-access-permissions-limit
+  text: Salesforce says Slackbot uses Slack roles and access permissions to limit the information it surfaces.
 sources:
 - id: salesforce-slackbot-source-1
   title: Salesforce announces general availability of Slackbot
@@ -109,53 +113,61 @@ evidence:
   - source_id: salesforce-slackbot-source-1
   architecture.credentials:
   - source_id: salesforce-slackbot-source-1
-  primitives.0:
+  primitives.permission-aware-context:
   - source_id: salesforce-slackbot-source-1
-  lessons_learned.0:
+  lessons_learned.used-slackbot-internally-phased-customer-rollout:
   - source_id: salesforce-slackbot-source-1
     locator: Preserved content.md, lines 88-90,104-108
-  lessons_learned.1:
+  lessons_learned.uses-slack-roles-access-permissions-limit:
   - source_id: salesforce-slackbot-source-1
     locator: Preserved content.md, lines 36,72
   architecture.interfaces:
   - source_id: salesforce-slackbot-source-1
-  primitives.1:
+  primitives.prepare-a-customer-meeting-briefing:
   - {source_id: salesforce-slackbot-source-1, locator: 'Preserved content.md, lines 64–66'}
-  primitives.2:
+  primitives.turn-scattered-analysis-shared-canvas:
   - {source_id: salesforce-slackbot-source-3, locator: 'Preserved content.md, lines 52–58'}
-  key_metrics.0:
+  key_metrics.employees-who-tried-slackbot:
   - {source_id: salesforce-slackbot-source-3, locator: 'Preserved content.md, lines 42–44'}
-  key_metrics.1:
+  key_metrics.internal-satisfaction-reached-employees-report-saving:
   - {source_id: salesforce-slackbot-source-3, locator: 'Preserved content.md, line 44'}
 claim_metadata:
   operating_models.0:
     confidence: medium
     confidence_reason: 'The source describes an employee agent that prepares drafts and contextual work for human use.'
     valid_at: '2026-01-14'
-  lessons_learned.0:
+  lessons_learned.used-slackbot-internally-phased-customer-rollout:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The launch post includes an internal-use account alongside the rollout dates; it does
       not demonstrate that internal-first release is best for other products.
-  lessons_learned.1:
+  lessons_learned.uses-slack-roles-access-permissions-limit:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The product announcement makes this permission claim but does not expose the enforcement
       implementation or independently test its effectiveness.
-  key_metrics.0:
+  key_metrics.employees-who-tried-slackbot:
     confidence: medium
     confidence_reason: Salesforce internal adoption figures relayed by VentureBeat without a measurement method
       or window.
     valid_at: '2026-01'
     metric_scope: Salesforce employees during the internal rollout; continuation measured among those who tried it
-  key_metrics.1:
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Salesforce employees trying
+      the new Slackbot during the internal rollout and continuing to use it'
+  key_metrics.internal-satisfaction-reached-employees-report-saving:
     confidence: medium
     confidence_reason: Salesforce internal satisfaction and self-reported time savings relayed by VentureBeat;
       no survey method or baseline is given.
     valid_at: '2026-01'
     metric_scope: Internal satisfaction rating and employee-reported weekly hours saved during the internal rollout
+    category: effectiveness
+    basis: reported-measurement
+    subject: 'Internal satisfaction rating
+      and self-reported weekly hours saved'
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -163,33 +175,22 @@ page_content:
     salesforce-slackbot-source-4]
   workflow_scope: Employee request to a drafted briefing or shared Canvas in Slack
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.1, primitives.2], note: 'The briefing run is from the
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.prepare-a-customer-meeting-briefing, primitives.turn-scattered-analysis-shared-canvas], note: 'The briefing run is from the
       launch post; the Canvas run is the documented product demonstration. Both are employee-initiated.'}
     human_involvement: {state: reported, claim_paths: [operating_models.0], note: 'Drafts are refined through
       conversation with the requesting employee; no approval gate beyond that user is documented.'}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.model, architecture.tool_access,
-      architecture.knowledge, architecture.credentials, architecture.interfaces]}
-    validation: {state: unreported, claim_paths: [], note: 'The staged interview self-describes citing sources and
+    implementation: {state: reported}
+    validation: {state: unreported, note: 'The staged interview self-describes citing sources and
       admitting unknowns; no systematic check of outputs is documented.'}
-    observations: {state: reported, claim_paths: [key_metrics.0, key_metrics.1]}
-    lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1]}
+    observations: {state: reported}
+    lessons: {state: reported}
   implementation_fields:
-    model: {state: reported, claim_paths: [architecture.model]}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: [], note: 'The interview describes an LLM with a robust search layer;
+    sandbox: {state: unreported, note: 'The interview describes an LLM with a robust search layer;
       no execution or isolation boundary is documented.'}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access], note: 'Meeting booking was announced
+    tool_access: {note: 'Meeting booking was announced
       as arriving a few weeks after general availability; calendar availability checking shipped at launch.'}
-    knowledge: {state: reported, claim_paths: [architecture.knowledge]}
-    context_mgmt: {state: unreported, claim_paths: [], note: 'Grounding in Slack context and conversation continuity
+    context_mgmt: {state: unreported, note: 'Grounding in Slack context and conversation continuity
       are described; how context is maintained or organized over time is not.'}
-    credentials: {state: reported, claim_paths: [architecture.credentials], note: 'The documented mechanism is
+    credentials: {note: 'The documented mechanism is
       data-access authorization bounded by the employee''s permissions; credential storage is not described.'}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces]}
-  primitive_roles: {primitives.0: mechanism, primitives.1: workflow, primitives.2: workflow}
-  observations:
-    key_metrics.0: {category: adoption-output, basis: reported-measurement, subject: 'Salesforce employees trying
-      the new Slackbot during the internal rollout and continuing to use it'}
-    key_metrics.1: {category: effectiveness, basis: reported-measurement, subject: 'Internal satisfaction rating
-      and self-reported weekly hours saved'}

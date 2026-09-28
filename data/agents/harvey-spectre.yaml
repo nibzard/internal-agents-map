@@ -23,8 +23,6 @@ rubric:
   - interactive
   - background
   - scheduled
-  state: durable-session
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Harvey's internal collaborative cloud agent platform; turns requests from Slack, the web app, or automations
   into durable runs that return reviewable summaries, diffs, branches, and PRs.
@@ -43,28 +41,43 @@ architecture:
     a user's machine
   context_mgmt: Durable runs over disposable execution environments
 primitives:
-- name: Durable runs / ephemeral execution
+- id: durable-runs-ephemeral-execution
+  name: Durable runs / ephemeral execution
   desc: Long-lived run state over throwaway compute
-- name: Reviewable artifacts
+  role: mechanism
+- id: reviewable-artifacts
+  name: Reviewable artifacts
   desc: Returns summaries, diffs, branches, and pull requests alongside the run history
-- name: Start a durable run
+  role: mechanism
+- id: start-a-durable-run
+  name: Start a durable run
   desc: A request from Slack, the web app, an automation, or the CLI creates a durable run and starts a fresh sandbox
     that hydrates the repository
-- name: Execute the agent in the sandbox
+  role: workflow
+- id: execute-the-agent-in-the-sandbox
+  name: Execute the agent in the sandbox
   desc: The worker runs the agent, streams output, and reaches approved external systems through tool configuration
     injected at run start
-- name: Return reviewable artifacts
+  role: workflow
+- id: return-reviewable-artifacts
+  name: Return reviewable artifacts
   desc: The run persists summaries, diffs, branches, and pull requests; a failed run returns the result to a person
     who decides what happens next
-- name: Scheduled verification loops
+  role: workflow
+- id: scheduled-verification-loops
+  name: Scheduled verification loops
   desc: Cron-based automations materialize ordinary runs for cleanup passes, test generation, dependency checks,
     and verification loops
+  role: validation
 lessons_learned:
-- Spectre returns branches, diffs, summaries, and run history so another person can inspect or continue the work.
-- Harvey identifies coordination, ownership, and retained context as challenges when many people and agents share
-  work.
-- Harvey keeps Spectre and its security agents on separate infrastructure to limit the consequences of a compromised
-  product agent.
+- id: returns-branches-diffs-summaries-run-history
+  text: Spectre returns branches, diffs, summaries, and run history so another person can inspect or continue the work.
+- id: identifies-coordination-ownership-retained-context-challenges
+  text: Harvey identifies coordination, ownership, and retained context as challenges when many people and agents share
+    work.
+- id: keeps-spectre-security-agents-separate-infrastructure
+  text: Harvey keeps Spectre and its security agents on separate infrastructure to limit the consequences of a compromised
+    product agent.
 sources:
 - id: harvey-spectre-source-1
   title: Building Spectre; internal collaborative cloud agent platform
@@ -99,30 +112,30 @@ evidence:
   - source_id: harvey-spectre-source-1
   architecture.context_mgmt:
   - source_id: harvey-spectre-source-1
-  primitives.0:
+  primitives.durable-runs-ephemeral-execution:
   - source_id: harvey-spectre-source-1
-  primitives.1:
+  primitives.reviewable-artifacts:
   - source_id: harvey-spectre-source-1
     locator: Preserved content.md, lines 16,24
-  primitives.2:
+  primitives.start-a-durable-run:
   - source_id: harvey-spectre-source-1
     locator: Preserved content.md, lines 16, 24, 40
-  primitives.3:
+  primitives.execute-the-agent-in-the-sandbox:
   - source_id: harvey-spectre-source-1
     locator: Preserved content.md, lines 24, 44, 46
-  primitives.4:
+  primitives.return-reviewable-artifacts:
   - source_id: harvey-spectre-source-1
     locator: Preserved content.md, lines 16, 24
-  primitives.5:
+  primitives.scheduled-verification-loops:
   - source_id: harvey-spectre-source-1
     locator: Preserved content.md, lines 68, 74
-  lessons_learned.0:
+  lessons_learned.returns-branches-diffs-summaries-run-history:
   - source_id: harvey-spectre-source-1
     locator: Preserved content.md, lines 16,24
-  lessons_learned.1:
+  lessons_learned.identifies-coordination-ownership-retained-context-challenges:
   - source_id: harvey-spectre-source-1
     locator: Preserved content.md, lines 88
-  lessons_learned.2:
+  lessons_learned.keeps-spectre-security-agents-separate-infrastructure:
   - source_id: harvey-spectre-source-2
     locator: Preserved content.md, lines 115
   architecture.interfaces:
@@ -133,19 +146,19 @@ claim_metadata:
     confidence: high
     confidence_reason: The source explicitly frames diffs, branches, and pull requests as reviewable outputs.
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.returns-branches-diffs-summaries-run-history:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The platform introduction and execution flow name reviewable artifacts and a human decision
       point when a run fails.
-  lessons_learned.1:
+  lessons_learned.identifies-coordination-ownership-retained-context-challenges:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: The authors frame these as engineering challenges and describe a durable run as their response;
       they do not quantify a shift in review bottlenecks.
-  lessons_learned.2:
+  lessons_learned.keeps-spectre-security-agents-separate-infrastructure:
     kind: opinion
     provenance: reported
     confidence: medium
@@ -162,87 +175,39 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.2
-      - primitives.3
-      - primitives.4
+      - primitives.start-a-durable-run
+      - primitives.execute-the-agent-in-the-sandbox
+      - primitives.return-reviewable-artifacts
       note: 'The named run is the first-version flow the post documents: create a run, start a fresh sandbox, hydrate
         the repository, run the agent, stream output, persist artifacts.'
     human_involvement:
       state: not-applicable
-      claim_paths: []
       note: There is no single platform-wide agent review boundary. Scoped downstream operating-model claims remain
         in research details; access controls are described separately.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.sandbox
-      - architecture.harness
-      - architecture.tool_access
-      - architecture.credentials
-      - architecture.context_mgmt
-      - architecture.interfaces
     validation:
       state: reported
       claim_paths:
-      - primitives.5
+      - primitives.scheduled-verification-loops
       note: Verification loops run as scheduled ordinary runs; the post documents no separate check inside an interactive
         run beyond the review boundary.
     observations:
       state: unreported
-      claim_paths: []
       note: The platform post reports no measured outcomes. The security article's figures describe the separate
         agentic SOC, which runs on its own infrastructure by design.
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
-      - lessons_learned.2
   implementation_fields:
     model:
       state: unreported
-      claim_paths: []
       note: 'The post describes provider adapters and multi-provider support but names no model.'
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: reported
-      claim_paths:
-      - architecture.sandbox
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
     knowledge:
       state: unreported
-      claim_paths: []
       note: No knowledge store for Spectre runs is documented; the SOC's memory system belongs to the separate security
         platform.
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
-    credentials:
-      state: reported
-      claim_paths:
-      - architecture.credentials
     interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
       note: The CLI joins Slack, the web app, and automations as a surface over the same durable run.
-  primitive_roles:
-    primitives.0: mechanism
-    primitives.1: mechanism
-    primitives.2: workflow
-    primitives.3: workflow
-    primitives.4: workflow
-    primitives.5: validation
-  observations: {}

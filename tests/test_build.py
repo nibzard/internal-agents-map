@@ -23,7 +23,6 @@ SPEC = importlib.util.spec_from_file_location("catalog_build", ROOT / "scripts" 
 build = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader
 SPEC.loader.exec_module(build)
-PAGE_SCHEMA = build.AGENT_SCHEMA["definitions"]["pageContent"]["properties"]
 # The agent schema checks the shape of a source; validate_source checks its capture.
 SOURCE_VALIDATOR = build.Draft7Validator(
     {
@@ -48,7 +47,6 @@ class BuildTests(unittest.TestCase):
                 "approach_type": "agent",
                 "autonomy": "unknown",
                 "operating_models": [{"attention_boundary": "unknown"}],
-                "rubric": {"state": "unknown"},
                 "architecture": {"sandbox": value},
             }
             for value in values
@@ -169,7 +167,6 @@ class BuildTests(unittest.TestCase):
         source: dict | None = None,
         markdown: bytes = b"# Preserved source\n\nEvidence.\n",
         pdf: bytes | None = None,
-        archived_url: str | None = None,
     ) -> tuple[dict, dict, Path]:
         source = copy.deepcopy(source or self.source_fixture())
         source_id = source["id"]
@@ -202,9 +199,6 @@ class BuildTests(unittest.TestCase):
             "tool": {"name": "steel", "version": "0.4.4"},
             "artifacts": artifacts,
         }
-        if archived_url is not None:
-            source["archived_url"] = archived_url
-            manifest["external_archive_url"] = archived_url
         manifest_path = bundle / "metadata.json"
         manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
         source["capture"] = {"manifest_path": f"{relative_bundle}/metadata.json"}
@@ -231,7 +225,7 @@ class BuildTests(unittest.TestCase):
 
     def test_normalized_export_has_linked_collections(self) -> None:
         export = build.normalize(self.records, self.companies)
-        self.assertEqual(export["schema_version"], 7)
+        self.assertEqual(export["schema_version"], 8)
         claim_ids = {claim["id"] for claim in export["claims"]}
         source_ids = {source["id"] for source in export["sources"]}
         company_ids = {company["id"] for company in export["companies"]}
@@ -260,24 +254,34 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(len(pilot), len(self.records))
         catalog = build.normalize(self.records, self.companies)
         claims = {
-            claim["field"]: claim
+            claim["display_name"]: claim
             for claim in catalog["claims"]
-            if claim["approach_id"] == "github-qubot"
+            if claim["approach_id"] == "github-qubot" and "display_name" in claim
         }
-        self.assertEqual(claims["primitives.0"]["id"], "github-qubot--primitives-0")
-        self.assertEqual(claims["primitives.0"]["display_name"], "Start a Qubot run")
-        for record in pilot:
-            page = record["page_content"]
-            self.assertEqual(set(page["questions"]), set(PAGE_SCHEMA["questions"]["required"]))
-            self.assertEqual(
-                set(page["implementation_fields"]),
-                set(PAGE_SCHEMA["implementation_fields"]["required"]),
-            )
+        self.assertEqual(
+            claims["Start a Qubot run"]["id"], "github-qubot--primitives-start-a-qubot-run"
+        )
+        self.assertEqual(claims["Start a Qubot run"]["field"], "primitives.start-a-qubot-run")
+        for approach in catalog["approaches"]:
+            page = approach["page_content"]
+            self.assertEqual(list(page["questions"]), list(build.QUESTION_KEYS))
+            self.assertEqual(list(page["implementation_fields"]), list(build.ARCHITECTURE_FIELDS))
+            self.assertNotIn("primitive_roles", page)
+            self.assertNotIn("observations", page)
             self.assertNotIn(
                 "not-reviewed",
                 [value["state"] for value in page["questions"].values()]
                 + [value["state"] for value in page["implementation_fields"].values()],
             )
+
+    def test_every_schema_7_claim_id_resolves_through_the_claim_aliases(self) -> None:
+        lines = SCHEMA7_CLAIM_IDS.read_text(encoding="utf-8").splitlines()
+        old_ids = {line for line in lines if not line.startswith("#")}
+        aliases = build.load_claim_aliases()
+        self.assertEqual(set(aliases), old_ids)
+        catalog = build.normalize(self.records, self.companies, aliases)
+        claim_ids = {claim["id"] for claim in catalog["claims"]}
+        self.assertTrue(set(aliases.values()) <= claim_ids)
 
     def test_page_content_rejects_unsupported_reported_and_duplicate_chains(self) -> None:
         record = copy.deepcopy(
@@ -292,12 +296,11 @@ class BuildTests(unittest.TestCase):
         record = copy.deepcopy(
             next(item for item in self.records if item["id"] == "notion-custom-agents")
         )
-        record["page_content"]["observations"]["headline_metric"] = {
-            "duplicate_of": "key_metrics.0",
-            "reason": "Fixture cycle.",
-        }
+        aliases = record["page_content"]["aliases"]
+        alias, target = next(iter(aliases.items()))
+        aliases[target["duplicate_of"]] = {"duplicate_of": alias, "reason": "Fixture cycle."}
         with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
-            build.validate_page_content(record, "fixture.yaml", sources)
+            build.validate_metric_axes(record, "fixture.yaml")
 
     def test_page_content_accepts_all_four_review_states(self) -> None:
         record = copy.deepcopy(next(item for item in self.records if item["id"] == "github-qubot"))
@@ -307,35 +310,41 @@ class BuildTests(unittest.TestCase):
             "claim_paths": [],
             "note": "Fixture scope has no human step.",
         }
-        questions["lessons"] = {
-            "state": "not-reviewed",
-            "claim_paths": [],
-            "note": "Review the next capture.",
-        }
+        questions["lessons"] = {"state": "not-reviewed", "note": "Review the next capture."}
         build.validate_page_content(
             record, "fixture.yaml", {source["id"] for source in record["sources"]}
         )
 
-    def test_a_note_is_optional_for_unreported_and_required_for_every_other_state(self) -> None:
+    def test_a_note_is_optional_for_an_unreported_question_only(self) -> None:
         path = build.AGENTS_DIR / "github-qubot.yaml"
 
-        def record_with(slot: str, key: str, state: str) -> dict:
+        def record_with(slot: str, key: str, value: dict) -> dict:
             record = copy.deepcopy(
                 next(item for item in self.records if item["id"] == "github-qubot")
             )
-            record["page_content"][slot][key] = {"state": state, "claim_paths": []}
+            record["page_content"][slot][key] = value
             return record
 
-        for slot, key in (("implementation_fields", "sandbox"), ("questions", "lessons")):
-            with self.subTest(slot=slot, state="unreported"):
-                build.validate_record(record_with(slot, key, "unreported"), path, set())
-            for state in ("not-reviewed", "not-applicable"):
-                with (
-                    self.subTest(slot=slot, state=state),
-                    contextlib.redirect_stderr(io.StringIO()),
-                    self.assertRaises(SystemExit),
-                ):
-                    build.validate_record(record_with(slot, key, state), path, set())
+        build.validate_record(
+            record_with(
+                "questions", "human_involvement", {"state": "unreported", "claim_paths": []}
+            ),
+            path,
+            set(),
+        )
+        for slot, key, value in (
+            ("questions", "human_involvement", {"state": "not-reviewed", "claim_paths": []}),
+            ("questions", "human_involvement", {"state": "not-applicable", "claim_paths": []}),
+            ("implementation_fields", "sandbox", {"state": "unreported"}),
+            ("implementation_fields", "sandbox", {"state": "not-reviewed"}),
+            ("implementation_fields", "sandbox", {"state": "not-applicable"}),
+        ):
+            with (
+                self.subTest(slot=slot, value=value),
+                contextlib.redirect_stderr(io.StringIO()),
+                self.assertRaises(SystemExit),
+            ):
+                build.validate_record(record_with(slot, key, value), path, set())
 
     def test_architecture_rejects_placeholder_and_empty_values(self) -> None:
         record = next(item for item in self.records if item["id"] == "github-qubot")
@@ -376,25 +385,24 @@ class BuildTests(unittest.TestCase):
         present_but_unreported = copy.deepcopy(base)
         present_but_unreported["page_content"]["implementation_fields"]["model"] = {
             "state": "unreported",
-            "claim_paths": [],
+            "note": "Fixture.",
         }
         stderr = io.StringIO()
         with contextlib.redirect_stderr(stderr), self.assertRaises(SystemExit):
             build.validate_record(present_but_unreported, path, set())
         self.assertIn(
-            "implementation_fields.model must be reported if and only if architecture.model "
-            "is present",
+            "implementation_fields.model has a state, but architecture.model is present",
             stderr.getvalue(),
         )
-
-        absent_but_reported = copy.deepcopy(base)
-        self.assertNotIn("sandbox", absent_but_reported["architecture"])
-        absent_but_reported["page_content"]["implementation_fields"]["sandbox"] = {
-            "state": "reported",
-            "claim_paths": ["architecture.sandbox"],
-        }
-        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
-            build.validate_record(absent_but_reported, path, set())
+        for approach in build.normalize(self.records, self.companies)["approaches"]:
+            architecture = next(
+                record.get("architecture") or {}
+                for record in self.records
+                if record["id"] == approach["id"]
+            )
+            for key, value in approach["page_content"]["implementation_fields"].items():
+                with self.subTest(record=approach["id"], field=key):
+                    self.assertEqual(key in architecture, value["state"] == "reported")
 
     def test_valid_markdown_only_capture(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -415,14 +423,6 @@ class BuildTests(unittest.TestCase):
                 loaded = build.load_capture_manifest(source, "fixture.yaml")
             self.assertEqual(loaded, manifest)
             self.assertIn("pdf", loaded["artifacts"])
-
-    def test_archived_url_requires_https(self) -> None:
-        for value in ("", "http://web.archive.org/example", "https://"):
-            with self.subTest(value=value):
-                source = self.source_fixture()
-                source["archived_url"] = value
-                with tempfile.TemporaryDirectory() as directory:
-                    self.assert_source_invalid(source, Path(directory))
 
     def test_capture_requires_exact_authored_shape(self) -> None:
         for capture in ({}, {"manifest_path": "unused", "extra": True}, "unused"):
@@ -550,17 +550,6 @@ class BuildTests(unittest.TestCase):
                 source, _, _ = self.write_capture(root, pdf=pdf)
                 self.assert_source_invalid(source, root)
 
-    def test_capture_external_archive_must_match_source(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            source, manifest, path = self.write_capture(
-                root,
-                archived_url="https://web.archive.org/web/20260831/https://example.com/article",
-            )
-            manifest["external_archive_url"] = "https://web.archive.org/web/different"
-            self.rewrite_manifest(path, manifest)
-            self.assert_source_invalid(source, root)
-
     def test_normalized_export_resolves_capture_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -574,21 +563,13 @@ class BuildTests(unittest.TestCase):
             normalized_source = next(
                 item for item in export["sources"] if item["id"] == source["id"]
             )
-            self.assertEqual(export["schema_version"], 7)
+            self.assertEqual(export["schema_version"], 8)
             self.assertEqual(normalized_source["capture"], manifest)
             self.assertNotIn("manifest_path", normalized_source["capture"])
 
     def test_source_reference_renders_all_archive_combinations(self) -> None:
         original = "[Fixture source](https://example.com/article)"
-        wayback = "https://web.archive.org/web/20260831/https://example.com/article"
         self.assertEqual(build.render_source_reference(self.source_fixture()), original)
-
-        external_source = self.source_fixture()
-        external_source["archived_url"] = wayback
-        self.assertEqual(
-            build.render_source_reference(external_source),
-            f"{original} ([Wayback]({wayback}))",
-        )
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -602,16 +583,6 @@ class BuildTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            both_source, _, _ = self.write_capture(root, archived_url=wayback)
-            with mock.patch.object(build, "ROOT", root):
-                self.assertEqual(
-                    build.render_source_reference(both_source),
-                    f"{original} ([snapshot](../archive/sources/fixture-source/content.md), "
-                    f"[Wayback]({wayback}), captured 2026-08-31)",
-                )
-
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
             pdf_source, _, _ = self.write_capture(root, pdf=b"%PDF-1.7\nfixture\n%%EOF\n")
             with mock.patch.object(build, "ROOT", root):
                 self.assertEqual(
@@ -621,7 +592,8 @@ class BuildTests(unittest.TestCase):
                 )
 
     def test_the_default_build_writes_the_data_and_the_repository_documents(self) -> None:
-        outputs = build.data_outputs(self.records, build.normalize(self.records, self.companies))
+        catalog = build.normalize(self.records, self.companies, build.load_claim_aliases())
+        outputs = build.data_outputs(self.records, catalog)
         self.assertEqual(
             set(outputs),
             {
@@ -774,14 +746,12 @@ class BuildTests(unittest.TestCase):
                     {"attention_boundary": "work-product-review"},
                     {"attention_boundary": "unknown"},
                 ],
-                "rubric": {"state": "mixed"},
                 "architecture": {"interfaces": ["slack"]},
             },
             {
                 "approach_type": "supporting-pattern",
                 "autonomy": "unknown",
                 "operating_models": [{"attention_boundary": "unknown"}],
-                "rubric": {"state": "unknown"},
                 "architecture": {"sandbox": "Docker container"},
             },
         ]
@@ -1230,14 +1200,9 @@ class BuildTests(unittest.TestCase):
             "domains": ["coding"],
             "autonomy": "unknown",
             "operating_models": [{"scope": "task to output", "attention_boundary": "unknown"}],
-            "rubric": {
-                "invocation": ["unknown"],
-                "state": "unknown",
-                "identity": "unknown",
-                "evidence_strength": "limited-primary",
-            },
+            "rubric": {"invocation": ["unknown"], "evidence_strength": "limited-primary"},
             "summary": "A fixture agent.",
-            "key_metrics": ["Ten runs a day."],
+            "key_metrics": [{"id": "ten-runs-a-day", "text": "Ten runs a day."}],
             "sources": [
                 {
                     "id": "fixture-source",
@@ -1251,7 +1216,7 @@ class BuildTests(unittest.TestCase):
             ],
             "evidence": {
                 "summary": [{"locator": "Paragraph 1"}],
-                "key_metrics.0": [{"source_id": "fixture-source"}],
+                "key_metrics.ten-runs-a-day": [{"source_id": "fixture-source"}],
                 "operating_models.0": [{"relation": "contextualizes", "locator": "Paragraph 2"}],
             },
             "claim_metadata": {
@@ -1290,7 +1255,7 @@ class BuildTests(unittest.TestCase):
             [{"source_id": "fixture-source", "relation": "supports", "locator": "Paragraph 1"}],
         )
         self.assertEqual(
-            claims["key_metrics.0"]["evidence"],
+            claims["key_metrics.ten-runs-a-day"]["evidence"],
             [{"source_id": "fixture-source", "relation": "supports"}],
         )
         self.assertEqual(
@@ -1308,7 +1273,10 @@ class BuildTests(unittest.TestCase):
             ("inference", "catalog-judgment"),
         )
         self.assertEqual(
-            (claims["key_metrics.0"]["kind"], claims["key_metrics.0"]["provenance"]),
+            (
+                claims["key_metrics.ten-runs-a-day"]["kind"],
+                claims["key_metrics.ten-runs-a-day"]["provenance"],
+            ),
             ("metric", "reported"),
         )
 
@@ -1335,7 +1303,7 @@ class BuildTests(unittest.TestCase):
             "summary": [
                 {"source_id": "fixture-source", "relation": "supports", "locator": "Paragraph 1"}
             ],
-            "key_metrics.0": [{"source_id": "fixture-source", "relation": "supports"}],
+            "key_metrics.ten-runs-a-day": [{"source_id": "fixture-source", "relation": "supports"}],
             "operating_models.0": [
                 {
                     "source_id": "fixture-source",
@@ -1349,7 +1317,10 @@ class BuildTests(unittest.TestCase):
             "provenance": "catalog-judgment",
             **explicit["claim_metadata"]["operating_models.0"],
         }
-        explicit["claim_metadata"]["key_metrics.0"] = {"kind": "metric", "provenance": "reported"}
+        explicit["claim_metadata"]["key_metrics.ten-runs-a-day"] = {
+            "kind": "metric",
+            "provenance": "reported",
+        }
         self.assertEqual(
             json.dumps(self.export_of(explicit), indent=2),
             json.dumps(self.export_of(self.shortest_record()), indent=2),
@@ -1429,6 +1400,615 @@ class BuildTests(unittest.TestCase):
         counts = Counter(record["approach_type"] for record in self.records)
         for value, label in labels.items():
             self.assertIn(f"| {label} | {counts[value]} |", patterns)
+
+
+SCHEMA8_FIXTURE = ROOT / "tests" / "fixtures" / "schema8" / "fixture-agent.yaml"
+SCHEMA7_CLAIM_IDS = ROOT / "tests" / "fixtures" / "schema7" / "claim-ids.txt"
+
+
+class SchemaEightTests(unittest.TestCase):
+    """Check the schema 8 authored form and export with a hand-written fixture record."""
+
+    company = {
+        "id": "fixture",
+        "name": "Fixture",
+        "homepage": "https://www.fixture.example/",
+        "logo": "none",
+        "logo_note": "No logo asset has been collected yet.",
+    }
+
+    def fixture(self) -> dict:
+        return yaml.load(SCHEMA8_FIXTURE.read_text(encoding="utf-8"), Loader=build.UniqueKeyLoader)
+
+    def validate(self, record: dict) -> None:
+        build.validate_record(record, SCHEMA8_FIXTURE, set())
+
+    def export_of(self, record: dict, claim_aliases: dict | None = None) -> dict:
+        self.validate(record)
+        return build.normalize([record], [self.company], claim_aliases)
+
+    def error_of(self, record: dict) -> str:
+        stderr = io.StringIO()
+        with contextlib.redirect_stderr(stderr), self.assertRaises(SystemExit):
+            self.validate(record)
+        return stderr.getvalue()
+
+    def claims_of(self, record: dict) -> dict[str, dict]:
+        return {claim["field"]: claim for claim in self.export_of(record)["claims"]}
+
+    def test_the_fixture_is_a_valid_schema_8_record(self) -> None:
+        export = self.export_of(self.fixture())
+        self.assertEqual(export["schema_version"], 8)
+        self.assertEqual(
+            list(export),
+            ["schema_version", "approaches", "claims", "sources", "companies", "claim_aliases"],
+        )
+        self.assertEqual(export["claim_aliases"], {})
+        self.assertEqual(
+            export["approaches"][0]["rubric"],
+            {"invocation": ["background"], "evidence_strength": "detailed-primary"},
+        )
+
+    def test_claim_ids_and_fields_use_item_ids(self) -> None:
+        claim_ids = self.export_of(self.fixture())["approaches"][0]["claim_ids"]
+        self.assertIn("fixture-agent--primitives-open-a-run", claim_ids)
+        self.assertIn("fixture-agent--key-metrics-forty-prs-a-week", claim_ids)
+        self.assertIn("fixture-agent--lessons-learned-gate-before-review", claim_ids)
+
+    def test_primitive_claims_carry_item_id_display_name_and_role(self) -> None:
+        claim = self.claims_of(self.fixture())["primitives.test-gate"]
+        self.assertEqual(claim["id"], "fixture-agent--primitives-test-gate")
+        self.assertEqual(claim["text"], "The test suite must pass before review")
+        self.assertEqual(list(claim)[-3:], ["display_name", "item_id", "role"])
+        self.assertEqual(
+            (claim["display_name"], claim["item_id"], claim["role"]),
+            ("Test gate", "test-gate", "validation"),
+        )
+
+    def test_metric_claims_carry_their_axes_or_their_alias_target(self) -> None:
+        claims = self.claims_of(self.fixture())
+        headline = claims["headline_metric"]
+        self.assertNotIn("item_id", headline)
+        self.assertEqual(list(headline)[-3:], ["category", "basis", "subject"])
+        self.assertEqual(headline["category"], "adoption-output")
+        canonical = claims["key_metrics.half-merged"]
+        self.assertEqual(canonical["text"], "Half of the pull requests merge without change")
+        self.assertEqual(list(canonical)[-4:], ["item_id", "category", "basis", "subject"])
+        self.assertEqual(canonical["item_id"], "half-merged")
+        alias = claims["key_metrics.forty-prs-a-week"]
+        self.assertEqual(list(alias)[-3:], ["item_id", "duplicate_of", "reason"])
+        self.assertEqual(alias["duplicate_of"], "fixture-agent--headline-metric")
+        self.assertEqual(alias["reason"], "Same count and period as the headline.")
+        self.assertNotIn("category", alias)
+        lesson = claims["lessons_learned.gate-before-review"]
+        self.assertEqual(list(lesson)[-1], "item_id")
+        self.assertEqual(lesson["item_id"], "gate-before-review")
+
+    def test_the_export_derives_every_question_and_implementation_field(self) -> None:
+        page = self.export_of(self.fixture())["approaches"][0]["page_content"]
+        self.assertEqual(
+            list(page),
+            [
+                "version",
+                "reviewed_at",
+                "source_ids",
+                "workflow_scope",
+                "questions",
+                "implementation_fields",
+                "aliases",
+            ],
+        )
+        questions = page["questions"]
+        self.assertEqual(list(questions), list(build.QUESTION_KEYS))
+        self.assertEqual(questions["purpose"], {"state": "reported", "claim_paths": ["summary"]})
+        self.assertEqual(
+            questions["workflow"]["claim_paths"],
+            ["primitives.write-the-change", "primitives.open-a-run"],
+        )
+        self.assertEqual(
+            questions["implementation"]["claim_paths"],
+            ["architecture.model", "architecture.harness", "architecture.interfaces"],
+        )
+        self.assertEqual(
+            questions["observations"],
+            {
+                "state": "reported",
+                "claim_paths": [
+                    "headline_metric",
+                    "key_metrics.forty-prs-a-week",
+                    "key_metrics.half-merged",
+                ],
+                "note": "The talk gives the merge share without a denominator.",
+            },
+        )
+        self.assertEqual(
+            questions["lessons"]["claim_paths"], ["lessons_learned.gate-before-review"]
+        )
+        fields = page["implementation_fields"]
+        self.assertEqual(list(fields), list(build.ARCHITECTURE_FIELDS))
+        self.assertEqual(
+            fields["model"], {"state": "reported", "claim_paths": ["architecture.model"]}
+        )
+        self.assertEqual(
+            fields["harness"],
+            {
+                "state": "reported",
+                "claim_paths": ["architecture.harness"],
+                "note": "The talk names the loop but not its version.",
+            },
+        )
+        self.assertEqual(
+            fields["sandbox"],
+            {
+                "state": "not-applicable",
+                "claim_paths": [],
+                "note": "The agent runs no code of its own.",
+            },
+        )
+        self.assertEqual(fields["tool_access"], {"state": "unreported", "claim_paths": []})
+        self.assertEqual(
+            fields["credentials"]["note"], "The post names a bot account but not its scope."
+        )
+        self.assertEqual(
+            page["aliases"],
+            {
+                "key_metrics.forty-prs-a-week": {
+                    "duplicate_of": "headline_metric",
+                    "reason": "Same count and period as the headline.",
+                }
+            },
+        )
+
+    def test_a_derived_question_that_is_not_reported_exports_no_claim_paths(self) -> None:
+        record = self.fixture()
+        record["page_content"]["questions"]["lessons"] = {
+            "state": "unreported",
+            "note": "The lesson is the team's own and does not transfer.",
+        }
+        page = self.export_of(record)["approaches"][0]["page_content"]
+        self.assertEqual(page["questions"]["lessons"]["claim_paths"], [])
+
+    def test_a_reported_derived_question_needs_a_derived_claim(self) -> None:
+        record = self.fixture()
+        del record["lessons_learned"]
+        del record["evidence"]["lessons_learned.gate-before-review"]
+        self.assertIn(
+            "page_content.questions.lessons is reported, but the record has no claim to derive",
+            self.error_of(record),
+        )
+
+    def test_reordering_primitives_keeps_every_claim_and_its_evidence(self) -> None:
+        def evidence(record: dict) -> dict[str, list]:
+            return {claim["id"]: claim["evidence"] for claim in self.export_of(record)["claims"]}
+
+        record = self.fixture()
+        before = evidence(copy.deepcopy(record))
+        for field in ("primitives", "key_metrics", "lessons_learned"):
+            record[field].reverse()
+        self.assertEqual(evidence(record), before)
+
+    def test_an_index_path_fails_with_a_clear_message(self) -> None:
+        def evidence_key(record: dict) -> None:
+            record["evidence"]["primitives.0"] = record["evidence"].pop("primitives.open-a-run")
+
+        def metadata_key(record: dict) -> None:
+            record["claim_metadata"]["key_metrics.1"] = record["claim_metadata"].pop(
+                "key_metrics.half-merged"
+            )
+
+        def workflow_path(record: dict) -> None:
+            record["page_content"]["questions"]["workflow"]["claim_paths"] = ["primitives.0"]
+
+        def alias_target(record: dict) -> None:
+            record["page_content"]["aliases"]["key_metrics.forty-prs-a-week"]["duplicate_of"] = (
+                "key_metrics.1"
+            )
+
+        for mutate, where, path in (
+            (evidence_key, "evidence", "primitives.0"),
+            (metadata_key, "claim_metadata", "key_metrics.1"),
+            (workflow_path, "page_content.questions.workflow.claim_paths", "primitives.0"),
+            (
+                alias_target,
+                "page_content.aliases.key_metrics.forty-prs-a-week.duplicate_of",
+                "key_metrics.1",
+            ),
+        ):
+            with self.subTest(where=where):
+                record = self.fixture()
+                mutate(record)
+                self.assertIn(
+                    f"fixture-agent.yaml: {where} uses the index path {path!r}. "
+                    "Name the item by its id instead",
+                    self.error_of(record),
+                )
+
+    def test_items_need_a_kebab_case_id_and_a_primitive_needs_a_role(self) -> None:
+        cases = (
+            ("primitives", 0, "id", None, "primitives.0: 'id' is a required property"),
+            ("primitives", 0, "role", None, "primitives.0: 'role' is a required property"),
+            ("primitives", 0, "role", "helper", "primitives.0.role: 'helper' is not one of"),
+            ("primitives", 0, "id", "Open_A_Run", "primitives.0.id: 'Open_A_Run' does not match"),
+            ("primitives", 0, "id", "3", "primitives.0.id: '3' does not match"),
+            ("key_metrics", 0, "id", None, "key_metrics.0: 'id' is a required property"),
+            (
+                "lessons_learned",
+                0,
+                "text",
+                None,
+                "lessons_learned.0: 'text' is a required property",
+            ),
+        )
+        for field, index, key, value, expected in cases:
+            with self.subTest(field=field, key=key, value=value):
+                record = self.fixture()
+                if value is None:
+                    del record[field][index][key]
+                else:
+                    record[field][index][key] = value
+                self.assertIn(f"fixture-agent.yaml: {expected}", self.error_of(record))
+        record = self.fixture()
+        record["key_metrics"][0] = "40 pull requests a week"
+        self.assertIn(
+            "fixture-agent.yaml: key_metrics.0: '40 pull requests a week' is not of type 'object'",
+            self.error_of(record),
+        )
+
+    def test_item_ids_are_unique_within_their_list(self) -> None:
+        record = self.fixture()
+        record["primitives"][1]["id"] = "open-a-run"
+        self.assertIn(
+            "fixture-agent.yaml: primitives uses the id 'open-a-run' more than once.",
+            self.error_of(record),
+        )
+
+    def test_removed_fields_fail(self) -> None:
+        def rubric_state(record: dict) -> None:
+            record["rubric"]["state"] = "unknown"
+
+        def rubric_identity(record: dict) -> None:
+            record["rubric"]["identity"] = "unknown"
+
+        def family(record: dict) -> None:
+            record["family_id"] = "fixture-family"
+
+        def archived(record: dict) -> None:
+            record["sources"][0]["archived_url"] = (
+                "https://web.archive.org/web/1/https://example.com/"
+            )
+
+        def roles(record: dict) -> None:
+            record["page_content"]["primitive_roles"] = {"primitives.open-a-run": "workflow"}
+
+        def observations(record: dict) -> None:
+            record["page_content"]["observations"] = {}
+
+        for mutate, expected in (
+            (
+                rubric_state,
+                "rubric: Additional properties are not allowed ('state' was unexpected)",
+            ),
+            (
+                rubric_identity,
+                "rubric: Additional properties are not allowed ('identity' was unexpected)",
+            ),
+            (
+                family,
+                "(record): Additional properties are not allowed ('family_id' was unexpected)",
+            ),
+            (
+                archived,
+                "sources.0: Additional properties are not allowed ('archived_url' was unexpected)",
+            ),
+            (
+                roles,
+                "page_content: Additional properties are not allowed ('primitive_roles' was unexpected)",
+            ),
+            (
+                observations,
+                "page_content: Additional properties are not allowed ('observations' was unexpected)",
+            ),
+        ):
+            with self.subTest(expected=expected):
+                record = self.fixture()
+                mutate(record)
+                self.assertIn(f"fixture-agent.yaml: {expected}", self.error_of(record))
+
+    def test_authored_claim_paths_on_a_derived_question_fail(self) -> None:
+        for question in build.DERIVED_QUESTIONS:
+            with self.subTest(question=question):
+                record = self.fixture()
+                record["page_content"]["questions"][question]["claim_paths"] = ["summary"]
+                self.assertIn(
+                    f"fixture-agent.yaml: page_content.questions.{question}.claim_paths is derived "
+                    "by the build. Remove it.",
+                    self.error_of(record),
+                )
+
+    def test_authored_implementation_fields_hold_only_what_the_build_cannot_derive(self) -> None:
+        def reported(record: dict) -> None:
+            record["page_content"]["implementation_fields"]["model"] = {
+                "state": "reported",
+                "claim_paths": ["architecture.model"],
+            }
+
+        def present_with_a_state(record: dict) -> None:
+            record["page_content"]["implementation_fields"]["model"] = {
+                "state": "unreported",
+                "note": "Fixture.",
+            }
+
+        def absent_without_a_state(record: dict) -> None:
+            record["page_content"]["implementation_fields"]["knowledge"] = {"note": "Fixture."}
+
+        def unreported_without_a_note(record: dict) -> None:
+            record["page_content"]["implementation_fields"]["knowledge"] = {"state": "unreported"}
+
+        for mutate, expected in (
+            (
+                reported,
+                "page_content.implementation_fields.model is derived by the build. Write only "
+                "a note for a present architecture field, or a state and a note for an absent one.",
+            ),
+            (
+                present_with_a_state,
+                "page_content.implementation_fields.model has a state, but architecture.model "
+                "is present, so the build derives reported. Keep only the note.",
+            ),
+            (
+                absent_without_a_state,
+                "page_content.implementation_fields.knowledge needs a state, because "
+                "architecture.knowledge is absent.",
+            ),
+            (
+                unreported_without_a_note,
+                "page_content.implementation_fields.knowledge: 'note' is a required property",
+            ),
+        ):
+            with self.subTest(expected=expected):
+                record = self.fixture()
+                mutate(record)
+                self.assertIn(f"fixture-agent.yaml: {expected}", self.error_of(record))
+
+    def test_every_metric_has_axes_or_is_an_alias(self) -> None:
+        def no_axes(record: dict) -> None:
+            for key in ("category", "basis", "subject"):
+                del record["claim_metadata"]["key_metrics.half-merged"][key]
+
+        def partial_axes(record: dict) -> None:
+            del record["claim_metadata"]["headline_metric"]["subject"]
+
+        def alias_with_axes(record: dict) -> None:
+            record["claim_metadata"]["key_metrics.forty-prs-a-week"] = {
+                "category": "adoption-output",
+                "basis": "estimate",
+                "subject": "Weekly pull requests",
+            }
+
+        def axes_on_a_fact(record: dict) -> None:
+            record["claim_metadata"]["summary"] = {"category": "effectiveness"}
+
+        for mutate, expected in (
+            (
+                no_axes,
+                "key_metrics.half-merged needs category, basis, and subject in claim_metadata, "
+                "or an entry in page_content.aliases.",
+            ),
+            (
+                partial_axes,
+                "headline_metric needs category, basis, and subject in claim_metadata, "
+                "or an entry in page_content.aliases.",
+            ),
+            (
+                alias_with_axes,
+                "key_metrics.forty-prs-a-week is an alias, so its claim_metadata must not "
+                "carry category, basis, or subject.",
+            ),
+            (
+                axes_on_a_fact,
+                "claim_metadata.summary may carry category, basis, and subject only on a metric.",
+            ),
+        ):
+            with self.subTest(expected=expected):
+                record = self.fixture()
+                mutate(record)
+                self.assertIn(f"fixture-agent.yaml: {expected}", self.error_of(record))
+
+    def test_alias_targets_are_canonical_metrics_of_the_same_record(self) -> None:
+        def aliases(record: dict) -> dict:
+            return record["page_content"]["aliases"]
+
+        def self_reference(record: dict) -> None:
+            aliases(record)["key_metrics.forty-prs-a-week"]["duplicate_of"] = (
+                "key_metrics.forty-prs-a-week"
+            )
+
+        def unknown_target(record: dict) -> None:
+            aliases(record)["key_metrics.forty-prs-a-week"]["duplicate_of"] = "key_metrics.missing"
+
+        def not_a_metric(record: dict) -> None:
+            aliases(record)["summary"] = {"duplicate_of": "headline_metric", "reason": "Fixture."}
+
+        def chain(record: dict) -> None:
+            aliases(record)["key_metrics.half-merged"] = {
+                "duplicate_of": "key_metrics.forty-prs-a-week",
+                "reason": "Fixture chain.",
+            }
+            for key in ("category", "basis", "subject"):
+                del record["claim_metadata"]["key_metrics.half-merged"][key]
+
+        for mutate, expected in (
+            (
+                self_reference,
+                "alias 'key_metrics.forty-prs-a-week' has an invalid duplicate target.",
+            ),
+            (
+                unknown_target,
+                "alias 'key_metrics.forty-prs-a-week' has an invalid duplicate target.",
+            ),
+            (not_a_metric, "page_content.aliases may list only metric claims, found 'summary'."),
+            (chain, "alias 'key_metrics.half-merged' may not form a chain or cycle."),
+        ):
+            with self.subTest(expected=expected):
+                record = self.fixture()
+                mutate(record)
+                self.assertIn(f"fixture-agent.yaml: {expected}", self.error_of(record))
+
+    def test_workflow_lists_every_workflow_primitive_and_only_those(self) -> None:
+        for paths in (
+            ["primitives.open-a-run"],
+            ["primitives.open-a-run", "primitives.write-the-change", "primitives.test-gate"],
+        ):
+            with self.subTest(paths=paths):
+                record = self.fixture()
+                record["page_content"]["questions"]["workflow"]["claim_paths"] = paths
+                self.assertIn(
+                    "workflow claim_paths must name exactly the workflow primitives in reading order.",
+                    self.error_of(record),
+                )
+
+    def test_claim_aliases_are_embedded_and_must_name_real_claims(self) -> None:
+        aliases = {
+            "fixture-agent--primitives-0": "fixture-agent--primitives-open-a-run",
+            "fixture-agent--summary": "fixture-agent--summary",
+        }
+        self.assertEqual(self.export_of(self.fixture(), aliases)["claim_aliases"], aliases)
+        stderr = io.StringIO()
+        with contextlib.redirect_stderr(stderr), self.assertRaises(SystemExit):
+            self.export_of(self.fixture(), {"fixture-agent--primitives-9": "fixture-agent--gone"})
+        self.assertIn(
+            "data/claim_aliases.json: 'fixture-agent--primitives-9' names unknown claim "
+            "'fixture-agent--gone'.",
+            stderr.getvalue(),
+        )
+
+    def test_claim_aliases_file_must_be_a_map_of_strings(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "claim_aliases.json"
+            path.write_text('{"a--primitives-0": "a--primitives-one"}\n', encoding="utf-8")
+            self.assertEqual(
+                build.load_claim_aliases(path), {"a--primitives-0": "a--primitives-one"}
+            )
+            for text, expected in (
+                ('["a"]', "data/claim_aliases.json: 'claim aliases' must contain a JSON object."),
+                ('{"a": 1}', "data/claim_aliases.json must map each old claim ID to a claim ID."),
+            ):
+                with self.subTest(text=text):
+                    path.write_text(text, encoding="utf-8")
+                    stderr = io.StringIO()
+                    with contextlib.redirect_stderr(stderr), self.assertRaises(SystemExit):
+                        build.load_claim_aliases(path)
+                    self.assertIn(expected, stderr.getvalue())
+
+    def test_a_capture_manifest_may_keep_an_external_archive_url(self) -> None:
+        source = {
+            "id": "fixture-source",
+            "title": "Fixture source",
+            "url": "https://example.com/article",
+            "kind": "engineering-blog",
+            "provenance_class": "first-party",
+            "accessed_at": "2026-08-31",
+            "last_verified_at": "2026-08-31",
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            bundle = root / "archive" / "sources" / "fixture-source"
+            bundle.mkdir(parents=True)
+            content = b"# Preserved\n"
+            (bundle / "content.md").write_bytes(content)
+            manifest = {
+                "schema_version": 1,
+                "source_id": "fixture-source",
+                "original_url": source["url"],
+                "final_url": source["url"],
+                "captured_at": "2026-08-31T12:34:56Z",
+                "http_status": 200,
+                "tool": {"name": "steel", "version": "0.4.4"},
+                "artifacts": {
+                    "markdown": {
+                        "path": "archive/sources/fixture-source/content.md",
+                        "sha256": f"sha256:{hashlib.sha256(content).hexdigest()}",
+                        "bytes": len(content),
+                    }
+                },
+                "external_archive_url": "https://web.archive.org/web/1/https://example.com/article",
+            }
+            (bundle / "metadata.json").write_text(json.dumps(manifest), encoding="utf-8")
+            source["capture"] = {"manifest_path": "archive/sources/fixture-source/metadata.json"}
+            with mock.patch.object(build, "ROOT", root):
+                self.assertEqual(build.load_capture_manifest(source, "fixture.yaml"), manifest)
+
+    def test_autonomy_must_not_contradict_a_single_operating_model(self) -> None:
+        for autonomy, boundary in (
+            ("drafts-reviewed", "work-product-review"),
+            ("drafts-reviewed", "outcome-review"),
+            ("autonomous", "exception-only"),
+            ("human-in-loop", "continuous-steering"),
+            ("human-in-loop", "work-product-review"),
+            ("assistive", "continuous-steering"),
+            ("unknown", "exception-only"),
+            ("assistive", "unknown"),
+        ):
+            with self.subTest(autonomy=autonomy, boundary=boundary):
+                record = self.fixture()
+                record["autonomy"] = autonomy
+                record["operating_models"][0]["attention_boundary"] = boundary
+                self.validate(record)
+        for autonomy, boundary in (
+            ("autonomous", "work-product-review"),
+            ("assistive", "exception-only"),
+            ("drafts-reviewed", "continuous-steering"),
+            ("human-in-loop", "outcome-review"),
+        ):
+            with self.subTest(autonomy=autonomy, boundary=boundary):
+                record = self.fixture()
+                record["autonomy"] = autonomy
+                record["operating_models"][0]["attention_boundary"] = boundary
+                self.assertIn(
+                    f"fixture-agent.yaml: autonomy {autonomy!r} contradicts the attention "
+                    f"boundary {boundary!r} of the only operating model.",
+                    self.error_of(record),
+                )
+
+    def test_autonomy_is_not_compared_when_a_record_has_several_operating_models(self) -> None:
+        record = self.fixture()
+        record["autonomy"] = "autonomous"
+        record["operating_models"].append(
+            {"scope": "second workflow", "attention_boundary": "exception-only"}
+        )
+        record["evidence"]["operating_models.1"] = [
+            {"source_id": "fixture-agent-source-1", "locator": "Paragraph 7"}
+        ]
+        record["claim_metadata"]["operating_models.1"] = {
+            "confidence": "low",
+            "confidence_reason": "Fixture.",
+            "valid_at": "2026-03",
+        }
+        self.validate(record)
+
+    def test_generated_typescript_keeps_the_values_the_site_needs(self) -> None:
+        generated = build.render_schema_values()
+        for constant in (
+            "PRIMITIVE_ROLE_VALUES",
+            "OBSERVATION_CATEGORY_VALUES",
+            "OBSERVATION_BASIS_VALUES",
+            "REVIEW_STATE_VALUES",
+        ):
+            self.assertIn(f"export const {constant} = ", generated)
+        for constant in ("RUBRIC_STATE_VALUES", "IDENTITY_VALUES"):
+            self.assertNotIn(constant, generated)
+
+    def test_landscape_renders_items_by_id_without_state_or_identity(self) -> None:
+        record = self.fixture()
+        self.validate(record)
+        landscape = build.render_landscape([record])
+        self.assertIn(
+            "- Open a run: An issue label starts a run <small>Sources: [fixture-agent-source-1]",
+            landscape,
+        )
+        self.assertIn("- 40 pull requests a week <small>Sources:", landscape)
+        self.assertNotIn("| State |", landscape)
+        self.assertNotIn("| Identity |", landscape)
 
 
 if __name__ == "__main__":

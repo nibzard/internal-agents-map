@@ -22,8 +22,6 @@ rubric:
   invocation:
   - background
   - event-driven
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: A specialized agent that automatically reviews 10,000+ PRs a week across 56 repositories, emphasizing grounded
   high-confidence findings over noisy comments.
@@ -36,23 +34,31 @@ architecture:
   tool_access: Reviews Go, iOS, Android, web, infrastructure, and data code
   knowledge: Grounded findings tied to evidence
 primitives:
-- name: Grounded findings
+- id: grounded-findings
+  name: Grounded findings
   desc: Filters review candidates for evidence, confidence, and an actionable file-and-line location
-- {name: Automatic review trigger, desc: Opening a pull request can automatically start the review alongside human reviewers}
-- {name: Lead scout, desc: A scout reads the diff and produces focused investigation leads without trying to verify them}
-- {name: Deep reviewers, desc: Two reviewers investigate the scout's leads and drop the ones that do not hold up}
-- {name: Disprove-it pass, desc: Before publication the system tries to falsify each candidate finding and drops claims that do not survive}
-- {name: Optional fixer, desc: "A person can tag the agent on a review comment; a remote VM applies the requested change and pushes a reviewable commit to the pull request"}
-- {name: Evaluation loop, desc: Changes are tested on real past review misses and high-severity incidents before production acceptance data is checked}
+  role: mechanism
+- {id: automatic-review-trigger, name: Automatic review trigger, desc: Opening a pull request can automatically start the review alongside human reviewers, role: workflow}
+- {id: lead-scout, name: Lead scout, desc: A scout reads the diff and produces focused investigation leads without trying to verify them, role: workflow}
+- {id: deep-reviewers, name: Deep reviewers, desc: Two reviewers investigate the scout's leads and drop the ones that do not hold up, role: workflow}
+- {id: disprove-it-pass, name: Disprove-it pass, desc: Before publication the system tries to falsify each candidate finding and drops claims that do not survive, role: validation}
+- {id: optional-fixer, name: Optional fixer, desc: "A person can tag the agent on a review comment; a remote VM applies the requested change and pushes a reviewable commit to the pull request", role: workflow}
+- {id: evaluation-loop, name: Evaluation loop, desc: Changes are tested on real past review misses and high-severity incidents before production acceptance data is checked, role: validation}
 key_metrics:
-- 10,000+ PRs reviewed in a typical week across 56 repositories
-- 60.2% action rate on settled high/critical findings (measured sample)
-- Roughly $3 average cost per review
-- Findings posted about 7 minutes after a pull request opens on average
+- id: prs-reviewed-typical-week-repositories
+  text: 10,000+ PRs reviewed in a typical week across 56 repositories
+- id: action-rate-settled-high-critical-findings
+  text: 60.2% action rate on settled high/critical findings (measured sample)
+- id: average-cost-per-review
+  text: Roughly $3 average cost per review
+- id: findings-posted-minutes-pull-request-opens
+  text: Findings posted about 7 minutes after a pull request opens on average
 lessons_learned:
-- DoorDash favors fewer actionable review comments, accepting that this policy will miss some issues.
-- DoorDash's reported acceptance rate describes how engineers use published findings; it cannot count issues
-  the reviewer missed.
+- id: favors-fewer-actionable-review-comments-accepting
+  text: DoorDash favors fewer actionable review comments, accepting that this policy will miss some issues.
+- id: acceptance-rate-describes-how-engineers-use
+  text: DoorDash's reported acceptance rate describes how engineers use published findings; it cannot count issues
+    the reviewer missed.
 sources:
 - id: doordash-code-review-source-1
   title: How DoorDash built an AI code reviewer engineers actually listen to
@@ -76,31 +82,31 @@ evidence:
   - source_id: doordash-code-review-source-1
   architecture.knowledge:
   - source_id: doordash-code-review-source-1
-  primitives.0:
+  primitives.grounded-findings:
   - locator: Preserved content.md, lines 56-68,166
-  primitives.1:
+  primitives.automatic-review-trigger:
   - {locator: 'Preserved content.md, line 23'}
-  primitives.2:
+  primitives.lead-scout:
   - {locator: 'Preserved content.md, lines 42–44'}
-  primitives.3:
+  primitives.deep-reviewers:
   - {locator: 'Preserved content.md, lines 42–46'}
-  primitives.4:
+  primitives.disprove-it-pass:
   - {locator: 'Preserved content.md, lines 58–68'}
-  primitives.5:
+  primitives.optional-fixer:
   - {locator: 'Preserved content.md, lines 131–144'}
-  primitives.6:
+  primitives.evaluation-loop:
   - {locator: 'Preserved content.md, lines 170–180'}
-  key_metrics.0:
+  key_metrics.prs-reviewed-typical-week-repositories:
   - locator: Preserved content.md, lines 23
-  key_metrics.1:
+  key_metrics.action-rate-settled-high-critical-findings:
   - locator: Preserved content.md, lines 27
-  key_metrics.2:
+  key_metrics.average-cost-per-review:
   - {locator: 'Preserved content.md, lines 29, 129'}
-  key_metrics.3:
+  key_metrics.findings-posted-minutes-pull-request-opens:
   - {locator: 'Preserved content.md, line 30'}
-  lessons_learned.0:
+  lessons_learned.favors-fewer-actionable-review-comments-accepting:
   - locator: Preserved content.md, lines 56-68,166
-  lessons_learned.1:
+  lessons_learned.acceptance-rate-describes-how-engineers-use:
   - locator: Preserved content.md, lines 56-68
   architecture.interfaces:
   - source_id: doordash-code-review-source-1
@@ -109,13 +115,13 @@ claim_metadata:
     confidence: high
     confidence_reason: The source describes automated findings that engineers evaluate within the pull-request workflow.
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.favors-fewer-actionable-review-comments-accepting:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: The precision-over-recall section states the tradeoff; the later comment-quality discussion
       requires a concrete file, line, and action point.
-  lessons_learned.1:
+  lessons_learned.acceptance-rate-describes-how-engineers-use:
     kind: inference
     provenance: catalog-judgment
     confidence: medium
@@ -123,49 +129,50 @@ claim_metadata:
       does not measure recall over all defects.
   headline_metric:
     metric_scope: Typical weekly PR reviews across 56 onboarded repositories
-  key_metrics.0:
+    category: adoption-output
+    basis: reported-measurement
+    subject: Typical weekly reviews across 56 repositories
+  key_metrics.prs-reviewed-typical-week-repositories:
     metric_scope: Typical weekly PR reviews across 56 onboarded repositories
-  key_metrics.1:
+  key_metrics.action-rate-settled-high-critical-findings:
     metric_scope: Settled high and critical findings that led to code changes before merge
     denominator: 2,256 settled high and critical findings
     measurement_method: Whether the human changed the code before merge in response to the finding
-  key_metrics.2:
+    category: effectiveness
+    basis: reported-measurement
+    subject: Settled high and critical findings that led to code changes
+  key_metrics.average-cost-per-review:
     confidence: medium
     confidence_reason: DoorDash reports its current average review cost without an independent audit.
     metric_scope: Average cost of the current staged review workflow
     unit: USD per review
-  key_metrics.3:
+    category: cost-latency
+    basis: reported-measurement
+    subject: Average cost of the current review workflow
+  key_metrics.findings-posted-minutes-pull-request-opens:
     confidence: medium
     confidence_reason: DoorDash reports average posting latency without a distribution or independent audit.
     metric_scope: Time from pull-request opening to a posted finding
     unit: minutes
+    category: cost-latency
+    basis: reported-measurement
+    subject: Average time from PR opening to a posted finding
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
   source_ids: [doordash-code-review-source-1]
   workflow_scope: Pull request opening → staged review → published finding and optional fix
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.1, primitives.2, primitives.3, primitives.5]}
-    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.5]}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.tool_access, architecture.knowledge, architecture.interfaces]}
-    validation: {state: reported, claim_paths: [primitives.4, primitives.6]}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1, key_metrics.2, key_metrics.3]}
-    lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1]}
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.automatic-review-trigger, primitives.lead-scout, primitives.deep-reviewers, primitives.optional-fixer]}
+    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.optional-fixer]}
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.disprove-it-pass, primitives.evaluation-loop]}
+    observations: {state: reported}
+    lessons: {state: reported}
   implementation_fields:
-    model: {state: unreported, claim_paths: [], note: 'The source says the design is model-agnostic but names
+    model: {state: unreported, note: 'The source says the design is model-agnostic but names
       no current model.'}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: [], note: "The remote VM is documented, but its isolation guarantees are not."}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access]}
-    knowledge: {state: reported, claim_paths: [architecture.knowledge]}
-    context_mgmt: {state: unreported, claim_paths: []}
-    credentials: {state: unreported, claim_paths: []}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces]}
-  primitive_roles: {primitives.0: mechanism, primitives.1: workflow, primitives.2: workflow, primitives.3: workflow, primitives.4: validation, primitives.5: workflow, primitives.6: validation}
-  observations:
-    headline_metric: {category: adoption-output, basis: reported-measurement, subject: Typical weekly reviews across 56 repositories}
-    key_metrics.0: {duplicate_of: headline_metric, reason: "Same review count, repository population, period, and qualification as the headline observation."}
-    key_metrics.1: {category: effectiveness, basis: reported-measurement, subject: Settled high and critical findings that led to code changes}
-    key_metrics.2: {category: cost-latency, basis: reported-measurement, subject: Average cost of the current review workflow}
-    key_metrics.3: {category: cost-latency, basis: reported-measurement, subject: Average time from PR opening to a posted finding}
+    sandbox: {state: unreported, note: "The remote VM is documented, but its isolation guarantees are not."}
+  aliases:
+    key_metrics.prs-reviewed-typical-week-repositories: {duplicate_of: headline_metric, reason: "Same review count, repository population, period, and qualification as the headline observation."}

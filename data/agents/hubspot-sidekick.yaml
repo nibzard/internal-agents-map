@@ -18,8 +18,6 @@ operating_models:
 rubric:
   invocation:
   - event-driven
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Sidekick is HubSpot's internal AI code reviewer, built by its Developer Experience AI team. It runs on every
   pull request in GitHub. A second Judge Agent evaluates each draft comment for succinctness, accuracy, and
@@ -34,17 +32,21 @@ architecture:
   knowledge: Optional repo-specific custom instructions can be incorporated into the review prompt; the feature
     recently launched
 primitives:
-- {name: Trigger review, desc: "Review runs automatically when a pull request is created or marked ready for review, or when Sidekick is requested as a reviewer"}
-- {name: Draft the review, desc: "Sidekick produces the initial review of the pull request"}
-- {name: Judge each draft comment, desc: "A second Judge Agent evaluates every draft comment for succinctness, accuracy, and actionability"}
-- {name: Post passing comments, desc: "Only comments that pass the judge evaluation are posted to GitHub; the rest are filtered out"}
+- {id: trigger-review, name: Trigger review, desc: "Review runs automatically when a pull request is created or marked ready for review, or when Sidekick is requested as a reviewer", role: workflow}
+- {id: draft-the-review, name: Draft the review, desc: "Sidekick produces the initial review of the pull request", role: workflow}
+- {id: judge-each-draft-comment, name: Judge each draft comment, desc: "A second Judge Agent evaluates every draft comment for succinctness, accuracy, and actionability", role: validation}
+- {id: post-passing-comments, name: Post passing comments, desc: "Only comments that pass the judge evaluation are posted to GitHub; the rest are filtered out", role: workflow}
 key_metrics:
-- Reviews every pull request
-- Engineer feedback time cut by 90%
-- Over 80% thumbs-up reaction rate on review feedback during the preceding couple of months
+- id: reviews-every-pull-request
+  text: Reviews every pull request
+- id: engineer-feedback-time-cut
+  text: Engineer feedback time cut by 90%
+- id: thumbs-reaction-rate-review-feedback
+  text: Over 80% thumbs-up reaction rate on review feedback during the preceding couple of months
 lessons_learned:
-- Unhelpful rather than incorrect feedback was the most common failure mode; prompt tuning alone could not eliminate
-  it, and a second judge agent filtering draft comments was the single most important factor in review effectiveness
+- id: unhelpful-rather-incorrect-feedback-most-common
+  text: Unhelpful rather than incorrect feedback was the most common failure mode; prompt tuning alone could not eliminate
+    it, and a second judge agent filtering draft comments was the single most important factor in review effectiveness
 sources:
 - id: hubspot-sidekick-source-1
   title: Automated code review, the 6-month evolution
@@ -89,30 +91,30 @@ evidence:
   architecture.knowledge:
   - source_id: hubspot-sidekick-source-1
     locator: Preserved content.md, line 129
-  primitives.0:
+  primitives.trigger-review:
   - source_id: hubspot-sidekick-source-2
     locator: Preserved content.md, line 57
   - source_id: hubspot-sidekick-source-1
     locator: Preserved content.md, line 14
-  primitives.1:
+  primitives.draft-the-review:
   - source_id: hubspot-sidekick-source-1
     locator: Preserved content.md, lines 65, 79
-  primitives.2:
+  primitives.judge-each-draft-comment:
   - source_id: hubspot-sidekick-source-1
     locator: Preserved content.md, lines 79–83
-  primitives.3:
+  primitives.post-passing-comments:
   - source_id: hubspot-sidekick-source-1
     locator: Preserved content.md, line 85
-  key_metrics.0:
+  key_metrics.reviews-every-pull-request:
   - source_id: hubspot-sidekick-source-1
     locator: Preserved content.md, lines 14
-  key_metrics.1:
+  key_metrics.engineer-feedback-time-cut:
   - source_id: hubspot-sidekick-source-1
     locator: Preserved content.md, lines 14–18
-  key_metrics.2:
+  key_metrics.thumbs-reaction-rate-review-feedback:
   - source_id: hubspot-sidekick-source-1
     locator: Preserved content.md, lines 99–116
-  lessons_learned.0:
+  lessons_learned.unhelpful-rather-incorrect-feedback-most-common:
   - source_id: hubspot-sidekick-source-1
     locator: Preserved content.md, lines 71–87
 claim_metadata:
@@ -127,22 +129,30 @@ claim_metadata:
     valid_at: 2026-03
     reported_by: HubSpot
     metric_scope: Time for engineers to receive code feedback from Sidekick; not overall PR completion time
-  key_metrics.0:
+    category: cost-latency
+    basis: reported-measurement
+    subject: 'Sidekick review coverage of
+      HubSpot pull requests and the time engineers wait for feedback'
+  key_metrics.reviews-every-pull-request:
     confidence: medium
     confidence_reason: HubSpot reported the figures in its own engineering blog.
     metric_scope: Pull-request coverage after the six-month rollout
     denominator: HubSpot pull requests
-  key_metrics.1:
+  key_metrics.engineer-feedback-time-cut:
     confidence: medium
     confidence_reason: HubSpot reported the figures in its own engineering blog.
     metric_scope: Time for engineers to receive code feedback from Sidekick; not overall PR completion time
-  key_metrics.2:
+  key_metrics.thumbs-reaction-rate-review-feedback:
     confidence: medium
     confidence_reason: HubSpot reported the figures in its own engineering blog.
     metric_scope: Developer emoji reactions on review comments during the preceding couple of months
     denominator: Thumbs-up and thumbs-down reactions; not all developers or all reviews
     measurement_method: Emoji reactions and replies on review comments
-  lessons_learned.0:
+    category: effectiveness
+    basis: reported-measurement
+    subject: 'Developer thumbs-up share of
+      reactions on Sidekick review comments over the preceding couple of months'
+  lessons_learned.unhelpful-rather-incorrect-feedback-most-common:
     kind: opinion
     provenance: reported
     confidence: medium
@@ -154,37 +164,26 @@ page_content:
   source_ids: [hubspot-sidekick-source-1, hubspot-sidekick-source-2]
   workflow_scope: Pull request opened → Sidekick draft review → judge-gated comments posted to GitHub
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.0, primitives.1, primitives.3]}
-    human_involvement: {state: unreported, claim_paths: [], note: 'The review flow is automated end to end. The
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.trigger-review, primitives.draft-the-review, primitives.post-passing-comments]}
+    human_involvement: {state: unreported, note: 'The review flow is automated end to end. The
       captures document post-hoc emoji and thread feedback on comments (source 1, lines 103–108) and continued human
       review for system design and architecture (line 12), but no required human checkpoint inside the review flow.'}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.tool_access, architecture.knowledge,
-      architecture.interfaces]}
-    validation: {state: reported, claim_paths: [primitives.2]}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1, key_metrics.2]}
-    lessons: {state: reported, claim_paths: [lessons_learned.0]}
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.judge-each-draft-comment]}
+    observations: {state: reported}
+    lessons: {state: reported}
   implementation_fields:
-    model: {state: unreported, claim_paths: [], note: 'No capture states which model the review runs on. Multi-model
+    model: {state: unreported, note: 'No capture states which model the review runs on. Multi-model
       support (Claude, GPT, Gemini) is a capability of the Aviator framework (source 1, line 45), not a statement
       about this reviewer.'}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: [], note: 'Execution isolation of the Aviator runtime is not
+    sandbox: {state: unreported, note: 'Execution isolation of the Aviator runtime is not
       documented. The Kubernetes sandboxing described in source 2 (lines 30–37) covers the earlier Crucible
       implementation.'}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access]}
-    knowledge: {state: reported, claim_paths: [architecture.knowledge]}
-    context_mgmt: {state: unreported, claim_paths: [], note: 'The captures describe no mechanism that maintains or
+    context_mgmt: {state: unreported, note: 'The captures describe no mechanism that maintains or
       organizes context for the reviewer over time.'}
-    credentials: {state: unreported, claim_paths: []}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces]}
-  primitive_roles: {primitives.0: workflow, primitives.1: workflow, primitives.2: validation, primitives.3: workflow}
-  observations:
-    headline_metric: {category: cost-latency, basis: reported-measurement, subject: 'Sidekick review coverage of
-      HubSpot pull requests and the time engineers wait for feedback'}
-    key_metrics.0: {duplicate_of: headline_metric, reason: 'Restates the every-pull-request coverage component of
+  aliases:
+    key_metrics.reviews-every-pull-request: {duplicate_of: headline_metric, reason: 'Restates the every-pull-request coverage component of
       the compound headline; same passage, scope, and period.'}
-    key_metrics.1: {duplicate_of: headline_metric, reason: 'Restates the 90 percent feedback-time component of the
+    key_metrics.engineer-feedback-time-cut: {duplicate_of: headline_metric, reason: 'Restates the 90 percent feedback-time component of the
       compound headline; same passage and metric scope.'}
-    key_metrics.2: {category: effectiveness, basis: reported-measurement, subject: 'Developer thumbs-up share of
-      reactions on Sidekick review comments over the preceding couple of months'}

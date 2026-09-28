@@ -30,8 +30,6 @@ operating_models:
 rubric:
   # Invocation is independent of approach_type; list each supported mode or use unknown.
   invocation: [unknown]
-  state: unknown
-  identity: unknown
   evidence_strength: limited-primary
 summary: "A factual description of the reported approach."
 headline_metric: "A self-reported metric with its date and scope."
@@ -40,9 +38,15 @@ headline_metric: "A self-reported metric with its date and scope."
 # tool_access, knowledge, credentials, and context_mgmt. Never write unknown or an empty value.
 architecture: {}
 
+# Each item has a kebab-case id with at least one letter, unique in its list.
+# Claim paths name the item by its id, such as primitives.open-a-run.
+# A primitive has a role: workflow, mechanism, or validation.
 primitives: []
+#   - {id: open-a-run, name: Open a run, desc: "What the step does", role: workflow}
 key_metrics: []
+#   - {id: weekly-runs, text: "A reported metric with its date and scope"}
 lessons_learned: []
+#   - {id: gate-before-review, text: "A scoped lesson"}
 
 sources:
   - id: company-agent-source-1
@@ -53,7 +57,6 @@ sources:
     published_at: "2026-08"
     accessed_at: "2026-08-12"
     last_verified_at: "2026-08-12"
-    # archived_url: "https://web.archive.org/web/<timestamp>/https://example.com/source"
     # capture:
     #   manifest_path: "archive/sources/company-agent-source-1/metadata.json"
 
@@ -76,17 +79,34 @@ claim_metadata:
     confidence: medium
     confidence_reason: "The organization reported this metric without an independent review."
     valid_at: "2026-08"
+    # Every metric has a category, a basis, and a subject, or an entry in page_content.aliases.
+    category: adoption-output
+    basis: qualitative
+    subject: "The thing that the metric counts"
     reported_by: Company
     metric_scope: "The work measured by this metric"
     denominator: "The relevant total, when available"
     measurement_method: "The reported collection method, when available"
 
-# Optional pilot contract. Copy the full example from data/schema.md only after reading
-# every source listed in source_ids. Record all seven question states, all eight
-# architecture-field states, every primitive role, and every observation axis. Do not
-# turn a missing value into "unreported" until the source review is complete.
+# Optional review contract. Write it only after you read every source listed in source_ids.
+# Record the state of all seven questions. Write claim_paths only for workflow,
+# human_involvement, and validation; the build derives the other four and every
+# implementation field. Do not turn a missing value into "unreported" until the source
+# review is complete.
 # page_content:
 #   version: 1
 #   reviewed_at: "2026-08-12"
 #   source_ids: [company-agent-source-1]
 #   workflow_scope: "task input → reviewed output"
+#   questions:
+#     purpose: {state: reported}
+#     workflow: {state: reported, claim_paths: [primitives.open-a-run]}
+#     human_involvement: {state: unreported}
+#     implementation: {state: unreported}
+#     validation: {state: unreported}
+#     observations: {state: reported}
+#     lessons: {state: unreported}
+#   implementation_fields:
+#     sandbox: {state: not-applicable, note: "The agent runs no code."}
+#   aliases:
+#     key_metrics.weekly-runs: {duplicate_of: headline_metric, reason: "Same count and period."}

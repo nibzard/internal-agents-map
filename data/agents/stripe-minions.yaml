@@ -21,8 +21,6 @@ rubric:
   invocation:
   - background
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Homegrown one-shot coding agents that read work context, implement a change
   end-to-end, and produce a PR for human review.
@@ -48,26 +46,31 @@ architecture:
   context_mgmt: Subdirectory-scoped rule files attach as the agent traverses the filesystem, relevant MCP tools run
     over links before the run starts, and blueprint nodes can constrain tools or simplify each subagent's context
 primitives:
-- name: One-shot end-to-end agent
+- id: one-shot-end-to-end-agent
+  name: One-shot end-to-end agent
   desc: Prepares a branch for human review and returns after a limited number of CI repair attempts
-- {name: Start a run from Slack or an internal app, desc: 'An engineer tags the Slack app from the thread discussing
+  role: mechanism
+- {id: start-run-slack-internal-app, name: Start a run from Slack or an internal app, desc: 'An engineer tags the Slack app from the thread discussing
     a change, or starts a minion from the CLI, the web interface, or an integrated internal tool such as the
-    flaky-test ticketing UI'}
-- {name: Hydrate context before the run, desc: 'Relevant MCP tools run deterministically over likely-looking links
-    before the run starts, and rule files scoped to subdirectories attach as the agent traverses the filesystem'}
-- {name: Implement the task in a prewarmed devbox, desc: 'The blueprint''s agent nodes implement the change in an
-    isolated devbox, interleaved with deterministic lint, git, and push nodes'}
-- {name: Repair CI failures within a bounded loop, desc: 'After a push, CI applies autofixes and sends unfixable
-    failures back once for local repair; after at most two CI rounds the branch returns to its human operator'}
-- {name: Open the pull request for human review, desc: 'The minion prepares a pull request following Stripe''s PR
-    template; the engineer opens it and requests review, or sends further instructions that push updated code'}
+    flaky-test ticketing UI', role: workflow}
+- {id: hydrate-context-before-the-run, name: Hydrate context before the run, desc: 'Relevant MCP tools run deterministically over likely-looking links
+    before the run starts, and rule files scoped to subdirectories attach as the agent traverses the filesystem', role: workflow}
+- {id: implement-task-prewarmed-devbox, name: Implement the task in a prewarmed devbox, desc: 'The blueprint''s agent nodes implement the change in an
+    isolated devbox, interleaved with deterministic lint, git, and push nodes', role: workflow}
+- {id: repair-ci-failures-bounded-loop, name: Repair CI failures within a bounded loop, desc: 'After a push, CI applies autofixes and sends unfixable
+    failures back once for local repair; after at most two CI rounds the branch returns to its human operator', role: validation}
+- {id: open-pull-request-human-review, name: Open the pull request for human review, desc: 'The minion prepares a pull request following Stripe''s PR
+    template; the engineer opens it and requests review, or sends further instructions that push updated code', role: workflow}
 key_metrics:
-- Over 1,000 completely minion-produced PRs merged per week in Part 1, with human review and no human-written code
+- id: completely-minion-produced-prs-merged
+  text: Over 1,000 completely minion-produced PRs merged per week in Part 1, with human review and no human-written code
 lessons_learned:
-- Stripe's Minions produce changes unattended, then return them for engineer review; failed runs can receive
-  further instructions.
-- Stripe starts Minions in prewarmed devboxes with recent copies of its main repositories and prepared development
-  services.
+- id: produce-changes-unattended-return-engineer-review
+  text: Stripe's Minions produce changes unattended, then return them for engineer review; failed runs can receive
+    further instructions.
+- id: starts-minions-prewarmed-devboxes-recent-copies
+  text: Stripe starts Minions in prewarmed devboxes with recent copies of its main repositories and prepared development
+    services.
 sources:
 - id: stripe-minions-source-1
   title: 'Minions: Stripe''s one-shot end-to-end coding agents'
@@ -210,12 +213,12 @@ evidence:
   architecture.credentials:
   - source_id: stripe-minions-source-2
     locator: Preserved content.md, lines 40–42, 84
-  primitives.0:
+  primitives.one-shot-end-to-end-agent:
   - source_id: stripe-minions-source-1
     locator: Preserved content.md, lines 50
   - source_id: stripe-minions-source-2
     locator: Preserved content.md, lines 94-98
-  key_metrics.0:
+  key_metrics.completely-minion-produced-prs-merged:
   - source_id: stripe-minions-source-1
     locator: Preserved content.md, lines 14
   - *id001
@@ -223,10 +226,10 @@ evidence:
   - *id003
   - *id004
   - *id005
-  lessons_learned.0:
+  lessons_learned.produce-changes-unattended-return-engineer-review:
   - source_id: stripe-minions-source-1
     locator: Preserved content.md, lines 14-18,50
-  lessons_learned.1:
+  lessons_learned.starts-minions-prewarmed-devboxes-recent-copies:
   - source_id: stripe-minions-source-2
     locator: Preserved content.md, lines 24-32
   architecture.interfaces:
@@ -237,30 +240,30 @@ evidence:
     locator: Preserved content.md, line 64
   - source_id: stripe-minions-source-2
     locator: Preserved content.md, lines 60, 68
-  primitives.1:
+  primitives.start-run-slack-internal-app:
   - {source_id: stripe-minions-source-1, locator: 'Preserved content.md, lines 36, 42'}
-  primitives.2:
+  primitives.hydrate-context-before-the-run:
   - {source_id: stripe-minions-source-1, locator: 'Preserved content.md, line 64'}
   - {source_id: stripe-minions-source-2, locator: 'Preserved content.md, line 68'}
-  primitives.3:
+  primitives.implement-task-prewarmed-devbox:
   - {source_id: stripe-minions-source-2, locator: 'Preserved content.md, lines 30, 52–56, 94'}
-  primitives.4:
+  primitives.repair-ci-failures-bounded-loop:
   - {source_id: stripe-minions-source-1, locator: 'Preserved content.md, lines 72–74'}
   - {source_id: stripe-minions-source-2, locator: 'Preserved content.md, line 96'}
-  primitives.5:
+  primitives.open-pull-request-human-review:
   - {source_id: stripe-minions-source-1, locator: 'Preserved content.md, line 50'}
 claim_metadata:
   operating_models.0:
     confidence: high
     confidence_reason: The source explicitly states that humans review and approve production pull requests.
     valid_at: '2026-02-20'
-  lessons_learned.0:
+  lessons_learned.produce-changes-unattended-return-engineer-review:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: Part 1 distinguishes unattended implementation from human PR review and explicitly describes
       another instruction cycle when the result is insufficient.
-  lessons_learned.1:
+  lessons_learned.starts-minions-prewarmed-devboxes-recent-copies:
     kind: fact
     provenance: reported
     confidence: medium
@@ -271,11 +274,19 @@ claim_metadata:
     confidence: medium
     confidence_reason: Stripe reports merged PR volume without an independent count or measurement window; Part
       2 is explicitly later than Part 1.
-  key_metrics.0:
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Weekly merged minion-produced
+      PRs at Stripe, human-reviewed, per the Part 2 report'
+  key_metrics.completely-minion-produced-prs-merged:
     metric_scope: Weekly merged PRs completely produced by Minions; earlier Part 1 report
     confidence: medium
     confidence_reason: Stripe reports merged PR volume without an independent count or measurement window; no calendar
       metric date appears in the capture.
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Weekly merged minion-produced
+      PRs at Stripe, per the earlier Part 1 report'
   architecture.context_mgmt:
     kind: fact
     provenance: reported
@@ -289,32 +300,17 @@ page_content:
     stripe-minions-source-5, stripe-minions-source-6, stripe-minions-source-7]
   workflow_scope: Slack or internal-app request to a minion-produced pull request ready for human review
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.1, primitives.2, primitives.3, primitives.5], note: 'The
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.start-run-slack-internal-app, primitives.hydrate-context-before-the-run, primitives.implement-task-prewarmed-devbox, primitives.open-pull-request-human-review], note: 'The
       one-shot characterization and the bounded CI repair loop sit under mechanism and validation; the four steps
       above are the run in reading order.'}
-    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.5], note: 'Runs are unattended;
+    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.open-pull-request-human-review], note: 'Runs are unattended;
       the engineer opens the prepared pull request for review or returns it with further instructions.'}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.sandbox, architecture.tool_access,
-      architecture.knowledge, architecture.context_mgmt, architecture.credentials, architecture.interfaces]}
-    validation: {state: reported, claim_paths: [primitives.4], note: 'A deterministic local lint node and one or two
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.repair-ci-failures-bounded-loop], note: 'A deterministic local lint node and one or two
       CI rounds with autofixes check the work before the branch returns to its human operator.'}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0]}
-    lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1]}
+    observations: {state: reported}
+    lessons: {state: reported}
   implementation_fields:
-    model: {state: unreported, claim_paths: []}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: reported, claim_paths: [architecture.sandbox]}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access]}
-    knowledge: {state: reported, claim_paths: [architecture.knowledge]}
-    context_mgmt: {state: reported, claim_paths: [architecture.context_mgmt]}
-    credentials: {state: reported, claim_paths: [architecture.credentials]}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces], note: 'Slack, CLI, web, and internal tools
+    interfaces: {note: 'Slack, CLI, web, and internal tools
       are named; the pull-request host is implied by the branch-and-PR flow but never named in the captures.'}
-  primitive_roles: {primitives.0: mechanism, primitives.1: workflow, primitives.2: workflow, primitives.3: workflow,
-    primitives.4: validation, primitives.5: workflow}
-  observations:
-    headline_metric: {category: adoption-output, basis: reported-measurement, subject: 'Weekly merged minion-produced
-      PRs at Stripe, human-reviewed, per the Part 2 report'}
-    key_metrics.0: {category: adoption-output, basis: reported-measurement, subject: 'Weekly merged minion-produced
-      PRs at Stripe, per the earlier Part 1 report'}

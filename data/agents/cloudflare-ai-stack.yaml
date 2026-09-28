@@ -22,8 +22,6 @@ rubric:
   invocation:
   - event-driven
   - interactive
-  state: mixed
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Cloudflare's Dev Productivity team runs an internal AI engineering stack built on the company's own products.
   It puts MCP servers behind one OAuth portal, routes every model request through a gateway, and generates context
@@ -45,30 +43,48 @@ architecture:
   context_mgmt: Code Mode collapses upstream tool schemas into search + execute, holding token overhead constant
     at scale
 primitives:
-- name: MCP Server Portal
+- id: mcp-server-portal
+  name: MCP Server Portal
   desc: One OAuth aggregation point for all MCP tools
-- name: Code Mode
+  role: mechanism
+- id: code-mode
+  name: Code Mode
   desc: Searches tool schemas through a portal and exposes a separate execution function
-- name: AGENTS.md
+  role: mechanism
+- id: agents-md
+  name: AGENTS.md
   desc: Structured, generated repo context (runtime, nav, conventions, boundaries, deps)
-- name: AI Code Reviewer
+  role: mechanism
+- id: ai-code-reviewer
+  name: AI Code Reviewer
   desc: 'Multi-agent CI review: risk tiering, specialist agents, Codex-rule citations'
-- name: AGENTS.md staleness flag
+  role: workflow
+- id: agents-md-staleness-flag
+  name: AGENTS.md staleness flag
   desc: The AI Code Reviewer flags merge requests whose repository changes suggest the repo's AGENTS.md is outdated
+  role: validation
 key_metrics:
-- 3,683 internal users (60% of company, 93% of R&D)
-- 47.95M AI requests, 20.18M AI Gateway requests per month, and 241.37B tokens routed through AI Gateway
-- 10,952 merge requests in the week of March 23, 2026, nearly double the Q4 baseline; four-week average above 8,700
-- 295 teams using agentic AI tools
+- id: internal-users-share
+  text: 3,683 internal users (60% of company, 93% of R&D)
+- id: ai-request-and-token-volume
+  text: 47.95M AI requests, 20.18M AI Gateway requests per month, and 241.37B tokens routed through AI Gateway
+- id: merge-requests-week-march-nearly-double
+  text: 10,952 merge requests in the week of March 23, 2026, nearly double the Q4 baseline; four-week average above 8,700
+- id: teams-using-agentic-ai-tools
+  text: 295 teams using agentic AI tools
 lessons_learned:
-- Cloudflare added user attribution, model discovery, and permission checks at a shared proxy without changing client
-  configurations.
-- Cloudflare exposes service ownership and dependencies through Backstage and writes repository conventions into
-  AGENTS.md files.
-- Cloudflare replaced upfront tool schemas with portal search and execution functions after measuring their context
-  overhead.
-- Cloudflare uses frontier models for most complex coding work and Workers AI for selected workloads, including
-  documentation review and context-file generation.
+- id: added-user-attribution-model-discovery-permission
+  text: Cloudflare added user attribution, model discovery, and permission checks at a shared proxy without changing client
+    configurations.
+- id: exposes-service-ownership-dependencies-through-backstage
+  text: Cloudflare exposes service ownership and dependencies through Backstage and writes repository conventions into
+    AGENTS.md files.
+- id: replaced-upfront-tool-schemas-portal-search
+  text: Cloudflare replaced upfront tool schemas with portal search and execution functions after measuring their context
+    overhead.
+- id: uses-frontier-models-most-complex-coding
+  text: Cloudflare uses frontier models for most complex coding work and Workers AI for selected workloads, including
+    documentation review and context-file generation.
 sources:
 - id: cloudflare-ai-stack-source-1
   title: The AI engineering stack we built internally
@@ -129,40 +145,40 @@ evidence:
   - source_id: cloudflare-ai-stack-source-1
   architecture.context_mgmt:
   - source_id: cloudflare-ai-stack-source-1
-  primitives.0:
+  primitives.mcp-server-portal:
   - source_id: cloudflare-ai-stack-source-1
-  primitives.1:
+  primitives.code-mode:
   - source_id: cloudflare-ai-stack-source-1
     locator: Preserved content.md, lines 179-189
-  primitives.2:
+  primitives.agents-md:
   - source_id: cloudflare-ai-stack-source-1
-  primitives.3:
+  primitives.ai-code-reviewer:
   - source_id: cloudflare-ai-stack-source-1
-  primitives.4:
+  primitives.agents-md-staleness-flag:
   - source_id: cloudflare-ai-stack-source-1
     locator: Preserved content.md, lines 249–251
-  key_metrics.0:
+  key_metrics.internal-users-share:
   - source_id: cloudflare-ai-stack-source-1
     locator: Preserved content.md, lines 14–16
-  key_metrics.1:
+  key_metrics.ai-request-and-token-volume:
   - source_id: cloudflare-ai-stack-source-1
     locator: Preserved content.md, lines 14–20
-  key_metrics.2:
+  key_metrics.merge-requests-week-march-nearly-double:
   - source_id: cloudflare-ai-stack-source-1
     locator: Preserved content.md, lines 25–29
-  key_metrics.3:
+  key_metrics.teams-using-agentic-ai-tools:
   - source_id: cloudflare-ai-stack-source-1
     locator: Preserved content.md, lines 14–18
-  lessons_learned.0:
+  lessons_learned.added-user-attribution-model-discovery-permission:
   - source_id: cloudflare-ai-stack-source-1
     locator: Preserved content.md, lines 105
-  lessons_learned.1:
+  lessons_learned.exposes-service-ownership-dependencies-through-backstage:
   - source_id: cloudflare-ai-stack-source-1
     locator: Preserved content.md, lines 195-212
-  lessons_learned.2:
+  lessons_learned.replaced-upfront-tool-schemas-portal-search:
   - source_id: cloudflare-ai-stack-source-1
     locator: Preserved content.md, lines 179-189
-  lessons_learned.3:
+  lessons_learned.uses-frontier-models-most-complex-coding:
   - source_id: cloudflare-ai-stack-source-1
     locator: Preserved content.md, lines 84-103
   architecture.interfaces:
@@ -182,41 +198,56 @@ claim_metadata:
     valid_at: '2026'
     metric_scope: Internal AI engineering requests in the 30 days preceding the report
     measurement_method: Company-reported total internal AI request count for the preceding 30 days
-  key_metrics.0:
+    category: adoption-output
+    basis: reported-measurement
+    subject: AI requests across the internal AI engineering system
+  key_metrics.internal-users-share:
     valid_at: '2026'
     metric_scope: Active internal AI coding-tool users in the preceding 30 days
     denominator: Approximately 6,100 employees for company share; R&D organization for R&D share
-  key_metrics.1:
+    category: adoption-output
+    basis: reported-measurement
+    subject: Active internal AI coding-tool users
+  key_metrics.ai-request-and-token-volume:
     valid_at: '2026'
     metric_scope: Total internal AI requests in the preceding 30 days; AI Gateway requests reported per month; AI
       Gateway token volume
     measurement_method: Reported total AI request count, AI Gateway request count, and AI Gateway token count
-  key_metrics.2:
+    category: runtime-capacity
+    basis: reported-measurement
+    subject: Internal AI request, AI Gateway request, and AI Gateway token volume
+  key_metrics.merge-requests-week-march-nearly-double:
     valid_at: 2026-03
     metric_scope: Company merge requests in the week of March 23, 2026, versus Q4 baseline; not agent-authored PRs
     measurement_method: Weekly merge-request count; distinct from the four-week rolling average
-  key_metrics.3:
+    category: adoption-output
+    basis: reported-measurement
+    subject: Company-wide merge requests during AI tool adoption
+  key_metrics.teams-using-agentic-ai-tools:
     valid_at: '2026'
     metric_scope: Teams using agentic AI tools and coding assistants in the reported 30-day snapshot
-  lessons_learned.0:
+    category: adoption-output
+    basis: reported-measurement
+    subject: Teams with agentic AI tool activity
+  lessons_learned.added-user-attribution-model-discovery-permission:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The proxy retrospective names these later additions and explains why the existing Worker
       provided one place to introduce them.
-  lessons_learned.1:
+  lessons_learned.exposes-service-ownership-dependencies-through-backstage:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The report connects missing ownership and repository context to these two mechanisms, including
       incorrect test commands and local conventions.
-  lessons_learned.2:
+  lessons_learned.replaced-upfront-tool-schemas-portal-search:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The Code Mode section reports 15,000 tokens for 34 GitLab schemas and names the two replacement
       portal functions; it does not measure an accuracy gain.
-  lessons_learned.3:
+  lessons_learned.uses-frontier-models-most-complex-coding:
     kind: fact
     provenance: reported
     confidence: medium
@@ -233,106 +264,25 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.3
+      - primitives.ai-code-reviewer
     human_involvement:
       state: not-applicable
-      claim_paths: []
       note: There is no single platform-wide agent review boundary. Scoped downstream operating-model claims remain
         in research details; access controls are described separately.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.model
-      - architecture.sandbox
-      - architecture.tool_access
-      - architecture.knowledge
-      - architecture.context_mgmt
-      - architecture.credentials
-      - architecture.interfaces
     validation:
       state: reported
       claim_paths:
-      - primitives.4
+      - primitives.agents-md-staleness-flag
     observations:
       state: reported
-      claim_paths:
-      - headline_metric
-      - key_metrics.0
-      - key_metrics.1
-      - key_metrics.2
-      - key_metrics.3
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
-      - lessons_learned.2
-      - lessons_learned.3
   implementation_fields:
-    model:
-      state: reported
-      claim_paths:
-      - architecture.model
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: reported
-      claim_paths:
-      - architecture.sandbox
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
-    credentials:
-      state: reported
-      claim_paths:
-      - architecture.credentials
     interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
       note: The capture documents CLI clients and the CI review component; it does not name a web interface for
         the internal stack.
-  primitive_roles:
-    primitives.0: mechanism
-    primitives.1: mechanism
-    primitives.2: mechanism
-    primitives.3: workflow
-    primitives.4: validation
-  observations:
-    headline_metric:
-      category: adoption-output
-      basis: reported-measurement
-      subject: AI requests across the internal AI engineering system
-    key_metrics.0:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Active internal AI coding-tool users
-    key_metrics.1:
-      category: runtime-capacity
-      basis: reported-measurement
-      subject: Internal AI request, AI Gateway request, and AI Gateway token volume
-    key_metrics.2:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Company-wide merge requests during AI tool adoption
-    key_metrics.3:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Teams with agentic AI tool activity

@@ -22,8 +22,6 @@ rubric:
   invocation:
   - event-driven
   - interactive
-  state: durable-session
-  identity: dedicated-agent
   evidence_strength: detailed-primary
 summary: A native agent that synthesizes workspace context, scopes customer feedback into issues, creates follow-up
   work, runs coding sessions, and can be triggered automatically when issues enter triage; used by Linear's own
@@ -46,30 +44,41 @@ architecture:
   credentials: The Agent SDK gives agents explicit identities, scoped OAuth tokens, assignable/mentionable handles,
     and visible human delegation; issues stay assigned to a human; 'an agent cannot be held accountable'
 primitives:
-- name: Triage Intelligence
+- id: triage-intelligence
+  name: Triage Intelligence
   desc: Auto-routes issues, flags duplicates, suggests labels
-- name: Agent SDK identities
+  role: workflow
+- id: agent-sdk-identities
+  name: Agent SDK identities
   desc: Agents get identities, scoped team access, and visible delegation alongside humans
-- name: Loops
+  role: mechanism
+- id: loops
+  name: Loops
   desc: Scheduled or event-driven agent runs that execute recurring work
-- {name: Scope customer feedback into an issue, desc: 'From the Intercom inbox, the agent picks up the full
-    conversation, metadata, and attachments, and creates a scoped issue'}
-- {name: Take a first pass at the coding work, desc: 'A delegated coding agent drafts the change or opens the pull
-    request while the issue stays assigned to the human engineer'}
-- {name: Review the pull request, desc: 'A coding agent reviews every pull request and a human engineer makes the
-    final approval'}
-- {name: Pause for confirmation on risky actions, desc: 'When an action is risky or hard to undo, the agent pauses
-    mid-run and asks the user for confirmation'}
-- {name: Close the loop with the customer, desc: 'When the issue is done, related requests reopen in Intercom or the
-    originating Slack thread is notified, and a person follows up with the customer'}
+  role: mechanism
+- {id: scope-customer-feedback-into-an-issue, name: Scope customer feedback into an issue, desc: 'From the Intercom inbox, the agent picks up the full
+    conversation, metadata, and attachments, and creates a scoped issue', role: workflow}
+- {id: take-first-pass-coding-work, name: Take a first pass at the coding work, desc: 'A delegated coding agent drafts the change or opens the pull
+    request while the issue stays assigned to the human engineer', role: workflow}
+- {id: review-the-pull-request, name: Review the pull request, desc: 'A coding agent reviews every pull request and a human engineer makes the
+    final approval', role: validation}
+- {id: pause-for-confirmation-on-risky-actions, name: Pause for confirmation on risky actions, desc: 'When an action is risky or hard to undo, the agent pauses
+    mid-run and asks the user for confirmation', role: validation}
+- {id: close-the-loop-with-the-customer, name: Close the loop with the customer, desc: 'When the issue is done, related requests reopen in Intercom or the
+    originating Slack thread is notified, and a person follows up with the customer', role: workflow}
 lessons_learned:
-- Linear's customer-support workflow carries Intercom conversations into issues and delegates coding work from
-  those issues.
-- Linear recommends starting with agent suggestions, observing the results, and adding guidance before enabling
-  automatic operation.
-- One Linear engineer reports better results when he breaks coding work into small, targeted steps.
-- A Linear engineer finds agent mistakes useful for identifying possible failure modes during his review.
-- Linear completion events notify the originating support workflow, where a person follows up with the customer.
+- id: customer-support-workflow-carries-intercom-conversations
+  text: Linear's customer-support workflow carries Intercom conversations into issues and delegates coding work from
+    those issues.
+- id: recommends-starting-agent-suggestions-observing-results
+  text: Linear recommends starting with agent suggestions, observing the results, and adding guidance before enabling
+    automatic operation.
+- id: one-linear-engineer-reports-better-results
+  text: One Linear engineer reports better results when he breaks coding work into small, targeted steps.
+- id: engineer-finds-agent-mistakes-useful-identifying
+  text: A Linear engineer finds agent mistakes useful for identifying possible failure modes during his review.
+- id: completion-events-notify-originating-support-workflow
+  text: Linear completion events notify the originating support workflow, where a person follows up with the customer.
 sources:
 - id: linear-agent-source-1
   title: How we built Linear Agent
@@ -153,37 +162,37 @@ evidence:
   - source_id: linear-agent-source-2
   architecture.credentials:
   - source_id: linear-agent-source-3
-  primitives.0:
+  primitives.triage-intelligence:
   - source_id: linear-agent-source-2
-  primitives.1:
+  primitives.agent-sdk-identities:
   - source_id: linear-agent-source-3
-  primitives.2:
+  primitives.loops:
   - source_id: linear-agent-source-1
   architecture.context_mgmt:
   - {source_id: linear-agent-source-1, locator: 'Preserved content.md, lines 62–72'}
-  primitives.3:
+  primitives.scope-customer-feedback-into-an-issue:
   - {source_id: linear-agent-source-2, locator: 'Preserved content.md, lines 28–34'}
-  primitives.4:
+  primitives.take-first-pass-coding-work:
   - {source_id: linear-agent-source-2, locator: 'Preserved content.md, lines 60, 114'}
-  primitives.5:
+  primitives.review-the-pull-request:
   - {source_id: linear-agent-source-2, locator: 'Preserved content.md, line 66'}
-  primitives.6:
+  primitives.pause-for-confirmation-on-risky-actions:
   - {source_id: linear-agent-source-1, locator: 'Preserved content.md, lines 94–96'}
-  primitives.7:
+  primitives.close-the-loop-with-the-customer:
   - {source_id: linear-agent-source-2, locator: 'Preserved content.md, lines 70, 102'}
-  lessons_learned.0:
+  lessons_learned.customer-support-workflow-carries-intercom-conversations:
   - source_id: linear-agent-source-2
     locator: Preserved content.md, lines 28-38,60
-  lessons_learned.1:
+  lessons_learned.recommends-starting-agent-suggestions-observing-results:
   - source_id: linear-agent-source-2
     locator: Preserved content.md, lines 134
-  lessons_learned.2:
+  lessons_learned.one-linear-engineer-reports-better-results:
   - source_id: linear-agent-source-2
     locator: Preserved content.md, lines 98
-  lessons_learned.3:
+  lessons_learned.engineer-finds-agent-mistakes-useful-identifying:
   - source_id: linear-agent-source-2
     locator: Preserved content.md, lines 60
-  lessons_learned.4:
+  lessons_learned.completion-events-notify-originating-support-workflow:
   - source_id: linear-agent-source-2
     locator: Preserved content.md, lines 70,102
   architecture.interfaces:
@@ -194,31 +203,31 @@ claim_metadata:
     confidence_reason: The source documents delegated coding output while a human remains accountable for the assigned
       issue.
     valid_at: '2026-08-11'
-  lessons_learned.0:
+  lessons_learned.customer-support-workflow-carries-intercom-conversations:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The workflow retains customer messages, metadata, and attachments before delegation; it
       documents how context moves between the systems.
-  lessons_learned.1:
+  lessons_learned.recommends-starting-agent-suggestions-observing-results:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: The article presents this as its rollout advice, without a defined reliability threshold
       or measured comparison of rollout strategies.
-  lessons_learned.2:
+  lessons_learned.one-linear-engineer-reports-better-results:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: The account attributes the practice to Matthijs Wolting; it does not report a benchmark
       across task sizes.
-  lessons_learned.3:
+  lessons_learned.engineer-finds-agent-mistakes-useful-identifying:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: The article attributes this reaction to Mingjie and describes continued human ownership
       of the issue.
-  lessons_learned.4:
+  lessons_learned.completion-events-notify-originating-support-workflow:
     kind: fact
     provenance: reported
     confidence: medium
@@ -232,37 +241,30 @@ page_content:
   workflow_scope: 'Customer email to shipped feature: Intercom conversation scoped into an issue, routed by Triage
     Intelligence, first-pass change by a delegated coding agent, reviewed pull request, and customer follow-up'
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.3, primitives.0, primitives.4, primitives.7], note: 'The
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.scope-customer-feedback-into-an-issue, primitives.triage-intelligence, primitives.take-first-pass-coding-work, primitives.close-the-loop-with-the-customer], note: 'The
       capture documents two further workflows (a Slack thread becoming a pull request, and a PM filing and shipping
       a fix); the email-to-feature run is the representative one because it spans all five stages.'}
-    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.5, primitives.6], note: 'A human
+    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.review-the-pull-request, primitives.pause-for-confirmation-on-risky-actions], note: 'A human
       engineer makes the final pull-request approval, risky actions pause for confirmation, and the delegated issue
       stays assigned to its human owner.'}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.model, architecture.tool_access,
-      architecture.knowledge, architecture.context_mgmt, architecture.credentials, architecture.interfaces]}
-    validation: {state: reported, claim_paths: [primitives.5, primitives.6], note: 'The coding-agent review pass with
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.review-the-pull-request, primitives.pause-for-confirmation-on-risky-actions], note: 'The coding-agent review pass with
       human final approval, and the mid-run confirmation gate for risky actions, are the documented checks.'}
-    observations: {state: unreported, claim_paths: [], note: 'The reviewed captures report no usage or outcome
+    observations: {state: unreported, note: 'The reviewed captures report no usage or outcome
       measurements for Linear Agent; statements about effectiveness are qualitative.'}
-    lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1, lessons_learned.2, lessons_learned.3,
-      lessons_learned.4]}
+    lessons: {state: reported}
   implementation_fields:
-    model: {state: reported, claim_paths: [architecture.model], note: 'Codex is named for internal pull-request review;
+    model: {note: 'Codex is named for internal pull-request review;
       the captures say only frontier language models elsewhere.'}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: [], note: 'The captures describe a custom owned stack but no
+    sandbox: {state: unreported, note: 'The captures describe a custom owned stack but no
       execution or isolation boundary.'}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access], note: 'Code Intelligence and custom MCP
+    tool_access: {note: 'Code Intelligence and custom MCP
       servers are named as internal tests with a planned launch.'}
-    knowledge: {state: reported, claim_paths: [architecture.knowledge], note: 'The Datadog and Sentry customer context
+    knowledge: {note: 'The Datadog and Sentry customer context
       is verified; the semantic-search history clause could not be located in the captures and is flagged in the
       source review.'}
-    context_mgmt: {state: reported, claim_paths: [architecture.context_mgmt]}
-    credentials: {state: reported, claim_paths: [architecture.credentials], note: 'The Agent SDK model gives agents
+    credentials: {note: 'The Agent SDK model gives agents
       scoped OAuth identities; accountability stays with the human assignee.'}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces], note: 'GitHub is a system the agent acts on
+    interfaces: {note: 'GitHub is a system the agent acts on
       through pull requests; the conversational surfaces are Slack, Intercom, and Linear.'}
-  primitive_roles: {primitives.0: workflow, primitives.1: mechanism, primitives.2: mechanism, primitives.3: workflow,
-    primitives.4: workflow, primitives.5: validation, primitives.6: validation, primitives.7: workflow}
-  observations: {}

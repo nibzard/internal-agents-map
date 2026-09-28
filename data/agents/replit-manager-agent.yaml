@@ -24,8 +24,6 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: An internal agent-of-agents stack where every employee gets a manager agent that spawns multiple agents
   for verifiable work and escalates judgment to humans.
@@ -45,24 +43,38 @@ architecture:
     tables
   credentials: Tool access mediated by token proxies
 primitives:
-- name: Manager agent
+- id: manager-agent
+  name: Manager agent
   desc: One human gives an objective; the manager spawns parallel agents for verifiable work and escalates judgment
-- name: Take an objective and gather context
+  role: mechanism
+- id: take-an-objective-and-gather-context
+  name: Take an objective and gather context
   desc: The manager agent takes a goal from a person and gathers context across company systems
-- name: Spawn parallel loop agents
+  role: workflow
+- id: spawn-parallel-loop-agents
+  name: Spawn parallel loop agents
   desc: It spawns multiple agents that work in loops on the verifiable task for the person
-- name: Check results and escalate judgment
+  role: workflow
+- id: check-results-and-escalate-judgment
+  name: Check results and escalate judgment
   desc: "Work results are checked, and human judgment is requested when needed"
+  role: validation
 key_metrics:
-- 2.9x code output for a consistent author cohort from early January to late June
-- No corresponding deterioration in review/reversion/incident metrics
-- 30% of human PR review time saved (and growing) in the agent review lane
-- Hardest support tickets, those escalated to humans, closed 60% faster
+- id: code-output-consistent-author-cohort-early
+  text: 2.9x code output for a consistent author cohort from early January to late June
+- id: no-corresponding-deterioration-review-reversion-incident
+  text: No corresponding deterioration in review/reversion/incident metrics
+- id: human-pr-review-time-saved-growing
+  text: 30% of human PR review time saved (and growing) in the agent review lane
+- id: hardest-support-tickets-escalated-humans-closed
+  text: Hardest support tickets, those escalated to humans, closed 60% faster
 lessons_learned:
-- Replit gives employees a manager agent that can delegate verifiable tasks to several agents, while human review
-  remains part of its coding workflow.
-- Replit reports higher code output alongside flat review latency, reversion trends, and incident counts; those
-  measures cover different aspects of the workflow.
+- id: gives-employees-manager-agent-delegate-verifiable
+  text: Replit gives employees a manager agent that can delegate verifiable tasks to several agents, while human review
+    remains part of its coding workflow.
+- id: higher-code-output-alongside-flat-review
+  text: Replit reports higher code output alongside flat review latency, reversion trends, and incident counts; those
+    measures cover different aspects of the workflow.
 sources:
 - id: replit-manager-agent-source-1
   title: The Self-Driving Company
@@ -94,25 +106,25 @@ evidence:
   - locator: Preserved content.md, lines 120, 132
   architecture.credentials:
   - locator: Preserved content.md, line 34
-  primitives.0:
+  primitives.manager-agent:
   - source_id: replit-manager-agent-source-1
-  primitives.1:
+  primitives.take-an-objective-and-gather-context:
   - locator: Preserved content.md, lines 16, 34
-  primitives.2:
+  primitives.spawn-parallel-loop-agents:
   - locator: Preserved content.md, line 78
-  primitives.3:
+  primitives.check-results-and-escalate-judgment:
   - locator: Preserved content.md, line 16
-  key_metrics.0:
+  key_metrics.code-output-consistent-author-cohort-early:
   - locator: Preserved content.md, lines 10, 38–56
-  key_metrics.1:
+  key_metrics.no-corresponding-deterioration-review-reversion-incident:
   - locator: Preserved content.md, lines 50–56
-  key_metrics.2:
+  key_metrics.human-pr-review-time-saved-growing:
   - locator: Preserved content.md, line 50
-  key_metrics.3:
+  key_metrics.hardest-support-tickets-escalated-humans-closed:
   - locator: Preserved content.md, line 168
-  lessons_learned.0:
+  lessons_learned.gives-employees-manager-agent-delegate-verifiable:
   - locator: Preserved content.md, lines 50-62,78
-  lessons_learned.1:
+  lessons_learned.higher-code-output-alongside-flat-review:
   - locator: Preserved content.md, lines 10,50-62
   architecture.interfaces:
   - source_id: replit-manager-agent-source-1
@@ -127,13 +139,13 @@ claim_metadata:
     confidence_reason: The source states the agent assesses risk levels and only calls in a second human reviewer
       when necessary inside the agent review lane.
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.gives-employees-manager-agent-delegate-verifiable:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The manager-agent passage describes delegation; the review passages explicitly retain human
       co-review and risk-based requests for a second reviewer.
-  lessons_learned.1:
+  lessons_learned.higher-code-output-alongside-flat-review:
     kind: inference
     provenance: catalog-judgment
     confidence: medium
@@ -145,23 +157,33 @@ claim_metadata:
     denominator: Same cohort of authors before and after
     measurement_method: Comparison of contributed code for a consistent author cohort; raw company-wide lines of
       code increased 5.8x
-  key_metrics.0:
+    category: effectiveness
+    basis: reported-measurement
+    subject: Code output for a consistent author cohort; company review latency, PR reversion rates, and incident
+      trends
+  key_metrics.code-output-consistent-author-cohort-early:
     metric_scope: Code output for a consistent author cohort across early January to late June; separate from company-wide
       hiring effects
     denominator: Same cohort of authors before and after
     measurement_method: Comparison of contributed code for a consistent author cohort; raw company-wide lines of
       code increased 5.8x
-  key_metrics.1:
+  key_metrics.no-corresponding-deterioration-review-reversion-incident:
     metric_scope: Company code review latency, PR reversion rates, and incidents opened during increased code output
     measurement_method: Company comparison of review latency, PR reversion rates, and incident trends
-  key_metrics.2:
+  key_metrics.human-pr-review-time-saved-growing:
     confidence: medium
     confidence_reason: Replit reported the saving in its own blog; the measurement method and window are not described.
     metric_scope: Human pull-request review time in the agent review lane; saved share stated as 30% and growing
-  key_metrics.3:
+    category: cost-latency
+    basis: reported-measurement
+    subject: Human pull-request review time in the agent review lane
+  key_metrics.hardest-support-tickets-escalated-humans-closed:
     confidence: medium
     confidence_reason: Replit reported the figure in its own blog without a method or baseline description.
     metric_scope: Support tickets escalated to humans; closure time stated 60% faster
+    category: cost-latency
+    basis: reported-measurement
+    subject: Closure time for support tickets escalated to humans
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -171,13 +193,11 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.1
-      - primitives.2
+      - primitives.take-an-objective-and-gather-context
+      - primitives.spawn-parallel-loop-agents
     human_involvement:
       state: reported
       claim_paths:
@@ -187,92 +207,29 @@ page_content:
         assessed risk makes one necessary.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.sandbox
-      - architecture.tool_access
-      - architecture.knowledge
-      - architecture.context_mgmt
-      - architecture.credentials
-      - architecture.interfaces
     validation:
       state: reported
       claim_paths:
-      - primitives.3
+      - primitives.check-results-and-escalate-judgment
       note: The documented check is result-checking with escalation for judgment; the code-review lane separately
         pairs human reviews with an agentic co-reviewer.
     observations:
       state: reported
-      claim_paths:
-      - headline_metric
-      - key_metrics.0
-      - key_metrics.1
-      - key_metrics.2
-      - key_metrics.3
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
   implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: reported
-      claim_paths:
-      - architecture.sandbox
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
     context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
       note: Stated as coordination and routing of parallel sub-agents; no finer-grained context mechanism is documented.
     credentials:
-      state: reported
-      claim_paths:
-      - architecture.credentials
       note: Stated at the level of token proxies; the capture gives no further credential mechanism.
     interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
       note: A Slack interface carried adoption beyond engineering.
-  primitive_roles:
-    primitives.0: mechanism
-    primitives.1: workflow
-    primitives.2: workflow
-    primitives.3: validation
-  observations:
-    headline_metric:
-      category: effectiveness
-      basis: reported-measurement
-      subject: Code output for a consistent author cohort; company review latency, PR reversion rates, and incident
-        trends
-    key_metrics.0:
+  aliases:
+    key_metrics.code-output-consistent-author-cohort-early:
       duplicate_of: headline_metric
       reason: 'Component of the compound headline: the same 2.9x cohort figure with the period already stated in
         the headline metric scope.'
-    key_metrics.1:
+    key_metrics.no-corresponding-deterioration-review-reversion-incident:
       duplicate_of: headline_metric
       reason: 'Component of the compound headline: the same flat review-latency, reversion, and incident trends
         with the same company scope.'
-    key_metrics.2:
-      category: cost-latency
-      basis: reported-measurement
-      subject: Human pull-request review time in the agent review lane
-    key_metrics.3:
-      category: cost-latency
-      basis: reported-measurement
-      subject: Closure time for support tickets escalated to humans

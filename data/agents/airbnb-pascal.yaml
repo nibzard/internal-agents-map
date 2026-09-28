@@ -18,18 +18,20 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Pascal helps Airbnb product managers and designers turn an idea into a concept brief.
 architecture:
   harness: Internal application built using the AirChat SDK.
   knowledge: Market research, internal roadmap and business objectives.
 primitives:
-- name: Research an idea
+- id: research-an-idea
+  name: Research an idea
   desc: The tool gathers market research and examines Airbnb’s roadmap and business objectives.
-- name: Draft a brief
+  role: workflow
+- id: draft-a-brief
+  name: Draft a brief
   desc: It combines that material into a concept brief for product planning.
+  role: workflow
 sources:
 - id: airbnb-pascal-source-1
   title: Beyond the CLI (DX podcast)
@@ -50,9 +52,9 @@ evidence:
   - locator: 'Transcript 15:39: Pascal internal product-planning tool'
   architecture.knowledge:
   - locator: 'Transcript 15:39: Pascal internal product-planning tool'
-  primitives.0:
+  primitives.research-an-idea:
   - locator: 'Transcript 15:39: Pascal internal product-planning tool'
-  primitives.1:
+  primitives.draft-a-brief:
   - locator: 'Transcript 15:39: Pascal internal product-planning tool'
 claim_metadata:
   operating_models.0:
@@ -72,59 +74,19 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
+      - primitives.research-an-idea
+      - primitives.draft-a-brief
     human_involvement:
       state: unreported
-      claim_paths: []
       note: The source does not establish the required human review boundary.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.knowledge
     validation:
       state: unreported
-      claim_paths: []
     observations:
       state: unreported
-      claim_paths: []
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: unreported
-      claim_paths: []
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: unreported
-      claim_paths: []
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: unreported
-      claim_paths: []
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-  observations: {}

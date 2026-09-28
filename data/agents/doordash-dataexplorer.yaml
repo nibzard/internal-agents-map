@@ -18,8 +18,6 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: DataExplorer helps DoorDash employees explore internal data by selecting tables and generating grounded
   starter SQL.
@@ -27,12 +25,18 @@ architecture:
   harness: Runs on DoorDash’s analytics AI Marketplace.
   tool_access: DescribeTable and schema-aware SQL tools.
 primitives:
-- name: Inspect schema
+- id: inspect-schema
+  name: Inspect schema
   desc: The agent calls DescribeTable to gather candidate tables and schema context.
-- name: Generate SQL
+  role: workflow
+- id: generate-sql
+  name: Generate SQL
   desc: It proposes relevant tables and starter SQL grounded in their schema.
-- name: Validate queries
+  role: workflow
+- id: validate-queries
+  name: Validate queries
   desc: The platform applies SQL checks and EXPLAIN validation with feedback for correction.
+  role: validation
 sources:
 - id: doordash-dataexplorer-source-1
   title: 'Beyond single agents: DoorDash''s collaborative AI ecosystem'
@@ -52,11 +56,11 @@ evidence:
   - locator: Introducing dynamic reasoning with agents, Figure 4; Taking a high-level look
   architecture.tool_access:
   - locator: Introducing dynamic reasoning with agents, Figure 4; Taking a high-level look
-  primitives.0:
+  primitives.inspect-schema:
   - locator: Introducing dynamic reasoning with agents, Figure 4; Taking a high-level look
-  primitives.1:
+  primitives.generate-sql:
   - locator: Introducing dynamic reasoning with agents, Figure 4; Taking a high-level look
-  primitives.2:
+  primitives.validate-queries:
   - locator: Introducing dynamic reasoning with agents, Figure 4; Taking a high-level look
 claim_metadata:
   operating_models.0:
@@ -76,61 +80,21 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
+      - primitives.inspect-schema
+      - primitives.generate-sql
     human_involvement:
       state: unreported
-      claim_paths: []
       note: The source does not establish the required human review boundary.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.tool_access
     validation:
       state: reported
       claim_paths:
-      - primitives.2
+      - primitives.validate-queries
     observations:
       state: unreported
-      claim_paths: []
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: unreported
-      claim_paths: []
-    context_mgmt:
-      state: unreported
-      claim_paths: []
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: unreported
-      claim_paths: []
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: validation
-  observations: {}

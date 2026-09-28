@@ -18,8 +18,6 @@ operating_models:
 rubric:
   invocation:
   - event-driven
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Cloudflare’s reviewer analyzes merge requests and applies approval decisions, including merge blocks for
   serious findings.
@@ -31,12 +29,18 @@ architecture:
   - ci
   - cli
 primitives:
-- name: Dispatch specialists
+- id: dispatch-specialists
+  name: Dispatch specialists
   desc: An OpenCode coordinator assigns reviewers according to change risk.
-- name: Check findings
+  role: workflow
+- id: check-findings
+  name: Check findings
   desc: The coordinator deduplicates findings and uses code-reading tools to assess uncertain issues.
-- name: Apply review
+  role: validation
+- id: apply-review
+  name: Apply review
   desc: It approves, revokes bot approval or requests changes; a human can force approval with a break-glass comment.
+  role: workflow
 sources:
 - id: cloudflare-code-reviewer-source-1
   title: Orchestrating AI Code Review at scale
@@ -59,13 +63,13 @@ evidence:
   - locator: The architecture; The coordinator helps keep things focused; Limitations
   architecture.interfaces:
   - locator: The architecture; The coordinator helps keep things focused; Limitations
-  primitives.0:
+  primitives.dispatch-specialists:
   - locator: The architecture; The coordinator helps keep things focused; Limitations
-  primitives.1:
+  primitives.check-findings:
   - locator: The architecture; The coordinator helps keep things focused; Limitations
-  primitives.2:
+  primitives.apply-review:
   - locator: The architecture; The coordinator helps keep things focused; Limitations
-  lessons_learned.0:
+  lessons_learned.limitations-architectural-context-cross-system-impact:
   - locator: The architecture; The coordinator helps keep things focused; Limitations
 claim_metadata:
   operating_models.0:
@@ -73,7 +77,7 @@ claim_metadata:
     confidence_reason: The source describes AI Code Reviewer and its work, but does not establish whether a person
       must approve or inspect each successful output.
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.limitations-architectural-context-cross-system-impact:
     kind: fact
     provenance: reported
     confidence: medium
@@ -82,7 +86,8 @@ relationships:
 - type: built-on
   approach_id: cloudflare-ai-stack
 lessons_learned:
-- Cloudflare reports limitations in architectural context, cross-system impact and subtle concurrency analysis.
+- id: limitations-architectural-context-cross-system-impact
+  text: Cloudflare reports limitations in architectural context, cross-system impact and subtle concurrency analysis.
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -92,66 +97,21 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.2
+      - primitives.dispatch-specialists
+      - primitives.apply-review
     human_involvement:
       state: unreported
-      claim_paths: []
       note: The source does not establish the required human review boundary.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.tool_access
-      - architecture.context_mgmt
-      - architecture.interfaces
     validation:
       state: reported
       claim_paths:
-      - primitives.1
+      - primitives.check-findings
     observations:
       state: unreported
-      claim_paths: []
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: unreported
-      claim_paths: []
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: validation
-    primitives.2: workflow
-  observations: {}

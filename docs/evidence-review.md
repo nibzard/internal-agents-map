@@ -31,20 +31,22 @@ All 108 remaining metrics have precise supporting locators and scopes. Missing m
 
 ## Execution environments
 
-The eight originally flagged records are complete:
+The eight originally flagged records are complete. A record omits an undocumented
+architecture field, and `page_content.implementation_fields` holds the review note when the
+record has one:
 
 | Record | Outcome | Preserved evidence |
 | --- | --- | --- |
-| Block Builderbot | `unknown`; no execution isolation implementation found | [Source 1](../archive/sources/block-builderbot-source-1/content.md), [source 2](../archive/sources/block-builderbot-source-2/content.md), [source 3](../archive/sources/block-builderbot-source-3/content.md) |
-| Flex investigation agent | `unknown`; partner data isolation is not an execution sandbox | [Source 1, lines 121–129](../archive/sources/flex-investigation-agent-source-1/content.md) |
-| Linear Agent | `unknown`; considered execution interfaces are not a documented deployed sandbox | [Source 1, lines 74–78](../archive/sources/linear-agent-source-1/content.md), [source 2](../archive/sources/linear-agent-source-2/content.md), [source 3](../archive/sources/linear-agent-source-3/content.md), [source 6](../archive/sources/linear-agent-source-6/content.md) |
+| Block Builderbot | Undocumented; no execution isolation implementation found | [Source 1](../archive/sources/block-builderbot-source-1/content.md), [source 2](../archive/sources/block-builderbot-source-2/content.md), [source 3](../archive/sources/block-builderbot-source-3/content.md) |
+| Flex investigation agent | Undocumented; partner data isolation is not an execution sandbox | [Source 1, lines 121–129](../archive/sources/flex-investigation-agent-source-1/content.md) |
+| Linear Agent | Undocumented; considered execution interfaces are not a documented deployed sandbox | [Source 1, lines 74–78](../archive/sources/linear-agent-source-1/content.md), [source 2](../archive/sources/linear-agent-source-2/content.md), [source 3](../archive/sources/linear-agent-source-3/content.md), [source 6](../archive/sources/linear-agent-source-6/content.md) |
 | Replit manager agent | Documented microVMs, remote filesystem and access controls | [Source 1, line 34](../archive/sources/replit-manager-agent-source-1/content.md) |
 | Slack context system | Omitted inapplicable sandbox and its claim metadata/evidence | [Source 1, lines 34–38](../archive/sources/slack-context-system-source-1/content.md) |
 | Stripe Minions | Pre-warmed EC2 devboxes in QA, no production/user-data/arbitrary-egress access | [Part 2, lines 24–30 and 84](../archive/sources/stripe-minions-source-2/content.md) |
-| Uber coding agent | `unknown`; secondary report gives output and review, not runtime | [Source 1, lines 18–26](../archive/sources/uber-coding-agent-source-1/content.md) |
-| Y Combinator infrastructure | `unknown`; internal harness discussion lacks a concrete execution environment | [Podcast capture](../archive/sources/ycombinator-agent-infra-source-1/content.md) |
+| Uber coding agent | Undocumented; secondary report gives output and review, not runtime | [Source 1, lines 18–26](../archive/sources/uber-coding-agent-source-1/content.md) |
+| Y Combinator infrastructure | Undocumented; internal harness discussion lacks a concrete execution environment | [Podcast capture](../archive/sources/ycombinator-agent-infra-source-1/content.md) |
 
-A further consistency correction separates HubSpot's historical Crucible Kubernetes reviewer from its Aviator replacement. The latter's execution isolation is undocumented, so its current sandbox is `unknown`. [Migration description, lines 24–45](../archive/sources/hubspot-sidekick-source-1/content.md). After these corrections, 16 approaches document concrete current execution environments under the catalog's counting convention.
+A further consistency correction separates HubSpot's historical Crucible Kubernetes reviewer from its Aviator replacement. The latter's execution isolation is undocumented, so its current sandbox is undocumented. [Migration description, lines 24–45](../archive/sources/hubspot-sidekick-source-1/content.md). After these corrections, 16 approaches document concrete current execution environments under the catalog's counting convention.
 
 ## Completion and remaining gaps by approach
 
@@ -52,7 +54,7 @@ A further consistency correction separates HubSpot's historical Crucible Kuberne
 
 | Approach | Completion, corrections, and gaps |
 | --- | --- |
-| [airbnb-airchat](../data/agents/airbnb-airchat.yaml) | 3/3 reviewed. Removed original key_metrics.1: the cited newsletter does not report 60% engineer onboarding in 12 months. Its 64% PR figure is explicitly tied to an October 2025 talk; secondary attribution remains low confidence. No raw PR cohort or independent count. |
+| [airbnb-airchat](../data/agents/airbnb-airchat.yaml) | 3/3 reviewed. Removed the original second key metric: the cited newsletter does not report 60% engineer onboarding in 12 months. Its 64% PR figure is explicitly tied to an October 2025 talk; secondary attribution remains low confidence. No raw PR cohort or independent count. |
 | [atlassian-rovo-dev](../data/agents/atlassian-rovo-dev.yaml) | 3/3 reviewed. Repository evaluation and ModernBERT training-comment dataset are separate scopes. Over-a-year duration is reported; exact interval, repository cohort definition, and dataset export remain unavailable. |
 | [block-builderbot](../data/agents/block-builderbot.yaml) | 4/4 reviewed. Weekly PR share and daily operations have locators; operations are undefined. Months-to-days is a qualitative company opinion, reclassified from metric. Sandbox remains unknown after source review. |
 | [brex-agent-platform](../data/agents/brex-agent-platform.yaml) | 5/5 reviewed. Dispute figure covers preparing submissions, not settlement. QA covers support interactions; the source does not substantiate the previous sample-based wording. Exact samples, accuracy test protocol, and measurement periods remain missing. |
@@ -64,11 +66,11 @@ A further consistency correction separates HubSpot's historical Crucible Kuberne
 | [doordash-code-review](../data/agents/doordash-code-review.yaml) | 3/3 reviewed. Weekly PR reviews and settled high/critical action rate have exact locators; sample is 2,256 findings. Action rate does not measure missed bugs; calendar window unavailable. |
 | [doordash-flux](../data/agents/doordash-flux.yaml) | 4/4 reviewed. August 11 is the dated announcement, not the unspecified one-month measurement window. Weekly review and playbook counts are distinct; task definitions and deduplication remain unclear. |
 | [dropbox-nova](../data/agents/dropbox-nova.yaml) | 4/4 reviewed. Thousands of migration entries belong to the predecessor Goose migrator. Deflaker runs each proposed fix 100+ times according to flake rate, with bounded retries. Dozens of agents is a qualitative orchestration description, not an observed concurrency benchmark. |
-| [flex-investigation-agent](../data/agents/flex-investigation-agent.yaml) | No original metric claims. Reviewed architecture sources: partner data isolation is documented, but an execution sandbox is not; sandbox normalized to unknown. |
+| [flex-investigation-agent](../data/agents/flex-investigation-agent.yaml) | No original metric claims. Reviewed architecture sources: partner data isolation is documented, but an execution sandbox is not; sandbox field omitted. |
 | [github-qubot](../data/agents/github-qubot.yaml) | 3/3 reviewed. Hundreds of users/thousands of queries are qualitative counts without a window. Falling Slack question volume reclassified as a qualitative fact; no before/after counts. |
 | [harvey-spectre](../data/agents/harvey-spectre.yaml) | No original metric claims. Nonmetric evidence was not part of this metric traceability pass. |
 | [hubspot-sidekick](../data/agents/hubspot-sidekick.yaml) | 4/4 reviewed. Over 80% is reactions in the past couple months, not all engineers over six months. Reactions and feedback-time measures have scopes; sample and raw latency missing. Corrected Aviator/Crucible migration; current reviewer sandbox unknown. |
-| [linear-agent](../data/agents/linear-agent.yaml) | No original metric claims. Sources reviewed for sandbox: lower-level execution interfaces were considered, but no concrete deployed sandbox is documented. Normalized to unknown. |
+| [linear-agent](../data/agents/linear-agent.yaml) | No original metric claims. Sources reviewed for sandbox: lower-level execution interfaces were considered, but no concrete deployed sandbox is documented. Sandbox field omitted. |
 | [microsoft-prassistant](../data/agents/microsoft-prassistant.yaml) | 4/4 reviewed. 600,000 is pull requests impacted, not a count of review executions; 5,000 repositories refers to early evaluation. No exact measurement interval or coverage denominator count. |
 | [monday-sphera-atlas-morphex](../data/agents/monday-sphera-atlas-morphex.yaml) | 5/5 reviewed. 90% applies to Builders; annual adoption trend is explicit in line 22. Morphex automatic merges differ from the broader top-agent cohort and its filtered revert rate. Missing sample sizes/windows; no universal success-rate inference. |
 | [notion-custom-agents](../data/agents/notion-custom-agents.yaml) | 4/4 reviewed. Internal alpha agents exclude customer alpha agents. Security-team activity reclassified as qualitative fact. Participant rebuild estimates vary from three to five across harness/framework/feature; no precise inventory. |
@@ -82,14 +84,14 @@ A further consistency correction separates HubSpot's historical Crucible Kuberne
 | [salesforce-slackbot](../data/agents/salesforce-slackbot.yaml) | No original metric claims. Nonmetric evidence was not part of this metric traceability pass. |
 | [sentry-junior](../data/agents/sentry-junior.yaml) | 3/3 reviewed. Lines of code exclude tests, evals, docs, and lockfiles. Four months is author-reported effort before the writeup; no dated code revision or reproducible LOC command. Apache license linked separately. |
 | [shopify-internal-agents](../data/agents/shopify-internal-agents.yaml) | 4/4 reviewed. Session/channel/PR counts refer to a recent 30-day window and the river_sessions table. Median duration/tool calls and company-wide merged-PR share stay scoped separately. Exact date boundaries and full PR denominator unavailable. |
-| [sierra-pinecone](../data/agents/sierra-pinecone.yaml) | 4/4 reviewed. 600 people and 75,000+ sessions are in the preceding month, not cumulative lifetime totals; 70% concerns opened PRs in that month. Removed unsupported July label and original key_metrics.2 (hundreds of automations), absent from the capture. |
+| [sierra-pinecone](../data/agents/sierra-pinecone.yaml) | 4/4 reviewed. 600 people and 75,000+ sessions are in the preceding month, not cumulative lifetime totals; 70% concerns opened PRs in that month. Removed unsupported July label and the original third key metric (hundreds of automations), absent from the capture. |
 | [slack-context-system](../data/agents/slack-context-system.yaml) | 2/2 reviewed. Hundreds of requests/megabytes describe investigation workload scale, not a measured guarantee against overflow. Inapplicable sandbox and its evidence removed. No capacity benchmark or calendar measurement window. |
 | [spotify-honk-xirp](../data/agents/spotify-honk-xirp.yaml) | 4/4 reviewed. Removed unsupported June 2026 dates for cumulative Honk PR counts. Wider Fleet Management automation applies since mid-2024, including deterministic changes. Selected migration time savings are not all engineering work; exact comparison method unavailable. |
 | [stripe-minions](../data/agents/stripe-minions.yaml) | 2/2 reviewed. Part 1 over 1,000 and Part 2 over 1,300 completely minion-produced merged PRs/week retained as earlier/later reports. Both require human review; no calendar measurement cutoff in captured articles. EC2 devboxes, goose blueprints, Toolshed and QA isolation reconciled. Community doubts remain context. |
-| [uber-coding-agent](../data/agents/uber-coding-agent.yaml) | 3/3 reviewed. Human-reviewed agent-authored changes differ from broad monthly AI-tool adoption. Secondary reporting of CTO statements remains limited; measurement windows and agent runtime missing. Sandbox normalized to unknown. |
+| [uber-coding-agent](../data/agents/uber-coding-agent.yaml) | 3/3 reviewed. Human-reviewed agent-authored changes differ from broad monthly AI-tool adoption. Secondary reporting of CTO statements remains limited; measurement windows and agent runtime missing. Sandbox field omitted. |
 | [uber-ureview](../data/agents/uber-ureview.yaml) | 6/6 reviewed. Preserved internal weekly/monthly conflict with low confidence and separate contradicting locators. Useful/addressed rates have different denominators and methods. Rounded modeled time savings do not reconcile exactly; no observed time-saved experiment. |
 | [workos-project-horizon](../data/agents/workos-project-horizon.yaml) | No original metric claims. Nonmetric evidence was not part of this metric traceability pass. |
-| [ycombinator-agent-infra](../data/agents/ycombinator-agent-infra.yaml) | No original metric claims. Podcast transcript reviewed for execution infrastructure; no concrete sandbox implementation documented. Normalized to unknown. |
+| [ycombinator-agent-infra](../data/agents/ycombinator-agent-infra.yaml) | No original metric claims. Podcast transcript reviewed for execution infrastructure; no concrete sandbox implementation documented. Sandbox field omitted. |
 | [zup-codegen](../data/agents/zup-codegen.yaml) | No original metric claims. Nonmetric evidence was not part of this metric traceability pass. |
 
 ## Failures, costs, and counterevidence

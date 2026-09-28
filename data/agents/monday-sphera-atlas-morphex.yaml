@@ -24,8 +24,6 @@ rubric:
   invocation:
   - event-driven
   - interactive
-  state: mixed
-  identity: dedicated-agent
   evidence_strength: secondary-only
 summary: An internal agent system on Amazon Bedrock with agent identities, assigned managers, and evaluation
   scores. Atlas prepares feature changes; Morphex can merge and ship changes that pass the required checks
@@ -49,37 +47,54 @@ architecture:
   context_mgmt: Live state in ElastiCache (sub-ms); monday boards (Builders CoWORK) as shared state for tasks, status,
     handoffs
 primitives:
-- name: Agent profiles
+- id: agent-profiles
+  name: Agent profiles
   desc: Stable identity + assigned human manager + scope + performance score
-- name: PR Guardrails
+  role: mechanism
+- id: pr-guardrails
+  name: PR Guardrails
   desc: Automated review against monday standards (metrics, feature flags, security)
-- name: Memory as files
+  role: mechanism
+- id: memory-as-files
+  name: Memory as files
   desc: MEMORY.md + daily diary instead of vector retrieval
-- name: Builders CoWORK
+  role: mechanism
+- id: builders-cowork
+  name: Builders CoWORK
   desc: monday boards as the shared-state layer for human/agent collaboration
-- {name: Receive a task from one of three inboxes, desc: 'A Slack @mention, monday item assignment, or GitHub PR
-    review request lands in the same agent session through SNS and a per-team SQS queue'}
-- {name: Implement the feature task, desc: 'The agent picks up tickets, writes the PR, and ships the feature from
-    the same backlog as human teammates'}
-- {name: Auto-deploy the PR to a remote sandbox, desc: 'Every PR auto-deploys to a per-session remote sandbox; tests,
-    checks, and replayed production traffic run before any human review'}
-- {name: Merge above the confidence threshold, desc: 'PRs above the confidence-score threshold merge automatically
+  role: mechanism
+- {id: receive-task-one-three-inboxes, name: Receive a task from one of three inboxes, desc: 'A Slack @mention, monday item assignment, or GitHub PR
+    review request lands in the same agent session through SNS and a per-team SQS queue', role: workflow}
+- {id: implement-the-feature-task, name: Implement the feature task, desc: 'The agent picks up tickets, writes the PR, and ships the feature from
+    the same backlog as human teammates', role: workflow}
+- {id: auto-deploy-pr-remote-sandbox, name: Auto-deploy the PR to a remote sandbox, desc: 'Every PR auto-deploys to a per-session remote sandbox; tests,
+    checks, and replayed production traffic run before any human review', role: workflow}
+- {id: merge-above-the-confidence-threshold, name: Merge above the confidence threshold, desc: 'PRs above the confidence-score threshold merge automatically
     after passing every gate and ship to production with no human in the loop; below-threshold PRs route to a human
-    with the failing signal named'}
+    with the failing signal named', role: workflow}
 key_metrics:
-- 'Morphex: 19 of 20 PRs merge automatically without human review'
-- 90% of Builders use AI coding tools monthly; adoption nearly doubled year over year
-- Per-engineer PR throughput increased by more than 50%
-- Guardrails catches ~25% of agent PRs before human review; low single-digit revert rate
+- id: prs-merge-automatically-without-human-review
+  text: 'Morphex: 19 of 20 PRs merge automatically without human review'
+- id: builders-use-ai-coding-tools-monthly
+  text: 90% of Builders use AI coding tools monthly; adoption nearly doubled year over year
+- id: engineer-pr-throughput-increased
+  text: Per-engineer PR throughput increased by more than 50%
+- id: guardrails-catches-agent-prs-human-review
+  text: Guardrails catches ~25% of agent PRs before human review; low single-digit revert rate
 lessons_learned:
-- monday.com says it introduced evaluations too late, after growing PR volume made informal review inadequate.
-- monday.com replaced unsuccessful transcript retrieval experiments with per-agent MEMORY.md files and daily
-  diaries read at session start.
-- monday.com added remote sandbox checks and production-traffic replay after Atlas changes passed local tests
-  but failed in CI.
-- Morphex uses the same repository, CI, Guardrails checks, and revert protocols as monday engineers.
-- monday.com uses blocking automated reviewers for engineering standards and feeds evaluation results back
-  into the agent harness.
+- id: introduced-evaluations-too-late-growing-pr
+  text: monday.com says it introduced evaluations too late, after growing PR volume made informal review inadequate.
+- id: replaced-unsuccessful-transcript-retrieval-experiments
+  text: monday.com replaced unsuccessful transcript retrieval experiments with per-agent MEMORY.md files and daily
+    diaries read at session start.
+- id: added-remote-sandbox-checks-production-traffic
+  text: monday.com added remote sandbox checks and production-traffic replay after Atlas changes passed local tests
+    but failed in CI.
+- id: uses-same-repository-ci-guardrails-checks
+  text: Morphex uses the same repository, CI, Guardrails checks, and revert protocols as monday engineers.
+- id: uses-blocking-automated-reviewers-engineering-standards
+  text: monday.com uses blocking automated reviewers for engineering standards and feeds evaluation results back
+    into the agent harness.
 sources:
 - id: monday-sphera-atlas-morphex-source-1
   title: 'AI Teammates: how monday.com runs production AI agents on Amazon Bedrock'
@@ -116,41 +131,41 @@ evidence:
   - source_id: monday-sphera-atlas-morphex-source-1
   architecture.context_mgmt:
   - source_id: monday-sphera-atlas-morphex-source-1
-  primitives.0:
+  primitives.agent-profiles:
   - source_id: monday-sphera-atlas-morphex-source-1
-  primitives.1:
+  primitives.pr-guardrails:
   - source_id: monday-sphera-atlas-morphex-source-1
-  primitives.2:
+  primitives.memory-as-files:
   - source_id: monday-sphera-atlas-morphex-source-1
-  primitives.3:
+  primitives.builders-cowork:
   - source_id: monday-sphera-atlas-morphex-source-1
-  primitives.4:
+  primitives.receive-task-one-three-inboxes:
   - {locator: 'Preserved content.md, lines 40,
     46, 50'}
-  primitives.5:
+  primitives.implement-the-feature-task:
   - {locator: 'Preserved content.md, line 28'}
-  primitives.6:
+  primitives.auto-deploy-pr-remote-sandbox:
   - {locator: 'Preserved content.md, line 124'}
-  primitives.7:
+  primitives.merge-above-the-confidence-threshold:
   - {locator: 'Preserved content.md, lines 150,
     169'}
-  key_metrics.0:
+  key_metrics.prs-merge-automatically-without-human-review:
   - locator: Preserved content.md, lines 148–152
-  key_metrics.1:
+  key_metrics.builders-use-ai-coding-tools-monthly:
   - locator: Preserved content.md, lines 10, 16, 22
-  key_metrics.2:
+  key_metrics.engineer-pr-throughput-increased:
   - locator: Preserved content.md, lines 10, 23
-  key_metrics.3:
+  key_metrics.guardrails-catches-agent-prs-human-review:
   - locator: Preserved content.md, lines 154–158
-  lessons_learned.0:
+  lessons_learned.introduced-evaluations-too-late-growing-pr:
   - locator: Preserved content.md, lines 114-116,188
-  lessons_learned.1:
+  lessons_learned.replaced-unsuccessful-transcript-retrieval-experiments:
   - locator: Preserved content.md, lines 118-120
-  lessons_learned.2:
+  lessons_learned.added-remote-sandbox-checks-production-traffic:
   - locator: Preserved content.md, lines 122-124
-  lessons_learned.3:
+  lessons_learned.uses-same-repository-ci-guardrails-checks:
   - locator: Preserved content.md, lines 150
-  lessons_learned.4:
+  lessons_learned.uses-blocking-automated-reviewers-engineering-standards:
   - locator: Preserved content.md, lines 116,128-130
   architecture.interfaces:
   - source_id: monday-sphera-atlas-morphex-source-1
@@ -167,31 +182,31 @@ claim_metadata:
       for human review while also describing confidence-threshold auto-merge as being driven out over the following
       two quarters.
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.introduced-evaluations-too-late-growing-pr:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: The authors describe replacing a looks-fine standard with deterministic metrics and model-scored
       evaluations, and explicitly regret waiting until month nine.
-  lessons_learned.1:
+  lessons_learned.replaced-unsuccessful-transcript-retrieval-experiments:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The memory section describes failed context stuffing and vector retrieval for Atlas, then
       names the file lifecycle. It does not compare retrieval methods on other workloads.
-  lessons_learned.2:
+  lessons_learned.added-remote-sandbox-checks-production-traffic:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The sandbox section states the observed failure and the checks run before Atlas requests
       human review.
-  lessons_learned.3:
+  lessons_learned.uses-same-repository-ci-guardrails-checks:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The Morphex section names the shared controls and says automatic merges depend on passing
       the gates.
-  lessons_learned.4:
+  lessons_learned.uses-blocking-automated-reviewers-engineering-standards:
     kind: fact
     provenance: reported
     confidence: medium
@@ -200,20 +215,36 @@ claim_metadata:
   headline_metric:
     metric_scope: Morphex PRs that merge automatically after CI and Guardrails pass
     denominator: Morphex pull requests; sample size and period not supplied
-  key_metrics.0:
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Morphex pull requests merging
+      automatically after passing every gate, with approved PRs shipping to production without a human'
+  key_metrics.prs-merge-automatically-without-human-review:
     metric_scope: Morphex PRs that merge automatically after CI and Guardrails pass
     denominator: Morphex pull requests; sample size and period not supplied
-  key_metrics.1:
+  key_metrics.builders-use-ai-coding-tools-monthly:
     metric_scope: Monthly AI coding-tool adoption among monday Builders, including engineers, PMs, analysts, and
       designers
     denominator: Builders; not exclusively engineers
-  key_metrics.2:
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Monthly AI coding-tool use
+      among monday Builders, including engineers, PMs, analysts, and designers'
+  key_metrics.engineer-pr-throughput-increased:
     metric_scope: Per-engineer pull-request throughput
     denominator: Engineers; baseline period and cohort size not specified
-  key_metrics.3:
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Per-engineer pull-request
+      throughput'
+  key_metrics.guardrails-catches-agent-prs-human-review:
     metric_scope: Recent cut of top PR-generating agents; Guardrails rejection before review and reverts among merged
       PRs
     denominator: Agent PRs for Guardrails rejection; merged PRs for revert rate
+    category: effectiveness
+    basis: reported-measurement
+    subject: 'Guardrails pre-review rejection
+      of agent PRs and the revert rate among merged agent PRs'
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -221,43 +252,20 @@ page_content:
   workflow_scope: 'Sphera agent feature task from an inbox trigger to production ship; Morphex merges autonomously
     above the confidence threshold while Atlas requests human review after the sandbox gate'
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.4, primitives.5, primitives.6, primitives.7], note: 'The
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.receive-task-one-three-inboxes, primitives.implement-the-feature-task, primitives.auto-deploy-pr-remote-sandbox, primitives.merge-above-the-confidence-threshold], note: 'The
       four run steps describe the shared Sphera pipeline; the final gate differs by agent as the scope states.'}
     human_involvement: {state: reported, claim_paths: [operating_models.0, operating_models.1], note: 'Morphex runs
       exception-only: a below-threshold PR routes to a human and an approved PR ships with none. Atlas runs sandbox
       checks before asking for human review; the source calls threshold auto-merge a following-two-quarters goal
       for that population.'}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.model, architecture.sandbox,
-      architecture.tool_access, architecture.knowledge, architecture.context_mgmt, architecture.credentials,
-      architecture.interfaces]}
-    validation: {state: reported, claim_paths: [primitives.1, primitives.6, lessons_learned.4], note: 'Validation is
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.pr-guardrails, primitives.auto-deploy-pr-remote-sandbox, lessons_learned.uses-blocking-automated-reviewers-engineering-standards], note: 'Validation is
       the blocking Guardrails reviewers, the remote-sandbox tests with replayed production traffic, and the
       deterministic and LLM-scored evals fed back into the harness.'}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1, key_metrics.2,
-      key_metrics.3]}
-    lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1, lessons_learned.2, lessons_learned.3,
-      lessons_learned.4]}
-  implementation_fields:
-    model: {state: reported, claim_paths: [architecture.model]}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: reported, claim_paths: [architecture.sandbox]}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access]}
-    knowledge: {state: reported, claim_paths: [architecture.knowledge]}
-    context_mgmt: {state: reported, claim_paths: [architecture.context_mgmt]}
-    credentials: {state: reported, claim_paths: [architecture.credentials]}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces]}
-  primitive_roles: {primitives.0: mechanism, primitives.1: mechanism, primitives.2: mechanism, primitives.3: mechanism,
-    primitives.4: workflow, primitives.5: workflow, primitives.6: workflow, primitives.7: workflow}
-  observations:
-    headline_metric: {category: adoption-output, basis: reported-measurement, subject: 'Morphex pull requests merging
-      automatically after passing every gate, with approved PRs shipping to production without a human'}
-    key_metrics.0: {duplicate_of: headline_metric, reason: 'Same nineteen-in-twenty automatic-merge figure as the
+    observations: {state: reported}
+    lessons: {state: reported}
+  aliases:
+    key_metrics.prs-merge-automatically-without-human-review: {duplicate_of: headline_metric, reason: 'Same nineteen-in-twenty automatic-merge figure as the
       headline with the same denominator and unset period; the word automatically adds nothing the headline scope
       does not already state.'}
-    key_metrics.1: {category: adoption-output, basis: reported-measurement, subject: 'Monthly AI coding-tool use
-      among monday Builders, including engineers, PMs, analysts, and designers'}
-    key_metrics.2: {category: adoption-output, basis: reported-measurement, subject: 'Per-engineer pull-request
-      throughput'}
-    key_metrics.3: {category: effectiveness, basis: reported-measurement, subject: 'Guardrails pre-review rejection
-      of agent PRs and the revert rate among merged agent PRs'}

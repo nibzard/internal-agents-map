@@ -128,6 +128,10 @@ path from the route helper and the matched identifier, so an unknown fragment ke
 homepage behavior and cannot become a redirect target. Without JavaScript, the card links remain
 the path to each entry.
 
+An entry page also keeps each schema 7 claim ID as an extra anchor on its claim. The
+`claim_aliases` map of `data/agents.json` gives the pairs, so an old claim link reaches the
+same statement.
+
 Every page except the home page carries its own link preview. The build draws one 1200 by 630 PNG
 per route under `dist/og/` with satori and resvg, from `src/og/render.ts`, on the ground and type
 of the directory: the possessive title the homepage uses, the summary shortened to three lines, the

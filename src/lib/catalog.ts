@@ -9,6 +9,7 @@ import {
   type EvidenceRelation,
   type ObservationBasis,
   type ObservationCategory,
+  PRIMITIVE_ROLE_VALUES,
   type PrimitiveRole,
   type RelationType,
   type ReviewState,
@@ -17,7 +18,7 @@ import {
 export type { ClaimKind, ClaimProvenance, EvidenceRelation, ReviewState };
 
 /** The only catalog schema this website reads. */
-export const CATALOG_SCHEMA_VERSION = 7;
+export const CATALOG_SCHEMA_VERSION = 8;
 
 const CATALOG_FILE = 'data/agents.json';
 
@@ -45,19 +46,37 @@ export interface Claim {
   readonly unit?: string | null;
   readonly value?: string | number | null;
   readonly display_name?: string;
+  /** The ID of the list item, the last part of a `primitives`, `key_metrics`, or `lessons_learned` path. */
+  readonly item_id?: string;
+  /** The section of a primitive on the entry page. */
+  readonly role?: PrimitiveRole;
+  /** The observation fields of a canonical metric. */
+  readonly category?: ObservationCategory;
+  readonly basis?: ObservationBasis;
+  readonly subject?: string;
+  /** The claim ID of the canonical metric that an alias metric repeats. */
+  readonly duplicate_of?: string;
+  readonly reason?: string;
 }
+
+/** The list fields whose claim paths end in an item ID. */
+const ITEM_LISTS = ['primitives', 'key_metrics', 'lessons_learned'] as const;
 
 export interface CoverageDisposition {
   readonly state: ReviewState;
   readonly claim_paths: readonly string[];
   readonly note?: string;
 }
-export interface ObservationMetadata {
-  readonly category?: ObservationCategory;
-  readonly basis?: ObservationBasis;
-  readonly subject?: string;
-  readonly duplicate_of?: string;
-  readonly reason?: string;
+/** The state of one implementation field. The export derives it for every field. */
+export interface FieldDisposition {
+  readonly state: ReviewState;
+  readonly claim_paths?: readonly string[];
+  readonly note?: string;
+}
+/** A metric that repeats another metric. `duplicate_of` is the claim path of the target. */
+export interface MetricAlias {
+  readonly duplicate_of: string;
+  readonly reason: string;
 }
 export interface PageContent {
   readonly version: 1;
@@ -65,9 +84,8 @@ export interface PageContent {
   readonly source_ids: readonly string[];
   readonly workflow_scope?: string;
   readonly questions: Readonly<Record<'purpose' | 'workflow' | 'human_involvement' | 'implementation' | 'validation' | 'observations' | 'lessons', CoverageDisposition>>;
-  readonly implementation_fields: Readonly<Record<'model' | 'harness' | 'sandbox' | 'tool_access' | 'knowledge' | 'context_mgmt' | 'credentials' | 'interfaces', CoverageDisposition>>;
-  readonly primitive_roles: Readonly<Record<string, PrimitiveRole>>;
-  readonly observations: Readonly<Record<string, ObservationMetadata>>;
+  readonly implementation_fields: Readonly<Record<'model' | 'harness' | 'sandbox' | 'tool_access' | 'knowledge' | 'context_mgmt' | 'credentials' | 'interfaces', FieldDisposition>>;
+  readonly aliases: Readonly<Record<string, MetricAlias>>;
 }
 
 export interface SourceCapture {
@@ -90,7 +108,6 @@ export interface Source {
   readonly published_at?: string | null;
   readonly accessed_at?: string | null;
   readonly last_verified_at?: string | null;
-  readonly archived_url?: string | null;
   readonly duplicate_of?: string | null;
   readonly capture?: SourceCapture | null;
 }
@@ -128,8 +145,6 @@ export interface Company {
 
 export interface Rubric {
   readonly invocation: readonly string[];
-  readonly state: string;
-  readonly identity: string;
   readonly evidence_strength: string;
 }
 
@@ -164,7 +179,7 @@ export interface Approach {
   /** True when the catalog shows the record before all others in the default order. */
   readonly featured?: boolean;
   readonly relationships?: readonly Relationship[];
-  readonly page_content?: PageContent;
+  readonly page_content: PageContent;
 }
 
 /** Count one family once and deduplicate shared source URLs within a collection. */
@@ -184,6 +199,8 @@ export interface Catalog {
   readonly claims: readonly Claim[];
   readonly sources: readonly Source[];
   readonly companies: readonly Company[];
+  /** Every claim ID of the previous schema, mapped to the claim ID that replaces it. */
+  readonly claim_aliases?: Readonly<Record<string, string>>;
 }
 
 function fail(message: string): never {
@@ -239,6 +256,31 @@ export function validateCatalog(value: unknown): Catalog {
     approaches.add(approach.id);
   }
 
+  for (const claim of catalog.claims) {
+    const where = `claim "${claim.id}" (approach "${claim.approach_id}", field "${claim.field}")`;
+    if (!approaches.has(claim.approach_id)) fail(`${where} belongs to an unknown approach.`);
+    const [list, item] = claim.field.split('.', 2) as [string, string | undefined];
+    if ((ITEM_LISTS as readonly string[]).includes(list)) {
+      if (!item || /^\d+$/.test(item)) fail(`${where} uses a list index, not an item ID.`);
+      if (claim.item_id !== item) fail(`${where} has item_id "${claim.item_id}".`);
+    }
+    if (list === 'primitives' && !PRIMITIVE_ROLE_VALUES.includes(claim.role!)) {
+      fail(`${where} has no valid role.`);
+    }
+    if (claim.duplicate_of != null && claims.get(claim.duplicate_of)?.approach_id !== claim.approach_id) {
+      fail(`${where} is a duplicate of unknown claim "${claim.duplicate_of}".`);
+    }
+    const isMetric = claim.field === 'headline_metric' || list === 'key_metrics';
+    if (isMetric && claim.duplicate_of == null && !(claim.category && claim.basis && claim.subject)) {
+      fail(`${where} lacks category, basis, or subject.`);
+    }
+    for (const [index, evidence] of claim.evidence.entries()) {
+      if (!sources.has(evidence.source_id)) {
+        fail(`${where} cites unknown source "${evidence.source_id}" at evidence.${index}.`);
+      }
+    }
+  }
+
   const usedCompanies = new Set<string>();
   for (const approach of catalog.approaches) {
     if (approach.catalog_section !== catalogSection(approach.approach_type)) {
@@ -275,8 +317,9 @@ export function validateCatalog(value: unknown): Catalog {
         fail(`approach "${approach.id}" lists unknown source "${sourceId}".`);
       }
     }
-    if (approach.page_content) {
+    {
       const page = approach.page_content;
+      if (!isRecord(page)) fail(`approach "${approach.id}" has no page_content.`);
       if (page.version !== 1 || !/^\d{4}-\d{2}-\d{2}$/.test(page.reviewed_at)) {
         fail(`approach "${approach.id}" has invalid page_content version or review date.`);
       }
@@ -295,7 +338,7 @@ export function validateCatalog(value: unknown): Catalog {
         if (!['reported', 'unreported', 'not-applicable', 'not-reviewed'].includes(disposition.state)) {
           fail(`approach "${approach.id}" page_content has an invalid review state.`);
         }
-        for (const path of disposition.claim_paths) {
+        for (const path of disposition.claim_paths ?? []) {
           const claim = fields.get(path);
           if (!claim) fail(`approach "${approach.id}" page_content lists unknown claim path "${path}".`);
           if (disposition.state === 'reported' && !claim.evidence.some((item) => item.relation === 'supports' && reviewed.has(item.source_id))) {
@@ -303,23 +346,14 @@ export function validateCatalog(value: unknown): Catalog {
           }
         }
       }
-      for (const [path, observation] of Object.entries(page.observations)) {
-        if (!fields.has(path)) fail(`approach "${approach.id}" observation "${path}" does not resolve.`);
-        if (observation.duplicate_of && !page.observations[observation.duplicate_of]) {
-          fail(`approach "${approach.id}" observation "${path}" has a missing duplicate target.`);
-        }
+      for (const path of Object.keys(page.aliases)) {
+        if (!fields.get(path)?.duplicate_of) fail(`approach "${approach.id}" alias "${path}" does not resolve.`);
       }
     }
   }
 
-  for (const claim of catalog.claims) {
-    const where = `claim "${claim.id}" (approach "${claim.approach_id}", field "${claim.field}")`;
-    if (!approaches.has(claim.approach_id)) fail(`${where} belongs to an unknown approach.`);
-    for (const [index, evidence] of claim.evidence.entries()) {
-      if (!sources.has(evidence.source_id)) {
-        fail(`${where} cites unknown source "${evidence.source_id}" at evidence.${index}.`);
-      }
-    }
+  for (const [old, current] of Object.entries(catalog.claim_aliases ?? {})) {
+    if (!claims.has(current)) fail(`claim alias "${old}" names unknown claim "${current}".`);
   }
 
   for (const source of catalog.sources) {

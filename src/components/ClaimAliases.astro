@@ -1,0 +1,12 @@
+---
+// ABOUTME: Keeps the old claim IDs of one claim as empty anchors inside its element.
+// ABOUTME: A link to an old claim ID then lands on the claim without a script.
+import type { ClaimView } from '../lib/entry-view';
+
+interface Props {
+  claim: ClaimView;
+}
+
+const { claim } = Astro.props;
+---
+{claim.aliasAnchors.map((anchor) => <span id={anchor} data-claim-alias={claim.id}></span>)}

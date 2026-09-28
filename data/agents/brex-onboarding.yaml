@@ -18,8 +18,6 @@ operating_models:
 rubric:
   invocation:
   - event-driven
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Brex’s onboarding system verifies applicants and synthesizes KYC and underwriting evidence into decisions
   for its operations team.
@@ -27,12 +25,18 @@ architecture:
   harness: Specialists exchange structured claims, evidence and confidence.
   knowledge: Documented analyst judgment and Brex onboarding policies.
 primitives:
-- name: Gather evidence
+- id: gather-evidence
+  name: Gather evidence
   desc: Specialists segment businesses, verify documents and identity, and reconstruct financial profiles.
-- name: Decide or escalate
+  role: workflow
+- id: decide-or-escalate
+  name: Decide or escalate
   desc: A decision agent combines policy, evidence and confidence; uncertain cases go to analysts.
-- name: Evaluate decisions
+  role: workflow
+- id: evaluate-decisions
+  name: Evaluate decisions
   desc: Brex benchmarks agents against re-reviewed, labeled historical applications.
+  role: validation
 sources:
 - id: brex-onboarding-source-1
   title: 'The end of the trade-off: How AI agents broke the onboarding trilemma'
@@ -53,13 +57,13 @@ evidence:
   - locator: Encoding human judgment at scale; How the onboarding agents work together
   architecture.knowledge:
   - locator: Encoding human judgment at scale; How the onboarding agents work together
-  primitives.0:
+  primitives.gather-evidence:
   - locator: Encoding human judgment at scale; How the onboarding agents work together
-  primitives.1:
+  primitives.decide-or-escalate:
   - locator: Encoding human judgment at scale; How the onboarding agents work together
-  primitives.2:
+  primitives.evaluate-decisions:
   - locator: 'Encoding human judgment at scale: historical cases re-reviewed and labeled as the benchmark'
-  key_metrics.0:
+  key_metrics.card-application-auto-approval-rose-weeks:
   - locator: 'What we learned: SME and builder partnership raised card-application auto-approval from 0% to 40%
       in weeks'
 claim_metadata:
@@ -68,16 +72,20 @@ claim_metadata:
     confidence_reason: Brex explicitly distinguishes instant high-confidence decisions from uncertain cases escalated
       to analysts.
     valid_at: '2026-01-20'
-  key_metrics.0:
+  key_metrics.card-application-auto-approval-rose-weeks:
     metric_scope: 'Onboarding decision system: Brex reports card-application auto-approval rose from 0% to 40% in
       weeks.'
     confidence: medium
     confidence_reason: Self-reported by the source; no independent verification.
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Onboarding decision system: Brex reports card-application auto-approval rose from 0% to 40% in weeks.'
 relationships:
 - type: related-to
   approach_id: brex-agent-platform
 key_metrics:
-- Brex reports card-application auto-approval rose from 0% to 40% in weeks.
+- id: card-application-auto-approval-rose-weeks
+  text: Brex reports card-application auto-approval rose from 0% to 40% in weeks.
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -87,66 +95,22 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
+      - primitives.gather-evidence
+      - primitives.decide-or-escalate
     human_involvement:
       state: reported
       claim_paths:
       - operating_models.0
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.knowledge
     validation:
       state: reported
       claim_paths:
-      - primitives.2
+      - primitives.evaluate-decisions
     observations:
       state: reported
-      claim_paths:
-      - key_metrics.0
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: unreported
-      claim_paths: []
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: unreported
-      claim_paths: []
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: unreported
-      claim_paths: []
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: validation
-  observations:
-    key_metrics.0:
-      category: adoption-output
-      basis: reported-measurement
-      subject: 'Onboarding decision system: Brex reports card-application auto-approval rose from 0% to 40% in weeks.'

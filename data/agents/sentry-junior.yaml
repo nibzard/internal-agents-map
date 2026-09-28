@@ -25,8 +25,6 @@ rubric:
   - event-driven
   - interactive
   - scheduled
-  state: durable-session
-  identity: mixed
   evidence_strength: detailed-primary
 summary: An open-source Slack agent built at Sentry that retrieves context and acts across company systems.
   People can steer interactive tasks in a thread; Junior also handles scheduled tasks and inbound events. Its
@@ -51,31 +49,44 @@ architecture:
     declare OAuth flows and credential domains; GitHub distinguishes read vs. write
   context_mgmt: Incremental transcript updates in Redis; resource subscriptions to GitHub PR events for follow-ups
 primitives:
-- name: Progressive tool discovery
+- id: progressive-tool-discovery
+  name: Progressive tool discovery
   desc: searchMcpTools connects to a requested MCP provider and discovers its tools on demand
-- name: On-path credential proxy
+  role: mechanism
+- id: path-credential-proxy
+  name: On-path credential proxy
   desc: An outbound proxy injects credentials for configured domains or pauses the agent for authorization
-- name: Interrupt/resume broker
+  role: mechanism
+- id: interrupt-resume-broker
+  name: Interrupt/resume broker
   desc: Pauses near a serverless deadline and queues a task to continue the session
-- {name: Answer a Slack question from the codebase, desc: 'Junior searches the repo, traces the code path, and answers
-    in the thread instead of guessing'}
-- {name: Open a GitHub issue from a conversation, desc: 'Tagged in a thread, Junior summarizes the discussion, does
-    gap analysis or an RCA, and opens the ticket through the typed tool that attaches the deterministic footer'}
-- {name: Run visual QA in the browser sandbox, desc: 'Junior opens a feature with agent-browser, clicks around, takes
-    screenshots or videos, and writes up the rough edges in the same thread'}
-- {name: Watch a pull request for follow-ups, desc: 'After opening a PR Junior subscribes to its events; a failed
-    check or requested change becomes a synthetic message, and Junior decides what to update in the thread'}
+  role: mechanism
+- {id: answer-slack-question-codebase, name: Answer a Slack question from the codebase, desc: 'Junior searches the repo, traces the code path, and answers
+    in the thread instead of guessing', role: workflow}
+- {id: open-github-issue-conversation, name: Open a GitHub issue from a conversation, desc: 'Tagged in a thread, Junior summarizes the discussion, does
+    gap analysis or an RCA, and opens the ticket through the typed tool that attaches the deterministic footer', role: workflow}
+- {id: run-visual-qa-browser-sandbox, name: Run visual QA in the browser sandbox, desc: 'Junior opens a feature with agent-browser, clicks around, takes
+    screenshots or videos, and writes up the rough edges in the same thread', role: workflow}
+- {id: watch-pull-request-follow-ups, name: Watch a pull request for follow-ups, desc: 'After opening a PR Junior subscribes to its events; a failed
+    check or requested change becomes a synthetic message, and Junior decides what to update in the thread', role: workflow}
 key_metrics:
-- Around 100,000 lines of TypeScript excluding tests, evals, docs, and lockfiles
-- 4 months from start to writeup
+- id: lines-typescript-excluding-tests-evals-docs
+  text: Around 100,000 lines of TypeScript excluding tests, evals, docs, and lockfiles
+- id: time-from-start-to-writeup
+  text: 4 months from start to writeup
 lessons_learned:
-- Junior's author prefers one agent that can work across company systems to choosing among several vendor-specific
-  bots.
-- Junior's skills contain operational instructions, including telemetry lookup conventions and the GitHub workflows
-  used for package releases.
-- Junior pauses before a serverless timeout and queues a continuation task at a resumable point.
-- Junior tests agent behavior with event scenarios, explicit evaluation criteria, and assertions on side effects.
-- Junior combines an installation token for reads with per-user OAuth for writes in its GitHub integration.
+- id: author-prefers-one-agent-work-company
+  text: Junior's author prefers one agent that can work across company systems to choosing among several vendor-specific
+    bots.
+- id: skills-contain-operational-instructions-including-telemetry
+  text: Junior's skills contain operational instructions, including telemetry lookup conventions and the GitHub workflows
+    used for package releases.
+- id: pauses-serverless-timeout-queues-continuation-task
+  text: Junior pauses before a serverless timeout and queues a continuation task at a resumable point.
+- id: tests-agent-behavior-event-scenarios-explicit
+  text: Junior tests agent behavior with event scenarios, explicit evaluation criteria, and assertions on side effects.
+- id: combines-installation-token-reads-per-user
+  text: Junior combines an installation token for reads with per-user OAuth for writes in its GitHub integration.
 sources:
 - id: sentry-junior-source-1
   title: Building an Intern (Junior at Sentry)
@@ -148,42 +159,42 @@ evidence:
   - source_id: sentry-junior-source-1
   architecture.context_mgmt:
   - source_id: sentry-junior-source-1
-  primitives.0:
+  primitives.progressive-tool-discovery:
   - source_id: sentry-junior-source-1
     locator: Preserved content.md, lines 226-236
-  primitives.1:
+  primitives.path-credential-proxy:
   - source_id: sentry-junior-source-1
     locator: Preserved content.md, lines 144-180
-  primitives.2:
+  primitives.interrupt-resume-broker:
   - source_id: sentry-junior-source-1
     locator: Preserved content.md, lines 136
-  primitives.3:
+  primitives.answer-slack-question-codebase:
   - {source_id: sentry-junior-source-1, locator: 'Preserved content.md, line 34'}
-  primitives.4:
+  primitives.open-github-issue-conversation:
   - {source_id: sentry-junior-source-1, locator: 'Preserved content.md, lines 40, 218–220'}
-  primitives.5:
+  primitives.run-visual-qa-browser-sandbox:
   - {source_id: sentry-junior-source-1, locator: 'Preserved content.md, line 42'}
-  primitives.6:
+  primitives.watch-pull-request-follow-ups:
   - {source_id: sentry-junior-source-1, locator: 'Preserved content.md, lines 263–279'}
-  key_metrics.0:
+  key_metrics.lines-typescript-excluding-tests-evals-docs:
   - source_id: sentry-junior-source-1
     locator: Preserved content.md, lines 22
-  key_metrics.1:
+  key_metrics.time-from-start-to-writeup:
   - source_id: sentry-junior-source-1
     locator: Preserved content.md, lines 10–22
-  lessons_learned.0:
+  lessons_learned.author-prefers-one-agent-work-company:
   - source_id: sentry-junior-source-1
     locator: Preserved content.md, lines 28-32
-  lessons_learned.1:
+  lessons_learned.skills-contain-operational-instructions-including-telemetry:
   - source_id: sentry-junior-source-1
     locator: Preserved content.md, lines 247-257
-  lessons_learned.2:
+  lessons_learned.pauses-serverless-timeout-queues-continuation-task:
   - source_id: sentry-junior-source-1
     locator: Preserved content.md, lines 136
-  lessons_learned.3:
+  lessons_learned.tests-agent-behavior-event-scenarios-explicit:
   - source_id: sentry-junior-source-1
     locator: Preserved content.md, lines 311-337
-  lessons_learned.4:
+  lessons_learned.combines-installation-token-reads-per-user:
   - source_id: sentry-junior-source-1
     locator: Preserved content.md, lines 212-216
   architecture.interfaces:
@@ -198,31 +209,31 @@ claim_metadata:
     confidence_reason: Webhook and scheduler inputs become synthetic messages the agent decides on alone; no passage
       documents a person reviewing the agent-initiated thread updates.
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.author-prefers-one-agent-work-company:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: The author describes a personal workflow preference and also acknowledges the value of
       vendor specialization; the article contains no head-to-head outcome comparison.
-  lessons_learned.1:
+  lessons_learned.skills-contain-operational-instructions-including-telemetry:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The Sentry skill lists concrete query and authentication steps, and release-package is
       given as an example of a reusable playbook.
-  lessons_learned.2:
+  lessons_learned.pauses-serverless-timeout-queues-continuation-task:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The runtime section names the soft deadline, a completed tool result as the intended pause
       point, and the queued continuation.
-  lessons_learned.3:
+  lessons_learned.tests-agent-behavior-event-scenarios-explicit:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The vitest-evals example checks continuation after authorization and retained conversation
       context. The concrete practice does not require adopting the author's broader dismissal of unit tests.
-  lessons_learned.4:
+  lessons_learned.combines-installation-token-reads-per-user:
     kind: fact
     provenance: reported
     confidence: medium
@@ -230,46 +241,38 @@ claim_metadata:
       it is an integration design, not a guarantee for every tool.
   headline_metric:
     metric_scope: Junior codebase size (excluding tests, evals, documentation, and lockfiles) and license in the author report
-  key_metrics.0:
+    category: implementation-scale
+    basis: reported-measurement
+    subject: 'Junior codebase size,
+      Apache-2.0 license, and internal use at Sentry'
+  key_metrics.lines-typescript-excluding-tests-evals-docs:
     metric_scope: TypeScript lines in Junior excluding tests, evals, documentation, and lockfiles
-  key_metrics.1:
+  key_metrics.time-from-start-to-writeup:
     metric_scope: Author-reported development and iteration time before the writeup
+    category: implementation-scale
+    basis: reported-measurement
+    subject: 'Author-reported development
+      time from project start to writeup'
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
   source_ids: [sentry-junior-source-1, sentry-junior-source-2, sentry-junior-source-3, sentry-junior-source-4]
   workflow_scope: Slack thread request or watched event to an acted-upon answer or artifact
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.3, primitives.4, primitives.5, primitives.6], note: 'The four
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.answer-slack-question-codebase, primitives.open-github-issue-conversation, primitives.run-visual-qa-browser-sandbox, primitives.watch-pull-request-follow-ups], note: 'The four
       runs the writeup documents; the discovery, proxy, and broker primitives are reusable mechanisms.'}
     human_involvement: {state: reported, claim_paths: [operating_models.0], note: 'People give information, steer
       mid-run, and review the work. The event-driven follow-up boundary is unverified and stays in research details.'}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.model, architecture.sandbox,
-      architecture.tool_access, architecture.knowledge, architecture.context_mgmt, architecture.credentials,
-      architecture.interfaces]}
-    validation: {state: reported, claim_paths: [lessons_learned.3], note: 'vitest-evals runs event scenarios with
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [lessons_learned.tests-agent-behavior-event-scenarios-explicit], note: 'vitest-evals runs event scenarios with
       explicit pass and fail criteria and asserts on side effects; interceptors also force deterministic issue and
       PR footers at runtime.'}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1]}
-    lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1, lessons_learned.2, lessons_learned.3,
-      lessons_learned.4]}
+    observations: {state: reported}
+    lessons: {state: reported}
   implementation_fields:
-    model: {state: reported, claim_paths: [architecture.model]}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: reported, claim_paths: [architecture.sandbox]}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access]}
-    knowledge: {state: reported, claim_paths: [architecture.knowledge]}
-    context_mgmt: {state: reported, claim_paths: [architecture.context_mgmt]}
-    credentials: {state: reported, claim_paths: [architecture.credentials]}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces], note: 'Slack is the primary surface and the
+    interfaces: {note: 'Slack is the primary surface and the
       dashboard is the web surface; the writeup also names a local junior chat CLI, which the claim list does not carry.'}
-  primitive_roles: {primitives.0: mechanism, primitives.1: mechanism, primitives.2: mechanism, primitives.3: workflow,
-    primitives.4: workflow, primitives.5: workflow, primitives.6: workflow}
-  observations:
-    headline_metric: {category: implementation-scale, basis: reported-measurement, subject: 'Junior codebase size,
-      Apache-2.0 license, and internal use at Sentry'}
-    key_metrics.0: {duplicate_of: headline_metric, reason: 'Component of the compound headline: the same about-100,000-line
+  aliases:
+    key_metrics.lines-typescript-excluding-tests-evals-docs: {duplicate_of: headline_metric, reason: 'Component of the compound headline: the same about-100,000-line
       TypeScript count with the same exclusions.'}
-    key_metrics.1: {category: implementation-scale, basis: reported-measurement, subject: 'Author-reported development
-      time from project start to writeup'}

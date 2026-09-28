@@ -1,0 +1,111 @@
+# yaml-language-server: $schema=../../../data/agent.schema.json
+# ABOUTME: Gives one hand-written record in the schema 8 authored form for the build tests.
+# ABOUTME: It uses item IDs, inline roles, metric axes in claim_metadata, and page_content aliases.
+id: fixture-agent
+company: Fixture
+agent_name: Fixture agent
+approach_type: agent
+deployment_stage: deployed
+first_public_evidence:
+  date: "2026-03"
+  source_id: fixture-agent-source-1
+last_reviewed_at: "2026-09-28"
+status: internal
+domains: [coding]
+autonomy: drafts-reviewed
+operating_models:
+  - scope: "issue → reviewed pull request"
+    attention_boundary: work-product-review
+rubric:
+  invocation: [background]
+  evidence_strength: detailed-primary
+summary: "A fixture agent that turns an issue into a reviewed pull request."
+headline_metric: "Forty pull requests a week"
+architecture:
+  model: "A frontier model"
+  harness: "An internal loop"
+  interfaces: [github]
+primitives:
+  - {id: open-a-run, name: Open a run, desc: "An issue label starts a run", role: workflow}
+  - {id: write-the-change, name: Write the change, desc: "The agent edits the code and opens a pull request", role: workflow}
+  - {id: test-gate, name: Test gate, desc: "The test suite must pass before review", role: validation}
+key_metrics:
+  - {id: forty-prs-a-week, text: "40 pull requests a week"}
+  - {id: half-merged, text: "Half of the pull requests merge without change"}
+lessons_learned:
+  - {id: gate-before-review, text: "The team puts the test gate before the human review."}
+sources:
+  - id: fixture-agent-source-1
+    title: "Fixture launch post"
+    url: "https://example.com/launch"
+    kind: engineering-blog
+    provenance_class: first-party
+    accessed_at: "2026-09-28"
+    last_verified_at: "2026-09-28"
+  - id: fixture-agent-source-2
+    title: "Fixture talk"
+    url: "https://example.com/talk"
+    kind: talk
+    provenance_class: direct-participant
+    accessed_at: "2026-09-28"
+    last_verified_at: "2026-09-28"
+evidence:
+  summary:
+    - {source_id: fixture-agent-source-1, locator: "Paragraph 1"}
+  headline_metric:
+    - {source_id: fixture-agent-source-1, locator: "Paragraph 5"}
+  architecture.model:
+    - {source_id: fixture-agent-source-1, locator: "Paragraph 2"}
+  architecture.harness:
+    - {source_id: fixture-agent-source-2, locator: "12:40"}
+  architecture.interfaces:
+    - {source_id: fixture-agent-source-1, locator: "Paragraph 2"}
+  primitives.open-a-run:
+    - {source_id: fixture-agent-source-1, locator: "Paragraph 3"}
+  primitives.write-the-change:
+    - {source_id: fixture-agent-source-1, locator: "Paragraph 4"}
+  primitives.test-gate:
+    - {source_id: fixture-agent-source-2, locator: "14:10"}
+  key_metrics.forty-prs-a-week:
+    - {source_id: fixture-agent-source-1, locator: "Paragraph 5"}
+  key_metrics.half-merged:
+    - {source_id: fixture-agent-source-2, locator: "20:05"}
+  lessons_learned.gate-before-review:
+    - {source_id: fixture-agent-source-2, locator: "21:00"}
+  operating_models.0:
+    - {source_id: fixture-agent-source-1, locator: "Paragraph 6"}
+claim_metadata:
+  operating_models.0:
+    confidence: medium
+    confidence_reason: "The post says a person reviews each pull request."
+    valid_at: "2026-03"
+  headline_metric:
+    category: adoption-output
+    basis: reported-measurement
+    subject: "Weekly agent pull requests"
+    metric_scope: "Agent pull requests in one week"
+  key_metrics.half-merged:
+    category: effectiveness
+    basis: estimate
+    subject: "Share of agent pull requests merged without change"
+page_content:
+  version: 1
+  reviewed_at: "2026-09-28"
+  source_ids: [fixture-agent-source-1, fixture-agent-source-2]
+  workflow_scope: "Issue label → reviewed pull request"
+  questions:
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.write-the-change, primitives.open-a-run]}
+    human_involvement: {state: reported, claim_paths: [operating_models.0]}
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.test-gate]}
+    observations: {state: reported, note: "The talk gives the merge share without a denominator."}
+    lessons: {state: reported}
+  implementation_fields:
+    harness: {note: "The talk names the loop but not its version."}
+    sandbox: {state: not-applicable, note: "The agent runs no code of its own."}
+    credentials: {state: unreported, note: "The post names a bot account but not its scope."}
+  aliases:
+    key_metrics.forty-prs-a-week:
+      duplicate_of: headline_metric
+      reason: "Same count and period as the headline."

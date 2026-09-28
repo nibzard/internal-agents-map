@@ -17,14 +17,9 @@ const { sources } = Astro.props;
       <span class="source-meta">
         {source.kindLabel} · {source.provenanceClassLabel} · Last source verification: {source.lastVerifiedAt ?? 'Unknown'}
       </span>
-      {(source.preservedUrl || source.archivedUrl) && (
+      {source.preservedUrl && (
         <div class="source-archives">
-          {source.preservedUrl && (
-            <a href={source.preservedUrl}>Preserved copy</a>
-          )}
-          {source.archivedUrl && (
-            <a href={source.archivedUrl}>Wayback snapshot</a>
-          )}
+          <a href={source.preservedUrl}>Preserved copy</a>
         </div>
       )}
     </li>

@@ -18,24 +18,26 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: secondary-only
 summary: Uber runs an internal coding agent that writes complete code changes with no human authoring, and engineers review
   and approve them. Its CTO reports that engineers now delegate tasks to the agent rather than accept its suggestions, and
   that its share of all code changes has grown from under 1%.
 headline_metric: ~1,800 complete code changes per week (~8% of changes)
 primitives:
-- {name: Delegate the task, desc: Engineers delegate coding tasks to the agent rather than accepting its suggestions}
-- {name: Write the complete change, desc: The agent writes the entire code change with zero human authoring}
-- {name: Review and approve, desc: An engineer reviews and approves the agent-written change}
+- {id: delegate-the-task, name: Delegate the task, desc: Engineers delegate coding tasks to the agent rather than accepting its suggestions, role: workflow}
+- {id: write-the-complete-change, name: Write the complete change, desc: The agent writes the entire code change with zero human authoring, role: workflow}
+- {id: review-and-approve, name: Review and approve, desc: An engineer reviews and approves the agent-written change, role: workflow}
 key_metrics:
-- ~1,800 complete code changes per week (~8% of changes at the time)
-- 95% of engineers use AI tools monthly
+- id: complete-code-changes-per-week
+  text: ~1,800 complete code changes per week (~8% of changes at the time)
+- id: engineers-use-ai-tools-monthly
+  text: 95% of engineers use AI tools monthly
 lessons_learned:
-- Uber's CTO describes the engineer's role shifting from writing every line to architecting systems and
-  reviewing AI-generated code.
-- Uber's CTO attributes the strongest adoption to engineers quietly experimenting, not to a top-down push.
+- id: cto-describes-engineer-role-shifting-writing
+  text: Uber's CTO describes the engineer's role shifting from writing every line to architecting systems and
+    reviewing AI-generated code.
+- id: cto-attributes-strongest-adoption-engineers-quietly
+  text: Uber's CTO attributes the strongest adoption to engineers quietly experimenting, not to a top-down push.
 sources:
 - id: uber-coding-agent-source-1
   title: Uber's CTO on AI coding agents (Business Insider)
@@ -53,19 +55,19 @@ evidence:
   - source_id: uber-coding-agent-source-1
   headline_metric:
   - locator: Preserved content.md, lines 24–26
-  key_metrics.0:
+  key_metrics.complete-code-changes-per-week:
   - locator: Preserved content.md, lines 24–26
-  key_metrics.1:
+  key_metrics.engineers-use-ai-tools-monthly:
   - locator: Preserved content.md, lines 18
-  primitives.0:
+  primitives.delegate-the-task:
   - {locator: 'Preserved content.md, line 24'}
-  primitives.1:
+  primitives.write-the-complete-change:
   - {locator: 'Preserved content.md, lines 24–26'}
-  primitives.2:
+  primitives.review-and-approve:
   - {locator: 'Preserved content.md, line 26'}
-  lessons_learned.0:
+  lessons_learned.cto-describes-engineer-role-shifting-writing:
   - {locator: 'Preserved content.md, line 36'}
-  lessons_learned.1:
+  lessons_learned.cto-attributes-strongest-adoption-engineers-quietly:
   - {locator: 'Preserved content.md, line 30'}
 claim_metadata:
   operating_models.0:
@@ -81,38 +83,46 @@ claim_metadata:
     confidence_reason: Only limited public evidence supports this claim.
     metric_scope: Code changes written entirely by the internal coding agent and human reviewed
     denominator: All Uber code changes for the reported 8% share
-  key_metrics.0:
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Weekly code changes written
+      entirely by the internal coding agent, and their share of all Uber code changes'
+  key_metrics.complete-code-changes-per-week:
     confidence: medium
     confidence_reason: Only limited public evidence supports this claim.
     metric_scope: Code changes written entirely by the internal coding agent and human reviewed
     denominator: All Uber code changes for the reported 8% share
-  key_metrics.1:
+  key_metrics.engineers-use-ai-tools-monthly:
     confidence: medium
     confidence_reason: Only limited public evidence supports this claim.
     metric_scope: Monthly use of AI tools among Uber engineers; not internal-agent-specific adoption
     denominator: Uber engineers
-  primitives.0:
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Monthly AI-tool use among Uber
+      engineers generally, not specific to this agent'
+  primitives.delegate-the-task:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: A single secondary article relays the CTO's statement about delegation versus suggestions.
-  primitives.1:
+  primitives.write-the-complete-change:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The CTO's zero-human-authoring statement is relayed verbatim by one secondary article.
-  primitives.2:
+  primitives.review-and-approve:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: One secondary article relays the CTO's review-and-approve description without naming the
       review venue or policy.
-  lessons_learned.0:
+  lessons_learned.cto-describes-engineer-role-shifting-writing:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: An attributed view of one CTO on the engineer's role, relayed by a single secondary article.
-  lessons_learned.1:
+  lessons_learned.cto-attributes-strongest-adoption-engineers-quietly:
     kind: opinion
     provenance: reported
     confidence: medium
@@ -123,32 +133,18 @@ page_content:
   source_ids: [uber-coding-agent-source-1]
   workflow_scope: Delegated coding task to engineer-approved code change
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.0, primitives.1, primitives.2], note: 'The three steps carry
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.delegate-the-task, primitives.write-the-complete-change, primitives.review-and-approve], note: 'The three steps carry
       the full delegation-to-approval arc the article describes; no other stage is documented.'}
     human_involvement: {state: reported, claim_paths: [summary, operating_models.0], note: 'Engineers review and
       approve every agent-written change; the CTO describes zero human authoring.'}
-    implementation: {state: unreported, claim_paths: []}
-    validation: {state: reported, claim_paths: [primitives.2], note: 'The documented check of the work is the human
+    implementation: {state: unreported}
+    validation: {state: reported, claim_paths: [primitives.review-and-approve], note: 'The documented check of the work is the human
       review gate cited with human involvement; no automated check is described.'}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1]}
-    lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1], note: 'Two attributed opinions
+    observations: {state: reported}
+    lessons: {state: reported, note: 'Two attributed opinions
       of the CTO, relayed by a single secondary article.'}
-  implementation_fields:
-    model: {state: unreported, claim_paths: []}
-    harness: {state: unreported, claim_paths: []}
-    sandbox: {state: unreported, claim_paths: []}
-    tool_access: {state: unreported, claim_paths: []}
-    knowledge: {state: unreported, claim_paths: []}
-    context_mgmt: {state: unreported, claim_paths: []}
-    credentials: {state: unreported, claim_paths: []}
-    interfaces: {state: unreported, claim_paths: []}
-  primitive_roles: {primitives.0: workflow, primitives.1: workflow, primitives.2: workflow}
-  observations:
-    headline_metric: {category: adoption-output, basis: reported-measurement, subject: 'Weekly code changes written
-      entirely by the internal coding agent, and their share of all Uber code changes'}
-    key_metrics.0: {duplicate_of: headline_metric, reason: 'Same weekly count and 8% share from the same passage;
+  aliases:
+    key_metrics.complete-code-changes-per-week: {duplicate_of: headline_metric, reason: 'Same weekly count and 8% share from the same passage;
       the at-the-time wording only makes explicit the point-in-time framing the headline growth statement already
       carries, so it adds no separate information.'}
-    key_metrics.1: {category: adoption-output, basis: reported-measurement, subject: 'Monthly AI-tool use among Uber
-      engineers generally, not specific to this agent'}

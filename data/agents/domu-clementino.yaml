@@ -28,8 +28,6 @@ rubric:
   invocation:
   - interactive
   - scheduled
-  state: cross-session-memory
-  identity: unknown
   evidence_strength: detailed-primary
 summary: A general-purpose 'AI colleague' spanning sales, finance, client ops, engineering, and recruitment, later
   split into a reusable toolkit plus Slack and desktop surfaces.
@@ -47,23 +45,31 @@ architecture:
   context_mgmt: Four-layer memory separation; prompt size dropped substantially after splitting capabilities from
     the Slack layer
 primitives:
-- name: Four memory layers
+- id: four-memory-layers
+  name: Four memory layers
   desc: Transient conversation, persistent facts, knowledge RAG, and live system state; kept separate
-- name: Reusable toolkit split
+  role: mechanism
+- id: reusable-toolkit-split
+  name: Reusable toolkit split
   desc: Capabilities separated from the interface layer so they power multiple surfaces
-- {name: Post the scheduled team jobs, desc: 'Scheduled jobs such as the 5am sales standup, invoice approvals, QA
-    sampling, and huddle ingestion post to Slack for team visibility'}
-- {name: Prepare a client review in the desktop toolkit, desc: 'In Claude Cowork, the agent pulls call data from the
-    warehouse and notes from the document store, then drafts the slides beside the user'}
+  role: mechanism
+- {id: post-the-scheduled-team-jobs, name: Post the scheduled team jobs, desc: 'Scheduled jobs such as the 5am sales standup, invoice approvals, QA
+    sampling, and huddle ingestion post to Slack for team visibility', role: workflow}
+- {id: prepare-client-review-desktop-toolkit, name: Prepare a client review in the desktop toolkit, desc: 'In Claude Cowork, the agent pulls call data from the
+    warehouse and notes from the document store, then drafts the slides beside the user', role: workflow}
 key_metrics:
-- ~35 integrations organized into skills
+- id: integrations-organized-skills
+  text: ~35 integrations organized into skills
 lessons_learned:
-- Domu separated Slack handling from Clementino's tools, skills, memory, and core, then reused the toolkit
-  in Claude Cowork.
-- Clementino shares conversation context, persistent facts, retrieval knowledge, and live system state across
-  its Slack and desktop interfaces.
-- Clementino routes customer-facing actions through visible Slack approvals, including requests started from
-  the desktop.
+- id: separated-slack-handling-clementino-tools-skills
+  text: Domu separated Slack handling from Clementino's tools, skills, memory, and core, then reused the toolkit
+    in Claude Cowork.
+- id: shares-conversation-context-persistent-facts-retrieval
+  text: Clementino shares conversation context, persistent facts, retrieval knowledge, and live system state across
+    its Slack and desktop interfaces.
+- id: routes-customer-facing-actions-through-visible
+  text: Clementino routes customer-facing actions through visible Slack approvals, including requests started from
+    the desktop.
 sources:
 - id: domu-clementino-source-1
   title: Why we split our internal agent in two
@@ -97,21 +103,21 @@ evidence:
   - source_id: domu-clementino-source-1
   architecture.context_mgmt:
   - source_id: domu-clementino-source-1
-  primitives.0:
+  primitives.four-memory-layers:
   - source_id: domu-clementino-source-1
-  primitives.1:
+  primitives.reusable-toolkit-split:
   - source_id: domu-clementino-source-1
-  primitives.2:
+  primitives.post-the-scheduled-team-jobs:
   - {locator: 'Preserved content.md, lines 70, 78'}
-  primitives.3:
+  primitives.prepare-client-review-desktop-toolkit:
   - {locator: 'Preserved content.md, line 80'}
-  key_metrics.0:
+  key_metrics.integrations-organized-skills:
   - locator: Preserved content.md, lines 58–60
-  lessons_learned.0:
+  lessons_learned.separated-slack-handling-clementino-tools-skills:
   - locator: Preserved content.md, lines 54-72,98
-  lessons_learned.1:
+  lessons_learned.shares-conversation-context-persistent-facts-retrieval:
   - locator: Preserved content.md, lines 64-72,90
-  lessons_learned.2:
+  lessons_learned.routes-customer-facing-actions-through-visible:
   - locator: Preserved content.md, lines 78,92
   architecture.interfaces:
   - source_id: domu-clementino-source-1
@@ -130,19 +136,19 @@ claim_metadata:
     confidence_reason: The source lists scheduled jobs that post without a person starting them, but does not
       describe whether anyone reviews their output.
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.separated-slack-handling-clementino-tools-skills:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The refactor and both interfaces are described directly. A reported prompt reduction accompanied
       the change, but its cause is left for a later post.
-  lessons_learned.1:
+  lessons_learned.shares-conversation-context-persistent-facts-retrieval:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The toolkit section enumerates four memory layers stored in common tables; the two surfaces
       use that shared memory.
-  lessons_learned.2:
+  lessons_learned.routes-customer-facing-actions-through-visible:
     kind: fact
     provenance: reported
     confidence: medium
@@ -150,7 +156,11 @@ claim_metadata:
       initiating surface does not bypass the approval path.
   headline_metric:
     metric_scope: Clementino toolkit integration modules organized into skills
-  key_metrics.0:
+    category: implementation-scale
+    basis: reported-measurement
+    subject: 'Clementino toolkit
+      integration modules organized into skills'
+  key_metrics.integrations-organized-skills:
     metric_scope: Clementino toolkit integration modules organized into skills
 page_content:
   version: 1
@@ -158,31 +168,21 @@ page_content:
   source_ids: [domu-clementino-source-1]
   workflow_scope: 'Two named workflows: scheduled team jobs in Slack, and client-review preparation in the desktop toolkit'
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.2, primitives.3], note: 'The post names exactly two workflows;
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.post-the-scheduled-team-jobs, primitives.prepare-client-review-desktop-toolkit], note: 'The post names exactly two workflows;
       the memory layers and the toolkit split are reusable mechanisms, not runs.'}
     human_involvement: {state: reported, claim_paths: [operating_models.0, operating_models.1], note: 'Customer-impacting
       actions run through team-visible Slack approvals; desktop work proceeds under continuous user steering.'}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.model, architecture.tool_access,
-      architecture.knowledge, architecture.context_mgmt, architecture.credentials, architecture.interfaces]}
-    validation: {state: unreported, claim_paths: [], note: 'No check of the agent''s own work is documented beyond the
+    implementation: {state: reported}
+    validation: {state: unreported, note: 'No check of the agent''s own work is documented beyond the
       approval gates cited with human involvement; QA sampling is a task the agent performs.'}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0]}
-    lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1, lessons_learned.2]}
+    observations: {state: reported}
+    lessons: {state: reported}
   implementation_fields:
-    model: {state: reported, claim_paths: [architecture.model]}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: []}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access]}
-    knowledge: {state: reported, claim_paths: [architecture.knowledge]}
-    context_mgmt: {state: reported, claim_paths: [architecture.context_mgmt], note: 'The prompt-size reduction that
+    context_mgmt: {note: 'The prompt-size reduction that
       followed the split is a reported consequence, not a management mechanism.'}
-    credentials: {state: reported, claim_paths: [architecture.credentials], note: 'Approval gates govern
+    credentials: {note: 'Approval gates govern
       customer-impacting actions; other credential handling is not documented.'}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces]}
-  primitive_roles: {primitives.0: mechanism, primitives.1: mechanism, primitives.2: workflow, primitives.3: workflow}
-  observations:
-    headline_metric: {category: implementation-scale, basis: reported-measurement, subject: 'Clementino toolkit
-      integration modules organized into skills'}
-    key_metrics.0: {duplicate_of: headline_metric, reason: 'Identical statement, scope, and locator as the headline:
+  aliases:
+    key_metrics.integrations-organized-skills: {duplicate_of: headline_metric, reason: 'Identical statement, scope, and locator as the headline:
       the same about-35 integration count.'}

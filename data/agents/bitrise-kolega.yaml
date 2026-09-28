@@ -22,8 +22,6 @@ rubric:
   invocation:
   - interactive
   - event-driven
-  state: durable-session
-  identity: dedicated-agent
   evidence_strength: detailed-primary
 summary: "Bitrise runs Kolega, an internal coding agent that lives in Slack. A Jira ticket assigned to its Jira
   user or an @mention in a thread starts a session; the agent reads the requirements, posts a plan, and delegates
@@ -60,63 +58,92 @@ architecture:
     milestones only, not the agent's running commentary"
 
 primitives:
-- name: "Ticket-to-merge loop in one Slack thread"
+- id: ticket-merge-loop-one-slack-thread
+  name: "Ticket-to-merge loop in one Slack thread"
   desc: "Jira assignment or Slack mention → plan → delegated coding in a disposable dev environment → pull request →
     reactions to review and CI events → human-instructed merge, cleanup, and ticket closure"
-- name: "Pick up the work and post a plan"
+  role: mechanism
+- id: pick-work-post-plan
+  name: "Pick up the work and post a plan"
   desc: "Assigning a Jira ticket to Kolega's Jira user, or an @mention in a thread, starts a session; the agent posts
     a card within a second, reads the requirements, posts a plan, and then reports milestones only"
-- name: "Delegate the coding to a disposable dev environment"
+  role: workflow
+- id: delegate-coding-disposable-dev-environment
+  name: "Delegate the coding to a disposable dev environment"
   desc: "The orchestrator creates a Remote Dev Environment from a pinned template with a self-contained task brief
     naming the repository, the ticket, the acceptance criteria, and the branch rules"
-- name: "Write and test the code, push a branch, and open a pull request"
+  role: workflow
+- id: write-test-code-push-branch-open
+  name: "Write and test the code, push a branch, and open a pull request"
   desc: "The coding agent in the dev environment makes the change, runs the tests locally, pushes the branch over
     git, and the pull request is opened and reported back to the thread"
-- name: "React to anchored events without a human relay"
+  role: workflow
+- id: react-anchored-events-without-human-relay
+  name: "React to anchored events without a human relay"
   desc: "Review comments, CI results, Jira comments, and the merge itself arrive in the owning thread as they
     happen; the agent fixes what a reviewer asked for, answers questions on the ticket, and reacts to events rather
     than polling"
-- name: "Merge on an explicit human instruction, then clean up"
+  role: workflow
+- id: merge-explicit-human-instruction-clean
+  name: "Merge on an explicit human instruction, then clean up"
   desc: "Merging happens only on an explicit human instruction; after the merge the agent tears down the dev
     machine, transitions the ticket, and signs off in the thread"
-- name: "An orchestrator that cannot code"
+  role: workflow
+- id: orchestrator-that-cannot-code
+  name: "An orchestrator that cannot code"
   desc: "The orchestrator has no shell and no file access and cannot even read source code through the GitHub API;
     the tools are denied in code, not in the prompt, so it plans, relays, narrates, and asks"
-- name: "Isolation as the security model"
+  role: mechanism
+- id: isolation-as-the-security-model
+  name: "Isolation as the security model"
   desc: "The coding agent's push-scoped SSH key and lack of GitHub API access mean that a prompt injection hidden in
     a codebase reaches no further than a pushed branch that still has to survive human review"
-- name: "Never block on input"
+  role: mechanism
+- id: never-block-on-input
+  name: "Never block on input"
   desc: "The task brief instructs the coding agent to pick the most defensible default, document the assumption in
     the commit message and pull request description, and continue, because the pull request review is where wrong
     assumptions get corrected"
-- name: "Test in an environment that matches CI"
+  role: mechanism
+- id: test-environment-matches-ci
+  name: "Test in an environment that matches CI"
   desc: "Dev-environment sessions run on the same infrastructure and stacks as Bitrise CI, so passing tests in the
     session and in CI stop being different claims; when CI fails the orchestrator relays the failing check into the
     session and the coding agent reproduces it"
-- name: "Gate public writes and fail closed"
+  role: validation
+- id: gate-public-writes-and-fail-closed
+  name: "Gate public writes and fail closed"
   desc: "Untrusted authors' text is redacted before the model sees it, every public write waits behind an Approve /
     Reject button in Slack, and the agent holds when it cannot confirm that an author is trusted, a repository is
     private, or a check succeeded"
+  role: validation
 
 key_metrics:
-- "Bitrise describes a design-system migration touching around 200 usages across 167 files that Kolega planned,
-  delegated, and then shepherded for four days through three rounds of merge conflicts and nine automated review
-  comments, with the humans involved only reviewing"
-- "Bitrise describes the orchestrator as a single small Python service that was mostly written by a coding agent and
-  went from first commit to handling real tickets in a few weeks"
+- id: design-system-migration-touching-around-usages
+  text: "Bitrise describes a design-system migration touching around 200 usages across 167 files that Kolega planned,
+    delegated, and then shepherded for four days through three rounds of merge conflicts and nine automated review
+    comments, with the humans involved only reviewing"
+- id: orchestrator-single-small-python-service-mostly
+  text: "Bitrise describes the orchestrator as a single small Python service that was mostly written by a coding agent and
+    went from first commit to handling real tickets in a few weeks"
 
 lessons_learned:
-- "Bitrise puts its guardrails in code rather than in the system prompt: which tools exist, whose text the agent may
-  read, and what needs approval are hard checks rather than prompt instructions."
-- "Bitrise keeps humans on two decisions, merging and anything the outside world can see, and lets planning, coding,
-  testing, and replying to reviewers run without a human in the middle."
-- "Each Bitrise guardrail followed an incident: the agent once merged its own pull request the moment it saw an
-  approval, so merging now happens only on an explicit human instruction."
-- "Bitrise handles a stop command outside the normal message queue so that it interrupts a running turn, and holds
-  when the agent cannot confirm that an author is trusted, a repository is private, or a check succeeded."
-- "The Bitrise team prefers to delegate the thinking rather than only the typing: its orchestrator does not read
-  source code even to plan, on the view that the coding agent in front of the full working tree should plan its own
-  work."
+- id: puts-guardrails-code-rather-system-prompt
+  text: "Bitrise puts its guardrails in code rather than in the system prompt: which tools exist, whose text the agent may
+    read, and what needs approval are hard checks rather than prompt instructions."
+- id: keeps-humans-two-decisions-merging-anything
+  text: "Bitrise keeps humans on two decisions, merging and anything the outside world can see, and lets planning, coding,
+    testing, and replying to reviewers run without a human in the middle."
+- id: guardrail-followed-incident-agent-once-merged
+  text: "Each Bitrise guardrail followed an incident: the agent once merged its own pull request the moment it saw an
+    approval, so merging now happens only on an explicit human instruction."
+- id: handles-stop-command-outside-normal-message
+  text: "Bitrise handles a stop command outside the normal message queue so that it interrupts a running turn, and holds
+    when the agent cannot confirm that an author is trusted, a repository is private, or a check succeeded."
+- id: prefers-delegate-thinking-rather-only-typing
+  text: "The Bitrise team prefers to delegate the thinking rather than only the typing: its orchestrator does not read
+    source code even to plan, on the view that the coding agent in front of the full working tree should plan its own
+    work."
 
 sources:
 - id: bitrise-kolega-source-1
@@ -153,41 +180,41 @@ evidence:
   - locator: "Preserved content.md, lines 77, 79"
   architecture.context_mgmt:
   - locator: "Preserved content.md, lines 35, 65, 67"
-  primitives.0:
+  primitives.ticket-merge-loop-one-slack-thread:
   - locator: "Preserved content.md, lines 14, 37-42"
-  primitives.1:
+  primitives.pick-work-post-plan:
   - locator: "Preserved content.md, lines 28, 32-33, 35"
-  primitives.2:
+  primitives.delegate-coding-disposable-dev-environment:
   - locator: "Preserved content.md, lines 77, 78"
-  primitives.3:
+  primitives.write-test-code-push-branch-open:
   - locator: "Preserved content.md, lines 14, 38-39, 79"
-  primitives.4:
+  primitives.react-anchored-events-without-human-relay:
   - locator: "Preserved content.md, lines 44, 67"
-  primitives.5:
+  primitives.merge-explicit-human-instruction-clean:
   - locator: "Preserved content.md, lines 42, 44, 89"
-  primitives.6:
+  primitives.orchestrator-that-cannot-code:
   - locator: "Preserved content.md, lines 63, 68"
-  primitives.7:
+  primitives.isolation-as-the-security-model:
   - locator: "Preserved content.md, line 79"
-  primitives.8:
+  primitives.never-block-on-input:
   - locator: "Preserved content.md, line 78"
-  primitives.9:
+  primitives.test-environment-matches-ci:
   - locator: "Preserved content.md, line 80"
-  primitives.10:
+  primitives.gate-public-writes-and-fail-closed:
   - locator: "Preserved content.md, lines 89, 92"
-  key_metrics.0:
+  key_metrics.design-system-migration-touching-around-usages:
   - locator: "Preserved content.md, line 48"
-  key_metrics.1:
+  key_metrics.orchestrator-single-small-python-service-mostly:
   - locator: "Preserved content.md, line 59"
-  lessons_learned.0:
+  lessons_learned.puts-guardrails-code-rather-system-prompt:
   - locator: "Preserved content.md, lines 68, 88"
-  lessons_learned.1:
+  lessons_learned.keeps-humans-two-decisions-merging-anything:
   - locator: "Preserved content.md, line 90"
-  lessons_learned.2:
+  lessons_learned.guardrail-followed-incident-agent-once-merged:
   - locator: "Preserved content.md, line 89"
-  lessons_learned.3:
+  lessons_learned.handles-stop-command-outside-normal-message:
   - locator: "Preserved content.md, lines 91, 92"
-  lessons_learned.4:
+  lessons_learned.prefers-delegate-thinking-rather-only-typing:
   - locator: "Preserved content.md, line 93"
 
 claim_metadata:
@@ -198,7 +225,7 @@ claim_metadata:
       seeing an approval. Review is of the pull request itself, which places the boundary at the work product rather
       than at the outcome."
     valid_at: "2026-07"
-  key_metrics.0:
+  key_metrics.design-system-migration-touching-around-usages:
     kind: fact
     provenance: reported
     confidence: medium
@@ -206,7 +233,11 @@ claim_metadata:
       without a measurement method; it describes the scale of one task, not a measured result."
     reported_by: Bitrise
     metric_scope: "One design-system migration Kolega handled during a recent week"
-  key_metrics.1:
+    category: implementation-scale
+    basis: qualitative
+    subject: "One design-system migration Kolega handled, in usages, files, days, merge-conflict rounds, and
+      review comments"
+  key_metrics.orchestrator-single-small-python-service-mostly:
     kind: fact
     provenance: reported
     confidence: medium
@@ -214,31 +245,34 @@ claim_metadata:
       engineering blog; no line count, commit history, or dated milestone supports the few-weeks figure."
     reported_by: Bitrise
     metric_scope: "Building the Kolega orchestrator service"
-  lessons_learned.0:
+    category: implementation-scale
+    basis: qualitative
+    subject: "Size, authorship, and elapsed build time of the Kolega orchestrator service"
+  lessons_learned.puts-guardrails-code-rather-system-prompt:
     kind: fact
     provenance: reported
     confidence: high
     confidence_reason: "The post states the rule and names the enforced case: the orchestrator's shell, file, and
       GitHub source-read tools are denied in code rather than in the prompt."
-  lessons_learned.1:
+  lessons_learned.keeps-humans-two-decisions-merging-anything:
     kind: fact
     provenance: reported
     confidence: high
     confidence_reason: "The two retained decisions are stated explicitly, and the merge gate and the Approve /
       Reject button on public writes are described as the mechanisms that hold them."
-  lessons_learned.2:
+  lessons_learned.guardrail-followed-incident-agent-once-merged:
     kind: fact
     provenance: reported
     confidence: high
     confidence_reason: "The post names the specific incident and the specific rule change it produced; it does not
       say how often the incident occurred or what other guardrails each incident produced."
-  lessons_learned.3:
+  lessons_learned.handles-stop-command-outside-normal-message:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: "Both behaviors are described as implemented rules with their triggers named; the post gives
       no example of either firing, so the effect on real runs is not documented."
-  lessons_learned.4:
+  lessons_learned.prefers-delegate-thinking-rather-only-typing:
     kind: opinion
     provenance: reported
     confidence: medium
@@ -256,107 +290,37 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.1
-      - primitives.2
-      - primitives.3
-      - primitives.4
-      - primitives.5
+      - primitives.pick-work-post-plan
+      - primitives.delegate-coding-disposable-dev-environment
+      - primitives.write-test-code-push-branch-open
+      - primitives.react-anchored-events-without-human-relay
+      - primitives.merge-explicit-human-instruction-clean
     human_involvement:
       state: reported
       claim_paths:
-      - primitives.5
-      - primitives.10
+      - primitives.merge-explicit-human-instruction-clean
+      - primitives.gate-public-writes-and-fail-closed
       - operating_models.0
       note: "Humans review the pull request and then give an explicit merge instruction; the agent may not merge on
         an approval alone, and every write the outside world can see waits behind an Approve / Reject button."
     implementation:
       state: reported
-      claim_paths:
-      - architecture.sandbox
-      - architecture.harness
-      - architecture.model
-      - architecture.tool_access
-      - architecture.credentials
-      - architecture.context_mgmt
-      - architecture.interfaces
     validation:
       state: reported
       claim_paths:
-      - primitives.9
-      - primitives.10
+      - primitives.test-environment-matches-ci
+      - primitives.gate-public-writes-and-fail-closed
     observations:
       state: reported
-      claim_paths:
-      - key_metrics.0
-      - key_metrics.1
       note: "Bitrise reports no performance metric for Kolega: no throughput, acceptance rate, cost, or time saved.
         Both recorded observations describe the scale of the work and of the build, not a measured result."
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
-      - lessons_learned.2
-      - lessons_learned.3
-      - lessons_learned.4
   implementation_fields:
-    model:
-      state: reported
-      claim_paths:
-      - architecture.model
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: reported
-      claim_paths:
-      - architecture.sandbox
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
     knowledge:
       state: unreported
-      claim_paths: []
       note: "The agent pulls what it needs at run time through scoped tools and the working tree in the dev
         environment; no retrieval corpus, index, or company knowledge store is described."
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
-    credentials:
-      state: reported
-      claim_paths:
-      - architecture.credentials
-    interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
-  primitive_roles:
-    primitives.0: mechanism
-    primitives.1: workflow
-    primitives.2: workflow
-    primitives.3: workflow
-    primitives.4: workflow
-    primitives.5: workflow
-    primitives.6: mechanism
-    primitives.7: mechanism
-    primitives.8: mechanism
-    primitives.9: validation
-    primitives.10: validation
-  observations:
-    key_metrics.0:
-      category: implementation-scale
-      basis: qualitative
-      subject: "One design-system migration Kolega handled, in usages, files, days, merge-conflict rounds, and
-        review comments"
-    key_metrics.1:
-      category: implementation-scale
-      basis: qualitative
-      subject: "Size, authorship, and elapsed build time of the Kolega orchestrator service"

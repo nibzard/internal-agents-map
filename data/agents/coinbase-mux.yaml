@@ -18,18 +18,20 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Mux gives Coinbase employees a shared interface for working with multiple coding agents concurrently.
 architecture:
   sandbox: Separate worktrees isolate edits; they are not evidence of a security sandbox.
   harness: Interface for concurrent coding-agent sessions.
 primitives:
-- name: Create workspaces
+- id: create-workspaces
+  name: Create workspaces
   desc: Each concurrent agent receives its own git worktree, branch and terminal.
-- name: Coordinate work
+  role: workflow
+- id: coordinate-work
+  name: Coordinate work
   desc: Employees move between agent sessions, review results and provide feedback.
+  role: workflow
 sources:
 - id: coinbase-mux-source-1
   title: 'Coding had a concurrency problem: how Mux helped solve it'
@@ -48,15 +50,15 @@ evidence:
   - locator: Mux workspace and concurrent-agent sections
   architecture.harness:
   - locator: Mux workspace and concurrent-agent sections
-  primitives.0:
+  primitives.create-workspaces:
   - locator: Mux workspace and concurrent-agent sections
-  primitives.1:
+  primitives.coordinate-work:
   - locator: Mux workspace and concurrent-agent sections
-  key_metrics.0:
+  key_metrics.users-including-engineers-pms-designers-active:
   - locator: Mux adoption and merged-PR statistics; self-selection caveat
-  key_metrics.1:
+  key_metrics.merged-prs-repositories-orgs:
   - locator: Mux adoption and merged-PR statistics; self-selection caveat
-  key_metrics.2:
+  key_metrics.users-show-more-merged-prs:
   - locator: Mux adoption and merged-PR statistics; self-selection caveat
 claim_metadata:
   operating_models.0:
@@ -64,19 +66,29 @@ claim_metadata:
     confidence_reason: The source documents this scoped human attention boundary; it is not a claim about every
       system at the company.
     valid_at: '2026'
-  key_metrics.0:
+  key_metrics.users-including-engineers-pms-designers-active:
     metric_scope: Registered Mux users including engineers, PMs, and designers; 335 active and 197 power users
-  key_metrics.1:
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Mux: 600+ users including engineers, PMs, and designers (335 active, 197 power users)'
+  key_metrics.merged-prs-repositories-orgs:
     confidence: medium
     confidence_reason: Coinbase reported the aggregate in its own engineering blog without independent verification
       or a measurement window.
     metric_scope: Mux merged pull requests across repositories and organizations
-  key_metrics.2:
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Mux: 5,068 merged PRs across 461 repositories and 10 orgs'
+  key_metrics.users-show-more-merged-prs:
     confidence: medium
     confidence_reason: Self-reported comparison whose own text cautions that Mux users likely skew toward engineers
       who were already high-output and AI-forward; no cohort method is documented.
     metric_scope: Merged pull requests per engineer for Mux users compared with a baseline of non-users
     denominator: Engineers not using Mux at the time of the comparison (11.4 merged PRs)
+    category: adoption-output
+    basis: reported-measurement
+    subject: Mux users show 3.5x more merged PRs per engineer than baseline (39.6 vs 11.4); the post cautions
+      users may skew toward already-high-output engineers
 relationships:
 - type: related-to
   approach_id: coinbase-forge-mux
@@ -89,82 +101,29 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
+      - primitives.create-workspaces
+      - primitives.coordinate-work
       note: Documented use example; no universal platform run is implied.
     human_involvement:
       state: not-applicable
-      claim_paths: []
       note: There is no single platform-wide agent review boundary. Scoped downstream operating-model claims remain
         in research details; access controls are described separately.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.sandbox
-      - architecture.harness
     validation:
       state: unreported
-      claim_paths: []
     observations:
       state: reported
-      claim_paths:
-      - key_metrics.0
-      - key_metrics.1
-      - key_metrics.2
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: reported
-      claim_paths:
-      - architecture.sandbox
-    tool_access:
-      state: unreported
-      claim_paths: []
-    knowledge:
-      state: unreported
-      claim_paths: []
-    context_mgmt:
-      state: unreported
-      claim_paths: []
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: unreported
-      claim_paths: []
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-  observations:
-    key_metrics.0:
-      category: adoption-output
-      basis: reported-measurement
-      subject: 'Mux: 600+ users including engineers, PMs, and designers (335 active, 197 power users)'
-    key_metrics.1:
-      category: adoption-output
-      basis: reported-measurement
-      subject: 'Mux: 5,068 merged PRs across 461 repositories and 10 orgs'
-    key_metrics.2:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Mux users show 3.5x more merged PRs per engineer than baseline (39.6 vs 11.4); the post cautions
-        users may skew toward already-high-output engineers
 key_metrics:
-- 'Mux: 600+ users including engineers, PMs, and designers (335 active, 197 power users)'
-- 'Mux: 5,068 merged PRs across 461 repositories and 10 orgs'
-- Mux users show 3.5x more merged PRs per engineer than baseline (39.6 vs 11.4); the post cautions users may skew
-  toward already-high-output engineers
+- id: users-including-engineers-pms-designers-active
+  text: 'Mux: 600+ users including engineers, PMs, and designers (335 active, 197 power users)'
+- id: merged-prs-repositories-orgs
+  text: 'Mux: 5,068 merged PRs across 461 repositories and 10 orgs'
+- id: users-show-more-merged-prs
+  text: Mux users show 3.5x more merged PRs per engineer than baseline (39.6 vs 11.4); the post cautions users may skew
+    toward already-high-output engineers

@@ -4,6 +4,7 @@
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import EntrySection from '../../components/EntrySection.astro';
 import Claim from '../../components/Claim.astro';
+import ClaimAliases from '../../components/ClaimAliases.astro';
 import Icon from '../../components/Icon.astro';
 import CompanyLogo from '../../components/CompanyLogo.astro';
 import EntryActions from '../../components/EntryActions.astro';
@@ -51,16 +52,9 @@ const invocation = entry.invocation.filter((item) => item.id !== 'unknown');
 // A classification links to the palette, opened on the entries that share it.
 const workLinks = entry.domains.map((domain) => ({ ...domain, href: facetPath('work', domain.id) }));
 const invocationLinks = invocation.map((mode) => ({ ...mode, href: facetPath('invocation', mode.id) }));
-const hasResults =
-  entry.metricClaims.length > 0 ||
-  entry.resultStatementClaims.length > 0 ||
-  entry.isPilot ||
-  (!entry.isPilot && entry.lessonClaims.length > 0);
 // The scope and denominator guidance belongs above figures. A section that reports
 // none carries its review state alone.
-const hasFigures = entry.isPilot
-  ? entry.observationItems.length > 0
-  : entry.metricClaims.length > 0 || entry.resultStatementClaims.length > 0;
+const hasFigures = entry.observationItems.length > 0;
 const hasRelated = entry.relatedEntries.length > 0 || entry.relatedLessons.length > 0;
 // A question that the sources leave unanswered keeps its section with the absence statement.
 const coverageNoteOf = (key: string) => {
@@ -76,7 +70,7 @@ const lessonsNote = coverageNoteOf('lessons');
       <CompanyLogo company={entry.companyView} size={40} eager />
       <h1>{entry.agentName}</h1>
       {entry.summary ? (
-        <p class="lede" id={entry.summary.anchor} data-claim-id={entry.summary.id}>{entry.summary.text}</p>
+        <p class="lede" id={entry.summary.anchor} data-claim-id={entry.summary.id}><ClaimAliases claim={entry.summary} />{entry.summary.text}</p>
       ) : (
         <p class="lede">This entry has no summary claim yet.</p>
       )}
@@ -134,7 +128,7 @@ const lessonsNote = coverageNoteOf('lessons');
 
     {entry.profile.sectionOrder.map((section) => <EntrySection entry={entry} section={section} />)}
 
-    {entry.isPilot && showQuestion(entry, 'validation') && (entry.validationClaims.length > 0 || validationNote !== null ||
+    {showQuestion(entry, 'validation') && (entry.validationClaims.length > 0 || validationNote !== null ||
       (entry.coverageQuestions.validation?.claimAnchors.length ?? 0) > 0) && (
       <section class="entry-section" id="validation" aria-labelledby="validation-title">
         <h2 id="validation-title">{entry.profile.validation}</h2>
@@ -153,42 +147,26 @@ const lessonsNote = coverageNoteOf('lessons');
       </section>
     )}
 
-    {hasResults && showQuestion(entry, 'observations') && (
+    {showQuestion(entry, 'observations') && (
       <section class="entry-section" id="results" aria-labelledby="results-title">
-        <h2 id="results-title">{entry.isPilot ? entry.profile.observations : 'Reported results and limitations'}</h2>
+        <h2 id="results-title">{entry.profile.observations}</h2>
         {hasFigures && <p class="section-note">
           The catalog records what the sources report, with the scope and the denominator of every
           figure. A qualification below limits the figure it sits under.
         </p>}
-        {entry.isPilot ? entry.observationItems.map((item) => (
+        {entry.observationItems.map((item) => (
           <div class="observation-item">
             <p class="section-note"><strong>{item.categoryLabel}</strong> · {item.basisLabel} · {item.subject}</p>
             <Claim claim={item.claim} />
           </div>
-        )) : entry.metricClaims.map((claim) => <Claim claim={claim} />)}
-        {!entry.isPilot && entry.resultStatementClaims.length > 0 && (
-          <>
-            <h3>Reported outcomes and statements</h3>
-            {entry.resultStatementClaims.map((claim) => <Claim claim={claim} showKind={true} />)}
-          </>
-        )}
-        {entry.isPilot && entry.observationItems.length === 0 && (
+        ))}
+        {entry.observationItems.length === 0 && (
           <p class="review-state" data-state={entry.coverageQuestions.observations?.state}><strong>{entry.coverageQuestions.observations?.stateLabel}{entry.coverageQuestions.observations?.note && ':'}</strong>{entry.coverageQuestions.observations?.note && ` ${entry.coverageQuestions.observations.note}`}</p>
-        )}
-        {!entry.isPilot && entry.lessonClaims.length > 0 && (
-          <>
-            <h3>Lessons and interpretation</h3>
-            <div class="step-panel">
-              {entry.lessonClaims.map((claim) => (
-                <Claim claim={claim} showLabel={false} mark="circle-check" />
-              ))}
-            </div>
-          </>
         )}
       </section>
     )}
 
-    {entry.isPilot && showQuestion(entry, 'lessons') && (entry.lessonClaims.length > 0 || lessonsNote !== null) && (
+    {showQuestion(entry, 'lessons') && (entry.lessonClaims.length > 0 || lessonsNote !== null) && (
       <section class="entry-section" id="lessons" aria-labelledby="lessons-title">
         <h2 id="lessons-title">Lessons</h2>
         {entry.lessonClaims.length > 0 ? (

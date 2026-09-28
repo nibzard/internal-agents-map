@@ -18,19 +18,23 @@ operating_models:
 rubric:
   invocation:
   - unknown
-  state: unknown
-  identity: unknown
   evidence_strength: limited-primary
 summary: Brex uses an agent to personalize delinquent-account outreach and help its servicing team respond to customers.
 architecture:
   knowledge: Account context, servicing procedures and negotiating guidelines.
 primitives:
-- name: Start outreach
+- id: start-outreach
+  name: Start outreach
   desc: Initial outreach uses an automated personalized template.
-- name: Analyze the reply
+  role: workflow
+- id: analyze-the-reply
+  name: Analyze the reply
   desc: The agent combines the customer response with account context and negotiating guidelines.
-- name: Prepare response options
+  role: workflow
+- id: prepare-response-options
+  name: Prepare response options
   desc: Servicing staff select, customize or send proposed drafts with different tones.
+  role: workflow
 sources:
 - id: brex-collections-source-1
   title: 'Agent, Human, Ops: How Brex Is Changing Roles and Workflows'
@@ -48,11 +52,11 @@ evidence:
   - locator: 'Subjective judgement: staff pick a proposed draft and customize or send it'
   architecture.knowledge:
   - locator: 'Subjective judgement: delinquent account servicing'
-  primitives.0:
+  primitives.start-outreach:
   - locator: 'Subjective judgement: delinquent account servicing'
-  primitives.1:
+  primitives.analyze-the-reply:
   - locator: 'Subjective judgement: delinquent account servicing'
-  primitives.2:
+  primitives.prepare-response-options:
   - locator: 'Subjective judgement: delinquent account servicing'
 claim_metadata:
   operating_models.0:
@@ -72,59 +76,21 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
-      - primitives.2
+      - primitives.start-outreach
+      - primitives.analyze-the-reply
+      - primitives.prepare-response-options
     human_involvement:
       state: reported
       claim_paths:
       - operating_models.0
     implementation:
       state: reported
-      claim_paths:
-      - architecture.knowledge
     validation:
       state: unreported
-      claim_paths: []
     observations:
       state: unreported
-      claim_paths: []
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: unreported
-      claim_paths: []
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: unreported
-      claim_paths: []
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: unreported
-      claim_paths: []
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: unreported
-      claim_paths: []
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: workflow
-  observations: {}

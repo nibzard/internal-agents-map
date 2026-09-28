@@ -18,8 +18,6 @@ operating_models:
 rubric:
   invocation:
   - event-driven
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Notion built a Custom Agent that turns Slack bug reports into routed tasks.
 architecture:
@@ -28,12 +26,18 @@ architecture:
   interfaces:
   - slack
 primitives:
-- name: Read a bug report
+- id: read-a-bug-report
+  name: Read a bug report
   desc: A bug report posted in Slack starts the workflow.
-- name: Route the issue
+  role: workflow
+- id: route-the-issue
+  name: Route the issue
   desc: The agent applies a routing constitution to identify the responsible team.
-- name: Create and announce the task
+  role: workflow
+- id: create-and-announce-the-task
+  name: Create and announce the task
   desc: It creates a task-database entry and posts to the team’s Slack channel.
+  role: workflow
 sources:
 - id: notion-bug-triage-source-1
   title: 'Notion''s Token Town: 5 Rebuilds, 100+ Tools (Latent Space)'
@@ -56,11 +60,11 @@ evidence:
   - locator: 'Interview 34:07: first internally built bug-triage workflow'
   architecture.interfaces:
   - locator: 'Interview 34:07: first internally built bug-triage workflow'
-  primitives.0:
+  primitives.read-a-bug-report:
   - locator: 'Interview 34:07: first internally built bug-triage workflow'
-  primitives.1:
+  primitives.route-the-issue:
   - locator: 'Interview 34:07: first internally built bug-triage workflow'
-  primitives.2:
+  primitives.create-and-announce-the-task:
   - locator: 'Interview 34:07: first internally built bug-triage workflow'
 claim_metadata:
   operating_models.0:
@@ -80,63 +84,20 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
-      - primitives.2
+      - primitives.read-a-bug-report
+      - primitives.route-the-issue
+      - primitives.create-and-announce-the-task
     human_involvement:
       state: unreported
-      claim_paths: []
       note: The source does not establish the required human review boundary.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.knowledge
-      - architecture.interfaces
     validation:
       state: unreported
-      claim_paths: []
     observations:
       state: unreported
-      claim_paths: []
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: unreported
-      claim_paths: []
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: unreported
-      claim_paths: []
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: workflow
-  observations: {}

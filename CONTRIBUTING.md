@@ -2,7 +2,7 @@
 
 Contributions can add an approach, add a source, correct a claim, or improve the analysis.
 
-The catalog favors broad collection and explicit provenance. Do not invent missing details. Record unknown values as `unknown`. Keep commentary and conflicting evidence, but label them.
+The catalog favors broad collection and explicit provenance. Do not invent missing details. Use `unknown` for a required classification or rubric value that the sources do not document. Omit an optional field, such as an architecture field, that no source documents; do not write a placeholder value. Keep commentary and conflicting evidence, but label them.
 
 The catalog is public. Do not add personal contact data, such as e-mail addresses or private notes about people, to any file. Only public sources belong here. CI rejects e-mail addresses in tracked files.
 
@@ -79,13 +79,22 @@ the repository documents. Node builds the website.
 4. Add a scoped `operating_models` assessment. Record where human attention normally returns,
    not a company-wide maturity estimate. Keep attention separate from tool authority,
    publication permission, and how long the run can proceed unattended.
-5. Add structured source records before you summarize them.
+5. Add structured source records before you summarize them. Write `canonical_url` only when
+   it is different from `url`.
 6. Preserve each accepted source while it is still live:
    `uv run python scripts/archive_sources.py --source-id <source-id>`. Review the captured
-   Markdown, then add the emitted `capture` and `archived_url` fields to the source record.
-7. Link every claim path to evidence. Add a locator when the source has a stable section, timestamp, comment ID, commit, or line.
-8. Run `uv run python scripts/build.py`.
-9. Run all verification commands in the pull request template.
+   Markdown, then add the emitted `capture` field to the source record.
+7. Give every primitive, key metric, and lesson a kebab-case `id` that is unique in its list.
+   Give each primitive a `role`: `workflow`, `mechanism`, or `validation`. A claim path names
+   the item by its ID, such as `primitives.open-a-run` or `key_metrics.weekly-runs`.
+8. Link every claim path to evidence. Add a locator when the source has a stable section,
+   timestamp, comment ID, commit, or line. When the record has only one source, write
+   `source_id` on a link only if the link has no locator. Write `relation` only for `contradicts` or `contextualizes`; the
+   default is `supports`.
+9. Do not write the values that the build derives: `year`, `catalog_section`, and a `kind` or
+   `provenance` that is equal to its default. See [claim evidence](data/schema.md#claim-evidence).
+10. Run `uv run python scripts/build.py`.
+11. Run all verification commands in the pull request template.
 
 Apply the [inclusion rules](#inclusion-rules) before writing a record.
 
@@ -124,7 +133,8 @@ For Hacker News, keep the thread and each material comment as separate source re
 ### Preserve a source
 
 The original `url` remains the catalog citation. The preservation command creates a reviewed,
-append-only Steel Markdown capture and reports any existing or newly created Wayback URL:
+append-only Steel Markdown capture. With `--save-wayback`, it also records any existing or
+newly created Wayback URL as `external_archive_url` in the capture manifest:
 
 ```bash
 uv run python scripts/archive_sources.py --source-id <source-id>
@@ -154,11 +164,17 @@ retention, and takedown rules.
 - Explain what supports that particular claim in `confidence_reason`, including the
   unresolved step when there is one. Rewording a shared disclaimer is not a review.
   Add a locator to the supporting passage and keep advice bounded to its reported case.
-- When adopting `page_content`, read every listed source and answer all seven reader
-  questions plus all eight architecture fields. Use `reported`, `unreported`,
-  `not-applicable`, or `not-reviewed` as defined in `data/schema.md`; keep a next action
-  for unfinished review. Classify primitives by workflow role and observations by
-  category, basis, and subject. Confirm duplicate observations manually.
+- When adopting `page_content`, read every listed source and give a state to all seven
+  reader questions. Use `reported`, `unreported`, `not-applicable`, or `not-reviewed` as
+  defined in `data/schema.md`; keep a next action for unfinished review. Write
+  `claim_paths` only for `workflow`, `human_involvement`, and `validation`; the build
+  derives the paths of the other four questions.
+- Review all eight architecture fields against the same sources. The build makes a present
+  field `reported` and an absent field `unreported`. Write an `implementation_fields` entry
+  only for a note on a present field, or for a `state` and `note` on an absent field.
+- Give the headline and each key metric a `category`, `basis`, and `subject` in its
+  `claim_metadata`, or list the metric under `page_content.aliases` with `duplicate_of`
+  and `reason`. Confirm a duplicate metric manually.
 
 When you edit `docs/patterns.md` or `docs/adoption-lessons.md`, compare similar approach types and deployment stages. State the sample size. Include counterexamples before you call a pattern common.
 
@@ -221,4 +237,4 @@ platform. Attribute downstream agent results to their actual subject and author
 The homepage counts agents; the Infrastructure index keeps supporting implementations
 discoverable. Full JSON exports include both collections, identified by derived
 `catalog_section`. Existing detail URLs and anchors remain stable. See the
-[schema migration](data/schema.md#collection-migration-catalog-7-compact-index-3).
+[schema migration](docs/changelog.md).

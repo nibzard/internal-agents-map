@@ -18,8 +18,6 @@ operating_models:
 rubric:
   invocation:
   - event-driven
-  state: cross-session-memory
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Scruff investigates security alerts for Notion’s Detection and Response team, preparing analysis for human
   decisions.
@@ -29,12 +27,18 @@ architecture:
   context_mgmt: A notes page retains lessons and accepts human edits.
   tool_access: MCP connections to external security tools.
 primitives:
-- name: Trigger investigation
+- id: trigger-investigation
+  name: Trigger investigation
   desc: An alert enters a structured Notion database.
-- name: Gather and correlate
+  role: workflow
+- id: gather-and-correlate
+  name: Gather and correlate
   desc: Scruff follows the matching runbook and queries security sources through MCP.
-- name: Return findings
+  role: workflow
+- id: return-findings
+  name: Return findings
   desc: DART reviews the investigation and decides whether to declare an incident or dismiss the alert.
+  role: workflow
 sources:
 - id: notion-scruff-source-1
   title: Meet Scruff, Security’s New AI Teammate
@@ -59,13 +63,13 @@ evidence:
   - locator: 'Building Scruff: Notes page'
   architecture.tool_access:
   - locator: Building Scruff; Putting It All Together; The Results
-  primitives.0:
+  primitives.trigger-investigation:
   - locator: Building Scruff; Putting It All Together; The Results
-  primitives.1:
+  primitives.gather-and-correlate:
   - locator: Building Scruff; Putting It All Together; The Results
-  primitives.2:
+  primitives.return-findings:
   - locator: Building Scruff; Putting It All Together; The Results
-  key_metrics.0:
+  key_metrics.six-hours-saved-per-week-dart:
   - locator: 'The Results, first bullet: 6+ hours saved per week across DART'
 claim_metadata:
   operating_models.0:
@@ -73,15 +77,19 @@ claim_metadata:
     confidence_reason: The source explicitly places the incident/false-positive decision with DART after Scruff
       gathers and analyzes evidence.
     valid_at: '2026-01-12'
-  key_metrics.0:
+  key_metrics.six-hours-saved-per-week-dart:
     metric_scope: 'Scruff: Notion reports more than six hours saved per week across DART.'
     confidence: medium
     confidence_reason: Self-reported by the source; no independent verification.
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Scruff: Notion reports more than six hours saved per week across DART.'
 relationships:
 - type: built-on
   approach_id: notion-custom-agents
 key_metrics:
-- Notion reports more than six hours saved per week across DART.
+- id: six-hours-saved-per-week-dart
+  text: Notion reports more than six hours saved per week across DART.
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -91,70 +99,21 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
-      - primitives.2
+      - primitives.trigger-investigation
+      - primitives.gather-and-correlate
+      - primitives.return-findings
     human_involvement:
       state: reported
       claim_paths:
       - operating_models.0
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.knowledge
-      - architecture.context_mgmt
-      - architecture.tool_access
     validation:
       state: unreported
-      claim_paths: []
     observations:
       state: reported
-      claim_paths:
-      - key_metrics.0
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: unreported
-      claim_paths: []
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: workflow
-  observations:
-    key_metrics.0:
-      category: adoption-output
-      basis: reported-measurement
-      subject: 'Scruff: Notion reports more than six hours saved per week across DART.'

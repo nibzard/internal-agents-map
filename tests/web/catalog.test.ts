@@ -18,10 +18,28 @@ const approach = {
   domains: ['coding'],
   autonomy: 'drafts-reviewed',
   operating_models: [{ scope: 'ticket → patch', attention_boundary: 'work-product-review', level: 3 }],
-  rubric: { invocation: ['interactive'], state: 'unknown', identity: 'unknown', evidence_strength: 'detailed-primary' },
+  rubric: { invocation: ['interactive'], evidence_strength: 'detailed-primary' },
   claim_ids: ['example-agent--summary'],
   source_ids: ['example-agent-source-1'],
   interfaces: [],
+  page_content: {
+    version: 1,
+    reviewed_at: '2026-09-09',
+    source_ids: ['example-agent-source-1'],
+    questions: Object.fromEntries(
+      ['purpose', 'workflow', 'human_involvement', 'implementation', 'validation', 'observations', 'lessons'].map((key) => [
+        key,
+        key === 'purpose' ? { state: 'reported', claim_paths: ['summary'] } : { state: 'unreported', claim_paths: [] },
+      ]),
+    ),
+    implementation_fields: Object.fromEntries(
+      ['model', 'harness', 'sandbox', 'tool_access', 'knowledge', 'context_mgmt', 'credentials', 'interfaces'].map((key) => [
+        key,
+        { state: 'unreported', claim_paths: [] },
+      ]),
+    ),
+    aliases: {},
+  },
 };
 
 const company = {
@@ -70,7 +88,16 @@ describe('the published catalog', () => {
   const catalog = loadCatalog();
 
   it('uses the schema version the website reads', () => {
-    expect(catalog.schema_version).toBe(7);
+    expect(catalog.schema_version).toBe(8);
+  });
+
+  it('maps every old claim ID to a claim of the same record', () => {
+    const claims = new Map(catalog.claims.map((item) => [item.id, item]));
+    const aliases = Object.entries(catalog.claim_aliases ?? {});
+    expect(aliases.length).toBeGreaterThanOrEqual(catalog.claims.length);
+    for (const [old, current] of aliases) {
+      expect(claims.get(current)?.approach_id, old).toBe(old.split('--')[0]);
+    }
   });
 
   it('resolves the company of every approach and uses every company', () => {
@@ -116,7 +143,13 @@ describe('catalog validation', () => {
   });
 
   it('rejects another schema version', () => {
-    expect(() => validateCatalog(fixture({ schema_version: 4 }))).toThrow(/schema_version must be 7, found 4/);
+    expect(() => validateCatalog(fixture({ schema_version: 4 }))).toThrow(/schema_version must be 8, found 4/);
+  });
+
+  it('rejects a record without page content', () => {
+    const broken = fixture();
+    delete (broken.approaches[0] as { page_content?: unknown }).page_content;
+    expect(() => validateCatalog(broken)).toThrow(/approach "example-agent" has no page_content/);
   });
 
   it('names the approach when its company identifier does not resolve', () => {

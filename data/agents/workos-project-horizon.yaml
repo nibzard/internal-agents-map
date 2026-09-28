@@ -21,8 +21,6 @@ rubric:
   invocation:
   - event-driven
   - interactive
-  state: mixed
-  identity: user
   evidence_strength: detailed-primary
 summary: Horizon takes requests and external events into remote coding sessions, connects them to company context
   through MCP, and returns changes for human review. Its orchestrator manages sandbox lifecycle and routes results
@@ -46,40 +44,63 @@ architecture:
     use their own identity in the MCP; least-privilege + egress controls
   context_mgmt: The orchestrator pauses/resumes sandboxes and tracks state + artifacts across a run
 primitives:
-- name: Sandbox = execution primitive vs orchestrator = control plane
+- id: sandbox-execution-primitive-vs-orchestrator-control
+  name: Sandbox = execution primitive vs orchestrator = control plane
   desc: An orchestrator outside the sandbox manages requests, lifecycle, and returned artifacts
-- name: Purpose-built agent infra
+  role: mechanism
+- id: purpose-built-agent-infra
+  name: Purpose-built agent infra
   desc: Cloudflare sandbox infrastructure with programmatic lifecycle APIs and an outbound proxy for egress controls
-- name: Self-improvement loop
+  role: mechanism
+- id: self-improvement-loop
+  name: Self-improvement loop
   desc: Session logs can lead to proposed fixes, scripts, or context updates; many platform tasks are still seeded
     manually
-- name: MCP as an iterative product
+  role: mechanism
+- id: mcp-as-an-iterative-product
+  name: MCP as an iterative product
   desc: WorkOS revises tool names and schemas to address repeated exploration and mistaken tool use
-- name: Divide the project into issues
+  role: mechanism
+- id: divide-the-project-into-issues
+  name: Divide the project into issues
   desc: The PM agent splits a delegated Linear project into individual issues with descriptions and dependency ordering;
     a human reviews each issue before implementation starts
-- name: Run the implementation session in the sandbox
+  role: workflow
+- id: run-implementation-session-sandbox
+  name: Run the implementation session in the sandbox
   desc: When an issue moves to In Progress, the orchestrator assigns it to a cloud agent that boots the Docker development
     container with OpenCode and the custom MCP context server
-- name: Hand off the pull request for human review
+  role: workflow
+- id: hand-off-pull-request-human-review
+  name: Hand off the pull request for human review
   desc: The run ends as a pull request attributed to the issue owner; no code merges without explicit human approval
-- name: Continue the dependency chain after merge
+  role: workflow
+- id: continue-the-dependency-chain-after-merge
+  name: Continue the dependency chain after merge
   desc: The GitHub merge webhook marks the Linear issues done and starts the next eligible run on newly unblocked
     issues
-- name: Verify the work inside the sandbox
+  role: workflow
+- id: verify-the-work-inside-the-sandbox
+  name: Verify the work inside the sandbox
   desc: The run lints, builds, and runs automated tests, and does initial validation of acceptance criteria, before
     requesting human attention
+  role: validation
 lessons_learned:
-- WorkOS chose Cloudflare sandbox infrastructure for programmatic lifecycle control and an outbound proxy that enforces
-  its egress policy.
-- Horizon's orchestrator runs outside disposable sandboxes and manages incoming work, sandbox lifecycle, and returned
-  artifacts.
-- WorkOS describes OpenCode in one Horizon deployment and Claude Remote Routines in another; the accounts do not
-  establish a migration of the whole platform.
-- Horizon turns run friction into proposed platform fixes, while WorkOS still seeds many improvement tasks manually
-  and retains human review.
-- WorkOS revises MCP tool names, schemas, and conventions after observing agents repeat expensive exploration and
-  wrong turns.
+- id: chose-cloudflare-sandbox-infrastructure-programmatic-lifecycle
+  text: WorkOS chose Cloudflare sandbox infrastructure for programmatic lifecycle control and an outbound proxy that enforces
+    its egress policy.
+- id: orchestrator-runs-outside-disposable-sandboxes-manages
+  text: Horizon's orchestrator runs outside disposable sandboxes and manages incoming work, sandbox lifecycle, and returned
+    artifacts.
+- id: harness-differs-by-deployment
+  text: WorkOS describes OpenCode in one Horizon deployment and Claude Remote Routines in another; the accounts do not
+    establish a migration of the whole platform.
+- id: turns-run-friction-proposed-platform-fixes
+  text: Horizon turns run friction into proposed platform fixes, while WorkOS still seeds many improvement tasks manually
+    and retains human review.
+- id: revises-mcp-tool-names-schemas-conventions
+  text: WorkOS revises MCP tool names, schemas, and conventions after observing agents repeat expensive exploration and
+    wrong turns.
 sources:
 - id: workos-project-horizon-source-1
   title: Project Horizon - an autonomous code factory at WorkOS
@@ -144,48 +165,48 @@ evidence:
   - source_id: workos-project-horizon-source-1
   architecture.context_mgmt:
   - source_id: workos-project-horizon-source-1
-  primitives.0:
+  primitives.sandbox-execution-primitive-vs-orchestrator-control:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 110-120
-  primitives.1:
+  primitives.purpose-built-agent-infra:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 84-94
-  primitives.2:
+  primitives.self-improvement-loop:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 124-149
-  primitives.3:
+  primitives.mcp-as-an-iterative-product:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 104
-  primitives.4:
+  primitives.divide-the-project-into-issues:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 46-48
-  primitives.5:
+  primitives.run-implementation-session-sandbox:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 48-56
-  primitives.6:
+  primitives.hand-off-pull-request-human-review:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 54, 60
-  primitives.7:
+  primitives.continue-the-dependency-chain-after-merge:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, line 62
-  primitives.8:
+  primitives.verify-the-work-inside-the-sandbox:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 38, 96
-  lessons_learned.0:
+  lessons_learned.chose-cloudflare-sandbox-infrastructure-programmatic-lifecycle:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 68-94
-  lessons_learned.1:
+  lessons_learned.orchestrator-runs-outside-disposable-sandboxes-manages:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 110-120
-  lessons_learned.2:
+  lessons_learned.harness-differs-by-deployment:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 56,153-157
   - source_id: workos-project-horizon-source-2
     locator: Preserved content.md, lines 50
-  lessons_learned.3:
+  lessons_learned.turns-run-friction-proposed-platform-fixes:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 124-149
-  lessons_learned.4:
+  lessons_learned.revises-mcp-tool-names-schemas-conventions:
   - source_id: workos-project-horizon-source-1
     locator: Preserved content.md, lines 104
   architecture.interfaces:
@@ -196,31 +217,31 @@ claim_metadata:
     confidence_reason: The source states a human is always in the loop at PR handoff and no code merges without
       explicit human approval; humans also review each PM-generated issue before implementation starts.
     valid_at: '2026-05-06'
-  lessons_learned.0:
+  lessons_learned.chose-cloudflare-sandbox-infrastructure-programmatic-lifecycle:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The runtime discussion names WorkOS's missing development infrastructure and required controls,
       then identifies the chosen provider and proxy design.
-  lessons_learned.1:
+  lessons_learned.orchestrator-runs-outside-disposable-sandboxes-manages:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The orchestration section explicitly locates lifecycle and routing logic outside the execution
       environment.
-  lessons_learned.2:
+  lessons_learned.harness-differs-by-deployment:
     kind: inference
     provenance: catalog-judgment
     confidence: medium
     confidence_reason: The architecture post supports modular components and the showcase names a different engine,
       but neither describes a complete before-and-after migration.
-  lessons_learned.3:
+  lessons_learned.turns-run-friction-proposed-platform-fixes:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The feedback-loop section describes log-driven fixes and explicitly limits the degree of
       automatic task creation; it does not measure continual reliability gains.
-  lessons_learned.4:
+  lessons_learned.revises-mcp-tool-names-schemas-conventions:
     kind: fact
     provenance: reported
     confidence: medium
@@ -238,94 +259,37 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.4
-      - primitives.5
-      - primitives.6
-      - primitives.7
+      - primitives.divide-the-project-into-issues
+      - primitives.run-implementation-session-sandbox
+      - primitives.hand-off-pull-request-human-review
+      - primitives.continue-the-dependency-chain-after-merge
     human_involvement:
       state: reported
       claim_paths:
       - operating_models.0
-      - primitives.4
-      - primitives.6
+      - primitives.divide-the-project-into-issues
+      - primitives.hand-off-pull-request-human-review
       note: A human reviews each PM-generated issue before implementation starts, and a human is always in the loop
         at pull-request handoff; humans are frequently the bottleneck.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.sandbox
-      - architecture.tool_access
-      - architecture.knowledge
-      - architecture.context_mgmt
-      - architecture.credentials
-      - architecture.interfaces
     validation:
       state: reported
       claim_paths:
-      - primitives.8
+      - primitives.verify-the-work-inside-the-sandbox
       note: Lint, build, and automated tests run in the sandbox before human attention; headless browser verification
         is named as planned work, not a current check.
     observations:
       state: unreported
-      claim_paths: []
       note: The captures describe capability and direction without a measured Horizon outcome; the UI Nits closure
         rate belongs to the surrounding program rather than to Horizon alone.
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
-      - lessons_learned.2
-      - lessons_learned.3
-      - lessons_learned.4
   implementation_fields:
     model:
       state: unreported
-      claim_paths: []
       note: 'No source names the underlying model; the harness is the swappable layer (OpenCode in the core
         article, Claude Remote Routines in the showcase).'
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: reported
-      claim_paths:
-      - architecture.sandbox
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
-    credentials:
-      state: reported
-      claim_paths:
-      - architecture.credentials
-    interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
-  primitive_roles:
-    primitives.0: mechanism
-    primitives.1: mechanism
-    primitives.2: mechanism
-    primitives.3: mechanism
-    primitives.4: workflow
-    primitives.5: workflow
-    primitives.6: workflow
-    primitives.7: workflow
-    primitives.8: validation
-  observations: {}

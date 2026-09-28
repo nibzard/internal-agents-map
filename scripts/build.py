@@ -33,6 +33,8 @@ LANDSCAPE = ROOT / "docs" / "landscape.md"
 PATTERNS = ROOT / "docs" / "patterns.md"
 ADOPTION_LESSONS = ROOT / "docs" / "adoption-lessons.md"
 DATA_JSON = ROOT / "data" / "agents.json"
+CLAIM_ALIASES_JSON = ROOT / "data" / "claim_aliases.json"
+CLAIM_ALIASES_FILE_NAME = "data/claim_aliases.json"
 OVERVIEW_BEGIN = "<!-- BEGIN OVERVIEW -->"
 OVERVIEW_END = "<!-- END OVERVIEW -->"
 README_FINDINGS_BEGIN = "<!-- BEGIN README FINDINGS -->"
@@ -55,6 +57,34 @@ BOUNDARY_LEVELS = {
     "unknown": None,
 }
 ID_RE = re.compile(AGENT_SCHEMA["definitions"]["kebabId"]["pattern"])
+# The architecture fields in the order that the entry page and the export use.
+ARCHITECTURE_FIELDS = (
+    "model",
+    "harness",
+    "sandbox",
+    "tool_access",
+    "knowledge",
+    "context_mgmt",
+    "credentials",
+    "interfaces",
+)
+QUESTION_KEYS = tuple(
+    AGENT_SCHEMA["definitions"]["pageContent"]["properties"]["questions"]["required"]
+)
+# The build derives the claim paths of these questions. Editors write only their state and note.
+DERIVED_QUESTIONS = ("purpose", "implementation", "observations", "lessons")
+# The lists whose items have an ID. A claim path names an item as "<list>.<item id>".
+ITEM_LISTS = ("primitives", "key_metrics", "lessons_learned")
+INDEX_PATH_RE = re.compile(r"^(primitives|key_metrics|lessons_learned)\.\d+$")
+METRIC_AXES = ("category", "basis", "subject")
+# The attention boundaries that each autonomy value agrees with. The value unknown on either
+# side agrees with everything.
+AUTONOMY_BOUNDARIES = {
+    "drafts-reviewed": {"work-product-review", "outcome-review"},
+    "autonomous": {"exception-only"},
+    "human-in-loop": {"continuous-steering", "work-product-review"},
+    "assistive": {"continuous-steering"},
+}
 DATE_RE = re.compile(AGENT_SCHEMA["definitions"]["partialDate"]["pattern"])
 RFC3339_UTC_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$")
 SHA256_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
@@ -347,12 +377,6 @@ def load_capture_manifest(source: dict, filename: str, *, root: Path | None = No
     validate_capture_artifact(artifacts["markdown"], "markdown", source_id, filename, root=root)
     if "pdf" in artifacts:
         validate_capture_artifact(artifacts["pdf"], "pdf", source_id, filename, root=root)
-    if "external_archive_url" in manifest and manifest["external_archive_url"] != source.get(
-        "archived_url"
-    ):
-        die(
-            f"{filename}: capture manifest external_archive_url must match the source archived_url."
-        )
     return manifest
 
 
@@ -366,13 +390,13 @@ def claim_fields(record: dict) -> dict[str, tuple[str, str, str]]:
         if value:
             text = ", ".join(value) if key == "interfaces" else value
             claims[f"architecture.{key}"] = (text, "fact", "reported")
-    for index, item in enumerate(record.get("primitives") or []):
+    for item in record.get("primitives") or []:
         text = item.get("desc") or item.get("name")
-        claims[f"primitives.{index}"] = (text, "fact", "reported")
-    for index, text in enumerate(record.get("key_metrics") or []):
-        claims[f"key_metrics.{index}"] = (text, "metric", "reported")
-    for index, text in enumerate(record.get("lessons_learned") or []):
-        claims[f"lessons_learned.{index}"] = (text, "inference", "catalog-judgment")
+        claims[f"primitives.{item['id']}"] = (text, "fact", "reported")
+    for item in record.get("key_metrics") or []:
+        claims[f"key_metrics.{item['id']}"] = (item["text"], "metric", "reported")
+    for item in record.get("lessons_learned") or []:
+        claims[f"lessons_learned.{item['id']}"] = (item["text"], "inference", "catalog-judgment")
     for index, item in enumerate(record["operating_models"]):
         boundary = item["attention_boundary"]
         level = BOUNDARY_LEVELS[boundary]
@@ -454,6 +478,181 @@ def validate_evidence(record: dict, filename: str, source_ids: set[str]) -> None
             die(f"{filename}: invalid claim metadata path {path!r}.")
 
 
+def reject_legacy_paths(record: Any, filename: str) -> None:
+    """Refuse the authored forms of schema 7 with a message that names the schema 8 form.
+
+    This check runs before the schema, because the schema can only say that a path does not
+    match a pattern.
+    """
+    if not isinstance(record, dict):
+        return
+
+    def check(path: Any, where: str) -> None:
+        if isinstance(path, str) and INDEX_PATH_RE.fullmatch(path):
+            field = path.split(".")[0]
+            die(
+                f"{filename}: {where} uses the index path {path!r}. Name the item by its id "
+                f"instead, such as '{field}.<item id>'."
+            )
+
+    for key in ("evidence", "claim_metadata"):
+        if isinstance(record.get(key), dict):
+            for path in record[key]:
+                check(path, key)
+    page = record.get("page_content")
+    if not isinstance(page, dict):
+        return
+    questions = page.get("questions")
+    if isinstance(questions, dict):
+        for key, value in questions.items():
+            if not isinstance(value, dict):
+                continue
+            if key in DERIVED_QUESTIONS and "claim_paths" in value:
+                die(
+                    f"{filename}: page_content.questions.{key}.claim_paths is derived by the "
+                    "build. Remove it."
+                )
+            for path in value.get("claim_paths") or []:
+                check(path, f"page_content.questions.{key}.claim_paths")
+    fields = page.get("implementation_fields")
+    if isinstance(fields, dict):
+        for key, value in fields.items():
+            if isinstance(value, dict) and (
+                value.get("state") == "reported" or "claim_paths" in value
+            ):
+                die(
+                    f"{filename}: page_content.implementation_fields.{key} is derived by the "
+                    "build. Write only a note for a present architecture field, or a state and "
+                    "a note for an absent one."
+                )
+    aliases = page.get("aliases")
+    if isinstance(aliases, dict):
+        for path, value in aliases.items():
+            check(path, "page_content.aliases")
+            if isinstance(value, dict):
+                check(value.get("duplicate_of"), f"page_content.aliases.{path}.duplicate_of")
+
+
+def validate_autonomy(record: dict, filename: str) -> None:
+    """Refuse an autonomy that contradicts the boundary of a record's only operating model."""
+    if len(record["operating_models"]) != 1:
+        return
+    autonomy = record["autonomy"]
+    boundary = record["operating_models"][0]["attention_boundary"]
+    if "unknown" in (autonomy, boundary) or boundary in AUTONOMY_BOUNDARIES[autonomy]:
+        return
+    die(
+        f"{filename}: autonomy {autonomy!r} contradicts the attention boundary {boundary!r} "
+        "of the only operating model."
+    )
+
+
+def validate_item_ids(record: dict, filename: str) -> None:
+    """Require the IDs of each item list to be unique within the record."""
+    for field in ITEM_LISTS:
+        counts = Counter(item["id"] for item in record.get(field) or [])
+        for item_id, count in counts.items():
+            if count > 1:
+                die(f"{filename}: {field} uses the id {item_id!r} more than once.")
+
+
+def metric_paths(record: dict) -> list[str]:
+    """Give the claim path of the headline and of every key metric, in record order."""
+    paths = ["headline_metric"] if record.get("headline_metric") else []
+    return paths + [f"key_metrics.{item['id']}" for item in record.get("key_metrics") or []]
+
+
+def validate_metric_axes(record: dict, filename: str) -> None:
+    """Require axes on every canonical metric, and aliases that name a canonical metric."""
+    page = record.get("page_content")
+    if page is None:
+        return
+    metadata = record.get("claim_metadata") or {}
+    metrics = metric_paths(record)
+    aliases = page.get("aliases") or {}
+    for path, values in metadata.items():
+        if path not in metrics and any(axis in values for axis in METRIC_AXES):
+            die(
+                f"{filename}: claim_metadata.{path} may carry category, basis, and subject "
+                "only on a metric."
+            )
+    for path in aliases:
+        if path not in metrics:
+            die(f"{filename}: page_content.aliases may list only metric claims, found {path!r}.")
+    for path, value in aliases.items():
+        target = value["duplicate_of"]
+        if target not in metrics or target == path:
+            die(f"{filename}: alias {path!r} has an invalid duplicate target.")
+        if target in aliases:
+            die(f"{filename}: alias {path!r} may not form a chain or cycle.")
+    for path in metrics:
+        values = metadata.get(path) or {}
+        if path in aliases:
+            if any(axis in values for axis in METRIC_AXES):
+                die(
+                    f"{filename}: {path} is an alias, so its claim_metadata must not carry "
+                    "category, basis, or subject."
+                )
+        elif not all(axis in values for axis in METRIC_AXES):
+            die(
+                f"{filename}: {path} needs category, basis, and subject in claim_metadata, "
+                "or an entry in page_content.aliases."
+            )
+
+
+def derived_question_paths(record: dict) -> dict[str, list[str]]:
+    """Give the claim paths that the build derives for the four derived questions."""
+    architecture = record.get("architecture") or {}
+    return {
+        "purpose": ["summary"],
+        "implementation": [
+            f"architecture.{key}" for key in ARCHITECTURE_FIELDS if key in architecture
+        ],
+        "observations": metric_paths(record),
+        "lessons": [
+            f"lessons_learned.{item['id']}" for item in record.get("lessons_learned") or []
+        ],
+    }
+
+
+def page_content_export(record: dict) -> dict:
+    """Give the published page_content: all seven questions and all eight fields, derived."""
+    page = record["page_content"]
+    derived = derived_question_paths(record)
+    questions = {}
+    for key in QUESTION_KEYS:
+        authored = page["questions"][key]
+        if key in DERIVED_QUESTIONS:
+            paths = derived[key] if authored["state"] == "reported" else []
+        else:
+            paths = authored.get("claim_paths", [])
+        questions[key] = {"state": authored["state"], "claim_paths": paths}
+        if "note" in authored:
+            questions[key]["note"] = authored["note"]
+    architecture = record.get("architecture") or {}
+    authored_fields = page.get("implementation_fields") or {}
+    fields = {}
+    for key in ARCHITECTURE_FIELDS:
+        authored = authored_fields.get(key, {})
+        if key in architecture:
+            fields[key] = {"state": "reported", "claim_paths": [f"architecture.{key}"]}
+        else:
+            fields[key] = {"state": authored.get("state", "unreported"), "claim_paths": []}
+        if "note" in authored:
+            fields[key]["note"] = authored["note"]
+    exported = {
+        key: page[key]
+        for key in ("version", "reviewed_at", "source_ids", "workflow_scope")
+        if key in page
+    }
+    return {
+        **exported,
+        "questions": questions,
+        "implementation_fields": fields,
+        "aliases": page.get("aliases") or {},
+    }
+
+
 def validate_page_content(record: dict, filename: str, source_ids: set[str]) -> None:
     """Validate the optional editorial coverage contract against this record's claims."""
     page = record.get("page_content")
@@ -463,73 +662,64 @@ def validate_page_content(record: dict, filename: str, source_ids: set[str]) -> 
     if reviewed - source_ids:
         die(f"{filename}: page_content.source_ids must be sources belonging to this entry.")
     claims = claim_fields(record)
-
-    def disposition(value: dict, field: str, allowed_paths: set[str] | None = None) -> None:
-        paths = value["claim_paths"]
-        if any(path not in claims for path in paths):
-            die(f"{filename}: {field}.claim_paths contains an unknown claim path.")
-        if allowed_paths is not None and set(paths) - allowed_paths:
-            die(f"{filename}: {field}.claim_paths contains a claim outside its allowed field.")
-        if value["state"] != "reported":
-            return
-        for path in paths:
-            supports = {
-                link["source_id"]
-                for link in record["evidence"][path]
-                if link.get("relation", "supports") == "supports"
-            }
-            if not supports & reviewed:
-                die(
-                    f"{filename}: {field} reported claim {path!r} lacks support from a reviewed source."
-                )
-
-    for key, value in page["questions"].items():
-        disposition(value, f"page_content.questions.{key}")
-    for key, value in page["implementation_fields"].items():
+    architecture = record.get("architecture") or {}
+    for key, value in (page.get("implementation_fields") or {}).items():
         field = f"page_content.implementation_fields.{key}"
-        disposition(value, field, {f"architecture.{key}"})
-        if (f"architecture.{key}" in claims) != (value["state"] == "reported"):
+        if key in architecture and "state" in value:
             die(
-                f"{filename}: {field} must be reported if and only if architecture.{key} "
-                "is present."
+                f"{filename}: {field} has a state, but architecture.{key} is present, so the "
+                "build derives reported. Keep only the note."
             )
+        if key not in architecture and "state" not in value:
+            die(f"{filename}: {field} needs a state, because architecture.{key} is absent.")
+    derived = derived_question_paths(record)
+    for key in DERIVED_QUESTIONS:
+        if page["questions"][key]["state"] == "reported" and not derived[key]:
+            die(
+                f"{filename}: page_content.questions.{key} is reported, but the record has no "
+                "claim to derive its claim_paths from."
+            )
+    exported = page_content_export(record)
+    for group in ("questions", "implementation_fields"):
+        for key, value in exported[group].items():
+            field = f"page_content.{group}.{key}"
+            if any(path not in claims for path in value["claim_paths"]):
+                die(f"{filename}: {field}.claim_paths contains an unknown claim path.")
+            if value["state"] != "reported":
+                continue
+            for path in value["claim_paths"]:
+                supports = {
+                    link["source_id"]
+                    for link in record["evidence"][path]
+                    if link.get("relation", "supports") == "supports"
+                }
+                if not supports & reviewed:
+                    die(
+                        f"{filename}: {field} reported claim {path!r} lacks support from a "
+                        "reviewed source."
+                    )
 
-    roles = page["primitive_roles"]
-    expected_primitives = {f"primitives.{i}" for i, _ in enumerate(record.get("primitives") or [])}
-    if set(roles) != expected_primitives:
-        die(f"{filename}: page_content.primitive_roles must classify every primitive exactly once.")
-    workflow_paths = page["questions"]["workflow"]["claim_paths"]
-    if any(roles.get(path) != "workflow" for path in workflow_paths) or set(workflow_paths) != {
-        path for path, role in roles.items() if role == "workflow"
-    }:
+    workflow_primitives = {
+        f"primitives.{item['id']}"
+        for item in record.get("primitives") or []
+        if item["role"] == "workflow"
+    }
+    workflow_paths = page["questions"]["workflow"].get("claim_paths", [])
+    if set(workflow_paths) != workflow_primitives:
         die(
             f"{filename}: workflow claim_paths must name exactly the workflow primitives in reading order."
         )
-
-    observations = page["observations"]
-    expected_observations = ({"headline_metric"} if record.get("headline_metric") else set()) | {
-        f"key_metrics.{i}" for i, _ in enumerate(record.get("key_metrics") or [])
-    }
-    if set(observations) != expected_observations:
-        die(f"{filename}: page_content.observations must describe every observation claim.")
-    duplicates: dict[str, str] = {}
-    for path, value in observations.items():
-        if "duplicate_of" in value:
-            target = value["duplicate_of"]
-            if target not in expected_observations or target == path:
-                die(f"{filename}: observation {path!r} has an invalid duplicate target.")
-            duplicates[path] = target
-    for source, target in duplicates.items():
-        if target in duplicates:
-            die(f"{filename}: duplicate observation {source!r} may not form a chain or cycle.")
 
 
 def validate_record(record: dict, path: Path, global_sources: set[str]) -> None:
     """Check one record against the agent schema, then against its sources and claims."""
     filename = path.name
+    reject_legacy_paths(record, filename)
     errors = schema_errors(record, filename)
     if errors:
         die("\n".join(errors))
+    validate_item_ids(record, filename)
+    validate_autonomy(record, filename)
     apply_defaults(record, filename)
     if record["id"] != path.stem:
         die(f"{filename}: 'id' must match the filename stem.")
@@ -549,6 +739,7 @@ def validate_record(record: dict, path: Path, global_sources: set[str]) -> None:
         die(f"{filename}: first public evidence must use a source with the evidence role.")
     validate_evidence(record, filename, local_sources)
     validate_page_content(record, filename, local_sources)
+    validate_metric_axes(record, filename)
     metadata = record.get("claim_metadata") or {}
     for index, _ in enumerate(record["operating_models"]):
         claim_path = f"operating_models.{index}"
@@ -873,8 +1064,6 @@ def render_source_reference(source: dict) -> str:
         pdf = manifest["artifacts"].get("pdf")
         if pdf is not None:
             fallbacks.append(f"[PDF](../{pdf['path']})")
-    if source.get("archived_url"):
-        fallbacks.append(f"[Wayback]({source['archived_url']})")
     if manifest is not None:
         fallbacks.append(f"captured {manifest['captured_at'][:10]}")
     if not fallbacks:
@@ -977,7 +1166,6 @@ def catalog_statistics(records: list[dict]) -> dict[str, Any]:
         "agents": len(agents),
         "approach_types": Counter(record["approach_type"] for record in records),
         "autonomy": Counter(record["autonomy"] for record in agents),
-        "state": Counter(record["rubric"]["state"] for record in records),
         "attention_boundaries": Counter(model["attention_boundary"] for model in operating_models),
         "operating_models": len(operating_models),
         "multi_workflow_entries": sum(len(record["operating_models"]) > 1 for record in agents),
@@ -1024,9 +1212,8 @@ def render_readme_findings(records: list[dict]) -> str:
             f"{stats['multi_workflow_entries']} entries have more than one assessed workflow; the "
             "counts therefore do not assign one level to each company.",
             "",
-            f"{stats['supporting_entries']} entries are platforms or supporting patterns. State "
-            f"duration is undocumented for {stats['state']['unknown']} entries. Review cost, failure "
-            "rates, and retired systems remain rarely reported.",
+            f"{stats['supporting_entries']} entries are platforms or supporting patterns. Review "
+            "cost, failure rates, and retired systems remain rarely reported.",
             "",
             README_FINDINGS_END,
         ]
@@ -1044,7 +1231,6 @@ def render_patterns_snapshot(records: list[dict]) -> str:
     stats = catalog_statistics(records)
     approach_counts = stats["approach_types"]
     autonomy_counts = stats["autonomy"]
-    state_counts = stats["state"]
     return "\n".join(
         [
             PATTERNS_SNAPSHOT_BEGIN,
@@ -1058,11 +1244,6 @@ def render_patterns_snapshot(records: list[dict]) -> str:
             "",
             f"- {stats['sandbox']} entries document a concrete execution environment.",
             f"- {stats['slack']} entries list Slack as an interface.",
-            "- State duration is "
-            f"unknown for {state_counts['unknown']}, durable-session for "
-            f"{state_counts['durable-session']}, cross-session-memory for "
-            f"{state_counts['cross-session-memory']}, mixed for {state_counts['mixed']}, "
-            f"and run-only for {state_counts['run-only']} approaches.",
             f"- Agent autonomy ({stats['agents']} records; infrastructure excluded) is classified as "
             f"drafts-reviewed for {autonomy_counts['drafts-reviewed']}, human-in-loop for "
             f"{autonomy_counts['human-in-loop']}, autonomous for "
@@ -1167,8 +1348,6 @@ def render_landscape(records: list[dict]) -> str:
                 f"| Operating model | {markdown(operating_model_summary(record))} |",
                 f"| Autonomy | {markdown(record['autonomy'])} |",
                 f"| Invocation | {markdown(rubric['invocation'])} |",
-                f"| State | {markdown(rubric['state'])} |",
-                f"| Identity | {markdown(rubric['identity'])} |",
                 f"| Evidence | {markdown(rubric['evidence_strength'])} |",
             ]
         )
@@ -1215,12 +1394,12 @@ def render_landscape(records: list[dict]) -> str:
             if not values:
                 continue
             out.extend([f"### {heading}", ""])
-            for index, value in enumerate(values):
-                if isinstance(value, dict):
+            for value in values:
+                if field == "primitives":
                     text = f"{value['name']}: {value.get('desc', '')}".rstrip()
                 else:
-                    text = value
-                out.append(f"- {text}{evidence_refs(record, f'{field}.{index}')}")
+                    text = value["text"]
+                out.append(f"- {text}{evidence_refs(record, f'{field}.{value["id"]}')}")
             out.append("")
         out.extend(["### Sources", ""])
         for source in record["sources"]:
@@ -1232,7 +1411,34 @@ def render_landscape(records: list[dict]) -> str:
     return "\n".join(out)
 
 
-def normalize(records: list[dict], companies: list[dict]) -> dict:
+def claim_id_of(record_id: str, path: str) -> str:
+    """Give the public claim ID: the record ID, two dashes, and the path with dashes."""
+    return f"{record_id}--{path.replace('.', '-').replace('_', '-')}"
+
+
+def load_claim_aliases(path: Path | None = None) -> dict[str, str]:
+    """Read the map of schema 7 claim IDs to schema 8 claim IDs that the export carries."""
+    path = path or CLAIM_ALIASES_JSON
+    if not path.is_file():
+        die(f"{CLAIM_ALIASES_FILE_NAME}: the claim alias map is required.")
+    aliases = _load_json_object(path, "claim aliases", CLAIM_ALIASES_FILE_NAME)
+    if not all(isinstance(value, str) and value for value in aliases.values()):
+        die(f"{CLAIM_ALIASES_FILE_NAME} must map each old claim ID to a claim ID.")
+    return aliases
+
+
+def validate_claim_aliases(aliases: dict[str, str], claim_ids: set[str]) -> None:
+    """Require every alias to name a claim of the export, and never to shadow one."""
+    for old, current in aliases.items():
+        if current not in claim_ids:
+            die(f"{CLAIM_ALIASES_FILE_NAME}: {old!r} names unknown claim {current!r}.")
+        if old in claim_ids and old != current:
+            die(f"{CLAIM_ALIASES_FILE_NAME}: {old!r} is a claim ID and must map to itself.")
+
+
+def normalize(
+    records: list[dict], companies: list[dict], claim_aliases: dict[str, str] | None = None
+) -> dict:
     approaches = []
     claims = []
     sources = []
@@ -1251,6 +1457,8 @@ def normalize(records: list[dict], companies: list[dict]) -> dict:
             for key, value in record.items()
             if key not in {"sources", "evidence", "claim_metadata"} | claim_value_fields
         }
+        if "page_content" in record:
+            approach["page_content"] = page_content_export(record)
         approach["company_id"] = company_ids[record["company"]]
         approach["operating_models"] = [
             {**item, "level": BOUNDARY_LEVELS[item["attention_boundary"]]}
@@ -1261,8 +1469,14 @@ def normalize(records: list[dict], companies: list[dict]) -> dict:
         approach["source_ids"] = [source["id"] for source in record["sources"]]
         approach["interfaces"] = (record.get("architecture") or {}).get("interfaces", [])
         source_index = {source["id"]: source for source in record["sources"]}
+        items = {
+            f"{field}.{item['id']}": item
+            for field in ITEM_LISTS
+            for item in record.get(field) or []
+        }
+        aliases = (record.get("page_content") or {}).get("aliases") or {}
         for path, (claim_text, default_kind, default_provenance) in claim_fields(record).items():
-            claim_id = f"{record['id']}--{path.replace('.', '-').replace('_', '-')}"
+            claim_id = claim_id_of(record["id"], path)
             meta = (record.get("claim_metadata") or {}).get(path, {})
             links = record["evidence"][path]
             supporting_sources = [
@@ -1296,13 +1510,24 @@ def normalize(records: list[dict], companies: list[dict]) -> dict:
                 "evidence": links,
             }
             if path.startswith("primitives."):
-                item = record["primitives"][int(path.split(".")[1])]
-                claim["display_name"] = item["name"]
+                claim["display_name"] = items[path]["name"]
+                claim["item_id"] = items[path]["id"]
+                claim["role"] = items[path]["role"]
             if claim["kind"] == "metric" and claim["provenance"] == "reported":
                 claim["reported_by"] = meta.get("reported_by", record["company"])
             for field in ("value", "unit", "metric_scope", "denominator", "measurement_method"):
                 if meta.get(field) is not None:
                     claim[field] = meta[field]
+            if path.startswith(("key_metrics.", "lessons_learned.")):
+                claim["item_id"] = items[path]["id"]
+            if path in aliases:
+                target = aliases[path]["duplicate_of"]
+                claim["duplicate_of"] = claim_id_of(record["id"], target)
+                claim["reason"] = aliases[path]["reason"]
+            else:
+                for axis in METRIC_AXES:
+                    if axis in meta:
+                        claim[axis] = meta[axis]
             claims.append(claim)
             approach["claim_ids"].append(claim_id)
         approaches.append(approach)
@@ -1316,12 +1541,15 @@ def normalize(records: list[dict], companies: list[dict]) -> dict:
             if manifest is not None:
                 normalized_source["capture"] = manifest
             sources.append(normalized_source)
+    claim_aliases = claim_aliases or {}
+    validate_claim_aliases(claim_aliases, {claim["id"] for claim in claims})
     return {
-        "schema_version": 7,
+        "schema_version": 8,
         "approaches": approaches,
         "claims": claims,
         "sources": sources,
         "companies": normalize_companies(companies),
+        "claim_aliases": claim_aliases,
     }
 
 
@@ -1426,7 +1654,7 @@ def main() -> None:
     args = parser.parse_args()
     records = load_agents()
     companies = load_companies(records)
-    outputs = data_outputs(records, normalize(records, companies))
+    outputs = data_outputs(records, normalize(records, companies, load_claim_aliases()))
     stale = [
         path
         for path, content in outputs.items()

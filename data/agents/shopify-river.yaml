@@ -18,8 +18,6 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: durable-session
-  identity: unknown
   evidence_strength: detailed-primary
 summary: River is Shopify’s internal Slack agent for investigating questions and making code changes in public threads.
 architecture:
@@ -29,12 +27,18 @@ architecture:
   interfaces:
   - slack
 primitives:
-- name: Receive a request
+- id: receive-a-request
+  name: Receive a request
   desc: An employee mentions River in a public Slack channel.
-- name: Investigate and act
+  role: workflow
+- id: investigate-and-act
+  name: Investigate and act
   desc: River reads files, runs tests and queries, and posts findings; it can open pull requests.
-- name: Continue collaboratively
+  role: workflow
+- id: continue-collaboratively
+  name: Continue collaboratively
   desc: Colleagues add constraints and redirect the work within the same thread.
+  role: workflow
 sources:
 - id: shopify-river-source-1
   title: Under the River
@@ -57,13 +61,13 @@ evidence:
   - locator: 'Part II: River only works in the open; At scale; River is one profile'
   architecture.interfaces:
   - locator: 'Part II: River only works in the open; At scale; River is one profile'
-  primitives.0:
+  primitives.receive-a-request:
   - locator: 'Part II: River only works in the open; At scale; River is one profile'
-  primitives.1:
+  primitives.investigate-and-act:
   - locator: 'Part II: River only works in the open; At scale; River is one profile'
-  primitives.2:
+  primitives.continue-collaboratively:
   - locator: 'Part II: River only works in the open; At scale; River is one profile'
-  key_metrics.0:
+  key_metrics.sessions-across-slack-channels:
   - locator: 'At scale: recent 30-day river_sessions domain-table counts'
 claim_metadata:
   operating_models.0:
@@ -71,17 +75,22 @@ claim_metadata:
     confidence_reason: The source describes a colleague optionally redirecting a public thread, but does not require
       continuous steering or a universal PR approval checkpoint.
     valid_at: '2026'
-  key_metrics.0:
+  key_metrics.sessions-across-slack-channels:
     metric_scope: 'River: 59,918 sessions across 5,170 Slack channels in a reported 30-day period; 3,536 River-coauthored
       PRs merged.'
     confidence: medium
     confidence_reason: Self-reported by the source; no independent verification.
     measurement_method: river_sessions domain table written by River each session
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'River: 59,918 sessions across 5,170 Slack channels in a reported 30-day period; 3,536 River-coauthored
+      PRs merged.'
 relationships:
 - type: built-on
   approach_id: shopify-internal-agents
 key_metrics:
-- 59,918 sessions across 5,170 Slack channels in a reported 30-day period; 3,536 River-coauthored PRs merged.
+- id: sessions-across-slack-channels
+  text: 59,918 sessions across 5,170 Slack channels in a reported 30-day period; 3,536 River-coauthored PRs merged.
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -91,72 +100,21 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
-      - primitives.2
+      - primitives.receive-a-request
+      - primitives.investigate-and-act
+      - primitives.continue-collaboratively
     human_involvement:
       state: unreported
-      claim_paths: []
       note: The source describes a colleague optionally redirecting a public thread, but does not require continuous
         steering or a universal PR approval checkpoint.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.tool_access
-      - architecture.knowledge
-      - architecture.interfaces
     validation:
       state: unreported
-      claim_paths: []
     observations:
       state: reported
-      claim_paths:
-      - key_metrics.0
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: unreported
-      claim_paths: []
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: workflow
-  observations:
-    key_metrics.0:
-      category: adoption-output
-      basis: reported-measurement
-      subject: 'River: 59,918 sessions across 5,170 Slack channels in a reported 30-day period; 3,536 River-coauthored
-        PRs merged.'

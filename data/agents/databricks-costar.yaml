@@ -21,8 +21,6 @@ rubric:
   invocation:
   - interactive
   - background
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Databricks runs internal engineering agents for work such as on-call support and automated code review.
   coSTAR ships and tests them, using LLM judges as the test suite and a coding assistant to refine the agent until
@@ -32,27 +30,40 @@ architecture:
   knowledge: Private benchmark built from the Databricks multi-million line codebase
   tool_access: Internal agents call MCP tools for data access, code execution, and environment setup
 primitives:
-- name: Run the scenario against the agent under test
+- id: run-scenario-against-agent-under-test
+  name: Run the scenario against the agent under test
   desc: The coSTAR test harness sends each scenario prompt to the agent under test and captures the execution as
     an MLflow trace
-- name: Score the trace with aligned judges
+  role: workflow
+- id: score-the-trace-with-aligned-judges
+  name: Score the trace with aligned judges
   desc: Agentic judges inspect the trace for properties such as code validity, best-practice adherence, and tool
     sequencing instead of asserting exact outputs
-- name: Refine the agent until the judges pass
+  role: workflow
+- id: refine-agent-until-judges-pass
+  name: Refine the agent until the judges pass
   desc: A coding assistant reads judge failures, diagnoses root causes, and patches the agent while the engineer
     remains the reviewer and final arbiter of the proposed changes
-- name: Align judges against a human-graded Golden Set
+  role: workflow
+- id: align-judges-against-human-graded-golden
+  name: Align judges against a human-graded Golden Set
   desc: Judge alignment refines the judges against a Golden Set of engineer-assessed outputs using MLflow alignment
     techniques
-- name: Run the judges in production and CI
+  role: mechanism
+- id: run-judges-production-ci
+  name: Run the judges in production and CI
   desc: The same judges run on production traffic, in CI/CD pipelines, and on nightly builds to catch regressions
     from agent or infrastructure changes
+  role: validation
 key_metrics:
-- coSTAR reduced the time to verify agent changes from two weeks down to hours
-- Private benchmark built from a multi-million line codebase
+- id: agent-change-verification-time
+  text: coSTAR reduced the time to verify agent changes from two weeks down to hours
+- id: private-benchmark-built-multi-million-line
+  text: Private benchmark built from a multi-million line codebase
 lessons_learned:
-- 'Give judges tools, not traces: Databricks reports that agentic judges which call targeted tools on a trace scale
-  better than feeding the full trace into a model'
+- id: give-judges-tools-traces-databricks-reports
+  text: 'Give judges tools, not traces: Databricks reports that agentic judges which call targeted tools on a trace scale
+    better than feeding the full trace into a model'
 sources:
 - id: databricks-costar-source-1
   title: 'coSTAR: how we ship AI agents at Databricks fast'
@@ -84,30 +95,30 @@ evidence:
   - source_id: databricks-costar-source-1
   architecture.knowledge:
   - source_id: databricks-costar-source-2
-  key_metrics.0:
+  key_metrics.agent-change-verification-time:
   - source_id: databricks-costar-source-1
     locator: Preserved content.md, line 11
-  key_metrics.1:
+  key_metrics.private-benchmark-built-multi-million-line:
   - source_id: databricks-costar-source-2
   architecture.tool_access:
   - source_id: databricks-costar-source-1
     locator: Preserved content.md, line 133
-  primitives.0:
+  primitives.run-scenario-against-agent-under-test:
   - source_id: databricks-costar-source-1
     locator: Preserved content.md, lines 62–64
-  primitives.1:
+  primitives.score-the-trace-with-aligned-judges:
   - source_id: databricks-costar-source-1
     locator: Preserved content.md, lines 70–74
-  primitives.2:
+  primitives.refine-agent-until-judges-pass:
   - source_id: databricks-costar-source-1
     locator: Preserved content.md, lines 119–121
-  primitives.3:
+  primitives.align-judges-against-human-graded-golden:
   - source_id: databricks-costar-source-1
     locator: Preserved content.md, lines 113–117
-  primitives.4:
+  primitives.run-judges-production-ci:
   - source_id: databricks-costar-source-1
     locator: Preserved content.md, lines 12, 135
-  lessons_learned.0:
+  lessons_learned.give-judges-tools-traces-databricks-reports:
   - source_id: databricks-costar-source-1
     locator: Preserved content.md, lines 72–74, 180
 claim_metadata:
@@ -116,18 +127,24 @@ claim_metadata:
     confidence_reason: The record covers several internal engineering agents with different workflows, so no single
       human-attention boundary applies.
     valid_at: '2025'
-  key_metrics.0:
+  key_metrics.agent-change-verification-time:
     confidence: medium
     confidence_reason: Databricks reported the reduction in its own engineering blog; the measurement method is
       not described.
     valid_at: '2025'
     metric_scope: Time to verify agent changes on the Databricks codebase under coSTAR
-  key_metrics.1:
+    category: cost-latency
+    basis: reported-measurement
+    subject: Time to verify agent changes under coSTAR, previously manual review cycles
+  key_metrics.private-benchmark-built-multi-million-line:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: Databricks described the benchmark in its own engineering blog.
-  lessons_learned.0:
+    category: implementation-scale
+    basis: qualitative
+    subject: Codebase scale behind the private coding benchmark
+  lessons_learned.give-judges-tools-traces-databricks-reports:
     kind: opinion
     provenance: reported
     confidence: medium
@@ -143,87 +160,41 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
-      - primitives.2
+      - primitives.run-scenario-against-agent-under-test
+      - primitives.score-the-trace-with-aligned-judges
+      - primitives.refine-agent-until-judges-pass
     human_involvement:
       state: not-applicable
-      claim_paths: []
       note: There is no single platform-wide agent review boundary. Scoped downstream operating-model claims remain
         in research details; access controls are described separately.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.knowledge
-      - architecture.tool_access
     validation:
       state: reported
       claim_paths:
-      - primitives.3
-      - primitives.4
+      - primitives.align-judges-against-human-graded-golden
+      - primitives.run-judges-production-ci
     observations:
       state: reported
-      claim_paths:
-      - key_metrics.0
-      - key_metrics.1
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
   implementation_fields:
     model:
       state: unreported
-      claim_paths: []
       note: Neither capture states the models behind the internal engineering agents; the benchmark evaluates third-party
         models and harnesses, which is separate from the shipped agents.
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
     sandbox:
       state: unreported
-      claim_paths: []
       note: No runtime isolation boundary is documented for the agents; the benchmark seals git history during evaluation
         runs, which is not a production sandbox.
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
     context_mgmt:
       state: unreported
-      claim_paths: []
       note: MLflow traces record execution for scoring, but no capture describes how agent context is maintained
         or organized over time.
-    credentials:
-      state: unreported
-      claim_paths: []
     interfaces:
       state: unreported
-      claim_paths: []
       note: 'The captures name harnesses only as benchmark evaluation subjects, not as surfaces of the
         internal agents.'
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: workflow
-    primitives.3: mechanism
-    primitives.4: validation
-  observations:
-    key_metrics.0:
-      category: cost-latency
-      basis: reported-measurement
-      subject: Time to verify agent changes under coSTAR, previously manual review cycles
-    key_metrics.1:
-      category: implementation-scale
-      basis: qualitative
-      subject: Codebase scale behind the private coding benchmark

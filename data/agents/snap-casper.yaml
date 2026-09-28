@@ -31,8 +31,6 @@ rubric:
   - background
   - scheduled
   - event-driven
-  state: durable-session
-  identity: mixed
   evidence_strength: detailed-primary
 summary: Casper is Snap's fleet of remote coding agents. An engineer describes a task in a Slack DM, a channel
   mention, or the Agents Portal, and Casper starts a durable session in an isolated sandbox, gathers context from
@@ -74,60 +72,69 @@ architecture:
     starting cold. Casper can be pulled into an existing Slack thread and reads the prior messages as context, and
     a session owner can add a collaborator to steer the same session.
 primitives:
-- name: Gather, act, verify, repeat
+- id: gather-act-verify-repeat
+  name: Gather, act, verify, repeat
   desc: A repeatable session loop that Snap applies to many kinds of work and exercises end to end on a coding
     task, from an ambiguous request to a reviewable pull request
-- {name: Spin up the sandbox under the session identity, desc: 'Casper starts a durable session, spins up a fresh
-    isolated sandbox, and loads the Casper Agent selected for the target repository and task'}
-- {name: Gather context before touching code, desc: 'Casper reads the triggering Slack thread, the Jira ticket,
+  role: mechanism
+- {id: spin-sandbox-under-session-identity, name: Spin up the sandbox under the session identity, desc: 'Casper starts a durable session, spins up a fresh
+    isolated sandbox, and loads the Casper Agent selected for the target repository and task', role: workflow}
+- {id: gather-context-before-touching-code, name: Gather context before touching code, desc: 'Casper reads the triggering Slack thread, the Jira ticket,
     linked documents, repo-level rule files, repository guidance, team-authored skills, and relevant history, and
     reaches across Snap through Code Search to find ownership, reuse established patterns, and inspect downstream
-    callers in other repositories'}
-- {name: Plan and implement the smallest safe change, desc: 'Casper determines which tools it has access to,
+    callers in other repositories', role: workflow}
+- {id: plan-implement-smallest-safe-change, name: Plan and implement the smallest safe change, desc: 'Casper determines which tools it has access to,
     finds the right ones for the task, plans the smallest safe change, and edits the working tree, asking the
-    human for approval where needed'}
-- {name: Validate in the repository development environment, desc: 'Builds, tests, linters, and configured checks
-    run inside the loop rather than after it, in the repository''s real development environment'}
-- {name: Iterate on failing checks, desc: 'On a failure Casper reads the output, revises the change, and runs it
+    human for approval where needed', role: workflow}
+- {id: validate-in-the-repository-development-environment, name: Validate in the repository development environment, desc: 'Builds, tests, linters, and configured checks
+    run inside the loop rather than after it, in the repository''s real development environment', role: validation}
+- {id: iterate-on-failing-checks, name: Iterate on failing checks, desc: 'On a failure Casper reads the output, revises the change, and runs it
     again rather than handing a reviewer code that does not compile; engineers can optionally join the session and
-    update the instructions to fine-tune the output'}
-- {name: Open a casper-prefixed branch and a normal pull request, desc: 'Casper pushes a branch with the casper/
-    prefix and opens a pull request wired into existing workflows, following team conventions and templates'}
-- {name: Hand the pull request to CodePal before human review, desc: 'CodePal reviews the pull request
+    update the instructions to fine-tune the output', role: validation}
+- {id: open-casper-prefixed-branch-normal-pull, name: Open a casper-prefixed branch and a normal pull request, desc: 'Casper pushes a branch with the casper/
+    prefix and opens a pull request wired into existing workflows, following team conventions and templates', role: workflow}
+- {id: hand-pull-request-codepal-human-review, name: Hand the pull request to CodePal before human review, desc: 'CodePal reviews the pull request
     immediately with findings posted in line, and Casper can address the flagged issues before the pull request
-    is presented for human review'}
-- {name: Separate execution from authority, desc: 'The process editing code and running commands holds no raw
+    is presented for human review', role: validation}
+- {id: separate-execution-from-authority, name: Separate execution from authority, desc: 'The process editing code and running commands holds no raw
     source-control credentials; a separate trusted controller exposes checkout, Code Search, push, and
-    pull-request operations through a narrow tool interface and authorizes each call against the session identity'}
-- {name: Carry the triggering identity the whole chain, desc: 'The authenticated identity follows the request
+    pull-request operations through a narrow tool interface and authorizes each call against the session identity', role: mechanism}
+- {id: carry-triggering-identity-whole-chain, name: Carry the triggering identity the whole chain, desc: 'The authenticated identity follows the request
     from Slack or the portal into the sandbox and forward through every MCP Gateway call, and each downstream
-    system enforces that user''s existing permissions, making the gateway a single auditable choke point'}
-- {name: Reattach a durable session, desc: 'The workspace lifetime is separated from the compute, so the idle
+    system enforces that user''s existing permissions, making the gateway a single auditable choke point', role: mechanism}
+- {id: reattach-a-durable-session, name: Reattach a durable session, desc: 'The workspace lifetime is separated from the compute, so the idle
     runtime can be torn down after a turn while the conversation, checkout, and branch remain and a reply
-    continues the same workspace'}
-- {name: Save a role as a Casper Agent Template, desc: 'A no-code saved configuration fixes the custom
+    continues the same workspace', role: mechanism}
+- {id: save-role-casper-agent-template, name: Save a role as a Casper Agent Template, desc: 'A no-code saved configuration fixes the custom
     instructions, tool selection, runtime container image, where the agent can be summoned and who can run or
-    edit it, and the model and cost attribution for a recurring role'}
+    edit it, and the model and cost attribution for a recurring role', role: mechanism}
 key_metrics:
-- Snap reports hundreds of custom Casper agents created since general availability in the quarter before the
-  article, covering on-call, project-status summaries, audit evidence checking, and test expansion
-- Snap reports engineers building a custom on-call agent in Casper in a few hours after spending weeks trying to
-  build one from scratch elsewhere
+- id: hundreds-custom-casper-agents-created
+  text: Snap reports hundreds of custom Casper agents created since general availability in the quarter before the
+    article, covering on-call, project-status summaries, audit evidence checking, and test expansion
+- id: engineers-building-custom-call-agent-casper
+  text: Snap reports engineers building a custom on-call agent in Casper in a few hours after spending weeks trying to
+    build one from scratch elsewhere
 lessons_learned:
-- Snap separates execution from authority in Casper - the process that edits code and runs commands holds no raw
-  source-control credentials, and a trusted controller authorizes each checkout, search, push, and pull-request
-  call against the session identity.
-- Snap propagates the triggering user's authenticated identity from Slack or the portal into the sandbox and
-  onward through every MCP Gateway call, so a Casper session reaches only what that user can reach and each tool
-  call stays attributable to them.
-- Snap states that its target for Casper is mergeable pull requests, so the measure reflects outcomes rather than
-  activity.
-- Snap reports evaluating build against buy and choosing to build Casper because vendor coding agents did not
-  cover interoperability with its internal services, tight integration with CodePal and Code Search, control over
-  agent identity and access, harness and model independence, and control of a Snap-specific product experience.
-- Snap uses no-code agent templates so each team encodes its own instructions, tools, runtime image, triggers, and
-  model instead of sharing one general-purpose agent; Snap presents this as how Casper scales across its
-  organization.
+- id: separates-execution-authority-casper-process-edits
+  text: Snap separates execution from authority in Casper - the process that edits code and runs commands holds no raw
+    source-control credentials, and a trusted controller authorizes each checkout, search, push, and pull-request
+    call against the session identity.
+- id: propagates-triggering-user-authenticated-identity-slack
+  text: Snap propagates the triggering user's authenticated identity from Slack or the portal into the sandbox and
+    onward through every MCP Gateway call, so a Casper session reaches only what that user can reach and each tool
+    call stays attributable to them.
+- id: target-casper-mergeable-pull-requests-measure
+  text: Snap states that its target for Casper is mergeable pull requests, so the measure reflects outcomes rather than
+    activity.
+- id: evaluating-build-against-buy-choosing-casper
+  text: Snap reports evaluating build against buy and choosing to build Casper because vendor coding agents did not
+    cover interoperability with its internal services, tight integration with CodePal and Code Search, control over
+    agent identity and access, harness and model independence, and control of a Snap-specific product experience.
+- id: uses-no-code-agent-templates-team
+  text: Snap uses no-code agent templates so each team encodes its own instructions, tools, runtime image, triggers, and
+    model instead of sharing one general-purpose agent; Snap presents this as how Casper scales across its
+    organization.
 sources:
 - id: snap-casper-source-1
   title: 'Casper: Snap''s fleet of friendly AI teammates'
@@ -167,43 +174,43 @@ evidence:
   - locator: Preserved content.md, lines 34, 93, 95
   architecture.context_mgmt:
   - locator: Preserved content.md, lines 32, 36, 63, 99
-  primitives.0:
+  primitives.gather-act-verify-repeat:
   - locator: Preserved content.md, line 83
-  primitives.1:
+  primitives.spin-sandbox-under-session-identity:
   - locator: Preserved content.md, lines 46, 87
-  primitives.2:
+  primitives.gather-context-before-touching-code:
   - locator: Preserved content.md, lines 47, 87-89
-  primitives.3:
+  primitives.plan-implement-smallest-safe-change:
   - locator: Preserved content.md, lines 48, 91
-  primitives.4:
+  primitives.validate-in-the-repository-development-environment:
   - locator: Preserved content.md, lines 49, 91
-  primitives.5:
+  primitives.iterate-on-failing-checks:
   - locator: Preserved content.md, lines 50, 91
-  primitives.6:
+  primitives.open-casper-prefixed-branch-normal-pull:
   - locator: Preserved content.md, lines 51, 93
-  primitives.7:
+  primitives.hand-pull-request-codepal-human-review:
   - locator: Preserved content.md, lines 52-53, 93
-  primitives.8:
+  primitives.separate-execution-from-authority:
   - locator: Preserved content.md, line 95
-  primitives.9:
+  primitives.carry-triggering-identity-whole-chain:
   - locator: Preserved content.md, line 127
-  primitives.10:
+  primitives.reattach-a-durable-session:
   - locator: Preserved content.md, line 99
-  primitives.11:
+  primitives.save-role-casper-agent-template:
   - locator: Preserved content.md, lines 105, 111-115
-  key_metrics.0:
+  key_metrics.hundreds-custom-casper-agents-created:
   - locator: Preserved content.md, line 117
-  key_metrics.1:
+  key_metrics.engineers-building-custom-call-agent-casper:
   - locator: Preserved content.md, line 117
-  lessons_learned.0:
+  lessons_learned.separates-execution-authority-casper-process-edits:
   - locator: Preserved content.md, lines 34, 95
-  lessons_learned.1:
+  lessons_learned.propagates-triggering-user-authenticated-identity-slack:
   - locator: Preserved content.md, lines 63, 127
-  lessons_learned.2:
+  lessons_learned.target-casper-mergeable-pull-requests-measure:
   - locator: Preserved content.md, line 55
-  lessons_learned.3:
+  lessons_learned.evaluating-build-against-buy-choosing-casper:
   - locator: Preserved content.md, line 24
-  lessons_learned.4:
+  lessons_learned.uses-no-code-agent-templates-team:
   - locator: Preserved content.md, lines 105, 107, 117
 claim_metadata:
   operating_models.0:
@@ -224,47 +231,59 @@ claim_metadata:
     valid_at: '2026-07'
     reported_by: Snap
     metric_scope: Mergeable pull requests Casper produces each week across Snap's engineering organization
-  key_metrics.0:
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Mergeable pull requests
+      Casper produces each week across Snap''s engineering organization'
+  key_metrics.hundreds-custom-casper-agents-created:
     confidence: medium
     confidence_reason: Snap reports a rounded count of custom agents and names the roles they cover, but dates the
       period only as "Since GA last quarter" and gives no measurement method.
     valid_at: '2026-07'
     reported_by: Snap
     metric_scope: Custom Casper agents created by Snap teams since general availability
-  key_metrics.1:
+    category: implementation-scale
+    basis: reported-measurement
+    subject: 'Custom Casper agents
+      created by Snap teams since general availability'
+  key_metrics.engineers-building-custom-call-agent-casper:
     confidence: low
     confidence_reason: The article reports the hours-against-weeks comparison as instances it has seen, without a
       sample size, a date, or a description of the earlier from-scratch attempt.
     valid_at: '2026-07'
     reported_by: Snap
     metric_scope: Build time for a custom on-call agent in Casper compared with an earlier from-scratch attempt
-  lessons_learned.0:
+    category: cost-latency
+    basis: qualitative
+    subject: 'Build time for a custom on-call agent in
+      Casper compared with an earlier from-scratch attempt'
+  lessons_learned.separates-execution-authority-casper-process-edits:
     kind: fact
     provenance: reported
     confidence: high
     confidence_reason: The architecture section states the split directly, naming the four controller operations
       and the per-call authorization against the session identity. It describes Snap's design, not a verified
       security property.
-  lessons_learned.1:
+  lessons_learned.propagates-triggering-user-authenticated-identity-slack:
     kind: fact
     provenance: reported
     confidence: high
     confidence_reason: The MCP Gateway section states that identity travels the whole chain and that each
       downstream system enforces the triggering user's existing permissions. The enforcement is described, not
       independently tested.
-  lessons_learned.2:
+  lessons_learned.target-casper-mergeable-pull-requests-measure:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: Snap states this target for its own program in one sentence; the article does not report
       how mergeability is counted, and the preference is Snap's rather than general advice.
-  lessons_learned.3:
+  lessons_learned.evaluating-build-against-buy-choosing-casper:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: Snap lists the five requirements vendor solutions did not meet for its codebase. The
       article names no vendor or evaluation, so only Snap's account of its own decision is supported.
-  lessons_learned.4:
+  lessons_learned.uses-no-code-agent-templates-team:
     kind: fact
     provenance: reported
     confidence: medium
@@ -278,36 +297,16 @@ page_content:
   workflow_scope: 'Plain-language task from Slack, the Agents Portal, or a trigger through an isolated sandbox
     session to a pull request presented for human review'
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.1, primitives.2, primitives.3, primitives.6]}
-    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.3, primitives.7], note: 'Casper
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.spin-sandbox-under-session-identity, primitives.gather-context-before-touching-code, primitives.plan-implement-smallest-safe-change, primitives.open-casper-prefixed-branch-normal-pull]}
+    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.plan-implement-smallest-safe-change, primitives.hand-pull-request-codepal-human-review], note: 'Casper
       may pause to ask a clarifying question or present a plan to approve, engineers can join a running session to
       update the instructions, and the pull request follows the same review and approval process as any other
       change.'}
-    implementation: {state: reported, claim_paths: [architecture.sandbox, architecture.harness, architecture.model,
-      architecture.tool_access, architecture.knowledge, architecture.credentials, architecture.context_mgmt,
-      architecture.interfaces]}
-    validation: {state: reported, claim_paths: [primitives.4, primitives.5, primitives.7]}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1]}
-    lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1, lessons_learned.2,
-      lessons_learned.3, lessons_learned.4]}
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.validate-in-the-repository-development-environment, primitives.iterate-on-failing-checks, primitives.hand-pull-request-codepal-human-review]}
+    observations: {state: reported}
+    lessons: {state: reported}
   implementation_fields:
-    model: {state: reported, claim_paths: [architecture.model], note: 'The template dimension and the
+    model: {note: 'The template dimension and the
       model-family independence requirement are described; no model or vendor is named.'}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: reported, claim_paths: [architecture.sandbox]}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access]}
-    knowledge: {state: reported, claim_paths: [architecture.knowledge]}
-    context_mgmt: {state: reported, claim_paths: [architecture.context_mgmt]}
-    credentials: {state: reported, claim_paths: [architecture.credentials]}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces]}
-  primitive_roles: {primitives.0: mechanism, primitives.1: workflow, primitives.2: workflow, primitives.3: workflow,
-    primitives.4: validation, primitives.5: validation, primitives.6: workflow, primitives.7: validation,
-    primitives.8: mechanism, primitives.9: mechanism, primitives.10: mechanism, primitives.11: mechanism}
-  observations:
-    headline_metric: {category: adoption-output, basis: reported-measurement, subject: 'Mergeable pull requests
-      Casper produces each week across Snap''s engineering organization'}
-    key_metrics.0: {category: implementation-scale, basis: reported-measurement, subject: 'Custom Casper agents
-      created by Snap teams since general availability'}
-    key_metrics.1: {category: cost-latency, basis: qualitative, subject: 'Build time for a custom on-call agent in
-      Casper compared with an earlier from-scratch attempt'}

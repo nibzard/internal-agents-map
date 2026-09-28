@@ -20,8 +20,6 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Flex runs an internal Slack agent that support, operations, and engineering use to debug HSA and FSA payment
   problems. Given an email, order number, or error string, it traces the transaction across systems and answers in
@@ -38,28 +36,33 @@ architecture:
   context_mgmt: Follow-up questions continue in the same Slack thread with full context; investigation length and
     thread depth are capped
 primitives:
-- name: Investigation-to-fix loop
+- id: investigation-to-fix-loop
+  name: Investigation-to-fix loop
   desc: Payment trace → root-cause hypothesis → proposed code fix as a PR
-- {name: Resolve the identifier and walk the transaction, desc: 'A universal resolver maps an email, order number,
+  role: mechanism
+- {id: resolve-identifier-walk-transaction, name: Resolve the identifier and walk the transaction, desc: 'A universal resolver maps an email, order number,
     transaction ID, or ticket to the relevant records, and the agent walks the transaction lifecycle across payments,
-    refunds, consultations, webhooks, and payouts'}
-- {name: Dig into the failing path, desc: 'When something looks wrong the agent pulls provider responses and
+    refunds, consultations, webhooks, and payouts', role: workflow}
+- {id: dig-into-the-failing-path, name: Dig into the failing path, desc: 'When something looks wrong the agent pulls provider responses and
     real-time payment state, searches production logs, and inspects error traces and the source code around the
-    failure'}
-- {name: Assess confidence before acting, desc: 'The agent verifies the failure mode in the affected code path and
-    assesses its confidence before taking any action'}
-- {name: Spawn the coding sub-agent for a high-confidence fix, desc: 'The agent creates an engineering ticket and
+    failure', role: workflow}
+- {id: assess-confidence-before-acting, name: Assess confidence before acting, desc: 'The agent verifies the failure mode in the affected code path and
+    assesses its confidence before taking any action', role: workflow}
+- {id: spawn-coding-sub-agent-high-confidence, name: Spawn the coding sub-agent for a high-confidence fix, desc: 'The agent creates an engineering ticket and
     a coding sub-agent clones the repository, applies the fix, and opens a pull request posted back to the Slack
-    thread'}
-- {name: Run the validation pipeline before the pull request, desc: 'The coding sub-agent runs compile checks,
-    linting, formatting, and tests before opening the pull request'}
+    thread', role: workflow}
+- {id: run-validation-pipeline-pull-request, name: Run the validation pipeline before the pull request, desc: 'The coding sub-agent runs compile checks,
+    linting, formatting, and tests before opening the pull request', role: validation}
 key_metrics:
-- Flex reports routine investigations compressed from about 20 minutes of engineering time to seconds
+- id: routine-investigations-compressed-minutes-engineering-time
+  text: Flex reports routine investigations compressed from about 20 minutes of engineering time to seconds
 lessons_learned:
-- Flex retains investigation audit records and tool traces that engineers can inspect when a diagnosis is incomplete
-  or wrong.
-- Flex routes high-confidence diagnoses to a coding sub-agent and PR review, medium-confidence cases to an
-  engineering ticket, and inconclusive cases to a report.
+- id: retains-investigation-audit-records-tool-traces
+  text: Flex retains investigation audit records and tool traces that engineers can inspect when a diagnosis is incomplete
+    or wrong.
+- id: routes-high-confidence-diagnoses-coding-sub
+  text: Flex routes high-confidence diagnoses to a coding sub-agent and PR review, medium-confidence cases to an
+    engineering ticket, and inconclusive cases to a report.
 sources:
 - id: flex-investigation-agent-source-1
   title: The Flex AI Investigation Agent for HSA/FSA payments
@@ -81,28 +84,28 @@ evidence:
   - source_id: flex-investigation-agent-source-1
   architecture.tool_access:
   - source_id: flex-investigation-agent-source-1
-  primitives.0:
+  primitives.investigation-to-fix-loop:
   - source_id: flex-investigation-agent-source-1
   architecture.context_mgmt:
   - {locator: 'Preserved content.md, lines 47,
     172'}
-  primitives.1:
+  primitives.resolve-identifier-walk-transaction:
   - {locator: 'Preserved content.md, lines 45, 69'}
-  primitives.2:
+  primitives.dig-into-the-failing-path:
   - {locator: 'Preserved content.md, lines 45, 73'}
-  primitives.3:
+  primitives.assess-confidence-before-acting:
   - {locator: 'Preserved content.md, lines 93-94,
     99'}
-  primitives.4:
+  primitives.spawn-coding-sub-agent-high-confidence:
   - {locator: 'Preserved content.md, lines 99-103'}
-  primitives.5:
+  primitives.run-validation-pipeline-pull-request:
   - {locator: 'Preserved content.md, lines 103,
     169'}
-  key_metrics.0:
+  key_metrics.routine-investigations-compressed-minutes-engineering-time:
   - {locator: 'Preserved content.md, lines 24, 26'}
-  lessons_learned.0:
+  lessons_learned.retains-investigation-audit-records-tool-traces:
   - locator: Preserved content.md, lines 152-157
-  lessons_learned.1:
+  lessons_learned.routes-high-confidence-diagnoses-coding-sub:
   - locator: Preserved content.md, lines 99-113
   architecture.interfaces:
   - source_id: flex-investigation-agent-source-1
@@ -111,54 +114,47 @@ claim_metadata:
     confidence: high
     confidence_reason: The source describes a trace, diagnosis, and proposed pull request returned for review.
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.retains-investigation-audit-records-tool-traces:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The audit section distinguishes the query, timing, and response log from the reasoning
       and tool trace; these records support inspection rather than prove correctness.
-  lessons_learned.1:
+  lessons_learned.routes-high-confidence-diagnoses-coding-sub:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The three confidence branches are described explicitly, including validation before a
       PR and the prohibition on the agent merging or deploying.
-  key_metrics.0:
+  key_metrics.routine-investigations-compressed-minutes-engineering-time:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: Flex states the before-and-after in its own engineering blog without measured timings or a
       defined sample of investigations.
     metric_scope: Routine HSA and FSA payment investigations handled by the internal agent
+    category: cost-latency
+    basis: qualitative
+    subject: 'Routine HSA and FSA payment investigations
+      handled by the internal agent'
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
   source_ids: [flex-investigation-agent-source-1]
   workflow_scope: 'Slack request through transaction trace, confidence gate, and reviewed pull request'
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.1, primitives.2, primitives.3, primitives.4]}
-    human_involvement: {state: reported, claim_paths: [primitives.4, operating_models.0], note: 'High-confidence
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.resolve-identifier-walk-transaction, primitives.dig-into-the-failing-path, primitives.assess-confidence-before-acting, primitives.spawn-coding-sub-agent-high-confidence]}
+    human_involvement: {state: reported, claim_paths: [primitives.spawn-coding-sub-agent-high-confidence, operating_models.0], note: 'High-confidence
       fixes return as a pull request posted for review; the agent never merges or deploys.'}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.model, architecture.tool_access,
-      architecture.context_mgmt, architecture.interfaces]}
-    validation: {state: reported, claim_paths: [primitives.5]}
-    observations: {state: reported, claim_paths: [key_metrics.0]}
-    lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1]}
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.run-validation-pipeline-pull-request]}
+    observations: {state: reported}
+    lessons: {state: reported}
   implementation_fields:
-    model: {state: reported, claim_paths: [architecture.model]}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: [], note: 'The capture names the Modal serverless runtime but no
+    sandbox: {state: unreported, note: 'The capture names the Modal serverless runtime but no
       execution isolation boundary.'}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access]}
-    knowledge: {state: unreported, claim_paths: [], note: 'Records arrive through scoped tools (a read-only replica,
+    knowledge: {state: unreported, note: 'Records arrive through scoped tools (a read-only replica,
       payment infrastructure, logs, Sentry, Linear, GitHub, PostHog); no separate knowledge store is documented.'}
-    context_mgmt: {state: reported, claim_paths: [architecture.context_mgmt]}
-    credentials: {state: unreported, claim_paths: [], note: 'Slack request verification and log redaction are named;
+    credentials: {state: unreported, note: 'Slack request verification and log redaction are named;
       how the agent authenticates to connected systems is not documented.'}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces]}
-  primitive_roles: {primitives.0: mechanism, primitives.1: workflow, primitives.2: workflow, primitives.3: workflow,
-    primitives.4: workflow, primitives.5: validation}
-  observations:
-    key_metrics.0: {category: cost-latency, basis: qualitative, subject: 'Routine HSA and FSA payment investigations
-      handled by the internal agent'}

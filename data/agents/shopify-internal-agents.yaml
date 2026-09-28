@@ -20,8 +20,6 @@ rubric:
   invocation:
   - event-driven
   - interactive
-  state: durable-session
-  identity: unknown
   evidence_strength: detailed-primary
 summary: The Aquifer agent platform (session/harness/sandbox split) powers River, a Slack-native coding agent, plus
   PR-review and headless Vanilla agent profiles; other teams have requested research, migration, and compliance-scan
@@ -42,33 +40,54 @@ architecture:
   context_mgmt: Skills loaded on-demand as files, updatable per session; session survival across cell/sandbox/machine
     death
 primitives:
-- name: Session/Harness/Sandbox split
+- id: session-harness-sandbox-split
+  name: Session/Harness/Sandbox split
   desc: Durable identity, disposable loop, isolated execution; swap any layer independently
-- name: River (public-by-default)
+  role: mechanism
+- id: river-public-by-default
+  name: River (public-by-default)
   desc: River works in shared Slack threads whose history can be searched and used to update skills
-- name: Skills as files
+  role: mechanism
+- id: skills-as-files
+  name: Skills as files
   desc: Written-down knowledge mined from successful patterns and public transcripts
-- name: Take a request in a public channel
+  role: mechanism
+- id: take-request-public-channel
+  name: Take a request in a public channel
   desc: A person @-mentions River with a question or task in a public Slack channel; River works only in the open
-- name: Work the problem in the open
+  role: workflow
+- id: work-the-problem-in-the-open
+  name: Work the problem in the open
   desc: River reads files, runs queries and tests, and posts partial findings to the thread
-- name: Absorb a mid-thread redirect
+  role: workflow
+- id: absorb-a-mid-thread-redirect
+  name: Absorb a mid-thread redirect
   desc: A second person drops in with a constraint or redirect; River incorporates it without losing the conversation
     and continues
-- name: Leave a reusable transcript
+  role: workflow
+- id: leave-a-reusable-transcript
+  name: Leave a reusable transcript
   desc: The finished thread stays searchable so the next person starts from it, and observed patterns feed back
     into skills
+  role: workflow
 key_metrics:
-- 'River: 59,918 sessions / 30 days across 5,170 Slack channels'
-- 3,536 River-coauthored PRs merged; 1 in 8 merged PRs company-wide
-- 'River: Median session 19 min; median 50 tool calls/session'
+- id: river-sessions-days-slack-channels
+  text: 'River: 59,918 sessions / 30 days across 5,170 Slack channels'
+- id: river-coauthored-prs-merged-company-wide
+  text: 3,536 River-coauthored PRs merged; 1 in 8 merged PRs company-wide
+- id: river-median-session-min-tool-calls
+  text: 'River: Median session 19 min; median 50 tool calls/session'
 lessons_learned:
-- Shopify says its monorepo, reproducible environments, written skills, and CI improvements benefited both engineers
-  and agents.
-- Shopify uses shared River threads and the run corpus to update skills, prompts, and defaults for later work.
-- Aquifer stores session identity and its event log in Postgres so a fresh worker can continue the same conversation.
-- Shopify adds agent variants as profiles containing prompts, skills, extensions, sandbox policy, and model defaults
-  on Aquifer.
+- id: monorepo-reproducible-environments-written-skills-ci
+  text: Shopify says its monorepo, reproducible environments, written skills, and CI improvements benefited both engineers
+    and agents.
+- id: uses-shared-river-threads-run-corpus
+  text: Shopify uses shared River threads and the run corpus to update skills, prompts, and defaults for later work.
+- id: stores-session-identity-event-log-postgres
+  text: Aquifer stores session identity and its event log in Postgres so a fresh worker can continue the same conversation.
+- id: adds-agent-variants-profiles-containing-prompts
+  text: Shopify adds agent variants as profiles containing prompts, skills, extensions, sandbox policy, and model defaults
+    on Aquifer.
 sources:
 - id: shopify-internal-agents-source-1
   title: Under the River
@@ -100,33 +119,33 @@ evidence:
   - source_id: shopify-internal-agents-source-1
   architecture.context_mgmt:
   - source_id: shopify-internal-agents-source-1
-  primitives.0:
+  primitives.session-harness-sandbox-split:
   - source_id: shopify-internal-agents-source-1
-  primitives.1:
+  primitives.river-public-by-default:
   - locator: Preserved content.md, lines 71-79,87
-  primitives.2:
+  primitives.skills-as-files:
   - source_id: shopify-internal-agents-source-1
-  primitives.3:
+  primitives.take-request-public-channel:
   - locator: Preserved content.md, lines 69, 75
-  primitives.4:
+  primitives.work-the-problem-in-the-open:
   - locator: Preserved content.md, lines 65, 76
-  primitives.5:
+  primitives.absorb-a-mid-thread-redirect:
   - locator: Preserved content.md, lines 77-78
-  primitives.6:
+  primitives.leave-a-reusable-transcript:
   - locator: Preserved content.md, lines 71, 79
-  key_metrics.0:
+  key_metrics.river-sessions-days-slack-channels:
   - locator: Preserved content.md, lines 83
-  key_metrics.1:
+  key_metrics.river-coauthored-prs-merged-company-wide:
   - locator: Preserved content.md, lines 12, 83
-  key_metrics.2:
+  key_metrics.river-median-session-min-tool-calls:
   - locator: Preserved content.md, lines 65
-  lessons_learned.0:
+  lessons_learned.monorepo-reproducible-environments-written-skills-ci:
   - locator: Preserved content.md, lines 24-25,38-47
-  lessons_learned.1:
+  lessons_learned.uses-shared-river-threads-run-corpus:
   - locator: Preserved content.md, lines 57,71,79,87
-  lessons_learned.2:
+  lessons_learned.stores-session-identity-event-log-postgres:
   - locator: Preserved content.md, lines 116-134
-  lessons_learned.3:
+  lessons_learned.adds-agent-variants-profiles-containing-prompts:
   - locator: Preserved content.md, lines 142
   architecture.interfaces:
   - source_id: shopify-internal-agents-source-1
@@ -137,25 +156,25 @@ claim_metadata:
       but no passage establishes that a person reviews the work product on each run; PR review runs as a separate
       Aquifer profile and is described as often having no human in the loop.
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.monorepo-reproducible-environments-written-skills-ci:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: The retrospective identifies these as existing human-development priorities made more urgent
       by agents; it does not quantify each contribution.
-  lessons_learned.1:
+  lessons_learned.uses-shared-river-threads-run-corpus:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The article describes mining earlier runs and preserving searchable threads, replacing the
       vague claim that private agents cannot teach anyone.
-  lessons_learned.2:
+  lessons_learned.stores-session-identity-event-log-postgres:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The session and lifecycle sections explicitly separate the durable log from disposable cells;
       they do not claim every external side effect is automatically recoverable.
-  lessons_learned.3:
+  lessons_learned.adds-agent-variants-profiles-containing-prompts:
     kind: fact
     provenance: reported
     confidence: medium
@@ -164,15 +183,27 @@ claim_metadata:
   headline_metric:
     metric_scope: Merged River-coauthored PRs across Shopify
     denominator: All Shopify merged pull requests
-  key_metrics.0:
+    category: adoption-output
+    basis: reported-measurement
+    subject: Company-wide merged pull requests coauthored by River
+  key_metrics.river-sessions-days-slack-channels:
     metric_scope: River sessions and distinct Slack channels in a recent 30-day period
     measurement_method: river_sessions domain table, written by River every session
-  key_metrics.1:
+    category: adoption-output
+    basis: reported-measurement
+    subject: River sessions and distinct Slack channels over a recent 30-day period
+  key_metrics.river-coauthored-prs-merged-company-wide:
     metric_scope: River-coauthored merged PRs in the recent 30-day period; company-wide PR share
     denominator: All Shopify merged pull requests for the one-in-eight share
     measurement_method: river_sessions domain table for reported session-linked counts
-  key_metrics.2:
+    category: adoption-output
+    basis: reported-measurement
+    subject: River-coauthored merged pull requests and their company-wide share in a recent 30-day period
+  key_metrics.river-median-session-min-tool-calls:
     metric_scope: Median River session duration and tool calls per session
+    category: cost-latency
+    basis: reported-measurement
+    subject: Median River session duration and median tool calls per session
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -183,113 +214,37 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.3
-      - primitives.4
-      - primitives.5
-      - primitives.6
+      - primitives.take-request-public-channel
+      - primitives.work-the-problem-in-the-open
+      - primitives.absorb-a-mid-thread-redirect
+      - primitives.leave-a-reusable-transcript
       note: The article documents exactly one representative workflow, the well-going public River thread; PR review
         and the headless Vanilla profile are separate Aquifer profiles, not steps of this run.
     human_involvement:
       state: not-applicable
-      claim_paths: []
       note: There is no single platform-wide agent review boundary. Scoped downstream operating-model claims remain
         in research details; access controls are described separately.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.sandbox
-      - architecture.model
-      - architecture.tool_access
-      - architecture.knowledge
-      - architecture.credentials
-      - architecture.context_mgmt
-      - architecture.interfaces
     validation:
       state: unreported
-      claim_paths: []
       note: Tests River runs are part of its work, and CI improvements serve human developers; no check of River's
         own output is documented.
     observations:
       state: reported
-      claim_paths:
-      - headline_metric
-      - key_metrics.0
-      - key_metrics.1
-      - key_metrics.2
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
-      - lessons_learned.2
-      - lessons_learned.3
   implementation_fields:
     model:
-      state: reported
-      claim_paths:
-      - architecture.model
       note: The documented content is the swap design; no specific model is named.
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
     sandbox:
-      state: reported
-      claim_paths:
-      - architecture.sandbox
       note: The brain-and-hands framing the claim credits to Anthropic appears in the capture only as an unnamed
         linked essay.
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
     credentials:
-      state: reported
-      claim_paths:
-      - architecture.credentials
       note: The credentials proxy and per-profile sandbox policy are documented; Shopify SSO is not named in the
         capture.
     interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
       note: Slack is named; the capture documents pull-request creation but never names GitHub as the host.
-  primitive_roles:
-    primitives.0: mechanism
-    primitives.1: mechanism
-    primitives.2: mechanism
-    primitives.3: workflow
-    primitives.4: workflow
-    primitives.5: workflow
-    primitives.6: workflow
-  observations:
-    headline_metric:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Company-wide merged pull requests coauthored by River
-    key_metrics.0:
-      category: adoption-output
-      basis: reported-measurement
-      subject: River sessions and distinct Slack channels over a recent 30-day period
-    key_metrics.1:
-      category: adoption-output
-      basis: reported-measurement
-      subject: River-coauthored merged pull requests and their company-wide share in a recent 30-day period
-    key_metrics.2:
-      category: cost-latency
-      basis: reported-measurement
-      subject: Median River session duration and median tool calls per session

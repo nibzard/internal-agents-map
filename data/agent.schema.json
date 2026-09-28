@@ -36,7 +36,6 @@
       "description": "The reported name. Use a clear description if no name is public."
     },
     "aliases": { "type": "array", "items": { "$ref": "#/definitions/text" } },
-    "family_id": { "$ref": "#/definitions/kebabId" },
     "featured": {
       "type": "boolean",
       "description": "Shows a well-documented record before all others in the default directory order."
@@ -99,15 +98,13 @@
     "rubric": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["invocation", "state", "identity", "evidence_strength"],
+      "required": ["invocation", "evidence_strength"],
       "properties": {
         "invocation": {
           "type": "array",
           "minItems": 1,
           "items": { "$ref": "#/definitions/invocation" }
         },
-        "state": { "$ref": "#/definitions/rubricState" },
-        "identity": { "$ref": "#/definitions/identity" },
         "evidence_strength": { "$ref": "#/definitions/evidenceStrength" }
       }
     },
@@ -143,15 +140,17 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["name"],
+        "required": ["id", "name", "role"],
         "properties": {
+          "id": { "$ref": "#/definitions/itemId" },
           "name": { "type": "string", "minLength": 1 },
-          "desc": { "type": "string" }
+          "desc": { "type": "string" },
+          "role": { "$ref": "#/definitions/primitiveRole" }
         }
       }
     },
-    "key_metrics": { "type": "array", "items": { "$ref": "#/definitions/text" } },
-    "lessons_learned": { "type": "array", "items": { "$ref": "#/definitions/text" } },
+    "key_metrics": { "type": "array", "items": { "$ref": "#/definitions/textItem" } },
+    "lessons_learned": { "type": "array", "items": { "$ref": "#/definitions/textItem" } },
     "sources": {
       "type": "array",
       "minItems": 1,
@@ -159,7 +158,7 @@
     },
     "evidence": {
       "type": "object",
-      "description": "Links each claim path, such as summary or key_metrics.0, to one or more sources.",
+      "description": "Links each claim path, such as summary or key_metrics.sessions-created, to one or more sources.",
       "propertyNames": { "$ref": "#/definitions/claimPath" },
       "additionalProperties": {
         "type": "array",
@@ -187,6 +186,20 @@
       "description": "A reported architecture value. It must not start with a placeholder such as unknown, Not specified, or Not documented."
     },
     "kebabId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "itemId": {
+      "type": "string",
+      "pattern": "^(?=[a-z0-9-]*[a-z])[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "A kebab-case ID, unique in its list, with at least one letter so that it is never a list index."
+    },
+    "textItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text"],
+      "properties": {
+        "id": { "$ref": "#/definitions/itemId" },
+        "text": { "$ref": "#/definitions/text" }
+      }
+    },
     "partialDate": {
       "type": "string",
       "pattern": "^\\d{4}(?:-(?:0[1-9]|1[0-2])(?:-(?:0[1-9]|[12]\\d|3[01]))?)?$",
@@ -202,7 +215,7 @@
     "httpsUrl": { "type": "string", "pattern": "^https://[^\\s/?#]+(?:[/?#]\\S*)?$" },
     "claimPath": {
       "type": "string",
-      "pattern": "^(?:summary|headline_metric|architecture\\.[a-z_]+|(?:primitives|key_metrics|lessons_learned|operating_models)\\.\\d+)$"
+      "pattern": "^(?:summary|headline_metric|architecture\\.[a-z_]+|operating_models\\.\\d+|(?:primitives|key_metrics|lessons_learned)\\.(?=[a-z0-9-]*[a-z])[a-z0-9]+(?:-[a-z0-9]+)*)$"
     },
     "approachType": {
       "enum": ["agent", "agent-system", "platform", "orchestration-system", "supporting-pattern"]
@@ -243,10 +256,6 @@
       ]
     },
     "invocation": { "enum": ["interactive", "background", "scheduled", "event-driven", "unknown"] },
-    "rubricState": {
-      "enum": ["run-only", "durable-session", "cross-session-memory", "mixed", "unknown"]
-    },
-    "identity": { "enum": ["user", "dedicated-agent", "service", "mixed", "unknown"] },
     "evidenceStrength": {
       "enum": ["detailed-primary", "limited-primary", "secondary-only", "mixed", "unknown"]
     },
@@ -362,7 +371,6 @@
         "published_at": { "$ref": "#/definitions/partialDate" },
         "accessed_at": { "$ref": "#/definitions/partialDate" },
         "last_verified_at": { "$ref": "#/definitions/partialDate" },
-        "archived_url": { "$ref": "#/definitions/httpsUrl" },
         "capture": {
           "type": "object",
           "additionalProperties": false,
@@ -416,13 +424,17 @@
         "reported_by": { "type": "string" },
         "metric_scope": { "type": "string" },
         "denominator": { "type": "string" },
-        "measurement_method": { "type": "string" }
+        "measurement_method": { "type": "string" },
+        "category": { "$ref": "#/definitions/observationCategory" },
+        "basis": { "$ref": "#/definitions/observationBasis" },
+        "subject": { "$ref": "#/definitions/text" }
       }
     },
     "disposition": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["state", "claim_paths"],
+      "required": ["state"],
+      "description": "The answer to a question whose claims an editor selects. A reported answer needs claim_paths.",
       "properties": {
         "state": { "$ref": "#/definitions/reviewState" },
         "claim_paths": {
@@ -435,7 +447,7 @@
       "allOf": [
         {
           "if": { "properties": { "state": { "const": "reported" } } },
-          "then": { "properties": { "claim_paths": { "minItems": 1 } } },
+          "then": { "required": ["claim_paths"], "properties": { "claim_paths": { "minItems": 1 } } },
           "else": { "properties": { "claim_paths": { "maxItems": 0 } } }
         },
         {
@@ -444,32 +456,41 @@
         }
       ]
     },
-    "observation": {
+    "derivedDisposition": {
       "type": "object",
       "additionalProperties": false,
+      "required": ["state"],
+      "description": "The answer to a question whose claim paths the build derives.",
       "properties": {
-        "category": { "$ref": "#/definitions/observationCategory" },
-        "basis": { "$ref": "#/definitions/observationBasis" },
-        "subject": { "$ref": "#/definitions/text" },
+        "state": { "$ref": "#/definitions/reviewState" },
+        "note": { "$ref": "#/definitions/text" }
+      },
+      "if": { "properties": { "state": { "enum": ["not-applicable", "not-reviewed"] } } },
+      "then": { "required": ["note"] }
+    },
+    "fieldDisposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["note"],
+      "description": "A note for a present architecture field, or the state and note of an absent one. The build derives reported and unreported.",
+      "properties": {
+        "state": { "enum": ["unreported", "not-applicable", "not-reviewed"] },
+        "note": { "$ref": "#/definitions/text" }
+      }
+    },
+    "alias": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["duplicate_of", "reason"],
+      "properties": {
         "duplicate_of": { "$ref": "#/definitions/claimPath" },
         "reason": { "$ref": "#/definitions/text" }
-      },
-      "if": { "required": ["duplicate_of"] },
-      "then": { "required": ["reason"] },
-      "else": { "required": ["category", "basis", "subject"] }
+      }
     },
     "pageContent": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "version",
-        "reviewed_at",
-        "source_ids",
-        "questions",
-        "implementation_fields",
-        "primitive_roles",
-        "observations"
-      ],
+      "required": ["version", "reviewed_at", "source_ids", "questions"],
       "properties": {
         "version": { "const": 1 },
         "reviewed_at": { "$ref": "#/definitions/fullDate" },
@@ -493,48 +514,34 @@
             "lessons"
           ],
           "properties": {
-            "purpose": { "$ref": "#/definitions/disposition" },
+            "purpose": { "$ref": "#/definitions/derivedDisposition" },
             "workflow": { "$ref": "#/definitions/disposition" },
             "human_involvement": { "$ref": "#/definitions/disposition" },
-            "implementation": { "$ref": "#/definitions/disposition" },
+            "implementation": { "$ref": "#/definitions/derivedDisposition" },
             "validation": { "$ref": "#/definitions/disposition" },
-            "observations": { "$ref": "#/definitions/disposition" },
-            "lessons": { "$ref": "#/definitions/disposition" }
+            "observations": { "$ref": "#/definitions/derivedDisposition" },
+            "lessons": { "$ref": "#/definitions/derivedDisposition" }
           }
         },
         "implementation_fields": {
           "type": "object",
           "additionalProperties": false,
-          "required": [
-            "sandbox",
-            "harness",
-            "model",
-            "tool_access",
-            "interfaces",
-            "knowledge",
-            "credentials",
-            "context_mgmt"
-          ],
           "properties": {
-            "sandbox": { "$ref": "#/definitions/disposition" },
-            "harness": { "$ref": "#/definitions/disposition" },
-            "model": { "$ref": "#/definitions/disposition" },
-            "tool_access": { "$ref": "#/definitions/disposition" },
-            "interfaces": { "$ref": "#/definitions/disposition" },
-            "knowledge": { "$ref": "#/definitions/disposition" },
-            "credentials": { "$ref": "#/definitions/disposition" },
-            "context_mgmt": { "$ref": "#/definitions/disposition" }
+            "model": { "$ref": "#/definitions/fieldDisposition" },
+            "harness": { "$ref": "#/definitions/fieldDisposition" },
+            "sandbox": { "$ref": "#/definitions/fieldDisposition" },
+            "tool_access": { "$ref": "#/definitions/fieldDisposition" },
+            "knowledge": { "$ref": "#/definitions/fieldDisposition" },
+            "context_mgmt": { "$ref": "#/definitions/fieldDisposition" },
+            "credentials": { "$ref": "#/definitions/fieldDisposition" },
+            "interfaces": { "$ref": "#/definitions/fieldDisposition" }
           }
         },
-        "primitive_roles": {
+        "aliases": {
           "type": "object",
-          "propertyNames": { "pattern": "^primitives\\.\\d+$" },
-          "additionalProperties": { "$ref": "#/definitions/primitiveRole" }
-        },
-        "observations": {
-          "type": "object",
-          "propertyNames": { "pattern": "^(?:headline_metric|key_metrics\\.\\d+)$" },
-          "additionalProperties": { "$ref": "#/definitions/observation" }
+          "description": "Maps a metric claim path to the canonical metric it repeats.",
+          "propertyNames": { "$ref": "#/definitions/claimPath" },
+          "additionalProperties": { "$ref": "#/definitions/alias" }
         }
       },
       "if": {

@@ -130,13 +130,17 @@ Authored record:
 - `page_content.aliases`: map of metric path to `{duplicate_of, reason}`. Replaces
   `page_content.observations`. `page_content.primitive_roles` is removed.
 - `page_content.questions.<q>.claim_paths` is authored only for `workflow`,
-  `human_involvement`, and `validation`. The build derives `purpose` (summary),
-  `implementation` (every present architecture field), `observations` (headline
-  and every non-alias key metric), and `lessons` (every lesson). Authoring a
-  `claim_paths` on those four is rejected.
-- `page_content.implementation_fields` lists only fields whose state is
-  `not-applicable`, `not-reviewed`, or `unreported` with a note. The build derives
-  `reported` for every present architecture field and `unreported` for the rest.
+  `human_involvement`, and `validation`, and may be omitted when it is empty. The
+  build derives `purpose` (summary), `implementation` (every present architecture
+  field, in the entry-page field order), `observations` (headline, then every key
+  metric in record order, aliases included), and `lessons` (every lesson). A derived
+  question gets these paths only when its authored state is `reported`; otherwise its
+  paths are empty. Authoring a `claim_paths` on those four is rejected.
+- `page_content.implementation_fields` lists only what the build cannot derive: a
+  `note` alone for a present architecture field, or a `state` (`unreported`,
+  `not-applicable`, or `not-reviewed`) and a `note` for an absent one. The build
+  derives `reported` for every present architecture field and `unreported` for the
+  rest. An authored `state: reported` or `claim_paths` is rejected.
 - `rubric.state`, `rubric.identity`, `family_id`, and source `archived_url` are
   removed from the schema.
 

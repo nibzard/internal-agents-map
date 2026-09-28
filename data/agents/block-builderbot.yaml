@@ -20,8 +20,6 @@ rubric:
   invocation:
   - event-driven
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: A multi-agent orchestration layer built on goose + MCP that coordinates agents across Block's entire codebase,
   invoked in Slack to take a ticket end-to-end to a reviewed PR.
@@ -42,27 +40,43 @@ architecture:
     files, module-scoped .agents/checks review prompts, and hundreds of internal Agent Skills from an internal Skills
     Marketplace
 primitives:
-- name: Orchestration layer
+- id: orchestration-layer
+  name: Orchestration layer
   desc: Coordinates multiple agents over one codebase instead of running a single loop
-- name: Ticket-driven flow
+  role: mechanism
+- id: ticket-driven-flow
+  name: Ticket-driven flow
   desc: Linear/Jira ticket → branch → code → PR → CI watch, end to end
-- name: Slack thread start
+  role: workflow
+- id: slack-thread-start
+  name: Slack thread start
   desc: Anyone tags @builderbot in Slack with a short description and it researches, plans, and implements in that
     thread while teammates steer in real time
-- name: CI watch and iteration
+  role: workflow
+- id: ci-watch-and-iteration
+  name: CI watch and iteration
   desc: After opening the pull request, Builderbot watches CI and iterates based on feedback; humans step in where
     they add the most value
-- name: Review protector gate
+  role: validation
+- id: review-protector-gate
+  name: Review protector gate
   desc: The sq agents review entrypoint dispatches parallel global and module-scoped review subagents against a
     pull request and verifies world-model alignment before humans grant final approval
+  role: mechanism
 key_metrics:
-- 200,000+ operations per day
-- ~1,500 pull requests merged per week (~15% of all production code changes at Block)
-- '"What used to take months now takes days"'
+- id: operations-per-day
+  text: 200,000+ operations per day
+- id: pull-requests-merged-per-week
+  text: ~1,500 pull requests merged per week (~15% of all production code changes at Block)
+- id: what-used-take-months-now-takes
+  text: '"What used to take months now takes days"'
 lessons_learned:
-- Block's engineering lead credits Builderbot with handling scaffolding while engineers make product decisions.
-- A Slack mention starts Builderbot in the existing thread, where colleagues can follow the work.
-- Several people can steer Builderbot while it researches, plans, and implements a change.
+- id: engineering-lead-credits-builderbot-handling-scaffolding
+  text: Block's engineering lead credits Builderbot with handling scaffolding while engineers make product decisions.
+- id: slack-mention-starts-builderbot-existing-thread
+  text: A Slack mention starts Builderbot in the existing thread, where colleagues can follow the work.
+- id: several-people-steer-builderbot-researches-plans
+  text: Several people can steer Builderbot while it researches, plans, and implements a change.
 sources:
 - id: block-builderbot-source-1
   title: Block rolls out Builderbot, a new suite of AI-native tools that changes the way we ship
@@ -141,35 +155,35 @@ evidence:
   architecture.context_mgmt:
   - source_id: block-builderbot-source-2
     locator: Preserved content.md, lines 32–40
-  primitives.0:
+  primitives.orchestration-layer:
   - source_id: block-builderbot-source-1
-  primitives.1:
+  primitives.ticket-driven-flow:
   - source_id: block-builderbot-source-1
-  primitives.2:
+  primitives.slack-thread-start:
   - source_id: block-builderbot-source-1
     locator: Preserved content.md, line 16
-  primitives.3:
+  primitives.ci-watch-and-iteration:
   - source_id: block-builderbot-source-1
     locator: Preserved content.md, line 18
-  primitives.4:
+  primitives.review-protector-gate:
   - source_id: block-builderbot-source-2
     locator: Preserved content.md, lines 46–58
-  key_metrics.0:
+  key_metrics.operations-per-day:
   - source_id: block-builderbot-source-1
     locator: Preserved content.md, lines 24
-  key_metrics.1:
+  key_metrics.pull-requests-merged-per-week:
   - source_id: block-builderbot-source-1
     locator: Preserved content.md, lines 24
-  key_metrics.2:
+  key_metrics.what-used-take-months-now-takes:
   - source_id: block-builderbot-source-1
     locator: Preserved content.md, lines 24–26
-  lessons_learned.0:
+  lessons_learned.engineering-lead-credits-builderbot-handling-scaffolding:
   - source_id: block-builderbot-source-1
     locator: Preserved content.md, lines 26
-  lessons_learned.1:
+  lessons_learned.slack-mention-starts-builderbot-existing-thread:
   - source_id: block-builderbot-source-1
     locator: Preserved content.md, lines 16
-  lessons_learned.2:
+  lessons_learned.several-people-steer-builderbot-researches-plans:
   - source_id: block-builderbot-source-1
     locator: Preserved content.md, lines 16
   architecture.interfaces:
@@ -179,19 +193,19 @@ claim_metadata:
     confidence: high
     confidence_reason: The source explicitly describes end-to-end implementation ending in a reviewed pull request.
     valid_at: '2026-06-21'
-  lessons_learned.0:
+  lessons_learned.engineering-lead-credits-builderbot-handling-scaffolding:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: Brad Axen describes this division of work in the launch post; his account does not isolate
       its effect on delivery time.
-  lessons_learned.1:
+  lessons_learned.slack-mention-starts-builderbot-existing-thread:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The launch post describes tagging @builderbot with a task and working in that same Slack
       thread.
-  lessons_learned.2:
+  lessons_learned.several-people-steer-builderbot-researches-plans:
     kind: fact
     provenance: reported
     confidence: medium
@@ -200,35 +214,44 @@ claim_metadata:
   headline_metric:
     metric_scope: Builderbot merged pull requests per week at Block
     denominator: All production code changes across Block for the approximately 15% share
-  key_metrics.1:
+    category: adoption-output
+    basis: reported-measurement
+    subject: Builderbot merged pull requests per week and their share of Block production code changes
+  key_metrics.pull-requests-merged-per-week:
     metric_scope: Builderbot merged pull requests per week at Block
     denominator: All production code changes across Block for the approximately 15% share
-  key_metrics.0:
+  key_metrics.operations-per-day:
     metric_scope: Builderbot operations per day; the article does not define an operation
-  key_metrics.2:
+    category: adoption-output
+    basis: reported-measurement
+    subject: Builderbot operations per day; the source does not define an operation
+  key_metrics.what-used-take-months-now-takes:
     metric_scope: Reported turnaround for Square seller features and repetitive engineering work
     kind: opinion
     confidence: low
     confidence_reason: Qualitative company statement, not a measured before-and-after study.
+    category: cost-latency
+    basis: qualitative
+    subject: Turnaround for Square seller features and repetitive engineering work
   architecture.context_mgmt:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: Block's engineering blog describes these context mechanisms directly; it does not quantify
       their effect.
-  primitives.2:
+  primitives.slack-thread-start:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The launch post describes tagging @builderbot in Slack and collaborating in that thread in
       real time.
-  primitives.3:
+  primitives.ci-watch-and-iteration:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The launch post states that Builderbot watches CI and iterates on feedback; the division
       of labor with humans is the company's own description.
-  primitives.4:
+  primitives.review-protector-gate:
     kind: fact
     provenance: reported
     confidence: medium
@@ -247,103 +270,46 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.2
-      - primitives.1
+      - primitives.slack-thread-start
+      - primitives.ticket-driven-flow
     human_involvement:
       state: reported
       claim_paths:
-      - lessons_learned.1
-      - lessons_learned.2
+      - lessons_learned.slack-mention-starts-builderbot-existing-thread
+      - lessons_learned.several-people-steer-builderbot-researches-plans
       note: Colleagues steer runs in the Slack thread; the engineering post adds that humans grant the final stamp
         of approval on pull requests (lines 46, 50).
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.tool_access
-      - architecture.knowledge
-      - architecture.context_mgmt
-      - architecture.interfaces
     validation:
       state: reported
       claim_paths:
-      - primitives.3
+      - primitives.ci-watch-and-iteration
       note: The launch post documents CI watch and feedback iteration; the pre-push just checks in the engineering
         post cover local agents generally and are not tied to Builderbot's runs.
     observations:
       state: reported
-      claim_paths:
-      - headline_metric
-      - key_metrics.0
-      - key_metrics.2
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
-      - lessons_learned.2
   implementation_fields:
     model:
       state: unreported
-      claim_paths: []
       note: 'The captures name the goose orchestration framework but no underlying model; the public
         repository README names apps and crates only.'
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
     tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
       note: The launch post also limits operation to source code and system configuration, with no customer data
         or PII.
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
     credentials:
       state: unreported
-      claim_paths: []
       note: Credential handling is not documented; the source-code-only boundary is a data restriction, not a credential
         mechanism.
     interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
       note: Slack, Linear, and Jira are named in the launch post; the pull-request host is not named in the captures.
-  primitive_roles:
-    primitives.0: mechanism
-    primitives.1: workflow
-    primitives.2: workflow
-    primitives.3: validation
-    primitives.4: mechanism
-  observations:
-    headline_metric:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Builderbot merged pull requests per week and their share of Block production code changes
-    key_metrics.0:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Builderbot operations per day; the source does not define an operation
-    key_metrics.1:
+  aliases:
+    key_metrics.pull-requests-merged-per-week:
       duplicate_of: headline_metric
       reason: Same weekly merge count and production-change share from the same passage, with the same period and
         scope.
-    key_metrics.2:
-      category: cost-latency
-      basis: qualitative
-      subject: Turnaround for Square seller features and repetitive engineering work

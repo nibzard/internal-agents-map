@@ -2,6 +2,7 @@
 // ABOUTME: Renders one normalized claim with its citations and its qualifications.
 // ABOUTME: Caveats and conflicts stay in the initial HTML, beside the statement.
 import Arrowed from './Arrowed.astro';
+import ClaimAliases from './ClaimAliases.astro';
 import Icon from './Icon.astro';
 import SourceMarks from './SourceMarks.astro';
 import type { ClaimView } from '../lib/entry-view';
@@ -35,6 +36,7 @@ const attribution =
 // the headline included, shows quotation marks.
 ---
 <article class:list={['claim', mark && 'claim-marked']} id={claim.anchor} data-claim-id={claim.id}>
+  <ClaimAliases claim={claim} />
   {mark && <Icon name={mark} />}
   {showLabel && (
     <span class="claim-label">

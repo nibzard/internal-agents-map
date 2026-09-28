@@ -20,8 +20,6 @@ rubric:
   invocation:
   - interactive
   - scheduled
-  state: cross-session-memory
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Y Combinator built its own agent harness and infrastructure, led by partner Pete Koomen. It is an agent
   loop over a shared tool registry, now over 350 tools, including one that runs read-only SQL against YC's single
@@ -34,22 +32,32 @@ architecture:
   knowledge: A shared database and common context layer expose YC's internal organizational context
   context_mgmt: An agent loop uses a shared tool registry, skill registry, and model router
 primitives:
-- name: Finance question
+- id: finance-question
+  name: Finance question
   desc: A finance team member asks a real operational question in natural language instead of writing SQL or requesting
     purpose-built software
-- name: Read-only data access
+  role: workflow
+- id: read-only-data-access
+  name: Read-only data access
   desc: The general agent loop selects tools from the shared registry and can run read-only SQL against YC's database
     and read model files
-- name: Employee-visible conversation
+  role: workflow
+- id: employee-visible-conversation
+  name: Employee-visible conversation
   desc: Agent conversations are broadcast to an internal Slack channel where employees can inspect and learn from
     them
-- name: Nightly skill review
+  role: workflow
+- id: nightly-skill-review
+  name: Nightly skill review
   desc: A general agent reads employee-agent conversations nightly to identify failures and missing context that
     could improve shared skills
+  role: validation
 lessons_learned:
-- YC makes a shared database and tool registry available to its internal agents, with teams adding tools for their
-  own work.
-- YC began its own agent harness while working with its finance team on top of existing internal software.
+- id: shared-database-and-tool-registry
+  text: YC makes a shared database and tool registry available to its internal agents, with teams adding tools for their
+    own work.
+- id: began-own-agent-harness
+  text: YC began its own agent harness while working with its finance team on top of existing internal software.
 sources:
 - id: ycombinator-agent-infra-source-1
   title: Inside YC's AI Playbook (Lightcone podcast, with Pete Koomen)
@@ -75,17 +83,17 @@ evidence:
   - locator: Preserved content.md, line 154
   architecture.context_mgmt:
   - locator: Preserved content.md, lines 154–158
-  primitives.0:
+  primitives.finance-question:
   - locator: Preserved content.md, lines 120–124
-  primitives.1:
+  primitives.read-only-data-access:
   - locator: Preserved content.md, lines 124, 154
-  primitives.2:
+  primitives.employee-visible-conversation:
   - locator: Preserved content.md, lines 190–192
-  primitives.3:
+  primitives.nightly-skill-review:
   - locator: Preserved content.md, lines 162–166
-  lessons_learned.0:
+  lessons_learned.shared-database-and-tool-registry:
   - locator: Preserved content.md, lines 154
-  lessons_learned.1:
+  lessons_learned.began-own-agent-harness:
   - locator: Preserved content.md, lines 120
 claim_metadata:
   operating_models.0:
@@ -93,13 +101,13 @@ claim_metadata:
     confidence_reason: The source describes internal agent infrastructure but not a sufficiently specific human
       attention boundary.
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.shared-database-and-tool-registry:
     kind: fact
     provenance: reported
     confidence: low
     confidence_reason: The interview describes the common schema and expanding registry, including finance and scheduling
       examples; the operating-system metaphor adds no implementation detail.
-  lessons_learned.1:
+  lessons_learned.began-own-agent-harness:
     kind: fact
     provenance: reported
     confidence: low
@@ -120,76 +128,32 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
-      - primitives.2
+      - primitives.finance-question
+      - primitives.read-only-data-access
+      - primitives.employee-visible-conversation
     human_involvement:
       state: not-applicable
-      claim_paths: []
       note: There is no single platform-wide agent review boundary. Scoped downstream operating-model claims remain
         in research details; access controls are described separately.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.tool_access
-      - architecture.interfaces
-      - architecture.knowledge
-      - architecture.context_mgmt
     validation:
       state: reported
       claim_paths:
-      - primitives.3
+      - primitives.nightly-skill-review
     observations:
       state: unreported
-      claim_paths: []
       note: The reviewed capture reports capabilities and examples but no measured outcome for the named finance
         workflow.
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
   implementation_fields:
     model:
       state: unreported
-      claim_paths: []
       note: A model router is mentioned, but no model is identified for the representative workflow.
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
     credentials:
       state: unreported
-      claim_paths: []
       note: The capture describes read-only SQL access but not credential handling.
-    interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: workflow
-    primitives.3: validation
-  observations: {}

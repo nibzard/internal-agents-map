@@ -1,0 +1,665 @@
+{
+  "schema_version": 8,
+  "approaches": [
+    {
+      "id": "doordash-code-review",
+      "company": "DoorDash",
+      "agent_name": "AI Code Review Agent",
+      "approach_type": "agent",
+      "deployment_stage": "scaled",
+      "year": 2026,
+      "first_public_evidence": {
+        "date": "2026",
+        "source_id": "doordash-code-review-source-1"
+      },
+      "last_reviewed_at": "2026-09-16",
+      "status": "internal",
+      "domains": [
+        "code-review"
+      ],
+      "autonomy": "drafts-reviewed",
+      "operating_models": [
+        {
+          "scope": "pull request → AI review comments",
+          "attention_boundary": "work-product-review",
+          "level": 3
+        }
+      ],
+      "rubric": {
+        "invocation": [
+          "background",
+          "event-driven"
+        ],
+        "evidence_strength": "detailed-primary"
+      },
+      "page_content": {
+        "version": 1,
+        "reviewed_at": "2026-09-17",
+        "source_ids": [
+          "doordash-code-review-source-1"
+        ],
+        "workflow_scope": "Pull request opening → staged review → published finding and optional fix",
+        "questions": {
+          "purpose": {
+            "state": "reported",
+            "claim_paths": [
+              "summary"
+            ]
+          },
+          "workflow": {
+            "state": "reported",
+            "claim_paths": [
+              "primitives.automatic-review-trigger",
+              "primitives.lead-scout",
+              "primitives.deep-reviewers",
+              "primitives.optional-fixer"
+            ]
+          },
+          "human_involvement": {
+            "state": "reported",
+            "claim_paths": [
+              "operating_models.0",
+              "primitives.optional-fixer"
+            ]
+          },
+          "implementation": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.harness",
+              "architecture.tool_access",
+              "architecture.knowledge",
+              "architecture.interfaces"
+            ]
+          },
+          "validation": {
+            "state": "reported",
+            "claim_paths": [
+              "primitives.disprove-it-pass",
+              "primitives.evaluation-loop"
+            ]
+          },
+          "observations": {
+            "state": "reported",
+            "claim_paths": [
+              "headline_metric",
+              "key_metrics.prs-reviewed-typical-week-repositories",
+              "key_metrics.action-rate-settled-high-critical-findings",
+              "key_metrics.average-cost-per-review",
+              "key_metrics.findings-posted-minutes-pull-request-opens"
+            ]
+          },
+          "lessons": {
+            "state": "reported",
+            "claim_paths": [
+              "lessons_learned.favors-fewer-actionable-review-comments-accepting",
+              "lessons_learned.acceptance-rate-describes-how-engineers-use"
+            ]
+          }
+        },
+        "implementation_fields": {
+          "model": {
+            "state": "unreported",
+            "claim_paths": [],
+            "note": "The source says the design is model-agnostic but names no current model."
+          },
+          "harness": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.harness"
+            ]
+          },
+          "sandbox": {
+            "state": "unreported",
+            "claim_paths": [],
+            "note": "The remote VM is documented, but its isolation guarantees are not."
+          },
+          "tool_access": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.tool_access"
+            ]
+          },
+          "knowledge": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.knowledge"
+            ]
+          },
+          "context_mgmt": {
+            "state": "unreported",
+            "claim_paths": []
+          },
+          "credentials": {
+            "state": "unreported",
+            "claim_paths": []
+          },
+          "interfaces": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.interfaces"
+            ]
+          }
+        },
+        "aliases": {
+          "key_metrics.prs-reviewed-typical-week-repositories": {
+            "duplicate_of": "headline_metric",
+            "reason": "Same review count, repository population, period, and qualification as the headline observation."
+          }
+        }
+      },
+      "company_id": "doordash",
+      "catalog_section": "agents",
+      "claim_ids": [
+        "doordash-code-review--summary",
+        "doordash-code-review--headline-metric",
+        "doordash-code-review--architecture-harness",
+        "doordash-code-review--architecture-interfaces",
+        "doordash-code-review--architecture-tool-access",
+        "doordash-code-review--architecture-knowledge",
+        "doordash-code-review--primitives-grounded-findings",
+        "doordash-code-review--primitives-automatic-review-trigger",
+        "doordash-code-review--primitives-lead-scout",
+        "doordash-code-review--primitives-deep-reviewers",
+        "doordash-code-review--primitives-disprove-it-pass",
+        "doordash-code-review--primitives-optional-fixer",
+        "doordash-code-review--primitives-evaluation-loop",
+        "doordash-code-review--key-metrics-prs-reviewed-typical-week-repositories",
+        "doordash-code-review--key-metrics-action-rate-settled-high-critical-findings",
+        "doordash-code-review--key-metrics-average-cost-per-review",
+        "doordash-code-review--key-metrics-findings-posted-minutes-pull-request-opens",
+        "doordash-code-review--lessons-learned-favors-fewer-actionable-review-comments-accepting",
+        "doordash-code-review--lessons-learned-acceptance-rate-describes-how-engineers-use",
+        "doordash-code-review--operating-models-0"
+      ],
+      "source_ids": [
+        "doordash-code-review-source-1"
+      ],
+      "interfaces": [
+        "github"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "doordash-code-review--summary",
+      "approach_id": "doordash-code-review",
+      "field": "summary",
+      "text": "A specialized agent that automatically reviews 10,000+ PRs a week across 56 repositories, emphasizing grounded high-confidence findings over noisy comments.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports"
+        }
+      ]
+    },
+    {
+      "id": "doordash-code-review--headline-metric",
+      "approach_id": "doordash-code-review",
+      "field": "headline_metric",
+      "text": "10,000+ pull requests reviewed per week across 56 repositories",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 23"
+        }
+      ],
+      "reported_by": "DoorDash",
+      "metric_scope": "Typical weekly PR reviews across 56 onboarded repositories",
+      "category": "adoption-output",
+      "basis": "reported-measurement",
+      "subject": "Typical weekly reviews across 56 repositories"
+    },
+    {
+      "id": "doordash-code-review--architecture-harness",
+      "approach_id": "doordash-code-review",
+      "field": "architecture.harness",
+      "text": "Three architecture versions; emphasis on attention and grounded, high-confidence findings rather than commenting everywhere",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports"
+        }
+      ]
+    },
+    {
+      "id": "doordash-code-review--architecture-interfaces",
+      "approach_id": "doordash-code-review",
+      "field": "architecture.interfaces",
+      "text": "github",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports"
+        }
+      ]
+    },
+    {
+      "id": "doordash-code-review--architecture-tool-access",
+      "approach_id": "doordash-code-review",
+      "field": "architecture.tool_access",
+      "text": "Reviews Go, iOS, Android, web, infrastructure, and data code",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports"
+        }
+      ]
+    },
+    {
+      "id": "doordash-code-review--architecture-knowledge",
+      "approach_id": "doordash-code-review",
+      "field": "architecture.knowledge",
+      "text": "Grounded findings tied to evidence",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports"
+        }
+      ]
+    },
+    {
+      "id": "doordash-code-review--primitives-grounded-findings",
+      "approach_id": "doordash-code-review",
+      "field": "primitives.grounded-findings",
+      "text": "Filters review candidates for evidence, confidence, and an actionable file-and-line location",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 56-68,166"
+        }
+      ],
+      "display_name": "Grounded findings",
+      "item_id": "grounded-findings",
+      "role": "mechanism"
+    },
+    {
+      "id": "doordash-code-review--primitives-automatic-review-trigger",
+      "approach_id": "doordash-code-review",
+      "field": "primitives.automatic-review-trigger",
+      "text": "Opening a pull request can automatically start the review alongside human reviewers",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, line 23"
+        }
+      ],
+      "display_name": "Automatic review trigger",
+      "item_id": "automatic-review-trigger",
+      "role": "workflow"
+    },
+    {
+      "id": "doordash-code-review--primitives-lead-scout",
+      "approach_id": "doordash-code-review",
+      "field": "primitives.lead-scout",
+      "text": "A scout reads the diff and produces focused investigation leads without trying to verify them",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 42–44"
+        }
+      ],
+      "display_name": "Lead scout",
+      "item_id": "lead-scout",
+      "role": "workflow"
+    },
+    {
+      "id": "doordash-code-review--primitives-deep-reviewers",
+      "approach_id": "doordash-code-review",
+      "field": "primitives.deep-reviewers",
+      "text": "Two reviewers investigate the scout's leads and drop the ones that do not hold up",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 42–46"
+        }
+      ],
+      "display_name": "Deep reviewers",
+      "item_id": "deep-reviewers",
+      "role": "workflow"
+    },
+    {
+      "id": "doordash-code-review--primitives-disprove-it-pass",
+      "approach_id": "doordash-code-review",
+      "field": "primitives.disprove-it-pass",
+      "text": "Before publication the system tries to falsify each candidate finding and drops claims that do not survive",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 58–68"
+        }
+      ],
+      "display_name": "Disprove-it pass",
+      "item_id": "disprove-it-pass",
+      "role": "validation"
+    },
+    {
+      "id": "doordash-code-review--primitives-optional-fixer",
+      "approach_id": "doordash-code-review",
+      "field": "primitives.optional-fixer",
+      "text": "A person can tag the agent on a review comment; a remote VM applies the requested change and pushes a reviewable commit to the pull request",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 131–144"
+        }
+      ],
+      "display_name": "Optional fixer",
+      "item_id": "optional-fixer",
+      "role": "workflow"
+    },
+    {
+      "id": "doordash-code-review--primitives-evaluation-loop",
+      "approach_id": "doordash-code-review",
+      "field": "primitives.evaluation-loop",
+      "text": "Changes are tested on real past review misses and high-severity incidents before production acceptance data is checked",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 170–180"
+        }
+      ],
+      "display_name": "Evaluation loop",
+      "item_id": "evaluation-loop",
+      "role": "validation"
+    },
+    {
+      "id": "doordash-code-review--key-metrics-prs-reviewed-typical-week-repositories",
+      "approach_id": "doordash-code-review",
+      "field": "key_metrics.prs-reviewed-typical-week-repositories",
+      "text": "10,000+ PRs reviewed in a typical week across 56 repositories",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 23"
+        }
+      ],
+      "reported_by": "DoorDash",
+      "metric_scope": "Typical weekly PR reviews across 56 onboarded repositories",
+      "item_id": "prs-reviewed-typical-week-repositories",
+      "duplicate_of": "doordash-code-review--headline-metric",
+      "reason": "Same review count, repository population, period, and qualification as the headline observation."
+    },
+    {
+      "id": "doordash-code-review--key-metrics-action-rate-settled-high-critical-findings",
+      "approach_id": "doordash-code-review",
+      "field": "key_metrics.action-rate-settled-high-critical-findings",
+      "text": "60.2% action rate on settled high/critical findings (measured sample)",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "A linked first-party source states the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 27"
+        }
+      ],
+      "reported_by": "DoorDash",
+      "metric_scope": "Settled high and critical findings that led to code changes before merge",
+      "denominator": "2,256 settled high and critical findings",
+      "measurement_method": "Whether the human changed the code before merge in response to the finding",
+      "item_id": "action-rate-settled-high-critical-findings",
+      "category": "effectiveness",
+      "basis": "reported-measurement",
+      "subject": "Settled high and critical findings that led to code changes"
+    },
+    {
+      "id": "doordash-code-review--key-metrics-average-cost-per-review",
+      "approach_id": "doordash-code-review",
+      "field": "key_metrics.average-cost-per-review",
+      "text": "Roughly $3 average cost per review",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "DoorDash reports its current average review cost without an independent audit.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 29, 129"
+        }
+      ],
+      "reported_by": "DoorDash",
+      "unit": "USD per review",
+      "metric_scope": "Average cost of the current staged review workflow",
+      "item_id": "average-cost-per-review",
+      "category": "cost-latency",
+      "basis": "reported-measurement",
+      "subject": "Average cost of the current review workflow"
+    },
+    {
+      "id": "doordash-code-review--key-metrics-findings-posted-minutes-pull-request-opens",
+      "approach_id": "doordash-code-review",
+      "field": "key_metrics.findings-posted-minutes-pull-request-opens",
+      "text": "Findings posted about 7 minutes after a pull request opens on average",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "DoorDash reports average posting latency without a distribution or independent audit.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, line 30"
+        }
+      ],
+      "reported_by": "DoorDash",
+      "unit": "minutes",
+      "metric_scope": "Time from pull-request opening to a posted finding",
+      "item_id": "findings-posted-minutes-pull-request-opens",
+      "category": "cost-latency",
+      "basis": "reported-measurement",
+      "subject": "Average time from PR opening to a posted finding"
+    },
+    {
+      "id": "doordash-code-review--lessons-learned-favors-fewer-actionable-review-comments-accepting",
+      "approach_id": "doordash-code-review",
+      "field": "lessons_learned.favors-fewer-actionable-review-comments-accepting",
+      "text": "DoorDash favors fewer actionable review comments, accepting that this policy will miss some issues.",
+      "kind": "opinion",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "The precision-over-recall section states the tradeoff; the later comment-quality discussion requires a concrete file, line, and action point.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 56-68,166"
+        }
+      ],
+      "item_id": "favors-fewer-actionable-review-comments-accepting"
+    },
+    {
+      "id": "doordash-code-review--lessons-learned-acceptance-rate-describes-how-engineers-use",
+      "approach_id": "doordash-code-review",
+      "field": "lessons_learned.acceptance-rate-describes-how-engineers-use",
+      "text": "DoorDash's reported acceptance rate describes how engineers use published findings; it cannot count issues the reviewer missed.",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The report ties acceptance to its precision-first policy. A denominator of published comments does not measure recall over all defects.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 56-68"
+        }
+      ],
+      "item_id": "acceptance-rate-describes-how-engineers-use"
+    },
+    {
+      "id": "doordash-code-review--operating-models-0",
+      "approach_id": "doordash-code-review",
+      "field": "operating_models.0",
+      "text": "Level 3 for pull request → AI review comments; human attention boundary: work-product-review.",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "high",
+      "confidence_reason": "The source describes automated findings that engineers evaluate within the pull-request workflow.",
+      "valid_at": "2026",
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-1",
+          "relation": "supports"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "doordash-code-review-source-1",
+      "title": "How DoorDash built an AI code reviewer engineers actually listen to",
+      "url": "https://careersatdoordash.com/blog/doordash-built-an-ai-code-reviewer-engineers-actually-listen-to/",
+      "canonical_url": "https://careersatdoordash.com/blog/doordash-built-an-ai-code-reviewer-engineers-actually-listen-to/",
+      "kind": "engineering-blog",
+      "provenance_class": "first-party",
+      "accessed_at": "2026-08-12",
+      "last_verified_at": "2026-08-31",
+      "capture": {
+        "schema_version": 1,
+        "source_id": "doordash-code-review-source-1",
+        "original_url": "https://careersatdoordash.com/blog/doordash-built-an-ai-code-reviewer-engineers-actually-listen-to/",
+        "final_url": "https://careersatdoordash.com/blog/doordash-built-an-ai-code-reviewer-engineers-actually-listen-to/",
+        "captured_at": "2026-08-31T17:41:52Z",
+        "http_status": 200,
+        "tool": {
+          "name": "steel",
+          "version": "0.4.4"
+        },
+        "artifacts": {
+          "markdown": {
+            "path": "archive/sources/doordash-code-review-source-1/content.md",
+            "sha256": "sha256:0dfaa3b3595d97ec0400b6c7570c62e31288a228121cdb618ed30c84585971f4",
+            "bytes": 19641
+          }
+        }
+      },
+      "role": "evidence",
+      "approach_id": "doordash-code-review"
+    }
+  ],
+  "companies": [
+    {
+      "id": "doordash",
+      "name": "DoorDash",
+      "homepage": "https://www.doordash.com/",
+      "logo": {
+        "path": "logos/doordash.svg",
+        "media_type": "image/svg+xml",
+        "width": 32,
+        "height": 18,
+        "bytes": 431,
+        "sha256": "sha256:3843e09805541a4e9fae8674ed22cbcb1d2ab059ae487504095ce5109c0b6033",
+        "source_url": "https://commons.wikimedia.org/wiki/File:DoorDash_Logo.svg",
+        "accessed_at": "2026-09-25"
+      }
+    }
+  ],
+  "claim_aliases": {
+    "doordash-code-review--architecture-harness": "doordash-code-review--architecture-harness",
+    "doordash-code-review--architecture-interfaces": "doordash-code-review--architecture-interfaces",
+    "doordash-code-review--architecture-knowledge": "doordash-code-review--architecture-knowledge",
+    "doordash-code-review--architecture-tool-access": "doordash-code-review--architecture-tool-access",
+    "doordash-code-review--headline-metric": "doordash-code-review--headline-metric",
+    "doordash-code-review--key-metrics-0": "doordash-code-review--key-metrics-prs-reviewed-typical-week-repositories",
+    "doordash-code-review--key-metrics-1": "doordash-code-review--key-metrics-action-rate-settled-high-critical-findings",
+    "doordash-code-review--key-metrics-2": "doordash-code-review--key-metrics-average-cost-per-review",
+    "doordash-code-review--key-metrics-3": "doordash-code-review--key-metrics-findings-posted-minutes-pull-request-opens",
+    "doordash-code-review--lessons-learned-0": "doordash-code-review--lessons-learned-favors-fewer-actionable-review-comments-accepting",
+    "doordash-code-review--lessons-learned-1": "doordash-code-review--lessons-learned-acceptance-rate-describes-how-engineers-use",
+    "doordash-code-review--operating-models-0": "doordash-code-review--operating-models-0",
+    "doordash-code-review--primitives-0": "doordash-code-review--primitives-grounded-findings",
+    "doordash-code-review--primitives-1": "doordash-code-review--primitives-automatic-review-trigger",
+    "doordash-code-review--primitives-2": "doordash-code-review--primitives-lead-scout",
+    "doordash-code-review--primitives-3": "doordash-code-review--primitives-deep-reviewers",
+    "doordash-code-review--primitives-4": "doordash-code-review--primitives-disprove-it-pass",
+    "doordash-code-review--primitives-5": "doordash-code-review--primitives-optional-fixer",
+    "doordash-code-review--primitives-6": "doordash-code-review--primitives-evaluation-loop",
+    "doordash-code-review--summary": "doordash-code-review--summary"
+  }
+}

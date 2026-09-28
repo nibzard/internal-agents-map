@@ -21,8 +21,6 @@ operating_models:
 rubric:
   invocation:
   - event-driven
-  state: unknown
-  identity: dedicated-agent
   evidence_strength: secondary-only
 summary: OpenAI's internal incident-response agent, built on Codex. When an incident is detected, it collects
   context, proposes mitigations, and answers questions in the incident Slack channel. The report describes
@@ -32,15 +30,18 @@ architecture:
   interfaces:
   - slack
 primitives:
-- name: Propose-only mitigation
+- id: propose-only-mitigation
+  name: Propose-only mitigation
   desc: Proposes mitigations in the incident channel; an engineer can instruct it to apply a specific mitigation
-- {name: Wake on a detected incident, desc: "When an incident is detected, the bot wakes up"}
-- {name: Collect incident context, desc: Collects context about the incident}
-- {name: Answer developers' questions, desc: Answers developers' questions as part of the incident Slack channel}
+  role: workflow
+- {id: wake-on-a-detected-incident, name: Wake on a detected incident, desc: "When an incident is detected, the bot wakes up", role: workflow}
+- {id: collect-incident-context, name: Collect incident context, desc: Collects context about the incident, role: workflow}
+- {id: answer-developers-questions, name: Answer developers' questions, desc: Answers developers' questions as part of the incident Slack channel, role: workflow}
 key_metrics: []
 lessons_learned:
-- OpenAI describes autonomous mitigation of routine outages as a goal for Sevbot; on-call duty still exists
-  in the reported deployment.
+- id: autonomous-mitigation-routine-outages-goal-sevbot
+  text: OpenAI describes autonomous mitigation of routine outages as a goal for Sevbot; on-call duty still exists
+    in the reported deployment.
 sources:
 - id: openai-sevbot-article
   title: "Inside OpenAI's agentic software factory"
@@ -102,16 +103,16 @@ evidence:
   architecture.interfaces:
   - source_id: openai-sevbot-article
     locator: "Preserved content.md, line 192 (it is part of the Slack channel and answers devs' questions)"
-  primitives.0:
+  primitives.propose-only-mitigation:
   - source_id: openai-sevbot-article
     locator: Preserved content.md, lines 191-193
-  primitives.1:
+  primitives.wake-on-a-detected-incident:
   - {source_id: openai-sevbot-article, locator: 'Preserved content.md, line 188'}
-  primitives.2:
+  primitives.collect-incident-context:
   - {source_id: openai-sevbot-article, locator: 'Preserved content.md, line 190'}
-  primitives.3:
+  primitives.answer-developers-questions:
   - {source_id: openai-sevbot-article, locator: 'Preserved content.md, line 192'}
-  lessons_learned.0:
+  lessons_learned.autonomous-mitigation-routine-outages-goal-sevbot:
   - source_id: openai-sevbot-article
     locator: Preserved content.md, lines 195
 claim_metadata:
@@ -119,7 +120,7 @@ claim_metadata:
     confidence: medium
     confidence_reason: "The article says Sevbot proposes mitigations and that an engineer can tell it to apply one. This supports an engineer-controlled mitigation path; the source's 'never executes any' wording is read as a limit on autonomous execution."
     valid_at: "2026-09"
-  lessons_learned.0:
+  lessons_learned.autonomous-mitigation-routine-outages-goal-sevbot:
     kind: fact
     provenance: reported
     confidence: high
@@ -132,28 +133,19 @@ page_content:
   source_ids: [openai-sevbot-article, crtsh-sevbot-certificates, github-sevbot-pr]
   workflow_scope: Detected incident to engineer-directed mitigation in the incident Slack channel
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.1, primitives.2, primitives.0, primitives.3], note: 'The
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.wake-on-a-detected-incident, primitives.collect-incident-context, primitives.propose-only-mitigation, primitives.answer-developers-questions], note: 'The
       article lists the run in order: wake, collect, propose, answer, and the engineer instruction. The
       propose-only primitive spans the proposal and the instruction the article states separately.'}
-    human_involvement: {state: reported, claim_paths: [primitives.0, operating_models.0], note: 'The engineer-controlled
+    human_involvement: {state: reported, claim_paths: [primitives.propose-only-mitigation, operating_models.0], note: 'The engineer-controlled
       mitigation instruction is the documented checkpoint; the article states Sevbot never executes a
       mitigation on its own.'}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.interfaces]}
-    validation: {state: unreported, claim_paths: [], note: 'The article documents no check of Sevbot''s proposals
+    implementation: {state: reported}
+    validation: {state: unreported, note: 'The article documents no check of Sevbot''s proposals
       or answers; the propose-only limit is a behavior boundary, not a validation mechanism.'}
-    observations: {state: unreported, claim_paths: [], note: 'No outcome measurement for Sevbot appears in the
+    observations: {state: unreported, note: 'No outcome measurement for Sevbot appears in the
       reviewed captures. The certificate and commit records evidence a deployed service, not results.'}
-    lessons: {state: reported, claim_paths: [lessons_learned.0]}
+    lessons: {state: reported}
   implementation_fields:
-    model: {state: unreported, claim_paths: []}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: []}
-    tool_access: {state: unreported, claim_paths: []}
-    knowledge: {state: unreported, claim_paths: [], note: 'No knowledge source is named for Sevbot; the article''s
+    knowledge: {state: unreported, note: 'No knowledge source is named for Sevbot; the article''s
       factory-wide Codex context access is not attributed to Sevbot.'}
-    context_mgmt: {state: unreported, claim_paths: []}
-    credentials: {state: unreported, claim_paths: []}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces]}
-  primitive_roles: {primitives.0: workflow, primitives.1: workflow, primitives.2: workflow, primitives.3: workflow}
-  observations: {}
