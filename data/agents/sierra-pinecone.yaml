@@ -4,7 +4,6 @@ company: Sierra
 agent_name: Pinecone
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: sierra-pinecone-source-1
@@ -26,8 +25,6 @@ rubric:
   - event-driven
   - interactive
   - scheduled
-  state: durable-session
-  identity: mixed
   evidence_strength: detailed-primary
 summary: Pinecone is Sierra's shared agent interface for employee work. It routes requests to a model, harness,
   and environment, runs sessions on Agency, and connects to company systems through an MCP Gateway.
@@ -50,36 +47,49 @@ architecture:
     harness never holds the real secret
   context_mgmt: Durable session state separated from ephemeral compute
 primitives:
-- name: MCP Gateway (45 systems)
+- id: mcp-gateway-systems
+  name: MCP Gateway (45 systems)
   desc: One gateway spanning 45 systems, enforcing employee permissions at call time
-- name: Agency sandbox layer
+  role: mechanism
+- id: agency-sandbox-layer
+  name: Agency sandbox layer
   desc: Recoverable K8s runners with a network proxy for credential injection
-- name: Intent-based routing
+  role: mechanism
+- id: intent-based-routing
+  name: Intent-based routing
   desc: Routes model and environment by request intent, independent of the tool layer
-- {name: Start a session from a prompt, desc: 'A prompt creates an isolated pod with a checked-out repository, warm
+  role: mechanism
+- {id: start-a-session-from-a-prompt, name: Start a session from a prompt, desc: 'A prompt creates an isolated pod with a checked-out repository, warm
     build cache, sidecars, and a harness; the session streams its work back for watching, interrupting, or
-    redirecting'}
-- {name: Broker its own pull requests, desc: 'A session opens its own pull requests and watches its own checks'}
-- {name: Babysit the pull request, desc: 'A monitor sub-agent answers machine-review comments, fixes failing tests,
-    rebases on conflicts, and pings a person in Slack when a decision needs a human'}
+    redirecting', role: workflow}
+- {id: broker-its-own-pull-requests, name: Broker its own pull requests, desc: 'A session opens its own pull requests and watches its own checks', role: workflow}
+- {id: babysit-the-pull-request, name: Babysit the pull request, desc: 'A monitor sub-agent answers machine-review comments, fixes failing tests,
+    rebases on conflicts, and pings a person in Slack when a decision needs a human', role: validation}
 key_metrics:
-- More than 75,000 sessions created by 600 people in the month preceding the report
-- 70% of company PRs opened through Pinecone in the month preceding the report
-- '96% of engineering uses Pinecone; the majority of the company works in it every day'
-- Usage has tripled every month since April while costs fell
+- id: sessions-created-people-month-preceding
+  text: More than 75,000 sessions created by 600 people in the month preceding the report
+- id: prs-opened-through-pinecone-month-preceding
+  text: 70% of company PRs opened through Pinecone in the month preceding the report
+- id: engineering-uses-pinecone-majority-company-works
+  text: '96% of engineering uses Pinecone; the majority of the company works in it every day'
+- id: usage-tripled-month-since-april-costs
+  text: Usage has tripled every month since April while costs fell
 lessons_learned:
-- Pinecone presents one entry point while a classifier chooses the repository, environment, harness, and model
-  for the task.
-- Sierra wraps Codex and Claude Code behind a common runner protocol and can change routing defaults centrally.
-- Sierra's gateway audits customer-data access and blocks sensitive access spanning multiple customers in a
-  session; some CLI access uses separate read-only tokens.
-- Sierra's session total measures use of Pinecone; it does not by itself measure time saved or the quality of
-  completed work.
+- id: presents-one-entry-point-classifier-chooses
+  text: Pinecone presents one entry point while a classifier chooses the repository, environment, harness, and model
+    for the task.
+- id: wraps-codex-claude-code-behind-common
+  text: Sierra wraps Codex and Claude Code behind a common runner protocol and can change routing defaults centrally.
+- id: gateway-audits-customer-data-access-blocks
+  text: Sierra's gateway audits customer-data access and blocks sensitive access spanning multiple customers in a
+    session; some CLI access uses separate read-only tokens.
+- id: session-total-measures-use-only
+  text: Sierra's session total measures use of Pinecone; it does not by itself measure time saved or the quality of
+    completed work.
 sources:
 - id: sierra-pinecone-source-1
   title: 'Pinecone: harnessing the wisdom of the workforce'
   url: https://sierra.ai/jp/blog/pinecone-harnessing-the-wisdom-of-the-workforce
-  canonical_url: https://sierra.ai/jp/blog/pinecone-harnessing-the-wisdom-of-the-workforce
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -89,7 +99,6 @@ sources:
 - id: sierra-pinecone-source-2
   title: Building Sierra's MCP Gateway
   url: https://sierra.ai/blog/building-sierras-mcp-gateway-an-engineering-iceberg
-  canonical_url: https://sierra.ai/blog/building-sierras-mcp-gateway-an-engineering-iceberg
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -99,7 +108,6 @@ sources:
 - id: sierra-pinecone-source-3
   title: 'Agency: secure, scalable sandboxes for agents'
   url: https://sierra.ai/es/blog/agency-secure-scalable-sandboxes-for-agents
-  canonical_url: https://sierra.ai/es/blog/agency-secure-scalable-sandboxes-for-agents
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -109,118 +117,92 @@ sources:
 evidence:
   operating_models.0:
   - source_id: sierra-pinecone-source-1
-    relation: supports
   summary:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 56-74
   - source_id: sierra-pinecone-source-2
-    relation: supports
     locator: Preserved content.md, lines 14-32
   headline_metric:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 134–139
   architecture.sandbox:
   - source_id: sierra-pinecone-source-3
-    relation: supports
   architecture.harness:
   - source_id: sierra-pinecone-source-1
-    relation: supports
   - source_id: sierra-pinecone-source-3
-    relation: supports
   architecture.model:
   - source_id: sierra-pinecone-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: sierra-pinecone-source-2
-    relation: supports
   architecture.knowledge:
   - source_id: sierra-pinecone-source-1
-    relation: supports
   - source_id: sierra-pinecone-source-3
-    relation: supports
   architecture.credentials:
   - source_id: sierra-pinecone-source-2
-    relation: supports
   - source_id: sierra-pinecone-source-3
-    relation: supports
   architecture.context_mgmt:
   - source_id: sierra-pinecone-source-3
-    relation: supports
-  primitives.0:
+  primitives.mcp-gateway-systems:
   - source_id: sierra-pinecone-source-2
-    relation: supports
-  primitives.1:
+  primitives.agency-sandbox-layer:
   - source_id: sierra-pinecone-source-3
-    relation: supports
-  primitives.2:
+  primitives.intent-based-routing:
   - source_id: sierra-pinecone-source-1
-    relation: supports
-  primitives.3:
-  - {source_id: sierra-pinecone-source-1, relation: supports, locator: 'Preserved content.md, line 44'}
-  primitives.4:
-  - {source_id: sierra-pinecone-source-1, relation: supports, locator: 'Preserved content.md, line 49'}
-  primitives.5:
-  - {source_id: sierra-pinecone-source-1, relation: supports, locator: 'Preserved content.md, lines 49, 104'}
-  key_metrics.0:
+  primitives.start-a-session-from-a-prompt:
+  - {source_id: sierra-pinecone-source-1, locator: 'Preserved content.md, line 44'}
+  primitives.broker-its-own-pull-requests:
+  - {source_id: sierra-pinecone-source-1, locator: 'Preserved content.md, line 49'}
+  primitives.babysit-the-pull-request:
+  - {source_id: sierra-pinecone-source-1, locator: 'Preserved content.md, lines 49, 104'}
+  key_metrics.sessions-created-people-month-preceding:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 134–139
-  key_metrics.1:
+  key_metrics.prs-opened-through-pinecone-month-preceding:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 138
-  key_metrics.2:
-  - {source_id: sierra-pinecone-source-1, relation: supports, locator: 'Preserved content.md, line 137'}
-  key_metrics.3:
-  - {source_id: sierra-pinecone-source-1, relation: supports, locator: 'Preserved content.md, line 139'}
-  lessons_learned.0:
+  key_metrics.engineering-uses-pinecone-majority-company-works:
+  - {source_id: sierra-pinecone-source-1, locator: 'Preserved content.md, line 137'}
+  key_metrics.usage-tripled-month-since-april-costs:
+  - {source_id: sierra-pinecone-source-1, locator: 'Preserved content.md, line 139'}
+  lessons_learned.presents-one-entry-point-classifier-chooses:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 56-60
-  lessons_learned.1:
+  lessons_learned.wraps-codex-claude-code-behind-common:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 120-124
-  lessons_learned.2:
+  lessons_learned.gateway-audits-customer-data-access-blocks:
   - source_id: sierra-pinecone-source-2
-    relation: supports
     locator: Preserved content.md, lines 52-66,93
-  lessons_learned.3:
+  lessons_learned.session-total-measures-use-only:
   - source_id: sierra-pinecone-source-1
-    relation: supports
     locator: Preserved content.md, lines 118,136-141
   architecture.interfaces:
   - source_id: sierra-pinecone-source-1
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The source documents delegated work through a company-wide agent without establishing outcome-only
       supervision.
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.presents-one-entry-point-classifier-chooses:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The single-agent section describes routing behind the interface, so one employee-facing
       agent does not imply one model or execution environment.
-  lessons_learned.1:
+  lessons_learned.wraps-codex-claude-code-behind-common:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The retrospective describes shared adapters and configurable defaults; it supports interchangeable
       harnesses without claiming every model fits every task.
-  lessons_learned.2:
+  lessons_learned.gateway-audits-customer-data-access-blocks:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The gateway article describes provenance checks and scoped CLI tokens. These bound particular
       actions without making every permitted action safe.
-  lessons_learned.3:
+  lessons_learned.session-total-measures-use-only:
     kind: inference
     provenance: catalog-judgment
     confidence: medium
@@ -228,66 +210,56 @@ claim_metadata:
       for converting each session into time saved or a quality measure.
   headline_metric:
     metric_scope: Pinecone users and sessions in the month preceding the report; calendar month unspecified
-  key_metrics.0:
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Pinecone sessions created
+      by Sierra employees in the month preceding the report'
+  key_metrics.sessions-created-people-month-preceding:
     metric_scope: Pinecone users and sessions in the month preceding the report; calendar month unspecified
-  key_metrics.1:
+  key_metrics.prs-opened-through-pinecone-month-preceding:
     metric_scope: Company PRs opened through Pinecone in the month preceding the report
     denominator: Sierra PRs opened in that month; not merged PRs
-  key_metrics.2:
-    kind: metric
-    provenance: reported
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Sierra pull requests opened
+      through Pinecone in the month preceding the report'
+  key_metrics.engineering-uses-pinecone-majority-company-works:
     confidence: medium
     confidence_reason: Sierra reported the adoption shares in its engineering blog without a method.
     valid_at: '2026'
     reported_by: Sierra
     metric_scope: Engineering use of Pinecone and company-wide daily use at report time
-  key_metrics.3:
-    kind: metric
-    provenance: reported
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Engineering adoption of
+      Pinecone and company-wide daily use'
+  key_metrics.usage-tripled-month-since-april-costs:
     confidence: medium
     confidence_reason: Sierra reported monthly growth multiples and a cost trend without absolute figures or a method.
     valid_at: '2026'
     reported_by: Sierra
     metric_scope: Pinecone usage growth since April and reported falling costs; no absolute figures published
+    category: adoption-output
+    basis: reported-measurement
+    subject: 'Pinecone usage growth since
+      April with reported falling costs'
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
   source_ids: [sierra-pinecone-source-1, sierra-pinecone-source-2, sierra-pinecone-source-3]
   workflow_scope: 'Employee prompt to a streamed cloud session with brokered pull requests'
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.3, primitives.4], note: 'The three pre-existing primitives
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.start-a-session-from-a-prompt, primitives.broker-its-own-pull-requests], note: 'The three pre-existing primitives
       are reusable mechanisms; the run is prompt to session to brokered pull request.'}
-    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.5], note: 'Sessions stream to
+    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.babysit-the-pull-request], note: 'Sessions stream to
       the requester, who can watch, interrupt, or redirect; PR babysitting escalates to a person only when judgment
       is required.'}
-    implementation: {state: reported, claim_paths: [architecture.model, architecture.harness, architecture.sandbox,
-      architecture.tool_access, architecture.knowledge, architecture.context_mgmt, architecture.credentials,
-      architecture.interfaces]}
-    validation: {state: reported, claim_paths: [primitives.5], note: 'The documented check is the babysitting loop:
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.babysit-the-pull-request], note: 'The documented check is the babysitting loop:
       watched CI checks, fixed failing tests, and answered machine-review comments.'}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1, key_metrics.2,
-      key_metrics.3]}
-    lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1, lessons_learned.2, lessons_learned.3]}
-  implementation_fields:
-    model: {state: reported, claim_paths: [architecture.model]}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: reported, claim_paths: [architecture.sandbox]}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access]}
-    knowledge: {state: reported, claim_paths: [architecture.knowledge]}
-    context_mgmt: {state: reported, claim_paths: [architecture.context_mgmt]}
-    credentials: {state: reported, claim_paths: [architecture.credentials]}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces]}
-  primitive_roles: {primitives.0: mechanism, primitives.1: mechanism, primitives.2: mechanism, primitives.3: workflow,
-    primitives.4: workflow, primitives.5: validation}
-  observations:
-    headline_metric: {category: adoption-output, basis: reported-measurement, subject: 'Pinecone sessions created
-      by Sierra employees in the month preceding the report'}
-    key_metrics.0: {duplicate_of: headline_metric, reason: 'Identical statement, figure, period, and scope as the
+    observations: {state: reported}
+    lessons: {state: reported}
+  aliases:
+    key_metrics.sessions-created-people-month-preceding: {duplicate_of: headline_metric, reason: 'Identical statement, figure, period, and scope as the
       headline; both cite the same passage.'}
-    key_metrics.1: {category: adoption-output, basis: reported-measurement, subject: 'Sierra pull requests opened
-      through Pinecone in the month preceding the report'}
-    key_metrics.2: {category: adoption-output, basis: reported-measurement, subject: 'Engineering adoption of
-      Pinecone and company-wide daily use'}
-    key_metrics.3: {category: adoption-output, basis: reported-measurement, subject: 'Pinecone usage growth since
-      April with reported falling costs'}

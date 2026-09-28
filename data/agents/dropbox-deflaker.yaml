@@ -4,7 +4,6 @@ company: Dropbox
 agent_name: Deflaker
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: dropbox-deflaker-source-1
@@ -19,28 +18,33 @@ operating_models:
 rubric:
   invocation:
   - event-driven
-  state: durable-session
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Deflaker investigates and repairs flaky tests for Dropbox engineers using Nova.
 architecture:
   harness: Durable remediation workflow calling Nova; publication and CI remain outside the coding agent.
   context_mgmt: Prior attempt notes and new test logs accompany retries.
 primitives:
-- name: Collect evidence
+- id: collect-evidence
+  name: Collect evidence
   desc: Athena identifies flakiness; Deflaker gathers passing and failing logs.
-- name: Propose a repair
+  role: workflow
+- id: propose-a-repair
+  name: Propose a repair
   desc: Nova diagnoses the likely cause and proposes a change.
-- name: Validate repeatedly
+  role: workflow
+- id: validate-repeatedly
+  name: Validate repeatedly
   desc: CI repeats the test at least 100 times, depending on its failure rate.
-- name: Retry or finish
+  role: validation
+- id: retry-or-finish
+  name: Retry or finish
   desc: Failed validation starts another attempt with new logs and prior notes; the workflow lands a fix or stops
     after five attempts.
+  role: workflow
 sources:
 - id: dropbox-deflaker-source-1
   title: Introducing Nova, our internal platform for coding agents
   url: https://dropbox.tech/machine-learning/introducing-nova-our-internal-platform-for-coding-agents
-  canonical_url: https://dropbox.tech/machine-learning/introducing-nova-our-internal-platform-for-coding-agents
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -48,42 +52,24 @@ sources:
   duplicate_of: dropbox-nova-source-1
 evidence:
   summary:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'How we’re using the platform: Flaky test remediation; What we learned'
+  - locator: 'How we’re using the platform: Flaky test remediation; What we learned'
   operating_models.0:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'Flaky test remediation: workflow lands a working fix or reaches five attempts; diagram describes the
+  - locator: 'Flaky test remediation: workflow lands a working fix or reaches five attempts; diagram describes the
       automatic retry loop'
   architecture.harness:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'How we’re using the platform: Flaky test remediation; What we learned'
+  - locator: 'How we’re using the platform: Flaky test remediation; What we learned'
   architecture.context_mgmt:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'How we’re using the platform: Flaky test remediation; What we learned'
-  primitives.0:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'How we’re using the platform: Flaky test remediation; What we learned'
-  primitives.1:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'How we’re using the platform: Flaky test remediation; What we learned'
-  primitives.2:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'Flaky test remediation: CI runs the proposed change 100 or more times depending on failure rate'
-  primitives.3:
-  - source_id: dropbox-deflaker-source-1
-    relation: supports
-    locator: 'How we’re using the platform: Flaky test remediation; What we learned'
+  - locator: 'How we’re using the platform: Flaky test remediation; What we learned'
+  primitives.collect-evidence:
+  - locator: 'How we’re using the platform: Flaky test remediation; What we learned'
+  primitives.propose-a-repair:
+  - locator: 'How we’re using the platform: Flaky test remediation; What we learned'
+  primitives.validate-repeatedly:
+  - locator: 'Flaky test remediation: CI runs the proposed change 100 or more times depending on failure rate'
+  primitives.retry-or-finish:
+  - locator: 'How we’re using the platform: Flaky test remediation; What we learned'
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes an automated fix-and-validate loop and publication outside the agent,
       but does not state the required human approval or exception-handling policy.
@@ -100,64 +86,23 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
-      - primitives.3
+      - primitives.collect-evidence
+      - primitives.propose-a-repair
+      - primitives.retry-or-finish
     human_involvement:
       state: unreported
-      claim_paths: []
       note: The source describes an automated fix-and-validate loop and publication outside the agent, but does
         not state the required human approval or exception-handling policy.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.context_mgmt
     validation:
       state: reported
       claim_paths:
-      - primitives.2
+      - primitives.validate-repeatedly
     observations:
       state: unreported
-      claim_paths: []
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: unreported
-      claim_paths: []
-    knowledge:
-      state: unreported
-      claim_paths: []
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: unreported
-      claim_paths: []
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: validation
-    primitives.3: workflow
-  observations: {}

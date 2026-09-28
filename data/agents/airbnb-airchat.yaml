@@ -4,7 +4,6 @@ company: Airbnb
 agent_name: Airchat (airchat-cli)
 approach_type: platform
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: '2025'
   source_id: airbnb-airchat-source-1
@@ -21,8 +20,6 @@ rubric:
   invocation:
   - interactive
   - background
-  state: unknown
-  identity: unknown
   evidence_strength: mixed
 summary: Airchat is Airbnb's internal agentic-coding harness, built by its Dev AI team as a wrapper over vendor
   coding agents such as Claude Code and Codex. The team first built its own orchestrator from scratch, never shipped
@@ -41,22 +38,29 @@ architecture:
   context_mgmt: AirChat loads default MCP servers into sessions, and the agent loop reads configuration files such
     as AGENTS.md and CLAUDE.md
 primitives:
-- name: Start an agentic coding session
+- id: start-an-agentic-coding-session
+  name: Start an agentic coding session
   desc: An engineer writes a short spec or prompt that starts an autonomous coding session through AirChat
-- name: Materialize the code change
+  role: workflow
+- id: materialize-the-code-change
+  name: Materialize the code change
   desc: The session calls LLMs and internal tools in a loop until it produces a complete code change
-- name: Review every line before merge
+  role: workflow
+- id: review-every-line-before-merge
+  name: Review every line before merge
   desc: The loop ends at the diff; a human reviews every line of the change before it merges as a pull request
+  role: workflow
 key_metrics:
-- About 64% of pull requests materialized through agentic coding
+- id: pull-requests-materialized-through-agentic-coding
+  text: About 64% of pull requests materialized through agentic coding
 lessons_learned:
-- Wrap vendor coding agents with a thin shim instead of building a full orchestrator from scratch; Airbnb's own
-  orchestrator never shipped
+- id: wrap-vendor-coding-agents-thin-shim
+  text: Wrap vendor coding agents with a thin shim instead of building a full orchestrator from scratch; Airbnb's own
+    orchestrator never shipped
 sources:
 - id: airbnb-airchat-source-1
   title: Agentic coding at Airbnb (DPE.org)
   url: https://dpe.org/sessions/szczepan-faber-mike-nakhimovich/agentic-coding-at-airbnb/
-  canonical_url: https://dpe.org/sessions/szczepan-faber-mike-nakhimovich/agentic-coding-at-airbnb/
   kind: talk
   provenance_class: direct-participant
   role: evidence
@@ -67,7 +71,6 @@ sources:
 - id: airbnb-airchat-source-2
   title: Beyond the CLI (DX podcast)
   url: https://getdx.com/podcast/beyond-the-cli-agentic-ai-for-async-workloads-and-non-developers/
-  canonical_url: https://getdx.com/podcast/beyond-the-cli-agentic-ai-for-async-workloads-and-non-developers/
   kind: podcast
   provenance_class: direct-participant
   role: evidence
@@ -79,7 +82,6 @@ sources:
 - id: airbnb-airchat-source-3
   title: How to get your team past the AI (The AI Thinker)
   url: https://www.theaithinker.com/p/how-to-get-your-team-past-the-ai
-  canonical_url: https://www.theaithinker.com/p/how-to-get-your-team-past-the-ai
   kind: news
   provenance_class: independent-secondary
   role: evidence
@@ -90,7 +92,6 @@ sources:
 evidence:
   operating_models.0:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, lines 82, 250
   - source_id: airbnb-airchat-source-2
     relation: contextualizes
@@ -98,72 +99,52 @@ evidence:
   - source_id: airbnb-airchat-source-1
     relation: contextualizes
   - source_id: airbnb-airchat-source-2
-    relation: supports
   - source_id: airbnb-airchat-source-3
-    relation: supports
   headline_metric:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, lines 16, 24, 194
   architecture.harness:
   - source_id: airbnb-airchat-source-2
-    relation: supports
   architecture.model:
   - source_id: airbnb-airchat-source-2
-    relation: supports
     locator: Preserved content.md, lines 114, 214
   architecture.tool_access:
   - source_id: airbnb-airchat-source-2
-    relation: supports
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, line 166
   architecture.sandbox:
   - source_id: airbnb-airchat-source-2
-    relation: supports
     locator: Preserved content.md, line 232
   architecture.credentials:
   - source_id: airbnb-airchat-source-2
-    relation: supports
     locator: Preserved content.md, line 118
   architecture.context_mgmt:
   - source_id: airbnb-airchat-source-2
-    relation: supports
     locator: Preserved content.md, line 118
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, line 82
   architecture.interfaces:
   - source_id: airbnb-airchat-source-2
-    relation: supports
     locator: Preserved content.md, lines 188–192, 214
-  primitives.0:
+  primitives.start-an-agentic-coding-session:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, lines 82, 104
   - source_id: airbnb-airchat-source-2
-    relation: supports
     locator: Preserved content.md, line 118
-  primitives.1:
+  primitives.materialize-the-code-change:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, line 82
-  primitives.2:
+  primitives.review-every-line-before-merge:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, lines 178–182
-  lessons_learned.0:
+  lessons_learned.wrap-vendor-coding-agents-thin-shim:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, lines 202–210
-  key_metrics.0:
+  key_metrics.pull-requests-materialized-through-agentic-coding:
   - source_id: airbnb-airchat-source-3
-    relation: supports
     locator: Preserved content.md, lines 16, 24, 194
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: Airbnb engineers describe agents producing pull requests that engineers review, which locates
       human attention at work-product review.
@@ -173,8 +154,6 @@ claim_metadata:
     confidence_reason: The build is described by Airbnb engineers in talks and podcasts, not in a first-party engineering
       blog.
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: low
     confidence_reason: The 64% figure comes from a third-party newsletter that quotes the engineers, not from a
       first-party Airbnb source.
@@ -182,9 +161,10 @@ claim_metadata:
     metric_scope: Airbnb PRs materialized through agentic coding by the October 2025 talk
     valid_at: 2025-10
     denominator: Airbnb pull requests; exact count not supplied
-  key_metrics.0:
-    kind: metric
-    provenance: reported
+    category: adoption-output
+    basis: reported-measurement
+    subject: Share of Airbnb pull requests materialized through agentic coding by the October 2025 talk
+  key_metrics.pull-requests-materialized-through-agentic-coding:
     confidence: low
     confidence_reason: The figure comes from a third-party newsletter, not a first-party Airbnb source.
     metric_scope: Airbnb PRs materialized through agentic coding by the October 2025 talk
@@ -216,26 +196,26 @@ claim_metadata:
     confidence_reason: The CLI is the stated core abstraction and the Remote web UI is live as an internal early-access
       program.
     valid_at: '2026'
-  primitives.0:
+  primitives.start-an-agentic-coding-session:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The reviewed talk defines the agentic loop as starting from an engineer-written spec or prompt.
     valid_at: 2025-10
-  primitives.1:
+  primitives.materialize-the-code-change:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The reviewed talk's loop diagram states repeated LLM and tool calls produce the materialized
       change.
     valid_at: 2025-10
-  primitives.2:
+  primitives.review-every-line-before-merge:
     kind: fact
     provenance: reported
     confidence: high
     confidence_reason: A speaker quote states that every line is reviewed by a human before merge.
     valid_at: 2025-10
-  lessons_learned.0:
+  lessons_learned.wrap-vendor-coding-agents-thin-shim:
     kind: opinion
     provenance: reported
     confidence: medium
@@ -253,90 +233,38 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
-      - primitives.2
+      - primitives.start-an-agentic-coding-session
+      - primitives.materialize-the-code-change
+      - primitives.review-every-line-before-merge
     human_involvement:
       state: not-applicable
-      claim_paths: []
       note: There is no single platform-wide agent review boundary. Scoped downstream operating-model claims remain
         in research details; access controls are described separately.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.model
-      - architecture.tool_access
-      - architecture.context_mgmt
-      - architecture.credentials
-      - architecture.sandbox
-      - architecture.interfaces
     validation:
       state: reported
       claim_paths:
-      - primitives.2
+      - primitives.review-every-line-before-merge
       note: The documented check is the human line-by-line diff review before merge; no separate automated gate
         is described for coding runs.
     observations:
       state: reported
-      claim_paths:
-      - headline_metric
-      - key_metrics.0
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
   implementation_fields:
-    model:
-      state: reported
-      claim_paths:
-      - architecture.model
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: reported
-      claim_paths:
-      - architecture.sandbox
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
     knowledge:
       state: unreported
-      claim_paths: []
       note: The captures describe internal context through MCP servers and configuration files, not a separate knowledge
         store.
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
-    credentials:
-      state: reported
-      claim_paths:
-      - architecture.credentials
     interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
       note: The CLI is the stated core surface and the Remote web UI is a live internal EAP; AirChat began as JetBrains
         and Xcode IDE plugins, which the captures describe as history.
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: workflow
-  observations:
-    headline_metric:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Share of Airbnb pull requests materialized through agentic coding by the October 2025 talk
-    key_metrics.0:
+  aliases:
+    key_metrics.pull-requests-materialized-through-agentic-coding:
       duplicate_of: headline_metric
       reason: Identical text, scope, period, denominator, and confidence as the headline; adds nothing the canonical
         lacks.

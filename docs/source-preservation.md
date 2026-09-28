@@ -7,15 +7,15 @@ source's provenance class.
 
 ## Preservation model
 
-Each source can have three locations:
+Each source can have two locations:
 
 - `url` is the immutable publisher URL cited by the catalog.
-- `archived_url` is an immutable external archive, normally a Wayback Machine capture.
 - `capture.manifest_path` identifies a repository-owned Steel capture under
-  `archive/sources/<source-id>/`.
+  `archive/sources/<source-id>/`. The manifest can record an external archive, normally a
+  Wayback Machine capture, as `external_archive_url`.
 
-The catalog always displays the original URL. When available, it displays the local snapshot and
-Wayback capture beside the original rather than replacing it.
+The catalog always displays the original URL. When available, it displays the local snapshot
+beside the original rather than replacing it.
 
 Capture happens during source intake. Waiting for the scheduled link check is too late: a page
 that returns 404 or 410 may no longer be recoverable.
@@ -53,7 +53,7 @@ anti-bot interstitial, or unrelated redirect.
 The scheduled checker uses these outcomes:
 
 - A healthy original passes.
-- A confirmed 404 or 410 with a verified local or external archive passes with an `archived`
+- A confirmed 404 or 410 with a verified local snapshot passes with an `archived`
   warning.
 - A confirmed 404 or 410 without a verified fallback fails.
 - Access-controlled and temporarily unreachable originals remain warnings rather than being

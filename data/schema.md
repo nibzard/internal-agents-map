@@ -2,14 +2,16 @@
 
 Each YAML file in `data/agents/` describes one reported approach. An approach can be an agent, a platform, an orchestration system, or an implemented supporting pattern.
 
-The build creates four linked collections in `data/agents.json`:
+The build creates four linked collections in `data/agents.json` (schema version 8):
 
 - `approaches` contains the systems and their comparison fields.
 - `claims` contains sourced statements derived from authored fields.
 - `sources` contains the evidence and commentary records.
 - `companies` contains the organization registry with each logo descriptor.
 
-Copy `templates/agent.yaml` when you add an approach. Omit optional fields when no public source documents them. Use `unknown` for required rubric fields when the sources do not provide an answer.
+The export also contains `claim_aliases`. It maps each claim ID of schema version 7 to its claim ID in schema version 8. The build reads the map from `data/claim_aliases.json` and fails when a value is not a claim ID of the export. The map stays for one release. [docs/changelog.md](../docs/changelog.md) lists the changes between schema versions.
+
+Copy `templates/agent.yaml` when you add an approach. Omit optional fields when no public source documents them. Use `unknown` for a required rubric field when the sources do not provide an answer.
 
 ## Machine-readable schema
 
@@ -32,7 +34,6 @@ To add an allowed value, add it to the schema and to this document. A test fails
 | `agent_name` | string | The reported name. Use a clear description if no name is public. |
 | `approach_type` | enum | The type of approach. See the values below. |
 | `deployment_stage` | enum | `research`, `prototype`, `pilot`, `deployed`, `scaled`, or `unknown`. |
-| `year` | integer | The year of the earliest verified public evidence. |
 | `first_public_evidence` | map | The evidence `date` and its `source_id`. |
 | `last_reviewed_at` | date | The last catalog review date. |
 | `status` | enum | `internal`, `open-sourced`, `commercialized`, or `mixed` for a combined record. |
@@ -44,9 +45,11 @@ To add an allowed value, add it to the schema and to this document. A test fails
 | `sources` | list | Structured public sources. |
 | `evidence` | map | A link from each authored claim to one or more sources. |
 
+The build derives `year`, the year of the earliest verified public evidence, from `first_public_evidence.date`. The export always contains `year`. Do not write it. If a record writes `year` and the value does not agree with that date, the build fails.
+
 Set the optional `featured` field to `true` to show a record before all others in the default directory order. Featured records come after the bookmarks of the reader and before the other well-documented records. Give this field only to a record that is well documented. The A–Z order does not use it.
 
-Optional identity fields include `aliases` and `family_id`. Use `relationships` to connect records. Each relationship has a `type` and `approach_id`. Types are `component-of`, `built-on`, `successor-of`, and `related-to`.
+The optional identity field is `aliases`. Use `relationships` to connect records. Each relationship has a `type` and `approach_id`. Types are `component-of`, `built-on`, `successor-of`, and `related-to`.
 
 ### Approach types
 
@@ -57,6 +60,10 @@ Optional identity fields include `aliases` and `family_id`. Use `relationships` 
 - `platform`: Reusable infrastructure that supports several agents or workflows.
 - `orchestration-system`: A system whose primary responsibility is coordinating agents.
 - `supporting-pattern`: A narrower implemented component that enables agent operation.
+
+The build derives `catalog_section` from the type: `agent` and `agent-system` become
+`agents`; `platform`, `supporting-pattern`, and `orchestration-system` become
+`infrastructure`. Do not write this field.
 
 Classify a compound entry by its documented primary responsibility and explain its
 components. Invocation is independent of structural type; an event trigger does not
@@ -69,6 +76,18 @@ by itself establish unattended execution.
 - `drafts-reviewed`: The system prepares work that a person reviews before use.
 - `autonomous`: The work takes effect without required human review.
 - `unknown`: The sources do not document the review boundary.
+
+When a record has exactly one operating model, its autonomy must not contradict the
+attention boundary of that model. The build refuses any other pair:
+
+| Autonomy | Allowed attention boundaries |
+| --- | --- |
+| `drafts-reviewed` | `work-product-review`, `outcome-review` |
+| `autonomous` | `exception-only` |
+| `human-in-loop` | `continuous-steering`, `work-product-review` |
+| `assistive` | `continuous-steering` |
+
+The value `unknown` on either side agrees with every value.
 
 ### Operating models and derived levels
 
@@ -95,7 +114,7 @@ The boundary describes required human attention, not tool authority or elapsed u
 execution. Record permissions and publication controls in the supported claims. A Level 5
 workflow can still be unable to merge, deploy, spend, or act in production without approval.
 
-Each `operating_models.N` item is an evidence-linked inference with `catalog-judgment` provenance. Its claim metadata must include `confidence`, `confidence_reason`, and `valid_at`. The level itself is generated and is never authored as a reported company fact.
+Each `operating_models.N` item is an evidence-linked inference with `catalog-judgment` provenance. The build fills this `kind` and `provenance`, so do not write them. Any other `kind` or `provenance` fails the build. Its claim metadata must include `confidence`, `confidence_reason`, and `valid_at`. The level itself is generated and is never authored as a reported company fact.
 
 ## Comparison rubric
 
@@ -104,9 +123,9 @@ The rubric organizes different definitions and designs. It does not determine wh
 | Field | Allowed values |
 | --- | --- |
 | `invocation` | A list of `interactive`, `background`, `scheduled`, `event-driven`, or `unknown`. |
-| `state` | `run-only`, `durable-session`, `cross-session-memory`, `mixed`, or `unknown`. |
-| `identity` | `user`, `dedicated-agent`, `service`, `mixed`, or `unknown`. |
 | `evidence_strength` | `detailed-primary`, `limited-primary`, `secondary-only`, `mixed`, or `unknown`. |
+
+Schema version 8 removed the `state` and `identity` fields; [docs/changelog.md](../docs/changelog.md) gives the reason.
 
 Evidence strength describes the available detail. It does not measure whether a claim is true. A company article can provide detailed architecture and still contain marketing claims.
 
@@ -116,13 +135,27 @@ Do not infer either field from the other, and use `unknown` when the source is s
 
 ## Optional description fields
 
-`architecture` can contain short strings for `sandbox`, `harness`, `model`, `tool_access`, `knowledge`, `credentials`, and `context_mgmt`. Its `interfaces` field is a list. For a reviewed but undocumented execution sandbox, use the canonical string `unknown`; omit an inapplicable sandbox for a supporting pattern. An earlier implementation's environment must be labeled as historical, not attributed to its replacement.
+`architecture` can contain short strings for `sandbox`, `harness`, `model`, `tool_access`, `knowledge`, `credentials`, and `context_mgmt`. Its `interfaces` field is a list. Omit a field that no reviewed source documents. Do not write `unknown`, `Not specified`, an empty string, or an empty list; the schema rejects them. `page_content.implementation_fields` records that the sources were read and name nothing. An earlier implementation's environment must be labeled as historical, not attributed to its replacement.
 
 Domain values are `coding`, `code-review`, `support`, `on-call`, `research`, `customer-success`, `security`, `finance-ops`, `data`, `ci-triage`, `maintenance`, `ops`, `recruitment`, `migrations`, and `design`.
 
 Interface values are `slack`, `github`, `web`, `cli`, `linear`, `chrome-extension`, `webhook`, `desktop`, `scheduled`, `skill`, `cursor`, `api`, `automation`, `ci`, `intercom`, `jira`, `internal-ui`, `mobile`, and `monday`.
 
-`primitives` is a list of maps with `name` and `desc` fields. `key_metrics` and `lessons_learned` are lists of strings. `headline_metric` is a short reported result.
+`primitives`, `key_metrics`, and `lessons_learned` are lists of items. Each item has an `id`. The ID is kebab-case, contains at least one letter, and is unique in its list. A claim path names the item by its ID, so a claim keeps its evidence when the list order changes.
+
+- A primitive has `id`, `name`, `desc`, and `role`. The role is `workflow`, `mechanism`, or `validation`. A workflow primitive is a step of the normal run. A mechanism primitive is a part that the steps use. A validation primitive checks the work.
+- A key metric and a lesson have `id` and `text`.
+
+`headline_metric` is a short reported result.
+
+```yaml
+primitives:
+  - {id: open-a-run, name: Open a run, desc: "An issue label starts a run", role: workflow}
+key_metrics:
+  - {id: weekly-runs, text: "40 runs a week in August 2026"}
+lessons_learned:
+  - {id: gate-before-review, text: "The team puts the test gate before the human review."}
+```
 
 Treat all company metrics as self-reported unless an independent source verifies them. Include the date, scope, denominator, and measurement method when the source provides them.
 
@@ -142,12 +175,7 @@ The join runs both ways. Every `company` value in `data/agents/` must have a reg
 
 Logo files live in `public/logos/<id>.svg` or `public/logos/<id>.png`. The build rejects an SVG larger than 64 KiB and a PNG larger than 128 KiB or narrower than 128 pixels. An SVG needs a `viewBox`. It must not hold a DOCTYPE, an ENTITY declaration, a script, a `foreignObject`, an `on*` attribute, a `javascript:` value, or a non-fragment `href`. The intrinsic size comes from the `viewBox` or from the PNG header.
 
-The build derives the `companies` collection into `data/agents.json` (schema version 7) and adds `company_id` to every approach. Each company record carries `id`, `name`, `homepage`, and `logo`. The `logo` is `null` when no asset exists. Otherwise it is a descriptor with `path`, `media_type`, `width`, `height`, `bytes`, `sha256`, `source_url`, and `accessed_at`. The build derives the hash, the byte count, and the size from the asset. Never author them.
-
-Schema 6 replaces the old `task-agent` and `background-agent` approach types with
-`agent`. Consumers that used those values should filter structural type with
-`approach_type: agent` and use `rubric.invocation` to distinguish interactive,
-background, scheduled, and event-driven operation. The compact index schema is 3.
+The build derives the `companies` collection into `data/agents.json` and adds `company_id` to every approach. Each company record carries `id`, `name`, `homepage`, and `logo`. The `logo` is `null` when no asset exists. Otherwise it is a descriptor with `path`, `media_type`, `width`, `height`, `bytes`, `sha256`, `source_url`, and `accessed_at`. The build derives the hash, the byte count, and the size from the asset. Never author them.
 
 ## Source records
 
@@ -158,17 +186,17 @@ Every source requires these fields:
 | `id` | A repository-wide unique kebab-case ID. |
 | `title` | The source title. |
 | `url` | The immutable original publisher URL. It must use HTTPS and must never be replaced with an archive URL. |
-| `canonical_url` | The normalized publisher URL after redirects and tracking removal. |
 | `kind` | The source format. |
 | `provenance_class` | The relationship between the publisher and the approach. |
 | `accessed_at` | The collection date. |
 | `last_verified_at` | The last successful review date. |
 | `role` | `evidence`, `commentary`, or `discovery`. The default is `evidence`. |
 
-Optional fields include `publisher`, `authors`, `published_at`, `archived_url`, `capture`, and `duplicate_of`. `archived_url` is the preferred verified external archive URL and must use HTTPS. `capture` points to a repository-owned Steel capture manifest:
+`canonical_url` is optional. It is the normalized publisher URL after redirects and tracking removal. The default is `url`, and the export always contains it. Write it only when it is different from `url`.
+
+Optional fields include `publisher`, `authors`, `published_at`, `capture`, and `duplicate_of`. `capture` points to a repository-owned Steel capture manifest:
 
 ```yaml
-archived_url: "https://web.archive.org/web/20260831123456/https://example.com/article"
 capture:
   manifest_path: "archive/sources/company-agent-source-1/metadata.json"
 ```
@@ -181,7 +209,7 @@ archive/sources/<source-id>/content.md
 archive/sources/<source-id>/page.pdf        # optional
 ```
 
-The version 1 JSON manifest contains `schema_version`, `source_id`, `original_url`, `final_url`, `captured_at`, `http_status`, `tool`, and `artifacts`. It may also contain `external_archive_url`, which must equal `archived_url`. The `tool` map records `name: steel` and a non-empty version. `artifacts.markdown` is mandatory; `artifacts.pdf` is optional. Each artifact records its repository-relative `path`, exact `bytes`, and a lowercase `sha256:<digest>`. Markdown must be non-empty. PDFs must begin with `%PDF-` and cannot exceed 10 MiB. Paths and hashes are validated during every build.
+The version 1 JSON manifest contains `schema_version`, `source_id`, `original_url`, `final_url`, `captured_at`, `http_status`, `tool`, and `artifacts`. It may also contain `external_archive_url`, the external archive that the capture tool found. The `tool` map records `name: steel` and a non-empty version. `artifacts.markdown` is mandatory; `artifacts.pdf` is optional. Each artifact records its repository-relative `path`, exact `bytes`, and a lowercase `sha256:<digest>`. Markdown must be non-empty. PDFs must begin with `%PDF-` and cannot exceed 10 MiB. Paths and hashes are validated during every build.
 
 Captures are append-only evidence snapshots: never overwrite an existing bundle or use a capture to replace the original `url`. Create a new source ID when materially changed source content is needed for new claims.
 
@@ -205,13 +233,22 @@ Every descriptive field becomes a claim in the generated JSON file. The `evidenc
 evidence:
   summary:
     - source_id: acme-agent-source-1
-      relation: supports
       locator: "Architecture, paragraph 3"
-  key_metrics.0:
+  key_metrics.weekly-runs:
     - source_id: acme-agent-source-2
-      relation: supports
+      relation: contextualizes
       locator: "12:40"
 ```
+
+Each link has these fields:
+
+| Field | Description |
+| --- | --- |
+| `source_id` | The source of this record that the link refers to. It is optional only when the record has one source; the build then uses that source. When the record has more than one source, every link must name its source, or the build fails. |
+| `relation` | `supports`, `contradicts`, or `contextualizes`. The default is `supports`. |
+| `locator` | The exact passage in the source. |
+
+A link must contain `source_id`, `locator`, or both. The export always contains `source_id` and `relation` for each link.
 
 The relation is `supports`, `contradicts`, or `contextualizes`. Use a stable locator when one exists. For preserved sources, `Preserved content.md, lines 23–27` refers to the immutable artifact in that source's capture bundle, including its archive header. A locator must identify the supporting passage, not merely a broad topic. For source code, record the commit, path, and line. For a talk, record the timestamp.
 
@@ -222,13 +259,20 @@ observation and any missing link in the reasoning. A generic claim that the sour
 supports the lesson does not explain that reasoning. The lesson text must also carry
 its scope: a team's implementation is not a recommendation for every organization.
 
-Use `claim_metadata` when the default classification is not correct:
+Use `claim_metadata` when the default classification is not correct. The build gives each claim path a default `kind` and `provenance`:
+
+| Claim path | Default `kind` | Default `provenance` |
+| --- | --- | --- |
+| `summary`, `architecture.*`, `primitives.<id>` | `fact` | `reported` |
+| `headline_metric`, `key_metrics.<id>` | `metric` | `reported` |
+| `lessons_learned.<id>` | `inference` | `catalog-judgment` |
+| `operating_models.N` | `inference` (fixed) | `catalog-judgment` (fixed) |
+
+Do not write a `kind` or `provenance` that is equal to its default. The export always contains both.
 
 ```yaml
 claim_metadata:
-  key_metrics.0:
-    kind: metric
-    provenance: reported
+  key_metrics.weekly-runs:
     confidence: medium
     confidence_reason: "A direct participant reported the number without a method."
     valid_at: 2026-04
@@ -236,7 +280,12 @@ claim_metadata:
     metric_scope: "Merged agent-authored pull requests"
     denominator: "All merged pull requests"
     measurement_method: "Company dashboard"
+    category: adoption-output
+    basis: reported-measurement
+    subject: "Merged agent-authored pull requests"
 ```
+
+A claim path uses the item ID: `primitives.<id>`, `key_metrics.<id>`, or `lessons_learned.<id>`. The build refuses an index path, such as `primitives.3`, in `evidence`, `claim_metadata`, and `page_content`. Only `operating_models.N` keeps its index. The public claim ID is the record ID, two dashes, and the claim path with each `.` and `_` changed to `-`, for example `github-qubot--primitives-start-a-qubot-run`.
 
 A metric's `valid_at` can identify a dated reported observation, but does not by itself define a measurement interval. Keep the interval explicit in `metric_scope` or `measurement_method`; never derive it from a capture or review timestamp. If a source says only “last month” or “as of Part 2,” preserve that wording and leave unsupported calendar dates unset.
 
@@ -244,37 +293,85 @@ Claim kinds are `fact`, `metric`, `inference`, and `opinion`. Provenance values 
 
 Metric metadata can also include `value`, `unit`, `reported_by`, `metric_scope`, `denominator`, and `measurement_method`. The generated export uses the company as `reported_by` when a reported metric does not override it.
 
+When a record has `page_content`, the metadata of the headline and of each key metric has three axes, or the metric is an alias in `page_content.aliases`:
+
+- `category` is `effectiveness`, `adoption-output`, `cost-latency`, `implementation-scale`, or `runtime-capacity`.
+- `basis` is `reported-measurement`, `qualitative`, `estimate`, or `target`.
+- `subject` is the specific thing that the metric measures.
+
+Only a metric can carry these axes. An alias must not carry them.
+
+In the export, each primitive claim has `item_id`, `display_name`, and `role`. Each key metric and lesson claim has `item_id`. A canonical metric claim has `category`, `basis`, and `subject`. An alias metric claim has `duplicate_of`, the claim ID of its target, and `reason`.
+
 ## Optional reviewed page content
 
-`page_content` version 1 records an editorial review without changing existing claim
-identities. It is optional during the pilot. `reviewed_at` is a full `YYYY-MM-DD` date,
-and `source_ids` lists the entry sources actually read. `questions` contains exactly
-`purpose`, `workflow`, `human_involvement`, `implementation`, `validation`,
-`observations`, and `lessons`. `implementation_fields` contains all eight architecture
-keys. Every disposition has a `state`, `claim_paths`, and optionally a `note`.
+`page_content` version 1 records an editorial review. `reviewed_at` is a full
+`YYYY-MM-DD` date, and `source_ids` lists the entry sources actually read. `questions`
+contains exactly `purpose`, `workflow`, `human_involvement`, `implementation`,
+`validation`, `observations`, and `lessons`. Each answer has a `state` and optionally a
+`note`.
 
-States are `reported`, `unreported`, `not-applicable`, and `not-reviewed`. Reported
-slots require one or more same-entry claims supported by a reviewed source. All other
-states require no claim paths and a concrete note; for `not-reviewed`, the note is the
-next research action. An `unreported` question or implementation field is the one
-exception: the state already says the captures were read and name nothing, so the note
-is optional there and must be left out unless it adds a fact the state does not carry —
-what the source says instead, which claim stays in research details, or the scope that
-limits the answer. A reported workflow also requires `workflow_scope`.
+States are `reported`, `unreported`, `not-applicable`, and `not-reviewed`. A reported
+answer requires one or more same-entry claims supported by a reviewed source. The other
+states have no claims. A `not-applicable` or `not-reviewed` answer requires a concrete
+note; for `not-reviewed`, the note is the next research action. An `unreported` answer
+does not require a note: the state already says the captures were read and name nothing.
+Leave the note out unless it adds a fact the state does not carry — what the source says
+instead, which claim stays in research details, or the scope that limits the answer.
 
-`primitive_roles` classifies every primitive as `workflow`, `mechanism`, or
-`validation`; the workflow question lists every workflow primitive in reading order.
-`observations` covers the headline and every key metric. A canonical observation has a
-`category` (`effectiveness`, `adoption-output`, `cost-latency`,
-`implementation-scale`, or `runtime-capacity`), a `basis`
-(`reported-measurement`, `qualitative`, `estimate`, or `target`), and a specific
-`subject`. A duplicate representation instead has `duplicate_of` and `reason`.
-Targets must be same-entry canonical observations; self references, cycles, and chains
-are invalid. Confirm equal subject, statement/value, period, scope, and qualifications
-before marking a duplicate. The working criterion: an alias must add nothing the
-canonical lacks. A component of a compound observation can alias the compound;
-an observation carrying an extra qualification or absence note cannot, however
-similar its number.
+Write `claim_paths` only for `workflow`, `human_involvement`, and `validation`. They are
+editorial choices: the workflow lists every `workflow` primitive in reading order, and the
+other two cite the claims that answer them. A reported workflow also requires
+`workflow_scope`. The build derives the claim paths of the other four questions and
+refuses them in the record:
+
+| Question | Derived claim paths when the state is `reported` |
+| --- | --- |
+| `purpose` | `summary` |
+| `implementation` | Every present architecture field, in the order `model`, `harness`, `sandbox`, `tool_access`, `knowledge`, `context_mgmt`, `credentials`, `interfaces` |
+| `observations` | `headline_metric`, then every key metric in record order, aliases included |
+| `lessons` | Every lesson |
+
+A derived question that is not `reported` has no claim paths in the export. A reported
+derived question with nothing to derive fails the build.
+
+`implementation_fields` holds only what the build cannot derive. The build makes a field
+`reported` when its architecture field is present and `unreported` when it is absent.
+For a present field, an entry may hold only a `note`. For an absent field, an entry has a
+`state` (`unreported`, `not-applicable`, or `not-reviewed`) and a `note`. An entry with
+`state: reported` or with `claim_paths` fails the build.
+
+`aliases` maps a metric claim path to `duplicate_of` and `reason`. It marks a metric that
+repeats another metric of the same entry. The target must be the headline or a key
+metric that is not an alias; self references, cycles, and chains are invalid. Confirm
+equal subject, statement/value, period, scope, and qualifications before marking a
+duplicate. The working criterion: an alias must add nothing the canonical lacks. A
+component of a compound observation can alias the compound; an observation carrying an
+extra qualification or absence note cannot, however similar its number.
+
+```yaml
+page_content:
+  version: 1
+  reviewed_at: "2026-09-28"
+  source_ids: [acme-agent-source-1]
+  workflow_scope: "Issue label → reviewed pull request"
+  questions:
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.open-a-run]}
+    human_involvement: {state: reported, claim_paths: [operating_models.0]}
+    implementation: {state: reported}
+    validation: {state: unreported}
+    observations: {state: reported}
+    lessons: {state: reported}
+  implementation_fields:
+    harness: {note: "The talk names the loop but not its version."}
+    sandbox: {state: not-applicable, note: "The agent runs no code of its own."}
+  aliases:
+    key_metrics.weekly-runs: {duplicate_of: headline_metric, reason: "Same count and period."}
+```
+
+The export always contains all seven questions with their claim paths, all eight
+implementation fields with their states, and `aliases`.
 
 Run `uv run --locked python scripts/content_coverage.py --check` to validate the
 coverage view, or add `--output <path>` to write deterministic JSON. Records without
@@ -294,19 +391,3 @@ Normalize URLs and remove tracking parameters. Link mirrors and translations wit
 
 Run `uv run python scripts/build.py` after each data change. Run
 `uv run python scripts/build.py --check` to verify committed output.
-
-## Collection migration (catalog 7 / compact index 3)
-
-The build derives `catalog_section`: `agent` and `agent-system` become `agents`;
-`platform`, `supporting-pattern`, and `orchestration-system` become `infrastructure`.
-Do not author this field. Unknown structural types fail validation. Existing fields,
-IDs, claim anchors, and detail URLs remain available. `/agents.json` and
-`/agents/index.json` retain their historical names and include both collections.
-Consumers must select `catalog_section` explicitly for agent counts or comparisons.
-One agent family counts once, not as an estimated number of constituent agents.
-
-`/` and `/index.md` represent Agents. `/infrastructure` and `/infrastructure.md`
-represent Infrastructure. `/?collection=all` shows two labeled groups. Legacy
-infrastructure type queries on `/` switch to All while retaining OR filters.
-Seven `page_content.questions` keys remain the common evidence contract; HTML and
-Markdown apply collection profiles without changing evidence or hiding unknowns.

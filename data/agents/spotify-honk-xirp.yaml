@@ -4,7 +4,6 @@ company: Spotify
 agent_name: Honk
 approach_type: agent
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: '2025'
   source_id: spotify-honk-xirp-source-1
@@ -22,8 +21,6 @@ rubric:
   invocation:
   - interactive
   - background
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: 'Honk is Spotify''s background coding agent; it runs on a Claude-Agent-SDK harness in Kubernetes, uses
   trusted CI tools, and combines formatting and linting with LLM-based diff evaluation. Xirp is a related Spotify
@@ -45,37 +42,55 @@ architecture:
   context_mgmt: Fleet Management coordinates repo targeting, builds/tests, and PR workflow at scale; Xirp pairs
     sessions with Portal org context
 primitives:
-- name: Deterministic and model-based verification
+- id: deterministic-and-model-based-verification
+  name: Deterministic and model-based verification
   desc: The harness combines build/test tools, formatting and linting, and LLM-based diff evaluation
-- name: Fleet management
+  role: validation
+- id: fleet-management
+  name: Fleet management
   desc: Target thousands of repos, run builds/tests, open and merge PRs at fleet scale
-- name: Xirp (workspace/context layer)
+  role: mechanism
+- id: xirp-workspace-context-layer
+  name: Xirp (workspace/context layer)
   desc: An agentic development environment connected to Portal for organizational context; its relationship to Honk
     is not documented in the captured sources
-- name: Describe the change as a prompt
+  role: mechanism
+- id: describe-the-change-as-a-prompt
+  name: Describe the change as a prompt
   desc: An engineer states the change in natural language instead of a deterministic migration script; from Slack
     or GitHub Enterprise an interactive agent gathers the task details into the prompt
-- name: Honk executes the code change
+  role: workflow
+- id: honk-executes-the-code-change
+  name: Honk executes the code change
   desc: The coding agent performs the modification while Fleet Management keeps identifying targets and scheduling
     the work
-- name: Open the pull request through the existing workflow
+  role: workflow
+- id: open-pull-request-through-existing-workflow
+  name: Open the pull request through the existing workflow
   desc: Fleet Management opens the pull request against the target repository; getting reviews and merging into
     production remain the pre-agent workflow
+  role: workflow
 key_metrics:
-- 1,500+ merged AI-generated PRs (Honk)
-- 60-90% time savings on migrations vs manual
-- Around half of Spotify PRs automated by Fleet Management since mid-2024, including deterministic transformations
+- id: merged-ai-generated-prs-honk
+  text: 1,500+ merged AI-generated PRs (Honk)
+- id: time-savings-migrations-vs-manual
+  text: 60-90% time savings on migrations vs manual
+- id: half-spotify-prs-automated-fleet-management
+  text: Around half of Spotify PRs automated by Fleet Management since mid-2024, including deterministic transformations
 lessons_learned:
-- Spotify's coding CLI combines formatting and linting with a separate model-based assessment of the diff.
-- Honk runs in Kubernetes pods and uses trusted tools, including builds in Spotify's CI environment.
-- Spotify exposes Backstage ownership and documentation through tools and gives agents feedback through its existing
-  lint standards.
-- Spotify describes Xirp as supplying service ownership, documentation, and architecture context to coding sessions.
+- id: coding-cli-combines-formatting-linting-separate
+  text: Spotify's coding CLI combines formatting and linting with a separate model-based assessment of the diff.
+- id: runs-kubernetes-pods-uses-trusted-tools
+  text: Honk runs in Kubernetes pods and uses trusted tools, including builds in Spotify's CI environment.
+- id: exposes-backstage-ownership-documentation-through-tools
+  text: Spotify exposes Backstage ownership and documentation through tools and gives agents feedback through its existing
+    lint standards.
+- id: supplying-service-ownership-documentation-architecture-context
+  text: Spotify describes Xirp as supplying service ownership, documentation, and architecture context to coding sessions.
 sources:
 - id: spotify-honk-xirp-source-1
   title: Spotify's Journey with Our Background Coding Agent (Honk)
   url: https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1
-  canonical_url: https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -85,7 +100,6 @@ sources:
 - id: spotify-honk-xirp-source-2
   title: 'Code with Claude: coding is no longer the constraint (Honk v2)'
   url: https://engineering.atspotify.com/2026/6/code-with-claude-coding-is-no-longer-the-constraint
-  canonical_url: https://engineering.atspotify.com/2026/6/code-with-claude-coding-is-no-longer-the-constraint
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -95,7 +109,6 @@ sources:
 - id: spotify-honk-xirp-source-3
   title: Xirp - Powered by Spotify Portal
   url: https://xirp.spotify.com/
-  canonical_url: https://xirp.spotify.com/
   kind: documentation
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -105,114 +118,80 @@ sources:
 evidence:
   operating_models.0:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
   summary:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
   - source_id: spotify-honk-xirp-source-3
-    relation: supports
   headline_metric:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 70
   architecture.sandbox:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 26
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 56
   architecture.harness:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
   architecture.model:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 64
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 56
   architecture.tool_access:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 64
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 56
   architecture.knowledge:
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 88-94
   architecture.context_mgmt:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
   - source_id: spotify-honk-xirp-source-3
-    relation: supports
-  primitives.0:
+  primitives.deterministic-and-model-based-verification:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
-  primitives.1:
+  primitives.fleet-management:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
-  primitives.2:
+  primitives.xirp-workspace-context-layer:
   - source_id: spotify-honk-xirp-source-3
-    relation: supports
-  key_metrics.0:
+  key_metrics.merged-ai-generated-prs-honk:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 70
-  key_metrics.1:
+  key_metrics.time-savings-migrations-vs-manual:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 70–77
-  key_metrics.2:
+  key_metrics.half-spotify-prs-automated-fleet-management:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 22–38
-  lessons_learned.0:
+  lessons_learned.coding-cli-combines-formatting-linting-separate:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 64
-  lessons_learned.1:
+  lessons_learned.runs-kubernetes-pods-uses-trusted-tools:
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 56
-  lessons_learned.2:
+  lessons_learned.exposes-backstage-ownership-documentation-through-tools:
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 88-104
-  lessons_learned.3:
+  lessons_learned.supplying-service-ownership-documentation-architecture-context:
   - source_id: spotify-honk-xirp-source-3
-    relation: supports
     locator: Preserved content.md, lines 12
   architecture.interfaces:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
-  primitives.3:
+  primitives.describe-the-change-as-a-prompt:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 58, 87
-  primitives.4:
+  primitives.honk-executes-the-code-change:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 52–58
   - source_id: spotify-honk-xirp-source-2
-    relation: supports
     locator: Preserved content.md, lines 56–62
-  primitives.5:
+  primitives.open-pull-request-through-existing-workflow:
   - source_id: spotify-honk-xirp-source-1
-    relation: supports
     locator: Preserved content.md, lines 26, 58
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The source documents automated verification followed by a pull-request workflow that retains
       human review.
@@ -220,34 +199,43 @@ claim_metadata:
   headline_metric:
     metric_scope: Cumulative merged Honk-generated PRs reported in Part 1; no measurement cutoff in preserved text
     measurement_method: Company-reported merged pull request count
-  key_metrics.0:
+    category: adoption-output
+    basis: reported-measurement
+    subject: Cumulative merged Honk-generated pull requests across Spotify
+  key_metrics.merged-ai-generated-prs-honk:
     metric_scope: Cumulative merged Honk-generated PRs reported in Part 1; no measurement cutoff in preserved text
-  key_metrics.1:
+  key_metrics.time-savings-migrations-vs-manual:
     metric_scope: Selected code migrations using Honk compared with writing the changes manually
     denominator: Manual completion time for the same migration work
-  key_metrics.2:
+    category: effectiveness
+    basis: reported-measurement
+    subject: Selected code migrations executed with Honk against manual completion time
+  key_metrics.half-spotify-prs-automated-fleet-management:
     valid_at: '2024'
     metric_scope: Fleet Management automated pull requests since mid-2024, including deterministic transforms
     denominator: All Spotify pull requests
-  lessons_learned.0:
+    category: adoption-output
+    basis: estimate
+    subject: Spotify pull requests automated by Fleet Management since mid-2024 including deterministic transformations
+  lessons_learned.coding-cli-combines-formatting-linting-separate:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The Honk article lists both the deterministic tasks and LLM diff evaluation; neither is reported
       as a substitute for all other validation.
-  lessons_learned.1:
+  lessons_learned.runs-kubernetes-pods-uses-trusted-tools:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The later Spotify account identifies the execution environment and build tools, but does
       not document the credential boundary asserted by the previous lesson.
-  lessons_learned.2:
+  lessons_learned.exposes-backstage-ownership-documentation-through-tools:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The developer-experience section describes catalog access and lint feedback. It supports
       these concrete uses, not a requirement that every company adopt Backstage first.
-  lessons_learned.3:
+  lessons_learned.supplying-service-ownership-documentation-architecture-context:
     kind: fact
     provenance: reported
     confidence: medium
@@ -264,102 +252,35 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.3
-      - primitives.4
-      - primitives.5
+      - primitives.describe-the-change-as-a-prompt
+      - primitives.honk-executes-the-code-change
+      - primitives.open-pull-request-through-existing-workflow
     human_involvement:
       state: unreported
-      claim_paths: []
       note: The captures keep reviews and merges on the pre-agent pull-request workflow (Honk Part 1 lines 26 and
         58) without stating a required human checkpoint for Honk pull requests; the no-human auto-merge statement
         covers deterministic Fleetshift pull requests only (Code with Claude line 36).
     implementation:
       state: reported
-      claim_paths:
-      - architecture.model
-      - architecture.harness
-      - architecture.tool_access
-      - architecture.knowledge
-      - architecture.context_mgmt
-      - architecture.interfaces
     validation:
       state: reported
       claim_paths:
-      - primitives.0
+      - primitives.deterministic-and-model-based-verification
     observations:
       state: reported
-      claim_paths:
-      - headline_metric
-      - key_metrics.0
-      - key_metrics.1
-      - key_metrics.2
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
-      - lessons_learned.2
-      - lessons_learned.3
   implementation_fields:
-    model:
-      state: reported
-      claim_paths:
-      - architecture.model
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
     sandbox:
-      state: unreported
-      claim_paths: []
-      note: Kubernetes pods and containerized jobs are documented as the execution environment (Honk Part 1 line
-        26; Code with Claude line 56) but the isolation boundary is not stated; sandboxing is named as an open challenge
-        (Honk Part 1 line 101).
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
+      note: 'The isolation boundary inside the pods and containers is not stated; sandboxing is named as an
+        open challenge (Honk Part 1 line 101).'
     credentials:
       state: unreported
-      claim_paths: []
       note: Credential handling for Honk sessions and their trusted tools is not documented in the reviewed captures.
-    interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
-  primitive_roles:
-    primitives.0: validation
-    primitives.1: mechanism
-    primitives.2: mechanism
-    primitives.3: workflow
-    primitives.4: workflow
-    primitives.5: workflow
-  observations:
-    headline_metric:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Cumulative merged Honk-generated pull requests across Spotify
-    key_metrics.0:
+  aliases:
+    key_metrics.merged-ai-generated-prs-honk:
       duplicate_of: headline_metric
       reason: Same cumulative merged Honk pull-request count period and scope as the headline observation.
-    key_metrics.1:
-      category: effectiveness
-      basis: reported-measurement
-      subject: Selected code migrations executed with Honk against manual completion time
-    key_metrics.2:
-      category: adoption-output
-      basis: estimate
-      subject: Spotify pull requests automated by Fleet Management since mid-2024 including deterministic transformations

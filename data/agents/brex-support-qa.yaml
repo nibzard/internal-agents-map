@@ -4,7 +4,6 @@ company: Brex
 agent_name: Support quality agent
 approach_type: agent
 deployment_stage: deployed
-year: 2025
 first_public_evidence:
   date: '2025-09-25'
   source_id: brex-support-qa-source-1
@@ -19,23 +18,24 @@ operating_models:
 rubric:
   invocation:
   - unknown
-  state: unknown
-  identity: unknown
   evidence_strength: limited-primary
 summary: Brex uses an agent to assess support interactions against its quality rubric and surface trends for team
   leads.
 architecture:
   knowledge: Brex’s support-quality rubric.
 primitives:
-- name: Assess interactions
+- id: assess-interactions
+  name: Assess interactions
   desc: The agent reviews support responses against Brex’s quality rubric.
-- name: Feed back trends
+  role: workflow
+- id: feed-back-trends
+  name: Feed back trends
   desc: Team leads use quality trends to coach staff and improve responses.
+  role: workflow
 sources:
 - id: brex-support-qa-source-1
   title: 'Agent, Human, Ops: How Brex Is Changing Roles and Workflows'
   url: https://www.firstround.com/ai/brex
-  canonical_url: https://www.firstround.com/ai/brex
   kind: case-study
   provenance_class: independent-secondary
   published_at: '2025-09-25'
@@ -44,29 +44,17 @@ sources:
   duplicate_of: brex-agent-platform-source-1
 evidence:
   summary:
-  - source_id: brex-support-qa-source-1
-    relation: supports
-    locator: 'Redesign roles: support quality assurance'
+  - locator: 'Redesign roles: support quality assurance'
   operating_models.0:
-  - source_id: brex-support-qa-source-1
-    relation: supports
-    locator: 'Redesign roles: support quality assurance'
+  - locator: 'Redesign roles: support quality assurance'
   architecture.knowledge:
-  - source_id: brex-support-qa-source-1
-    relation: supports
-    locator: 'Redesign roles: support quality assurance'
-  primitives.0:
-  - source_id: brex-support-qa-source-1
-    relation: supports
-    locator: 'Redesign roles: support quality assurance'
-  primitives.1:
-  - source_id: brex-support-qa-source-1
-    relation: supports
-    locator: 'Redesign roles: support quality assurance'
+  - locator: 'Redesign roles: support quality assurance'
+  primitives.assess-interactions:
+  - locator: 'Redesign roles: support quality assurance'
+  primitives.feed-back-trends:
+  - locator: 'Redesign roles: support quality assurance'
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes Support quality agent and its work, but does not establish whether a
       person must approve or inspect each successful output.
@@ -83,57 +71,19 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
+      - primitives.assess-interactions
+      - primitives.feed-back-trends
     human_involvement:
       state: unreported
-      claim_paths: []
       note: The source does not establish the required human review boundary.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.knowledge
     validation:
       state: unreported
-      claim_paths: []
     observations:
       state: unreported
-      claim_paths: []
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: unreported
-      claim_paths: []
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: unreported
-      claim_paths: []
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: unreported
-      claim_paths: []
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: unreported
-      claim_paths: []
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-  observations: {}

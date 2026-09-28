@@ -4,7 +4,6 @@ company: Zup
 agent_name: CodeGen
 approach_type: agent
 deployment_stage: research
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: zup-codegen-source-1
@@ -19,31 +18,32 @@ operating_models:
 rubric:
   invocation:
   - unknown
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: CodeGen is Zup's internal coding agent. In the preserved paper abstract, its authors attribute reliability
   improvements to editing tools and layered controls, and adoption to progressive human oversight. The abstract
   provides no measurements or definitions of those oversight modes.
 architecture:
   harness: Constrained editing tools; state-management concerns; progressive levels of human oversight
-  model: Not specified (see paper)
   tool_access: Constrained editing tools rather than free-form code generation
-  credentials: Layered safety controls
 primitives:
-- name: Constrained editing tools
+- id: constrained-editing-tools
+  name: Constrained editing tools
   desc: String-replacement edits instead of full-file rewrites, combined with layered safety controls
-- name: Progressive oversight
+  role: mechanism
+- id: progressive-oversight
+  name: Progressive oversight
   desc: Progressive oversight modes reported by the authors; the preserved abstract does not define the boundaries
+  role: mechanism
 lessons_learned:
-- Zup's authors report larger reliability gains from targeted editing tools and layered controls than from
-  prompt changes in CodeGen.
-- Zup's authors attribute organic adoption partly to progressive human oversight modes.
+- id: authors-report-larger-reliability-gains-targeted
+  text: Zup's authors report larger reliability gains from targeted editing tools and layered controls than from
+    prompt changes in CodeGen.
+- id: authors-attribute-organic-adoption-partly-progressive
+  text: Zup's authors attribute organic adoption partly to progressive human oversight modes.
 sources:
 - id: zup-codegen-source-1
   title: Building an Internal Coding Agent at Zup
   url: https://arxiv.org/abs/2604.09805
-  canonical_url: https://arxiv.org/abs/2604.09805
   kind: paper
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -53,54 +53,33 @@ sources:
 evidence:
   operating_models.0:
   - source_id: zup-codegen-source-1
-    relation: supports
   summary:
-  - source_id: zup-codegen-source-1
-    relation: supports
-    locator: Preserved content.md, lines 18
+  - locator: Preserved content.md, lines 18
   architecture.harness:
   - source_id: zup-codegen-source-1
-    relation: supports
-  architecture.model:
-  - source_id: zup-codegen-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: zup-codegen-source-1
-    relation: supports
-  architecture.credentials:
-  - source_id: zup-codegen-source-1
-    relation: supports
-  primitives.0:
-  - source_id: zup-codegen-source-1
-    relation: supports
-    locator: Preserved content.md, lines 18
-  primitives.1:
-  - source_id: zup-codegen-source-1
-    relation: supports
-    locator: Preserved content.md, lines 18
-  lessons_learned.0:
-  - source_id: zup-codegen-source-1
-    relation: supports
-    locator: Preserved content.md, lines 18
-  lessons_learned.1:
-  - source_id: zup-codegen-source-1
-    relation: supports
-    locator: Preserved content.md, lines 18
+  primitives.constrained-editing-tools:
+  - locator: Preserved content.md, lines 18
+  primitives.progressive-oversight:
+  - locator: Preserved content.md, lines 18
+  lessons_learned.authors-report-larger-reliability-gains-targeted:
+  - locator: Preserved content.md, lines 18
+  lessons_learned.authors-attribute-organic-adoption-partly-progressive:
+  - locator: Preserved content.md, lines 18
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: 'The abstract names progressive human oversight modes but no passage establishes the oversight
       form: continuous steering, per-run work-product review, and outcome review are all consistent with it.'
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.authors-report-larger-reliability-gains-targeted:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: The preserved abstract makes that comparison and names string-replacement edits, but contains
       no experiment details or numerical results to assess it independently.
-  lessons_learned.1:
+  lessons_learned.authors-attribute-organic-adoption-partly-progressive:
     kind: opinion
     provenance: reported
     confidence: medium
@@ -111,28 +90,22 @@ page_content:
   reviewed_at: '2026-09-17'
   source_ids: [zup-codegen-source-1]
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: unreported, claim_paths: [], note: 'The abstract reports design decisions and outcomes, not a
+    purpose: {state: reported}
+    workflow: {state: unreported, note: 'The abstract reports design decisions and outcomes, not a
       run; no trigger-to-output sequence is described.'}
-    human_involvement: {state: reported, claim_paths: [primitives.1], note: 'Progressive human oversight modes are
+    human_involvement: {state: reported, claim_paths: [primitives.progressive-oversight], note: 'Progressive human oversight modes are
       reported as present; the abstract does not define their boundaries.'}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.tool_access]}
-    validation: {state: unreported, claim_paths: [], note: 'Layered safety guardrails are named as a design element;
+    implementation: {state: reported}
+    validation: {state: unreported, note: 'Layered safety guardrails are named as a design element;
       no check of the agent''s work products is documented.'}
-    observations: {state: unreported, claim_paths: [], note: 'The abstract states qualitative conclusions without
+    observations: {state: unreported, note: 'The abstract states qualitative conclusions without
       measurements; the record carries no observation claims.'}
-    lessons: {state: reported, claim_paths: [lessons_learned.0, lessons_learned.1]}
+    lessons: {state: reported}
   implementation_fields:
-    model: {state: unreported, claim_paths: [], note: 'The abstract names no model and argues the surrounding
-      engineering matters more; the legacy placeholder claim stays in research details.'}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: []}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access]}
-    knowledge: {state: unreported, claim_paths: []}
-    context_mgmt: {state: unreported, claim_paths: [], note: 'The abstract names state management as a decisive
+    model: {state: unreported, note: 'The abstract names no model and argues that the
+      surrounding engineering matters more.'}
+    context_mgmt: {state: unreported, note: 'The abstract names state management as a decisive
       concern without describing any management mechanism.'}
-    credentials: {state: unreported, claim_paths: [], note: 'Layered safety guardrails are safety enforcement, not
-      credential handling; the existing claim keeps its place in research details.'}
-    interfaces: {state: unreported, claim_paths: [], note: 'No interface is named in the abstract.'}
-  primitive_roles: {primitives.0: mechanism, primitives.1: mechanism}
-  observations: {}
+    credentials: {state: unreported, note: 'The paper names layered safety guardrails, which
+      are safety enforcement, not credential handling.'}
+    interfaces: {state: unreported, note: 'No interface is named in the abstract.'}

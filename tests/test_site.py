@@ -117,7 +117,7 @@ class ArtifactTests(unittest.TestCase):
         # they were written to the page unescaped.
         for claim_id in (
             "doordash-flux--architecture-sandbox",
-            "cloudflare-ai-stack--key-metrics-0",
+            "cloudflare-ai-stack--key-metrics-internal-users-share",
         ):
             claim = self.claims[claim_id]
             self.assertRegex(str(claim["text"]), r"[<>&\"]")

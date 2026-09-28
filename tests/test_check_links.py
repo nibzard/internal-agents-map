@@ -45,6 +45,7 @@ def write_snapshot(
     content: bytes = b"# Preserved source\n",
     sha256: str | None = None,
     byte_count: int | None = None,
+    external_archive_url: str | None = None,
 ) -> None:
     bundle = root / "archive" / "sources" / target.source_id
     bundle.mkdir(parents=True)
@@ -65,8 +66,8 @@ def write_snapshot(
             }
         },
     }
-    if target.archived_url:
-        manifest["external_archive_url"] = target.archived_url
+    if external_archive_url:
+        manifest["external_archive_url"] = external_archive_url
     (bundle / "metadata.json").write_text(json.dumps(manifest), encoding="utf-8")
 
 
@@ -176,23 +177,15 @@ class DiscoveryTests(unittest.TestCase):
         self.assertEqual(paths, [root / "README.md"])
 
     def test_catalog_urls_are_removed_from_general_markdown_urls(self) -> None:
-        source = check_links.SourceTarget(
-            "source-1",
-            "https://publisher.example/article",
-            "https://web.archive.org/example",
-        )
+        source = check_links.SourceTarget("source-1", "https://publisher.example/article")
         sources, general = check_links.external_targets(
             [source],
-            {
-                source.url,
-                source.archived_url,
-                "https://docs.example/general",
-            },
+            {source.url, "https://docs.example/general"},
         )
         self.assertEqual(sources, [source])
         self.assertEqual(general, ["https://docs.example/general"])
 
-    def test_catalog_sources_preserve_archive_and_manifest_pairing(self) -> None:
+    def test_catalog_sources_pair_each_source_with_its_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             agents = Path(directory) / "data" / "agents"
             agents.mkdir(parents=True)
@@ -200,7 +193,6 @@ class DiscoveryTests(unittest.TestCase):
                 """sources:
 - id: source-1
   url: https://publisher.example/article
-  archived_url: https://web.archive.org/example
   capture:
     manifest_path: archive/sources/source-1/metadata.json
 """,
@@ -214,7 +206,6 @@ class DiscoveryTests(unittest.TestCase):
                 check_links.SourceTarget(
                     "source-1",
                     "https://publisher.example/article",
-                    "https://web.archive.org/example",
                     "archive/sources/source-1/metadata.json",
                 )
             ],
@@ -249,6 +240,16 @@ class SnapshotTests(unittest.TestCase):
                 result = check_links.local_snapshot_result(self.target)
         self.assertEqual(result.status, "healthy")
         self.assertEqual(result.detail, "verified local Markdown snapshot")
+
+    def test_a_manifest_external_archive_url_is_not_compared(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_snapshot(
+                root, self.target, external_archive_url="https://web.archive.org/example"
+            )
+            with patch.object(check_links, "ROOT", root):
+                result = check_links.local_snapshot_result(self.target)
+        self.assertEqual(result.status, "healthy")
 
     def test_missing_declared_snapshot_is_invalid(self) -> None:
         with (
@@ -290,37 +291,25 @@ class SnapshotTests(unittest.TestCase):
 
 class SourcePolicyTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.target = check_links.SourceTarget(
-            "source-1",
-            "https://publisher.example/article",
-            "https://web.archive.org/example",
-        )
+        self.target = check_links.SourceTarget("source-1", "https://publisher.example/article")
         self.missing = link_result(self.target.url, "missing", "HTTP 404 confirmed by GET")
         self.absent = check_links.SnapshotResult("absent", "no local snapshot declared")
 
     def test_missing_original_with_valid_local_snapshot_is_archived(self) -> None:
         snapshot = check_links.SnapshotResult("healthy", "verified")
-        archive = link_result(self.target.archived_url, "unreachable")
-        result = check_links.classify_source(self.target, self.missing, snapshot, archive)
+        result = check_links.classify_source(self.target, self.missing, snapshot)
         self.assertEqual(result.status, "archived")
         self.assertIn("verified local snapshot", result.detail)
 
-    def test_missing_original_with_healthy_external_archive_is_archived(self) -> None:
-        archive = link_result(self.target.archived_url, "healthy")
-        result = check_links.classify_source(self.target, self.missing, self.absent, archive)
-        self.assertEqual(result.status, "archived")
-        self.assertIn("healthy external archive", result.detail)
-
     def test_missing_original_without_fallback_fails(self) -> None:
-        archive = link_result(self.target.archived_url, "missing")
-        result = check_links.classify_source(self.target, self.missing, self.absent, archive)
+        result = check_links.classify_source(self.target, self.missing, self.absent)
         self.assertEqual(result.status, "missing")
         self.assertIn("no verified archive fallback", result.detail)
 
     def test_invalid_declared_snapshot_fails_even_when_original_is_healthy(self) -> None:
         original = link_result(self.target.url, "healthy")
         invalid = check_links.SnapshotResult("invalid", "hash mismatch")
-        result = check_links.classify_source(self.target, original, invalid, None)
+        result = check_links.classify_source(self.target, original, invalid)
         self.assertEqual(result.status, "missing")
         self.assertIn("invalid declared local snapshot", result.detail)
 
@@ -328,38 +317,26 @@ class SourcePolicyTests(unittest.TestCase):
         for status in ("blocked", "unreachable"):
             with self.subTest(status=status):
                 original = link_result(self.target.url, status)
-                result = check_links.classify_source(self.target, original, self.absent, None)
+                result = check_links.classify_source(self.target, original, self.absent)
                 self.assertEqual(result.status, status)
-
-    def test_healthy_original_with_unavailable_wayback_stays_healthy(self) -> None:
-        original = link_result(self.target.url, "healthy")
-        archive = link_result(self.target.archived_url, "unreachable", "timed out")
-        result = check_links.classify_source(self.target, original, self.absent, archive)
-        self.assertEqual(result.status, "healthy")
-        self.assertEqual(len(result.warnings), 1)
-        self.assertIn("external archive unreachable", result.warnings[0])
 
 
 class MainTests(unittest.TestCase):
     def test_archived_source_warns_and_exits_successfully(self) -> None:
-        source = check_links.SourceTarget(
-            "source-1",
-            "https://publisher.example/article",
-            "https://web.archive.org/example",
-        )
+        source = check_links.SourceTarget("source-1", "https://publisher.example/article")
         results = {
             source.url: link_result(source.url, "missing", "HTTP 404 confirmed by GET"),
-            source.archived_url: link_result(source.archived_url, "healthy", "HTTP 200"),
         }
         stdout = io.StringIO()
         stderr = io.StringIO()
         with (
             patch.object(check_links, "local_links", return_value=[]),
             patch.object(check_links, "catalog_sources", return_value=[source]),
+            patch.object(check_links, "markdown_urls", return_value={source.url}),
             patch.object(
                 check_links,
-                "markdown_urls",
-                return_value={source.url, source.archived_url},
+                "local_snapshot_result",
+                return_value=check_links.SnapshotResult("healthy", "verified"),
             ),
             contextlib.redirect_stdout(stdout),
             contextlib.redirect_stderr(stderr),

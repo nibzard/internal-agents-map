@@ -7,7 +7,6 @@ aliases:
 - HULA
 approach_type: agent
 deployment_stage: scaled
-year: 2024
 first_public_evidence:
   date: 2024-11
   source_id: atlassian-rovo-dev-source-3
@@ -23,8 +22,6 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Rovo Dev is Atlassian's coding agent, available internally on all Jira sites. It works from a Jira work
   item to a pull request, and the developer reviews the plan and the code at each step. It became generally available
@@ -37,22 +34,25 @@ architecture:
   interfaces:
   - jira
 primitives:
-- {name: Set the context, desc: 'The user provides the repository and the work-item description the agent needs'}
-- {name: Generate the plan, desc: 'The agent generates a plan that the user can review and refine before it proceeds'}
-- {name: Generate the code, desc: 'The agent writes the code, and the human can review it and request changes'}
-- {name: Raise the pull request, desc: 'The agent raises the PR, and the user reviews it and merges it'}
-- {name: Filter review comments through two checks, desc: 'A gpt-4o-mini judge drops factually incorrect comments
-    and a fine-tuned ModernBERT drops unactionable ones before posting'}
+- {id: set-the-context, name: Set the context, desc: 'The user provides the repository and the work-item description the agent needs', role: workflow}
+- {id: generate-the-plan, name: Generate the plan, desc: 'The agent generates a plan that the user can review and refine before it proceeds', role: workflow}
+- {id: generate-the-code, name: Generate the code, desc: 'The agent writes the code, and the human can review it and request changes', role: workflow}
+- {id: raise-the-pull-request, name: Raise the pull request, desc: 'The agent raises the PR, and the user reviews it and merges it', role: workflow}
+- {id: filter-review-comments-through-two-checks, name: Filter review comments through two checks, desc: 'A gpt-4o-mini judge drops factually incorrect comments
+    and a fine-tuned ModernBERT drops unactionable ones before posting', role: validation}
 key_metrics:
-- Dogfooded across 1,900+ repositories over more than a year
-- Trained on a proprietary internal dogfooding dataset of 50,000+ Rovo Dev comments
-- Median PR cycle time reduced by 30.8% over the year-long evaluation
-- Human-written review comments reduced by 35.6%
+- id: dogfooded-repositories-more-year
+  text: Dogfooded across 1,900+ repositories over more than a year
+- id: trained-proprietary-internal-dogfooding-dataset-rovo
+  text: Trained on a proprietary internal dogfooding dataset of 50,000+ Rovo Dev comments
+- id: median-pr-cycle-time-reduced-year
+  text: Median PR cycle time reduced by 30.8% over the year-long evaluation
+- id: human-written-review-comments-reduced
+  text: Human-written review comments reduced by 35.6%
 sources:
 - id: atlassian-rovo-dev-source-1
   title: Improving the coding agent experience
   url: https://www.atlassian.com/blog/atlassian-engineering/improving-coding-agent-experience
-  canonical_url: https://www.atlassian.com/blog/atlassian-engineering/improving-coding-agent-experience
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -63,7 +63,6 @@ sources:
 - id: atlassian-rovo-dev-source-2
   title: Developer productivity improved with Rovo Dev
   url: https://www.atlassian.com/blog/atlassian-engineering/developer-productivity-improved-with-rovo-dev
-  canonical_url: https://www.atlassian.com/blog/atlassian-engineering/developer-productivity-improved-with-rovo-dev
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -74,7 +73,6 @@ sources:
 - id: atlassian-rovo-dev-source-3
   title: 'HULA: Human-in-the-loop software development agents (arXiv 2411.12924)'
   url: https://arxiv.org/abs/2411.12924
-  canonical_url: https://arxiv.org/abs/2411.12924
   kind: paper
   provenance_class: first-party
   role: evidence
@@ -86,143 +84,121 @@ sources:
 evidence:
   operating_models.0:
   - source_id: atlassian-rovo-dev-source-1
-    relation: supports
   summary:
   - source_id: atlassian-rovo-dev-source-1
-    relation: supports
   - source_id: atlassian-rovo-dev-source-2
-    relation: supports
   - source_id: atlassian-rovo-dev-source-3
-    relation: supports
   headline_metric:
   - source_id: atlassian-rovo-dev-source-2
-    relation: supports
     locator: Preserved content.md, lines 66, 87
   architecture.harness:
   - source_id: atlassian-rovo-dev-source-1
-    relation: supports
   architecture.model:
-  - {source_id: atlassian-rovo-dev-source-2, relation: supports, locator: 'Preserved content.md, lines 41, 60'}
+  - {source_id: atlassian-rovo-dev-source-2, locator: 'Preserved content.md, lines 41, 60'}
   architecture.context_mgmt:
-  - {source_id: atlassian-rovo-dev-source-1, relation: supports, locator: 'Preserved content.md, lines 67–74'}
+  - {source_id: atlassian-rovo-dev-source-1, locator: 'Preserved content.md, lines 67–74'}
   architecture.interfaces:
   - source_id: atlassian-rovo-dev-source-1
-    relation: supports
-  - {source_id: atlassian-rovo-dev-source-2, relation: supports, locator: 'Preserved content.md, lines 41, 83'}
-  primitives.0:
-  - {source_id: atlassian-rovo-dev-source-1, relation: supports, locator: 'Preserved content.md, line 46'}
-  primitives.1:
-  - {source_id: atlassian-rovo-dev-source-1, relation: supports, locator: 'Preserved content.md, line 47'}
-  primitives.2:
-  - {source_id: atlassian-rovo-dev-source-1, relation: supports, locator: 'Preserved content.md, line 48'}
-  primitives.3:
-  - {source_id: atlassian-rovo-dev-source-1, relation: supports, locator: 'Preserved content.md, line 49'}
-  primitives.4:
-  - {source_id: atlassian-rovo-dev-source-2, relation: supports, locator: 'Preserved content.md, lines 60–70'}
-  key_metrics.0:
+  - {source_id: atlassian-rovo-dev-source-2, locator: 'Preserved content.md, lines 41, 83'}
+  primitives.set-the-context:
+  - {source_id: atlassian-rovo-dev-source-1, locator: 'Preserved content.md, line 46'}
+  primitives.generate-the-plan:
+  - {source_id: atlassian-rovo-dev-source-1, locator: 'Preserved content.md, line 47'}
+  primitives.generate-the-code:
+  - {source_id: atlassian-rovo-dev-source-1, locator: 'Preserved content.md, line 48'}
+  primitives.raise-the-pull-request:
+  - {source_id: atlassian-rovo-dev-source-1, locator: 'Preserved content.md, line 49'}
+  primitives.filter-review-comments-through-two-checks:
+  - {source_id: atlassian-rovo-dev-source-2, locator: 'Preserved content.md, lines 60–70'}
+  key_metrics.dogfooded-repositories-more-year:
   - source_id: atlassian-rovo-dev-source-2
-    relation: supports
     locator: Preserved content.md, lines 87
-  key_metrics.1:
+  key_metrics.trained-proprietary-internal-dogfooding-dataset-rovo:
   - source_id: atlassian-rovo-dev-source-2
-    relation: supports
     locator: Preserved content.md, lines 66
-  key_metrics.2:
-  - {source_id: atlassian-rovo-dev-source-2, relation: supports, locator: 'Preserved content.md, lines 16, 87–91'}
-  key_metrics.3:
-  - {source_id: atlassian-rovo-dev-source-2, relation: supports, locator: 'Preserved content.md, lines 16, 87–89'}
+  key_metrics.median-pr-cycle-time-reduced-year:
+  - {source_id: atlassian-rovo-dev-source-2, locator: 'Preserved content.md, lines 16, 87–91'}
+  key_metrics.human-written-review-comments-reduced:
+  - {source_id: atlassian-rovo-dev-source-2, locator: 'Preserved content.md, lines 16, 87–89'}
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The HULA framework and engineering blog describe a human-in-the-loop cycle that ends in a
       reviewed pull request.
     valid_at: 2024-11
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Atlassian reported the dogfooding scale in its own engineering blog without independent verification.
     valid_at: '2026'
     reported_by: Atlassian
     metric_scope: Internal code-review dogfooding repositories and Rovo Dev-generated classifier training comments
-  key_metrics.0:
-    kind: metric
-    provenance: reported
+    category: implementation-scale
+    basis: reported-measurement
+    subject: 'Code-review dogfooding
+      repositories and the classifier training dataset'
+  key_metrics.dogfooded-repositories-more-year:
     confidence: medium
     confidence_reason: Atlassian reported the dogfooding scale in its own engineering blog.
     metric_scope: Internal code-review evaluation across 1,900+ repositories spanning over a year
     measurement_method: Year-long online evaluation across internal repositories
-  key_metrics.1:
-    kind: metric
-    provenance: reported
+  key_metrics.trained-proprietary-internal-dogfooding-dataset-rovo:
     confidence: medium
     confidence_reason: Atlassian reported the dataset size in its own engineering blog.
     metric_scope: ModernBERT classifier training dataset of internally sourced Rovo Dev-generated comments
     measurement_method: Internal dogfooding comments labeled by whether they led to a code resolution
-  key_metrics.2:
-    kind: metric
-    provenance: reported
+  key_metrics.median-pr-cycle-time-reduced-year:
     confidence: medium
     confidence_reason: 'Atlassian reported the reduction from a year-long internal evaluation accepted at ICSE 2026;
       no independent replication exists.'
     valid_at: '2026'
     metric_scope: Median PR cycle time in the code-reviewer dogfooding evaluation
     measurement_method: Year-long online evaluation across 1,900+ internal repositories
-  key_metrics.3:
-    kind: metric
-    provenance: reported
+    category: effectiveness
+    basis: reported-measurement
+    subject: 'Median PR cycle time in the
+      code-reviewer evaluation'
+  key_metrics.human-written-review-comments-reduced:
     confidence: medium
     confidence_reason: 'Atlassian reported the comment reduction from the same internal evaluation; no independent
       replication exists.'
     valid_at: '2026'
     metric_scope: Human-written review comments per PR in the code-reviewer dogfooding evaluation
     measurement_method: Year-long online evaluation across 1,900+ internal repositories
+    category: effectiveness
+    basis: reported-measurement
+    subject: 'Human-written review comments
+      per PR in the code-reviewer evaluation'
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
   source_ids: [atlassian-rovo-dev-source-1, atlassian-rovo-dev-source-2, atlassian-rovo-dev-source-3]
   workflow_scope: Jira work item through the four HULA phases to a reviewed pull request
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.0, primitives.1, primitives.2, primitives.3]}
-    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.1, primitives.2, primitives.3],
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.set-the-context, primitives.generate-the-plan, primitives.generate-the-code, primitives.raise-the-pull-request]}
+    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.generate-the-plan, primitives.generate-the-code, primitives.raise-the-pull-request],
       note: 'The user reviews the plan, the code, and the PR; the code-reviewer side leaves accept-or-decline
       decisions to the human reviewer.'}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.model, architecture.context_mgmt,
-      architecture.interfaces]}
-    validation: {state: reported, claim_paths: [primitives.4], note: 'The two quality gates belong to the code-reviewer
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.filter-review-comments-through-two-checks], note: 'The two quality gates belong to the code-reviewer
       side of this record, not to the Jira coding workflow.'}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1, key_metrics.2,
-      key_metrics.3], note: 'The dogfooding and evaluation figures describe the code-reviewer side; the Jira coding
+    observations: {state: reported, note: 'The dogfooding and evaluation figures describe the code-reviewer side; the Jira coding
       agent has no measured outcome in the captures.'}
-    lessons: {state: unreported, claim_paths: [], note: 'The HULA abstract references lessons learned but the preserved
+    lessons: {state: unreported, note: 'The HULA abstract references lessons learned but the preserved
       capture states none; the blogs give design philosophy, not evaluated lessons.'}
   implementation_fields:
-    model: {state: reported, claim_paths: [architecture.model], note: 'Documented for the code reviewer; the Jira
+    model: {note: 'Documented for the code reviewer; the Jira
       coding agent model is not named.'}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: []}
-    tool_access: {state: unreported, claim_paths: [], note: 'Repository selection is named as user-provided context,
+    tool_access: {state: unreported, note: 'Repository selection is named as user-provided context,
       not as a documented tool-access mechanism.'}
-    knowledge: {state: unreported, claim_paths: [], note: 'No separate knowledge store is documented; similar work
+    knowledge: {state: unreported, note: 'No separate knowledge store is documented; similar work
       items are recorded under context management.'}
-    context_mgmt: {state: reported, claim_paths: [architecture.context_mgmt]}
-    credentials: {state: unreported, claim_paths: [], note: 'Privacy and data security are named as design concerns,
+    credentials: {state: unreported, note: 'Privacy and data security are named as design concerns,
       not as a documented credential mechanism.'}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces], note: 'Jira for the coding agent; the code
+    interfaces: {note: 'Jira for the coding agent; the code
       reviewer integrates with Bitbucket (source-2 lines 41, 83), which the interface vocabulary does not list.'}
-  primitive_roles: {primitives.0: workflow, primitives.1: workflow, primitives.2: workflow, primitives.3: workflow,
-    primitives.4: validation}
-  observations:
-    headline_metric: {category: implementation-scale, basis: reported-measurement, subject: 'Code-review dogfooding
-      repositories and the classifier training dataset'}
-    key_metrics.0: {duplicate_of: headline_metric, reason: 'Component of the compound headline: the same 1,900-plus
+  aliases:
+    key_metrics.dogfooded-repositories-more-year: {duplicate_of: headline_metric, reason: 'Component of the compound headline: the same 1,900-plus
       repository count over the same year-long evaluation.'}
-    key_metrics.1: {duplicate_of: headline_metric, reason: 'Component of the compound headline: the same 50,000-plus
+    key_metrics.trained-proprietary-internal-dogfooding-dataset-rovo: {duplicate_of: headline_metric, reason: 'Component of the compound headline: the same 50,000-plus
       comment dataset.'}
-    key_metrics.2: {category: effectiveness, basis: reported-measurement, subject: 'Median PR cycle time in the
-      code-reviewer evaluation'}
-    key_metrics.3: {category: effectiveness, basis: reported-measurement, subject: 'Human-written review comments
-      per PR in the code-reviewer evaluation'}

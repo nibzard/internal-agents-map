@@ -25,7 +25,7 @@ import {
 } from './routes';
 
 /** The schema version of the compact index. It is separate from the catalog version. */
-export const COMPACT_INDEX_SCHEMA_VERSION = 3;
+export const COMPACT_INDEX_SCHEMA_VERSION = 4;
 
 /** Serialize an export the way the published JSON files are written. */
 export function jsonDocument(value: unknown): string {
@@ -41,12 +41,16 @@ export function recordJson(catalog: Catalog, id: string): string {
   const approach = requireApproach(catalog, id);
   const claims = claimsById(catalog);
   const sources = sourcesById(catalog);
+  const own = new Set(approach.claim_ids);
   return jsonDocument({
     schema_version: catalog.schema_version,
     approaches: [approach],
     claims: approach.claim_ids.map((claimId) => claims.get(claimId)),
     sources: approach.source_ids.map((sourceId) => sources.get(sourceId)),
     companies: [requireCompany(catalog, approach.company_id)],
+    ...(catalog.claim_aliases && {
+      claim_aliases: Object.fromEntries(Object.entries(catalog.claim_aliases).filter(([, current]) => own.has(current))),
+    }),
   });
 }
 
@@ -178,7 +182,6 @@ function sourceBlock(source: SourceView): string[] {
   if (source.preservedUrl) {
     lines.push(`   - Preserved copy in the repository: <${source.preservedUrl}>`);
   }
-  if (source.archivedUrl) lines.push(`   - Archived copy: <${source.archivedUrl}>`);
   return lines;
 }
 
@@ -261,80 +264,54 @@ export function entryMarkdown(entry: EntryView, level = 1): string[] {
     const aliases = new Set(entry.aliasObservationClaims.map((claim) => claim.id));
     lines.push(...claimSection('Research details and scoped use assessments', entry.researchOnlyClaims.filter((claim) => !aliases.has(claim.id)), sources, level + 1));
   } else {
-    if (entry.isPilot) {
-      lines.push(...claimSection('Purpose', entry.summary ? [entry.summary] : [], sources, level + 1));
-      if (entry.workflowScope) lines.push(`Representative workflow: ${entry.workflowScope}.`, '');
-      lines.push(...claimSection(entry.profile.workflow, entry.workflowClaims, sources, level + 1));
-      if (entry.workflowClaims.length === 0 && showQuestion(entry, 'workflow') && entry.coverageQuestions.workflow) {
-        const workflow = entry.coverageQuestions.workflow;
-        lines.push(heading(level + 1, entry.profile.workflow), '', answerLine(workflow, 'workflow'), '');
-      }
-      lines.push(heading(level + 1, entry.profile.people), '');
-      for (const model of entry.isSupportingSystem ? [] : entry.operatingModels) {
-        lines.push(`- **${model.scope}** — ${model.boundaryLabel} · ${model.levelLabel}`);
-      }
-      const people = entry.coverageQuestions.human_involvement;
-      if (people?.note) lines.push('', `**${people.stateLabel}:** ${people.note}`);
-      lines.push('');
-      lines.push(...claimSection('Supervision evidence', entry.supervisionClaims, sources, level + 2));
-      lines.push(...claimSection(entry.profile.implementation, [...entry.architectureClaims, ...entry.mechanismClaims], sources, level + 1));
-      lines.push(heading(level + 2, 'Implementation coverage'), '');
-      for (const row of entry.architectureRows) {
-        lines.push(`- **${row.label}:** ${row.state ?? 'Unassessed'}${row.note ? ` — ${row.note}` : ''}`);
-      }
-      lines.push('');
-      lines.push(...claimSection(entry.profile.validation, entry.validationClaims, sources, level + 1));
-      if (entry.validationClaims.length === 0 && entry.coverageQuestions.validation) {
-        lines.push(heading(level + 1, entry.profile.validation), '', answerLine(entry.coverageQuestions.validation, 'validation'), '');
-      }
-      if (entry.observationItems.length > 0) {
-        lines.push(heading(level + 1, entry.profile.observations), '');
-        for (const item of entry.observationItems) {
-          lines.push(`Observation: ${item.categoryLabel} · ${item.basisLabel} · ${item.subject}`, '');
-          lines.push(...claimBlock(item.claim, sources, level + 2));
-        }
-      }
-      if (entry.canonicalObservationClaims.length === 0 && entry.coverageQuestions.observations) {
-        lines.push(heading(level + 1, entry.profile.observations), '', answerLine(entry.coverageQuestions.observations, 'observations'), '');
-      }
-      lines.push(...claimSection('Lessons', entry.lessonClaims, sources, level + 1));
-      if (entry.lessonClaims.length === 0 && entry.coverageQuestions.lessons) {
-        lines.push(heading(level + 1, 'Lessons'), '', answerLine(entry.coverageQuestions.lessons, 'lessons'), '');
-      }
-      if (entry.aliasObservationRelations.length > 0) {
-        lines.push(heading(level + 1, 'Duplicate observation representations'), '');
-        for (const relation of entry.aliasObservationRelations) {
-          lines.push(`Duplicate of \`${relation.target.id}\`: ${relation.reason}`, '');
-          lines.push(...claimBlock(relation.claim, sources, level + 2));
-        }
-      }
-      const aliasIds = new Set(entry.aliasObservationClaims.map((claim) => claim.id));
-      lines.push(...claimSection('Reviewed legacy details', entry.researchOnlyClaims.filter((claim) => !aliasIds.has(claim.id)), sources, level + 1));
-    } else if (entry.operatingModels.length > 0) {
-      lines.push(heading(level + 1, entry.profile.people), '');
-      lines.push(
-        `Each scope pairs its normal attention boundary with supporting evidence. See the [supervision definitions](${canonicalUrl('/definitions#supervision')}) for the level mapping and limits.`,
-        '',
-      );
-      for (const model of entry.isSupportingSystem ? [] : entry.operatingModels) {
-        lines.push(`- **${model.scope}** — ${model.boundaryLabel} · ${model.levelLabel}`);
-      }
-      lines.push('');
+    lines.push(...claimSection('Purpose', entry.summary ? [entry.summary] : [], sources, level + 1));
+    if (entry.workflowScope) lines.push(`Representative workflow: ${entry.workflowScope}.`, '');
+    lines.push(...claimSection(entry.profile.workflow, entry.workflowClaims, sources, level + 1));
+    if (entry.workflowClaims.length === 0 && showQuestion(entry, 'workflow') && entry.coverageQuestions.workflow) {
+      const workflow = entry.coverageQuestions.workflow;
+      lines.push(heading(level + 1, entry.profile.workflow), '', answerLine(workflow, 'workflow'), '');
     }
-
-    const sections: ReadonlyArray<readonly [string, readonly ClaimView[]]> = entry.isPilot ? [] : [
-      ['Overview', entry.summary ? [entry.summary] : []],
-      ['How it works', entry.workflowClaims],
-      ['Supervision evidence', entry.supervisionClaims],
-      ['Implementation details', entry.architectureClaims],
-      ['Reported metrics', entry.metricClaims],
-      ['Reported outcomes and statements', entry.resultStatementClaims],
-      ['Lessons and interpretation', entry.lessonClaims],
-      ['Other reported details', entry.otherClaims],
-    ];
-    for (const [title, claims] of sections) {
-      lines.push(...claimSection(title, claims, sources, level + 1));
+    lines.push(heading(level + 1, entry.profile.people), '');
+    for (const model of entry.isSupportingSystem ? [] : entry.operatingModels) {
+      lines.push(`- **${model.scope}** — ${model.boundaryLabel} · ${model.levelLabel}`);
     }
+    const people = entry.coverageQuestions.human_involvement;
+    if (people?.note) lines.push('', `**${people.stateLabel}:** ${people.note}`);
+    lines.push('');
+    lines.push(...claimSection('Supervision evidence', entry.supervisionClaims, sources, level + 2));
+    lines.push(...claimSection(entry.profile.implementation, [...entry.architectureClaims, ...entry.mechanismClaims], sources, level + 1));
+    lines.push(heading(level + 2, 'Implementation coverage'), '');
+    for (const row of entry.architectureRows) {
+      lines.push(`- **${row.label}:** ${row.state ?? 'Unassessed'}${row.note ? ` — ${row.note}` : ''}`);
+    }
+    lines.push('');
+    lines.push(...claimSection(entry.profile.validation, entry.validationClaims, sources, level + 1));
+    if (entry.validationClaims.length === 0 && entry.coverageQuestions.validation) {
+      lines.push(heading(level + 1, entry.profile.validation), '', answerLine(entry.coverageQuestions.validation, 'validation'), '');
+    }
+    if (entry.observationItems.length > 0) {
+      lines.push(heading(level + 1, entry.profile.observations), '');
+      for (const item of entry.observationItems) {
+        lines.push(`Observation: ${item.categoryLabel} · ${item.basisLabel} · ${item.subject}`, '');
+        lines.push(...claimBlock(item.claim, sources, level + 2));
+      }
+    }
+    if (entry.canonicalObservationClaims.length === 0 && entry.coverageQuestions.observations) {
+      lines.push(heading(level + 1, entry.profile.observations), '', answerLine(entry.coverageQuestions.observations, 'observations'), '');
+    }
+    lines.push(...claimSection('Lessons', entry.lessonClaims, sources, level + 1));
+    if (entry.lessonClaims.length === 0 && entry.coverageQuestions.lessons) {
+      lines.push(heading(level + 1, 'Lessons'), '', answerLine(entry.coverageQuestions.lessons, 'lessons'), '');
+    }
+    if (entry.aliasObservationRelations.length > 0) {
+      lines.push(heading(level + 1, 'Duplicate observation representations'), '');
+      for (const relation of entry.aliasObservationRelations) {
+        lines.push(`Duplicate of \`${relation.target.id}\`: ${relation.reason}`, '');
+        lines.push(...claimBlock(relation.claim, sources, level + 2));
+      }
+    }
+    const aliasIds = new Set(entry.aliasObservationClaims.map((claim) => claim.id));
+    lines.push(...claimSection('Reviewed legacy details', entry.researchOnlyClaims.filter((claim) => !aliasIds.has(claim.id)), sources, level + 1));
   }
   lines.push(heading(level + 1, 'Question coverage and scope'), '');
   for (const [key, answer] of Object.entries(entry.coverageQuestions)) lines.push(`- **${key.replaceAll('_', ' ')}:** ${answer.stateLabel}${answer.note ? ` — ${answer.note}` : ''}`);

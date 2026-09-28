@@ -4,7 +4,6 @@ company: Harvey
 agent_name: Security operations agents
 approach_type: agent-system
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026-05-14'
   source_id: harvey-security-operations-source-1
@@ -20,8 +19,6 @@ rubric:
   invocation:
   - scheduled
   - interactive
-  state: cross-session-memory
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Harvey’s SOC combines independently scheduled reporting, alert-triage and threat-watch agents for its security
   team.
@@ -31,17 +28,22 @@ architecture:
   context_mgmt: Postgres memory with retention, deduplication and profile-specific injection budgets.
   tool_access: RunReveal MCP exposes security corpus tools.
 primitives:
-- name: Review telemetry
+- id: review-telemetry
+  name: Review telemetry
   desc: Daily reporting and hourly triage agents inspect telemetry and escalate critical clusters.
-- name: Investigate threats
+  role: workflow
+- id: investigate-threats
+  name: Investigate threats
   desc: Threat-watch compares external intelligence with coverage and proposes detections.
-- name: Review production changes
+  role: workflow
+- id: review-production-changes
+  name: Review production changes
   desc: Data-tested detections and tuning rules become GitHub pull requests for human review.
+  role: validation
 sources:
 - id: harvey-security-operations-source-1
   title: Building an agentic security operations center
   url: https://www.harvey.ai/blog/building-an-agentic-security-operations-center
-  canonical_url: https://www.harvey.ai/blog/building-an-agentic-security-operations-center
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -49,46 +51,26 @@ sources:
   duplicate_of: harvey-spectre-source-2
 evidence:
   summary:
-  - source_id: harvey-security-operations-source-1
-    relation: supports
-    locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
+  - locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
   operating_models.0:
-  - source_id: harvey-security-operations-source-1
-    relation: supports
-    locator: 'From Threat to Detection to Tuned Alert: both detection proposals and tuning rules are GitHub PRs
+  - locator: 'From Threat to Detection to Tuned Alert: both detection proposals and tuning rules are GitHub PRs
       for human review'
   architecture.harness:
-  - source_id: harvey-security-operations-source-1
-    relation: supports
-    locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
+  - locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
   architecture.knowledge:
-  - source_id: harvey-security-operations-source-1
-    relation: supports
-    locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
+  - locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
   architecture.context_mgmt:
-  - source_id: harvey-security-operations-source-1
-    relation: supports
-    locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
+  - locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
   architecture.tool_access:
-  - source_id: harvey-security-operations-source-1
-    relation: supports
-    locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
-  primitives.0:
-  - source_id: harvey-security-operations-source-1
-    relation: supports
-    locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
-  primitives.1:
-  - source_id: harvey-security-operations-source-1
-    relation: supports
-    locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
-  primitives.2:
-  - source_id: harvey-security-operations-source-1
-    relation: supports
-    locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
+  - locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
+  primitives.review-telemetry:
+  - locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
+  primitives.investigate-threats:
+  - locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
+  primitives.review-production-changes:
+  - locator: Eyes Always On; From Threat to Detection; Persistent Memory; Two Systems
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: Harvey explicitly gates every production change through human review, while reports and triage
       have separate scheduled scopes.
@@ -105,13 +87,11 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
+      - primitives.review-telemetry
+      - primitives.investigate-threats
       note: Documented use example; no universal platform run is implied.
     human_involvement:
       state: reported
@@ -119,52 +99,11 @@ page_content:
       - operating_models.0
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.knowledge
-      - architecture.context_mgmt
-      - architecture.tool_access
     validation:
       state: reported
       claim_paths:
-      - primitives.2
+      - primitives.review-production-changes
     observations:
       state: unreported
-      claim_paths: []
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: unreported
-      claim_paths: []
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: validation
-  observations: {}

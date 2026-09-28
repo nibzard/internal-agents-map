@@ -416,7 +416,7 @@ class BundleTests(unittest.TestCase):
             self.assertEqual(len(errors), 1)
             self.assertRegex(errors[0], "byte count|SHA-256")
 
-    def test_manifest_external_archive_must_match_source(self) -> None:
+    def test_manifest_external_archive_needs_only_an_https_url(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             self.capture(root)
@@ -427,13 +427,14 @@ class BundleTests(unittest.TestCase):
                 "https://web.archive.org/web/20260831123456/https://example.com/article"
             )
             manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
-            with self.assertRaisesRegex(archive_sources.ArchiveError, "does not match"):
+            archive_sources.validate_bundle(
+                manifest_path, SOURCE["id"], SOURCE["url"], repo_root=root
+            )
+            manifest["external_archive_url"] = "http://web.archive.org/web/1/https://example.com"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            with self.assertRaisesRegex(archive_sources.ArchiveError, "external_archive_url"):
                 archive_sources.validate_bundle(
-                    manifest_path,
-                    SOURCE["id"],
-                    SOURCE["url"],
-                    repo_root=root,
-                    archived_url="https://web.archive.org/web/20250101000000/https://example.com",
+                    manifest_path, SOURCE["id"], SOURCE["url"], repo_root=root
                 )
 
 
@@ -498,18 +499,18 @@ class WaybackTests(unittest.TestCase):
         self.assertIn("continuing locally", warnings.getvalue())
         self.assertNotIn(secret, warnings.getvalue())
 
-    def test_yaml_snippet_includes_only_verified_wayback(self) -> None:
-        archived_url = "https://web.archive.org/web/20260831123456/https://example.com/article"
+    def test_yaml_snippet_never_suggests_an_archive_url(self) -> None:
+        external_archive_url = (
+            "https://web.archive.org/web/20260831123456/https://example.com/article"
+        )
         result = archive_sources.CaptureResult(
             SOURCE["id"],
             f"archive/sources/{SOURCE['id']}/metadata.json",
-            archived_url,
+            external_archive_url,
         )
         self.assertEqual(
             result.yaml_snippet(),
-            f'archived_url: "{archived_url}"\n'
-            "capture:\n"
-            f'  manifest_path: "archive/sources/{SOURCE["id"]}/metadata.json"\n',
+            f'capture:\n  manifest_path: "archive/sources/{SOURCE["id"]}/metadata.json"\n',
         )
 
 

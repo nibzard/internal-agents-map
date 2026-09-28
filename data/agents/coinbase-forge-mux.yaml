@@ -7,7 +7,6 @@ aliases:
 - Claude bot
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: coinbase-forge-mux-source-2
@@ -24,15 +23,11 @@ rubric:
   invocation:
   - event-driven
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Forge, previously Claudebot, turns employee discussions into Linear issues, drafted fixes and pull requests
   returned for review. Coinbase separately uses Mux to host concurrent coding-agent workspaces.
 headline_metric: 5% of all PRs merged come from in-house background agents (Feb 2026)
 architecture:
-  sandbox: 'Separate Mux platform context: concurrent agents receive separate git worktrees, branches and terminals.
-    The sources do not establish this as Forge’s execution environment.'
   harness: Portfolio approach; Claude Code, OpenCode, Cursor, and Copilot rather than one harness; Forge is a custom
     Slack-native harness with the same tools and context as engineers, invokable from Slack, GitHub, and Linear;
     built in-house because security requirements blocked cloud background agents
@@ -47,38 +42,55 @@ architecture:
   context_mgmt: Slack discussions become labelled, sized Linear issues that carry the work context; the feedback
     pipeline summarizes recordings into a reviewable issue before an agent acts
 primitives:
-- name: Forge
+- id: forge
+  name: Forge
   desc: 'Custom harness: Slack bug discussion → Linear issue → drafted fix → PR pushed back for review'
-- name: Mux
+  role: workflow
+- id: mux
+  name: Mux
   desc: One person coordinates coding agents with separate worktrees, branches, and terminals
-- name: Orchestrate concurrent agents
+  role: mechanism
+- id: orchestrate-concurrent-agents
+  name: Orchestrate concurrent agents
   desc: 'Separate Mux context: An engineer runs several agents in parallel, each on its own worktree, and reviews,
     gives feedback, and merges as each finishes'
+  role: mechanism
 key_metrics:
-- 'Mux: 600+ users including engineers, PMs, and designers (335 active, 197 power users)'
-- 5% of all PRs merged come from in-house background agents (Feb 2026)
-- Wallet rewrite PR review times reduced from 150 hours to 15 hours (self-reported; period and method not documented)
-- 'Speed run: about 100 participants opened about 70 PRs in 15 minutes (opened, not merged; single event)'
-- 'Mux: 5,068 merged PRs across 461 repositories and 10 orgs'
-- Mux users show 3.5x more merged PRs per engineer than baseline (39.6 vs 11.4); the post cautions users may skew
-  toward already-high-output engineers
+- id: users-including-engineers-pms-designers-active
+  text: 'Mux: 600+ users including engineers, PMs, and designers (335 active, 197 power users)'
+- id: prs-from-background-agents
+  text: 5% of all PRs merged come from in-house background agents (Feb 2026)
+- id: wallet-rewrite-pr-review-times-reduced
+  text: Wallet rewrite PR review times reduced from 150 hours to 15 hours (self-reported; period and method not documented)
+- id: speed-run-participants-opened-prs-minutes
+  text: 'Speed run: about 100 participants opened about 70 PRs in 15 minutes (opened, not merged; single event)'
+- id: merged-prs-repositories-orgs
+  text: 'Mux: 5,068 merged PRs across 461 repositories and 10 orgs'
+- id: users-show-more-merged-prs
+  text: Mux users show 3.5x more merged PRs per engineer than baseline (39.6 vs 11.4); the post cautions users may skew
+    toward already-high-output engineers
 lessons_learned:
-- Coinbase engineers use Mux alongside Claude Code, OpenCode, Cursor, and other internal agents.
-- Coinbase stores requirements and work status in Linear; its Slack workflow creates an issue before Forge drafts
-  a fix.
-- Mux gives concurrent agents separate worktrees, branches, and terminals. This separates edits; it does not establish
-  a security sandbox.
-- Coinbase reports that security requirements prevented it from using available cloud background agents and motivated
-  its internal harness.
-- Coinbase describes its Slack harness as giving agents the same tools and context as engineers, with a PR returned
-  to the thread.
-- Chintan Turakhia favors demonstrations and shared experiments for adoption, citing PR speed runs and a Cursor
-  Wins channel.
+- id: engineers-use-mux-alongside-claude-code
+  text: Coinbase engineers use Mux alongside Claude Code, OpenCode, Cursor, and other internal agents.
+- id: stores-requirements-work-status-linear-slack
+  text: Coinbase stores requirements and work status in Linear; its Slack workflow creates an issue before Forge drafts
+    a fix.
+- id: gives-concurrent-agents-separate-worktrees-branches
+  text: Mux gives concurrent agents separate worktrees, branches, and terminals. This separates edits; it does not establish
+    a security sandbox.
+- id: security-requirements-prevented-using-available-cloud
+  text: Coinbase reports that security requirements prevented it from using available cloud background agents and motivated
+    its internal harness.
+- id: slack-harness-giving-agents-same-tools
+  text: Coinbase describes its Slack harness as giving agents the same tools and context as engineers, with a PR returned
+    to the thread.
+- id: chintan-turakhia-favors-demonstrations-shared-experiments
+  text: Chintan Turakhia favors demonstrations and shared experiments for adoption, citing PR speed runs and a Cursor
+    Wins channel.
 sources:
 - id: coinbase-forge-mux-source-1
   title: 'Coding had a concurrency problem: how Mux helped solve it'
   url: https://www.coinbase.com/de/blog/coding-had-a-concurrency-problem-how-mux-helped-solve-it
-  canonical_url: https://www.coinbase.com/de/blog/coding-had-a-concurrency-problem-how-mux-helped-solve-it
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -88,7 +100,6 @@ sources:
 - id: coinbase-forge-mux-source-2
   title: Coinbase × Linear (Forge workflow)
   url: https://linear.app/customers/coinbase
-  canonical_url: https://linear.app/customers/coinbase
   kind: case-study
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -98,7 +109,6 @@ sources:
 - id: coinbase-forge-mux-source-3
   title: 'Chintan Turakhia: 5% of all PRs merged now come from our in-house background agents'
   url: https://x.com/chintanturakhia/status/2019921786834411728
-  canonical_url: https://x.com/chintanturakhia/status/2019921786834411728
   kind: social-post
   provenance_class: direct-participant
   published_at: '2026-02-06'
@@ -109,7 +119,6 @@ sources:
 - id: coinbase-forge-mux-source-4
   title: How Coinbase scaled AI to 1,000+ engineers (How I AI, with Chintan Turakhia)
   url: https://www.lennysnewsletter.com/p/how-coinbase-scaled-ai-to-1000-engineers
-  canonical_url: https://www.lennysnewsletter.com/p/how-coinbase-scaled-ai-to-1000-engineers
   kind: podcast
   provenance_class: direct-participant
   publisher: Lenny's Newsletter
@@ -121,7 +130,6 @@ sources:
 - id: coinbase-forge-mux-source-5
   title: 'How I AI: Chintan Turakhia''s playbook for AI adoption at Coinbase'
   url: https://www.chatprd.ai/how-i-ai/playbook-for-ai-engineering-adoption-at-coinbase
-  canonical_url: https://www.chatprd.ai/how-i-ai/playbook-for-ai-engineering-adoption-at-coinbase
   kind: podcast
   provenance_class: direct-participant
   publisher: ChatPRD
@@ -133,166 +141,127 @@ sources:
 evidence:
   operating_models.0:
   - source_id: coinbase-forge-mux-source-1
-    relation: supports
   - source_id: coinbase-forge-mux-source-3
-    relation: supports
     locator: Preserved content.md, line 11
   summary:
   - source_id: coinbase-forge-mux-source-2
-    relation: supports
     locator: 'The feedback loop: Slack discussion to Linear issue and Forge pull request'
   headline_metric:
   - source_id: coinbase-forge-mux-source-3
-    relation: supports
     locator: Preserved content.md, line 11
-  architecture.sandbox:
-  - source_id: coinbase-forge-mux-source-1
-    relation: supports
   architecture.harness:
   - source_id: coinbase-forge-mux-source-1
-    relation: supports
   - source_id: coinbase-forge-mux-source-2
-    relation: supports
   - source_id: coinbase-forge-mux-source-3
-    relation: supports
     locator: Preserved content.md, line 11
   - source_id: coinbase-forge-mux-source-5
-    relation: supports
     locator: Preserved content.md, line 120
   architecture.model:
   - source_id: coinbase-forge-mux-source-1
-    relation: supports
   - source_id: coinbase-forge-mux-source-5
-    relation: supports
     locator: Preserved content.md, line 114
   architecture.tool_access:
   - source_id: coinbase-forge-mux-source-2
-    relation: supports
   - source_id: coinbase-forge-mux-source-5
-    relation: supports
     locator: Preserved content.md, line 120
   architecture.knowledge:
   - source_id: coinbase-forge-mux-source-2
-    relation: supports
   architecture.context_mgmt:
   - source_id: coinbase-forge-mux-source-2
-    relation: supports
     locator: Preserved content.md, line 34
   - source_id: coinbase-forge-mux-source-5
-    relation: supports
     locator: Preserved content.md, lines 102–110
-  primitives.0:
+  primitives.forge:
   - source_id: coinbase-forge-mux-source-2
-    relation: supports
   - source_id: coinbase-forge-mux-source-5
-    relation: supports
     locator: Preserved content.md, lines 104–118
-  primitives.1:
+  primitives.mux:
   - source_id: coinbase-forge-mux-source-1
-    relation: supports
     locator: Preserved content.md, lines 20-26
-  primitives.2:
+  primitives.orchestrate-concurrent-agents:
   - source_id: coinbase-forge-mux-source-1
-    relation: supports
     locator: Preserved content.md, line 20
-  key_metrics.0:
+  key_metrics.users-including-engineers-pms-designers-active:
   - source_id: coinbase-forge-mux-source-1
-    relation: supports
     locator: Preserved content.md, lines 24–34
-  key_metrics.1:
+  key_metrics.prs-from-background-agents:
   - source_id: coinbase-forge-mux-source-3
-    relation: supports
     locator: Preserved content.md, line 11
-  key_metrics.2:
+  key_metrics.wallet-rewrite-pr-review-times-reduced:
   - source_id: coinbase-forge-mux-source-4
-    relation: supports
     locator: Preserved content.md, line 16
-  key_metrics.3:
+  key_metrics.speed-run-participants-opened-prs-minutes:
   - source_id: coinbase-forge-mux-source-4
-    relation: supports
     locator: Preserved content.md, line 23
   - source_id: coinbase-forge-mux-source-5
-    relation: supports
     locator: Preserved content.md, line 170
-  key_metrics.4:
+  key_metrics.merged-prs-repositories-orgs:
   - source_id: coinbase-forge-mux-source-1
-    relation: supports
     locator: Preserved content.md, line 31
-  key_metrics.5:
+  key_metrics.users-show-more-merged-prs:
   - source_id: coinbase-forge-mux-source-1
-    relation: supports
     locator: Preserved content.md, lines 32–34
-  lessons_learned.0:
+  lessons_learned.engineers-use-mux-alongside-claude-code:
   - source_id: coinbase-forge-mux-source-1
-    relation: supports
     locator: Preserved content.md, lines 12,24
-  lessons_learned.1:
+  lessons_learned.stores-requirements-work-status-linear-slack:
   - source_id: coinbase-forge-mux-source-2
-    relation: supports
     locator: Preserved content.md, lines 32-36
-  lessons_learned.2:
+  lessons_learned.gives-concurrent-agents-separate-worktrees-branches:
   - source_id: coinbase-forge-mux-source-1
-    relation: supports
     locator: Preserved content.md, lines 26
-  lessons_learned.3:
+  lessons_learned.security-requirements-prevented-using-available-cloud:
   - source_id: coinbase-forge-mux-source-5
-    relation: supports
     locator: Preserved content.md, lines 120
-  lessons_learned.4:
+  lessons_learned.slack-harness-giving-agents-same-tools:
   - source_id: coinbase-forge-mux-source-3
-    relation: supports
     locator: Preserved content.md, lines 11
-  lessons_learned.5:
+  lessons_learned.chintan-turakhia-favors-demonstrations-shared-experiments:
   - source_id: coinbase-forge-mux-source-5
-    relation: supports
     locator: Preserved content.md, lines 170-172
   - source_id: coinbase-forge-mux-source-4
-    relation: supports
     locator: Preserved content.md, lines 23-25
   architecture.interfaces:
   - source_id: coinbase-forge-mux-source-1
-    relation: supports
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The sources describe delegated implementation that drafts a fix and pushes a pull request
       back to Slack for review; no source documents a build step.
     valid_at: '2026'
-  lessons_learned.0:
+  lessons_learned.engineers-use-mux-alongside-claude-code:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The Mux article explicitly describes a portfolio of tools in use. It does not compare that
       portfolio with a single-harness policy.
-  lessons_learned.1:
+  lessons_learned.stores-requirements-work-status-linear-slack:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The workflow account names Linear as the record of work and traces the Slack message through
       issue creation to a PR returned for review.
-  lessons_learned.2:
+  lessons_learned.gives-concurrent-agents-separate-worktrees-branches:
     kind: inference
     provenance: catalog-judgment
     confidence: medium
     confidence_reason: The source describes git and terminal separation but no access-control boundary between agents,
       so sandbox equivalence would be an unsupported inference.
-  lessons_learned.3:
+  lessons_learned.security-requirements-prevented-using-available-cloud:
     kind: fact
     provenance: reported
     confidence: high
     confidence_reason: The episode writeup gives that constraint as the reason for the in-house build at the time
       of the interview.
     valid_at: 2026-03
-  lessons_learned.4:
+  lessons_learned.slack-harness-giving-agents-same-tools:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The company post states the tools-and-context claim and the Slack-to-PR workflow, but supplies
       no tool-by-tool access comparison.
     valid_at: '2026'
-  lessons_learned.5:
+  lessons_learned.chintan-turakhia-favors-demonstrations-shared-experiments:
     kind: opinion
     provenance: reported
     confidence: medium
@@ -300,8 +269,6 @@ claim_metadata:
       not isolate their effect from other adoption work.
     valid_at: '2026'
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Self-reported share stated by the engineering leader who built the harness; measurement method
       and period not documented. The preserved tweet says only 'all PRs merged'; no preserved reply establishes
@@ -309,11 +276,15 @@ claim_metadata:
     valid_at: 2026-02
     metric_scope: PRs merged by in-house background agents
     denominator: All PRs merged; the scope beyond engineering is not documented in the preserved capture
-  key_metrics.0:
+    category: adoption-output
+    basis: reported-measurement
+    subject: Share of all merged pull requests produced by in-house background agents
+  key_metrics.users-including-engineers-pms-designers-active:
     metric_scope: Registered Mux users including engineers, PMs, and designers; 335 active and 197 power users
-  key_metrics.1:
-    kind: metric
-    provenance: reported
+    category: adoption-output
+    basis: reported-measurement
+    subject: Registered Mux users including engineers, PMs, and designers, with active and power-user counts
+  key_metrics.prs-from-background-agents:
     confidence: medium
     confidence_reason: Self-reported share stated by the engineering leader who built the harness; measurement method
       and period not documented. The preserved tweet says only 'all PRs merged'; no preserved reply establishes
@@ -321,36 +292,40 @@ claim_metadata:
     valid_at: 2026-02
     metric_scope: PRs merged by in-house background agents
     denominator: All PRs merged; the scope beyond engineering is not documented in the preserved capture
-  key_metrics.2:
-    kind: metric
-    provenance: reported
+  key_metrics.wallet-rewrite-pr-review-times-reduced:
     confidence: low
     confidence_reason: The episode description states the reduction without a date, denominator, or measurement
       method.
     valid_at: 2026-03
     metric_scope: PR review times for the wallet rewrite effort
-  key_metrics.3:
-    kind: metric
-    provenance: reported
+    category: cost-latency
+    basis: reported-measurement
+    subject: PR review times for the wallet rewrite effort
+  key_metrics.speed-run-participants-opened-prs-minutes:
     confidence: medium
     confidence_reason: Described by the organizer as a single event; explicitly pull requests opened, not merged.
     valid_at: 2026-03
     metric_scope: Pull requests opened during one speed-run session
-  key_metrics.4:
-    kind: metric
-    provenance: reported
+    category: adoption-output
+    basis: reported-measurement
+    subject: Pull requests opened during one speed-run session
+  key_metrics.merged-prs-repositories-orgs:
     confidence: medium
     confidence_reason: Coinbase reported the aggregate in its own engineering blog without independent verification
       or a measurement window.
     metric_scope: Mux merged pull requests across repositories and organizations
-  key_metrics.5:
-    kind: metric
-    provenance: reported
+    category: adoption-output
+    basis: reported-measurement
+    subject: Mux merged pull requests across repositories and organizations
+  key_metrics.users-show-more-merged-prs:
     confidence: medium
     confidence_reason: Self-reported comparison whose own text cautions that Mux users likely skew toward engineers
       who were already high-output and AI-forward; no cohort method is documented.
     metric_scope: Merged pull requests per engineer for Mux users compared with a baseline of non-users
     denominator: Engineers not using Mux at the time of the comparison (11.4 merged PRs)
+    category: effectiveness
+    basis: reported-measurement
+    subject: Merged pull requests per engineer for Mux users compared with non-user baseline
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -364,117 +339,46 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
+      - primitives.forge
       note: The parallel-session Mux example remains in research details and has its own infrastructure record.
     human_involvement:
       state: reported
       claim_paths:
       - operating_models.0
-      - primitives.2
+      - primitives.orchestrate-concurrent-agents
       note: 'The documented checkpoint is the pull-request review: Forge pushes the PR back to Slack for review,
         and the orchestrating engineer reviews, gives feedback, and merges each parallel result.'
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.model
-      - architecture.sandbox
-      - architecture.tool_access
-      - architecture.knowledge
-      - architecture.context_mgmt
-      - architecture.interfaces
     validation:
       state: unreported
-      claim_paths: []
       note: No automated check of agent output is documented; the documented check is the human pull-request review
         cited with human involvement.
     observations:
       state: unreported
-      claim_paths: []
       note: The collected adoption metrics describe Mux, broader background agents or company experiments; they
         do not isolate Forge outcomes.
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
-      - lessons_learned.2
-      - lessons_learned.3
-      - lessons_learned.4
-      - lessons_learned.5
   implementation_fields:
     model:
-      state: reported
-      claim_paths:
-      - architecture.model
       note: Multiple underlying models are stated; the documented portfolio spans harnesses, and no source names
         model providers.
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
     sandbox:
       state: unreported
-      claim_paths: []
-      note: The old worktree claim concerns Mux and is retained in research details; Forge sandbox implementation
-        is unreported.
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
+      note: 'The sources describe separate git worktrees, branches, and terminals for concurrent agents in
+        Mux, a separate platform; they do not establish this as the Forge execution environment.'
     credentials:
       state: unreported
-      claim_paths: []
       note: No capture documents credential handling for the agents; the security requirements that blocked cloud
         background agents are described without their mechanism.
     interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
       note: Slack, GitHub, and Linear are named as invocation surfaces for Forge.
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: mechanism
-    primitives.2: mechanism
-  observations:
-    headline_metric:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Share of all merged pull requests produced by in-house background agents
-    key_metrics.0:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Registered Mux users including engineers, PMs, and designers, with active and power-user counts
-    key_metrics.1:
+  aliases:
+    key_metrics.prs-from-background-agents:
       duplicate_of: headline_metric
       reason: 'Identical statement, period, scope, and denominator as the headline: the same 5% share of merged
         PRs from the same tweet.'
-    key_metrics.2:
-      category: cost-latency
-      basis: reported-measurement
-      subject: PR review times for the wallet rewrite effort
-    key_metrics.3:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Pull requests opened during one speed-run session
-    key_metrics.4:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Mux merged pull requests across repositories and organizations
-    key_metrics.5:
-      category: effectiveness
-      basis: reported-measurement
-      subject: Merged pull requests per engineer for Mux users compared with non-user baseline

@@ -22,12 +22,6 @@ export type AttentionBoundary = (typeof ATTENTION_BOUNDARY_VALUES)[number];
 export const INVOCATION_VALUES = ['interactive', 'background', 'scheduled', 'event-driven', 'unknown'] as const;
 export type Invocation = (typeof INVOCATION_VALUES)[number];
 
-export const RUBRIC_STATE_VALUES = ['run-only', 'durable-session', 'cross-session-memory', 'mixed', 'unknown'] as const;
-export type RubricState = (typeof RUBRIC_STATE_VALUES)[number];
-
-export const IDENTITY_VALUES = ['user', 'dedicated-agent', 'service', 'mixed', 'unknown'] as const;
-export type Identity = (typeof IDENTITY_VALUES)[number];
-
 export const EVIDENCE_STRENGTH_VALUES = ['detailed-primary', 'limited-primary', 'secondary-only', 'mixed', 'unknown'] as const;
 export type EvidenceStrength = (typeof EVIDENCE_STRENGTH_VALUES)[number];
 

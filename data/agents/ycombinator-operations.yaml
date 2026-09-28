@@ -4,7 +4,6 @@ company: Y Combinator
 agent_name: Internal operations agent
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026'
   source_id: ycombinator-operations-source-1
@@ -20,8 +19,6 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: YC’s internal agent helps employees answer questions and carry out operational work using shared company
   tools.
@@ -30,15 +27,18 @@ architecture:
   knowledge: Company database and application model files.
   tool_access: Read-only SQL and separate operational tools; SQL access does not imply every tool is read-only.
 primitives:
-- name: Read company context
+- id: read-company-context
+  name: Read company context
   desc: The agent can read model files and run read-only SQL over YC’s database.
-- name: Use operational tools
+  role: workflow
+- id: use-operational-tools
+  name: Use operational tools
   desc: The shared registry supports finance journal entries, office-hour management and events.
+  role: workflow
 sources:
 - id: ycombinator-operations-source-1
   title: Inside YC's AI Playbook (Lightcone podcast, with Pete Koomen)
   url: https://www.ycombinator.com/library/Qh-inside-yc-s-ai-playbook
-  canonical_url: https://www.ycombinator.com/library/Qh-inside-yc-s-ai-playbook
   kind: podcast
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -46,37 +46,21 @@ sources:
   duplicate_of: ycombinator-agent-infra-source-1
 evidence:
   summary:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
   operating_models.0:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
   architecture.harness:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
   architecture.knowledge:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
   architecture.tool_access:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
-  primitives.0:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
-  primitives.1:
-  - source_id: ycombinator-operations-source-1
-    relation: supports
-    locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  primitives.read-company-context:
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
+  primitives.use-operational-tools:
+  - locator: 'Transcript: finance origins; two database tools; shared registry and team operations'
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes Internal operations agent and its work, but does not establish whether
       a person must approve or inspect each successful output.
@@ -93,61 +77,19 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
+      - primitives.read-company-context
+      - primitives.use-operational-tools
     human_involvement:
       state: unreported
-      claim_paths: []
       note: The source does not establish the required human review boundary.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.knowledge
-      - architecture.tool_access
     validation:
       state: unreported
-      claim_paths: []
     observations:
       state: unreported
-      claim_paths: []
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: unreported
-      claim_paths: []
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: unreported
-      claim_paths: []
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-  observations: {}

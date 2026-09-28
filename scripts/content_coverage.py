@@ -18,13 +18,14 @@ def coverage(records: list[dict]) -> dict:
         if page is None:
             entries.append({"id": record["id"], "format_status": "legacy-unassessed"})
             continue
+        exported = build.page_content_export(record)
         questions = {
             key: {
                 "state": value["state"],
                 "note": value.get("note"),
                 "claim_paths": value["claim_paths"],
             }
-            for key, value in page["questions"].items()
+            for key, value in exported["questions"].items()
         }
         architecture = {
             key: {
@@ -32,7 +33,7 @@ def coverage(records: list[dict]) -> dict:
                 "note": value.get("note"),
                 "claim_paths": value["claim_paths"],
             }
-            for key, value in page["implementation_fields"].items()
+            for key, value in exported["implementation_fields"].items()
         }
         pending = [
             f"questions.{key}"
@@ -43,7 +44,7 @@ def coverage(records: list[dict]) -> dict:
             for key, value in architecture.items()
             if value["state"] == "not-reviewed"
         ]
-        observations = page["observations"]
+        observations = build.metric_paths(record)
         entries.append(
             {
                 "id": record["id"],
@@ -60,7 +61,7 @@ def coverage(records: list[dict]) -> dict:
                 "next_actions": pending,
                 "raw_observation_count": len(observations),
                 "canonical_observation_count": sum(
-                    "duplicate_of" not in value for value in observations.values()
+                    path not in exported["aliases"] for path in observations
                 ),
             }
         )

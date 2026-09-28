@@ -4,7 +4,6 @@ company: Microsoft
 agent_name: AI-powered code review assistant
 approach_type: agent
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: 2025-07
   source_id: microsoft-prassistant-source-1
@@ -19,32 +18,32 @@ operating_models:
 rubric:
   invocation:
   - event-driven
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Microsoft's internal AI-powered code review assistant, built in close collaboration with its Developer
   Division's Data & AI team. It joins each pull request as a reviewer, summarizes the change, and comments on
   specific lines with suggested edits the author applies. Microsoft says it shaped GitHub's Copilot code review.
 headline_metric: Supports more than 90% of Microsoft PRs, impacting over 600,000 pull requests per month
 architecture:
-  interfaces: []
   knowledge: Repository-specific guidelines and custom review prompts can guide specialized reviews
 primitives:
-- {name: Automatic first review, desc: Creating a pull request can automatically start the assistant as a reviewer}
-- {name: Review and summarize, desc: "The assistant reviews the diff, writes a pull-request summary, and posts categorized findings on specific lines"}
-- {name: Suggest changes, desc: "For a bug or suboptimal pattern, the assistant proposes a code snippet or alternative implementation"}
-- {name: Author decision, desc: "The author reviews, edits, and explicitly applies a suggestion; the assistant does not commit it directly"}
-- {name: Pull-request Q&A, desc: Reviewers can ask the assistant questions in the pull-request discussion and receive answers about the code}
+- {id: automatic-first-review, name: Automatic first review, desc: Creating a pull request can automatically start the assistant as a reviewer, role: workflow}
+- {id: review-and-summarize, name: Review and summarize, desc: "The assistant reviews the diff, writes a pull-request summary, and posts categorized findings on specific lines", role: workflow}
+- {id: suggest-changes, name: Suggest changes, desc: "For a bug or suboptimal pattern, the assistant proposes a code snippet or alternative implementation", role: workflow}
+- {id: author-decision, name: Author decision, desc: "The author reviews, edits, and explicitly applies a suggestion; the assistant does not commit it directly", role: workflow}
+- {id: pull-request-q-and-a, name: Pull-request Q&A, desc: Reviewers can ask the assistant questions in the pull-request discussion and receive answers about the code, role: workflow}
 key_metrics:
-- More than 90% of pull requests across the company
-- More than 600,000 pull requests impacted per month
-- About 5,000 repositories in early onboarding
-- 10–20% median pull-request completion-time improvement in an early 5,000-repository cohort
+- id: pull-request-coverage
+  text: More than 90% of pull requests across the company
+- id: pull-requests-impacted-per-month
+  text: More than 600,000 pull requests impacted per month
+- id: repositories-early-onboarding
+  text: About 5,000 repositories in early onboarding
+- id: median-pull-request-completion-time-improvement
+  text: 10–20% median pull-request completion-time improvement in an early 5,000-repository cohort
 sources:
 - id: microsoft-prassistant-source-1
   title: Enhancing code quality at scale with AI-powered code reviews
   url: https://devblogs.microsoft.com/engineering-at-microsoft/enhancing-code-quality-at-scale-with-ai-powered-code-reviews/
-  canonical_url: https://devblogs.microsoft.com/engineering-at-microsoft/enhancing-code-quality-at-scale-with-ai-powered-code-reviews/
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -56,81 +55,71 @@ sources:
 evidence:
   operating_models.0:
   - source_id: microsoft-prassistant-source-1
-    relation: supports
   summary:
   - source_id: microsoft-prassistant-source-1
-    relation: supports
   headline_metric:
-  - source_id: microsoft-prassistant-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10
+  - locator: Preserved content.md, lines 10
   architecture.knowledge:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, line 41'}
-  primitives.0:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, lines 16, 29'}
-  primitives.1:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, lines 18, 23'}
-  primitives.2:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, line 19'}
-  primitives.3:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, line 19'}
-  primitives.4:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, line 27'}
-  key_metrics.0:
-  - source_id: microsoft-prassistant-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10
-  key_metrics.1:
-  - source_id: microsoft-prassistant-source-1
-    relation: supports
-    locator: Preserved content.md, lines 10
-  key_metrics.2:
-  - source_id: microsoft-prassistant-source-1
-    relation: supports
-    locator: Preserved content.md, lines 35
-  key_metrics.3:
-  - {source_id: microsoft-prassistant-source-1, relation: supports, locator: 'Preserved content.md, line 35'}
+  - {locator: 'Preserved content.md, line 41'}
+  primitives.automatic-first-review:
+  - {locator: 'Preserved content.md, lines 16, 29'}
+  primitives.review-and-summarize:
+  - {locator: 'Preserved content.md, lines 18, 23'}
+  primitives.suggest-changes:
+  - {locator: 'Preserved content.md, line 19'}
+  primitives.author-decision:
+  - {locator: 'Preserved content.md, line 19'}
+  primitives.pull-request-q-and-a:
+  - {locator: 'Preserved content.md, line 27'}
+  key_metrics.pull-request-coverage:
+  - locator: Preserved content.md, lines 10
+  key_metrics.pull-requests-impacted-per-month:
+  - locator: Preserved content.md, lines 10
+  key_metrics.repositories-early-onboarding:
+  - locator: Preserved content.md, lines 35
+  key_metrics.median-pull-request-completion-time-improvement:
+  - {locator: 'Preserved content.md, line 35'}
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The engineering blog describes engineers acting on PRAssistant review comments, which locates
       human attention at work-product review.
     valid_at: 2025-07
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Microsoft reported the figures in its own engineering blog without independent verification.
     valid_at: 2025-07
     reported_by: Microsoft
     metric_scope: PRs supported by the internal AI review assistant across Microsoft
     denominator: Company pull requests for coverage share
-  key_metrics.0:
-    kind: metric
-    provenance: reported
+    category: adoption-output
+    basis: reported-measurement
+    subject: Pull requests supported across Microsoft per month
+  key_metrics.pull-request-coverage:
     confidence: medium
     confidence_reason: Microsoft reported the figures in its own engineering blog.
     metric_scope: PRs supported by the internal AI review assistant across Microsoft
     denominator: Company pull requests for coverage share
-  key_metrics.1:
-    kind: metric
-    provenance: reported
+    category: adoption-output
+    basis: reported-measurement
+    subject: Share of Microsoft pull requests supported
+  key_metrics.pull-requests-impacted-per-month:
     confidence: medium
     confidence_reason: Microsoft reported the figures in its own engineering blog.
     metric_scope: PRs supported by the internal AI review assistant across Microsoft
     denominator: Company pull requests for coverage share
-  key_metrics.2:
-    kind: metric
-    provenance: reported
+    category: adoption-output
+    basis: reported-measurement
+    subject: Microsoft pull requests impacted per month
+  key_metrics.repositories-early-onboarding:
     confidence: medium
     confidence_reason: Microsoft reported the figures in its own engineering blog.
     metric_scope: Repositories onboarded in early AI code-review experiments
     measurement_method: Early experiments and data science studies across onboarded repositories
-  key_metrics.3:
-    kind: metric
-    provenance: reported
+    category: implementation-scale
+    basis: estimate
+    subject: Repositories in the early onboarding cohort
+  key_metrics.median-pull-request-completion-time-improvement:
     confidence: medium
     confidence_reason: Microsoft reports an early observational result without an independent study or causal design.
     valid_at: 2025-07
@@ -138,32 +127,22 @@ claim_metadata:
     metric_scope: Median pull-request completion time in an early cohort of 5,000 onboarded repositories
     denominator: 5,000 repositories in early experiments and data science studies
     measurement_method: Early experiments and data science studies; comparison design is not specified
+    category: effectiveness
+    basis: reported-measurement
+    subject: "Median pull-request completion time in the early 5,000-repository cohort"
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
   source_ids: [microsoft-prassistant-source-1]
   workflow_scope: Pull request creation → AI review → author-applied suggestion
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.0, primitives.1, primitives.2, primitives.3, primitives.4]}
-    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.3]}
-    implementation: {state: reported, claim_paths: [architecture.knowledge]}
-    validation: {state: reported, claim_paths: [primitives.3]}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1, key_metrics.2, key_metrics.3]}
-    lessons: {state: unreported, claim_paths: [], note: The reviewed article reports practices and outcomes but this record contains no separate lessons claim.}
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.automatic-first-review, primitives.review-and-summarize, primitives.suggest-changes, primitives.author-decision, primitives.pull-request-q-and-a]}
+    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.author-decision]}
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.author-decision]}
+    observations: {state: reported}
+    lessons: {state: unreported, note: The reviewed article reports practices and outcomes but this record contains no separate lessons claim.}
   implementation_fields:
-    model: {state: unreported, claim_paths: []}
-    harness: {state: unreported, claim_paths: []}
-    sandbox: {state: unreported, claim_paths: []}
-    tool_access: {state: unreported, claim_paths: []}
-    knowledge: {state: reported, claim_paths: [architecture.knowledge]}
-    context_mgmt: {state: unreported, claim_paths: []}
-    credentials: {state: unreported, claim_paths: []}
-    interfaces: {state: unreported, claim_paths: [], note: The source says the existing PR workflow but does not establish a specific hosting interface.}
-  primitive_roles: {primitives.0: workflow, primitives.1: workflow, primitives.2: workflow, primitives.3: workflow, primitives.4: workflow}
-  observations:
-    headline_metric: {category: adoption-output, basis: reported-measurement, subject: Pull requests supported across Microsoft per month}
-    key_metrics.0: {category: adoption-output, basis: reported-measurement, subject: Share of Microsoft pull requests supported}
-    key_metrics.1: {category: adoption-output, basis: reported-measurement, subject: Microsoft pull requests impacted per month}
-    key_metrics.2: {category: implementation-scale, basis: estimate, subject: Repositories in the early onboarding cohort}
-    key_metrics.3: {category: effectiveness, basis: reported-measurement, subject: "Median pull-request completion time in the early 5,000-repository cohort"}
+    interfaces: {state: unreported, note: 'The source names the existing PR workflow but does
+      not establish a specific hosting interface.'}

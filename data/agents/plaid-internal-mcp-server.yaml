@@ -4,7 +4,6 @@ company: Plaid
 agent_name: Internal MCP server
 approach_type: supporting-pattern
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: '2025'
   source_id: plaid-internal-mcp-server-source-1
@@ -19,8 +18,6 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: unknown
-  identity: user
   evidence_strength: detailed-primary
 summary: Plaid's internal Model Context Protocol server is supporting infrastructure rather than an agent. The central
   server connects engineers' AI tools to internal systems such as Jira, application logs, and data schemas that
@@ -31,31 +28,41 @@ architecture:
   harness: Central internal MCP server that fronts vendor AI clients
   tool_access: More than 20 tools and several internal services (Jira, logs, schemas)
   credentials: Behind Plaid's identity-aware proxy and centralized authorization
-  interfaces: []
 primitives:
-- name: Connect an AI client
+- id: connect-an-ai-client
+  name: Connect an AI client
   desc: An engineer's AI tool such as Claude Code or Cursor reaches internal data through the one central internal
     MCP server instead of a locally managed arrangement of MCP servers
-- name: Authenticate the engineer
+  role: workflow
+- id: authenticate-the-engineer
+  name: Authenticate the engineer
   desc: CLI-based authentication uses the Device Authorization Grant flow with DPoP and short-lived bearer tokens
     through a locally running proxy
-- name: Authorize the request
+  role: workflow
+- id: authorize-the-request
+  name: Authorize the request
   desc: The identity-aware proxy validates a Plaid managed device and identity-provider login; a signed identity
     token is parsed and the centralized authorization server checks the employee's access to the target service
-- name: Enforce data policy at call time
+  role: workflow
+- id: enforce-data-policy-at-call-time
+  name: Enforce data policy at call time
   desc: Tool-level controls enforce the LLM data access policy when a tool is called, and the centralized design
     adds caller identity inspection and audit logging
-- name: Return internal context
+  role: validation
+- id: return-internal-context
+  name: Return internal context
   desc: The tool returns data from internal systems such as Jira, application logs, and data schemas to the AI client
+  role: workflow
 key_metrics:
-- Claude Code and Cursor are used by over 80% of Plaid engineers; the source does not report internal MCP server
-  adoption share
-- Thousands of tool calls and dozens of agents built on it
+- id: claude-code-cursor-used-plaid-engineers
+  text: Claude Code and Cursor are used by over 80% of Plaid engineers; the source does not report internal MCP server
+    adoption share
+- id: thousands-tool-calls-dozens-agents-built
+  text: Thousands of tool calls and dozens of agents built on it
 sources:
 - id: plaid-internal-mcp-server-source-1
   title: The Plaid internal MCP server
   url: https://engineering.plaid.com/the-plaid-internal-mcp-server-8eff08bb6bdb
-  canonical_url: https://engineering.plaid.com/the-plaid-internal-mcp-server-8eff08bb6bdb
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -66,81 +73,60 @@ sources:
 evidence:
   operating_models.0:
   - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
   summary:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 38–45, 65–89
+  - locator: Preserved content.md, lines 38–45, 65–89
   headline_metric:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 38, 89
+  - locator: Preserved content.md, lines 38, 89
   architecture.harness:
   - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
   architecture.credentials:
   - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-  primitives.0:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 38–40, 67
-  primitives.1:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, line 59
-  primitives.2:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 57, 59
-  primitives.3:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 61–63, 82, 87
-  primitives.4:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 14–16
-  key_metrics.0:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 38, 89
-  key_metrics.1:
-  - source_id: plaid-internal-mcp-server-source-1
-    relation: supports
-    locator: Preserved content.md, lines 89
+  primitives.connect-an-ai-client:
+  - locator: Preserved content.md, lines 38–40, 67
+  primitives.authenticate-the-engineer:
+  - locator: Preserved content.md, line 59
+  primitives.authorize-the-request:
+  - locator: Preserved content.md, lines 57, 59
+  primitives.enforce-data-policy-at-call-time:
+  - locator: Preserved content.md, lines 61–63, 82, 87
+  primitives.return-internal-context:
+  - locator: Preserved content.md, lines 14–16
+  key_metrics.claude-code-cursor-used-plaid-engineers:
+  - locator: Preserved content.md, lines 38, 89
+  key_metrics.thousands-tool-calls-dozens-agents-built:
+  - locator: Preserved content.md, lines 89
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The MCP server is a tool-access layer, not a workflow with a single human-attention boundary.
     valid_at: '2025'
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Plaid reported the figures in its own engineering blog without independent verification.
     valid_at: '2025'
     reported_by: Plaid
     metric_scope: Claude Code and Cursor adoption among Plaid engineers; separate from internal MCP server adoption
     denominator: Plaid engineers for the AI-client usage share
-  key_metrics.0:
-    kind: metric
-    provenance: reported
+    category: adoption-output
+    basis: estimate
+    subject: Claude Code and Cursor usage among Plaid engineers and agents relying on the internal MCP server
+  key_metrics.claude-code-cursor-used-plaid-engineers:
     confidence: medium
     confidence_reason: Plaid reported the figures in its own engineering blog.
     metric_scope: Claude Code and Cursor adoption among Plaid engineers; separate from internal MCP server adoption
     denominator: Plaid engineers for the AI-client usage share
-  key_metrics.1:
-    kind: metric
-    provenance: reported
+    category: adoption-output
+    basis: estimate
+    subject: Claude Code and Cursor adoption among Plaid engineers
+  key_metrics.thousands-tool-calls-dozens-agents-built:
     confidence: medium
     confidence_reason: Plaid reported the figures in its own engineering blog.
     metric_scope: Tool calls and agents relying on the internal MCP server across engineering, product, and support
+    category: adoption-output
+    basis: estimate
+    subject: Tool calls through and agents built on the internal MCP server across engineering, product, and support
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -150,95 +136,47 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
-      - primitives.2
-      - primitives.4
+      - primitives.connect-an-ai-client
+      - primitives.authenticate-the-engineer
+      - primitives.authorize-the-request
+      - primitives.return-internal-context
     human_involvement:
       state: not-applicable
-      claim_paths: []
       note: There is no single platform-wide agent review boundary. Scoped downstream operating-model claims remain
         in research details; access controls are described separately.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.tool_access
-      - architecture.credentials
     validation:
       state: reported
       claim_paths:
-      - primitives.3
+      - primitives.enforce-data-policy-at-call-time
     observations:
       state: reported
-      claim_paths:
-      - headline_metric
-      - key_metrics.0
-      - key_metrics.1
     lessons:
       state: unreported
-      claim_paths: []
       note: The capture offers design rationale, such as the view that existing access-control frameworks can be
         naturally replicated, but states no evaluated transferable lesson.
   implementation_fields:
     model:
       state: not-applicable
-      claim_paths: []
       note: The server connects AI clients to internal data and runs no model itself; the capture describes no model
         component.
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
     sandbox:
       state: unreported
-      claim_paths: []
       note: The capture describes the identity-aware proxy and managed-device checks as access control, not an execution
         isolation boundary.
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
     knowledge:
       state: unreported
-      claim_paths: []
       note: Documentation and internal data are integrated as tools; the capture describes no separate knowledge
         or context store.
     context_mgmt:
       state: unreported
-      claim_paths: []
       note: The capture describes delivering context to AI clients, not how context is maintained or organized over
         time.
-    credentials:
-      state: reported
-      claim_paths:
-      - architecture.credentials
     interfaces:
       state: unreported
-      claim_paths: []
-      note: The capture names AI clients such as Claude Code and Cursor that connect as MCP clients, not a human-facing
-        surface of the server.
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: workflow
-    primitives.3: validation
-    primitives.4: workflow
-  observations:
-    headline_metric:
-      category: adoption-output
-      basis: estimate
-      subject: Claude Code and Cursor usage among Plaid engineers and agents relying on the internal MCP server
-    key_metrics.0:
-      category: adoption-output
-      basis: estimate
-      subject: Claude Code and Cursor adoption among Plaid engineers
-    key_metrics.1:
-      category: adoption-output
-      basis: estimate
-      subject: Tool calls through and agents built on the internal MCP server across engineering, product, and support
+      note: 'The capture names AI clients such as Claude Code and Cursor that connect as MCP clients, not a
+        human-facing surface of the server.'

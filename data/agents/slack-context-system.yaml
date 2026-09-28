@@ -4,7 +4,6 @@ company: Slack
 agent_name: Security investigation service
 approach_type: agent
 deployment_stage: deployed
-year: 2025
 first_public_evidence:
   date: '2025-12-01'
   source_id: slack-security-foundation
@@ -20,8 +19,6 @@ rubric:
   invocation:
   - event-driven
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Slack's engineering team runs an agentic service that investigates security alerts. A Director agent orchestrates
   rounds, Expert agents gather evidence, and a Critic scores each finding for credibility. Instead of message history,
@@ -30,38 +27,53 @@ headline_metric: Context management for security investigations spanning hundred
   of output
 architecture:
   harness: 'Coordinator/dispatcher: a central coordinator dispatches to expert agents and to critic agents'
-  model: Not specified
   tool_access: Expert agents produce reports; critic agents evaluate them using evidence-inspection tools
   context_mgmt: Three channels; Director's Journal (working memory), Critic's Review (credibility-weighted findings),
     Critic's Timeline (deduped chronological synthesis)
 primitives:
-- name: Director's Journal
+- id: director-journal
+  name: Director's Journal
   desc: 'Structured working memory: findings, decisions, questions, hypotheses'
-- name: Critic's Review
+  role: mechanism
+- id: critic-review
+  name: Critic's Review
   desc: A model critiques submitted findings, inspects cited evidence, and assigns credibility scores
-- name: Critic's Timeline
+  role: validation
+- id: critic-timeline
+  name: Critic's Timeline
   desc: A model consolidates a timeline, removes duplicate events, and weighs conflicting findings between rounds
-- name: Pose the round's questions
+  role: mechanism
+- id: pose-the-round-questions
+  name: Pose the round's questions
   desc: The Director decides what questions to ask and which Experts to engage; investigations run in rounds until
     the Director concludes them
-- name: Gather evidence and submit findings
+  role: workflow
+- id: gather-evidence-and-submit-findings
+  name: Gather evidence and submit findings
   desc: Experts interrogate their data sources and produce findings that cite investigation artifacts
-- name: Conclude the investigation
+  role: workflow
+- id: conclude-the-investigation
+  name: Conclude the investigation
   desc: The Director summarizes the root cause and the recommended actions, and ends the investigation
+  role: workflow
 key_metrics:
-- Handles multi-agent runs spanning hundreds of requests and megabytes of output
-- Over 170,000 findings scored by the Critic; slightly over a quarter fell below the plausible threshold
+- id: handles-multi-agent-runs-spanning-hundreds
+  text: Handles multi-agent runs spanning hundreds of requests and megabytes of output
+- id: critic-scored-findings
+  text: Over 170,000 findings scored by the Critic; slightly over a quarter fell below the plausible threshold
 lessons_learned:
-- Slack passes a director journal, reviewed findings, and a consolidated timeline between investigation rounds instead
-  of forwarding the full message history.
-- Slack's Experts gather evidence; a Critic checks their findings and can inspect the original tool calls and results.
-- Slack's context channels preserve information across investigation rounds, but the report does not establish recovery
-  after a worker restart.
+- id: passes-director-journal-reviewed-findings-consolidated
+  text: Slack passes a director journal, reviewed findings, and a consolidated timeline between investigation rounds instead
+    of forwarding the full message history.
+- id: experts-gather-evidence-critic-checks-findings
+  text: Slack's Experts gather evidence; a Critic checks their findings and can inspect the original tool calls and results.
+- id: channels-preserve-information-investigation-rounds
+  text: Slack's context channels preserve information across investigation rounds, but the report does not establish recovery
+    after a worker restart.
 sources:
 - id: slack-context-system-source-1
   title: Managing context in long-running agentic applications
   url: https://slack.engineering/managing-context-in-long-run-agentic-applications/
-  canonical_url: https://slack.engineering/managing-context-in-long-run-agentic-applications/
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-08-12'
@@ -71,7 +83,6 @@ sources:
 - id: slack-context-system-source-2
   title: How Slack manages context in long-running multi-agent systems
   url: https://www.infoq.com/news/2026/04/slack-agent-context-management/
-  canonical_url: https://www.infoq.com/news/2026/04/slack-agent-context-management/
   kind: news
   provenance_class: independent-secondary
   accessed_at: '2026-08-12'
@@ -81,7 +92,6 @@ sources:
 - id: slack-security-foundation
   title: Streamlining Security Investigations with Agents
   url: https://slack.engineering/streamlining-security-investigations-with-agents/
-  canonical_url: https://slack.engineering/streamlining-security-investigations-with-agents/
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-09-17'
@@ -92,110 +102,79 @@ sources:
 evidence:
   operating_models.0:
   - source_id: slack-security-foundation
-    relation: supports
     locator: 'Example Report; Conclusion: service team resolves credential exposure and on-call staff supervise
       investigations'
   summary:
   - source_id: slack-context-system-source-1
-    relation: supports
   - source_id: slack-context-system-source-2
-    relation: supports
   headline_metric:
   - source_id: slack-context-system-source-1
-    relation: supports
     locator: Preserved content.md, lines 34–38
   - source_id: slack-context-system-source-2
-    relation: supports
     locator: Preserved content.md, lines 22
   architecture.harness:
   - source_id: slack-context-system-source-1
-    relation: supports
   - source_id: slack-context-system-source-2
-    relation: supports
-  architecture.model:
-  - source_id: slack-context-system-source-1
-    relation: supports
-  - source_id: slack-context-system-source-2
-    relation: supports
   architecture.tool_access:
   - source_id: slack-context-system-source-1
-    relation: supports
   - source_id: slack-context-system-source-2
-    relation: supports
   architecture.context_mgmt:
   - source_id: slack-context-system-source-1
-    relation: supports
   - source_id: slack-context-system-source-2
-    relation: supports
-  primitives.0:
+  primitives.director-journal:
   - source_id: slack-context-system-source-1
-    relation: supports
   - source_id: slack-context-system-source-2
-    relation: supports
-  primitives.1:
+  primitives.critic-review:
   - source_id: slack-context-system-source-1
-    relation: supports
     locator: Preserved content.md, lines 119-142
-  primitives.2:
+  primitives.critic-timeline:
   - source_id: slack-context-system-source-1
-    relation: supports
     locator: Preserved content.md, lines 196-226
-  primitives.3:
+  primitives.pose-the-round-questions:
   - source_id: slack-context-system-source-1
-    relation: supports
     locator: Preserved content.md, lines 24, 54
-  primitives.4:
+  primitives.gather-evidence-and-submit-findings:
   - source_id: slack-context-system-source-1
-    relation: supports
     locator: Preserved content.md, line 119
-  primitives.5:
+  primitives.conclude-the-investigation:
   - source_id: slack-context-system-source-1
-    relation: supports
     locator: Preserved content.md, lines 24, 115
-  key_metrics.0:
+  key_metrics.handles-multi-agent-runs-spanning-hundreds:
   - source_id: slack-context-system-source-1
-    relation: supports
     locator: Preserved content.md, lines 34–38
   - source_id: slack-context-system-source-2
-    relation: supports
     locator: Preserved content.md, lines 22
-  key_metrics.1:
+  key_metrics.critic-scored-findings:
   - source_id: slack-context-system-source-1
-    relation: supports
     locator: Preserved content.md, lines 162–170
-  lessons_learned.0:
+  lessons_learned.passes-director-journal-reviewed-findings-consolidated:
   - source_id: slack-context-system-source-1
-    relation: supports
     locator: Preserved content.md, lines 36-42,272
-  lessons_learned.1:
+  lessons_learned.experts-gather-evidence-critic-checks-findings:
   - source_id: slack-context-system-source-1
-    relation: supports
     locator: Preserved content.md, lines 119-142,172-176
-  lessons_learned.2:
+  lessons_learned.channels-preserve-information-investigation-rounds:
   - source_id: slack-context-system-source-1
-    relation: supports
     locator: Preserved content.md, lines 272-284
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: high
     confidence_reason: The operational service returns reports to on-call staff; the example issue is referred to
       its owning team to resolve. No autonomous remediation is established.
     valid_at: '2025-12-01'
-  lessons_learned.0:
+  lessons_learned.passes-director-journal-reviewed-findings-consolidated:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The context article enumerates the three channels and explicitly says no other message history
       is passed forward.
-  lessons_learned.1:
+  lessons_learned.experts-gather-evidence-critic-checks-findings:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The review-tools section describes both responsibilities and the Critic's access to evidence.
       The Critic is still a model and can make errors.
-  lessons_learned.2:
+  lessons_learned.channels-preserve-information-investigation-rounds:
     kind: inference
     provenance: catalog-judgment
     confidence: medium
@@ -203,16 +182,20 @@ claim_metadata:
       or recovery protocol; the state rubric therefore remains unknown.
   headline_metric:
     metric_scope: Complex security investigations requiring tailored multi-agent context; qualitative workload scale
-  key_metrics.0:
+    category: runtime-capacity
+    basis: qualitative
+    subject: Security-investigation workload scale that the context channels are built to handle
+  key_metrics.handles-multi-agent-runs-spanning-hundreds:
     metric_scope: Complex security investigations requiring tailored multi-agent context; qualitative workload scale
-  key_metrics.1:
-    kind: metric
-    provenance: reported
+  key_metrics.critic-scored-findings:
     confidence: medium
     confidence_reason: Slack reported the score distribution from its own review pipeline without independent verification
       or a stated measurement window.
     valid_at: '2026'
     metric_scope: Critic credibility scores of Expert findings across all reviewed investigations
+    category: effectiveness
+    basis: reported-measurement
+    subject: Critic credibility scores across over 170,000 reviewed Expert findings
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
@@ -224,14 +207,12 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.3
-      - primitives.4
-      - primitives.5
+      - primitives.pose-the-round-questions
+      - primitives.gather-evidence-and-submit-findings
+      - primitives.conclude-the-investigation
     human_involvement:
       state: reported
       claim_paths:
@@ -239,77 +220,30 @@ page_content:
       note: People supervise investigations and resolve escalated issues; the service investigates and reports.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.tool_access
-      - architecture.context_mgmt
     validation:
       state: reported
       claim_paths:
-      - primitives.1
+      - primitives.critic-review
       note: The Critic Review scores each finding for credibility against the cited evidence; the Timeline additionally
         prunes findings that break narrative coherence.
     observations:
       state: reported
-      claim_paths:
-      - headline_metric
-      - key_metrics.0
-      - key_metrics.1
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
-      - lessons_learned.2
   implementation_fields:
     model:
       state: unreported
-      claim_paths: []
-      note: No model is named; the capture states only that a stronger model runs the Critic (source-1, line 174).
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
+      note: 'No model is named; the capture states only that a stronger model runs the Critic (source-1, line
+        174).'
     knowledge:
       state: unreported
-      claim_paths: []
       note: No separate knowledge store is documented; evidence lives in investigation artifacts and the channels
         cited under context management.
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
-    credentials:
-      state: unreported
-      claim_paths: []
     interfaces:
       state: unreported
-      claim_paths: []
       note: No human-facing surface is named; the service reacts to security alerts.
-  primitive_roles:
-    primitives.0: mechanism
-    primitives.1: validation
-    primitives.2: mechanism
-    primitives.3: workflow
-    primitives.4: workflow
-    primitives.5: workflow
-  observations:
-    headline_metric:
-      category: runtime-capacity
-      basis: qualitative
-      subject: Security-investigation workload scale that the context channels are built to handle
-    key_metrics.0:
+  aliases:
+    key_metrics.handles-multi-agent-runs-spanning-hundreds:
       duplicate_of: headline_metric
       reason: Same workload statement, figures, locators, and qualitative scope as the headline; the multi-agent
         framing adds no separate observation.
-    key_metrics.1:
-      category: effectiveness
-      basis: reported-measurement
-      subject: Critic credibility scores across over 170,000 reviewed Expert findings

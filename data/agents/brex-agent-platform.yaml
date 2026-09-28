@@ -4,7 +4,6 @@ company: Brex
 agent_name: Internal Agent Platform
 approach_type: platform
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: '2025-09-25'
   source_id: brex-agent-platform-source-1
@@ -28,8 +27,6 @@ rubric:
   invocation:
   - interactive
   - event-driven
-  state: unknown
-  identity: unknown
   evidence_strength: secondary-only
 summary: Brex built a Retool-based platform where operations staff build, test and deploy agents for KYC, disputes,
   quality assurance and collections. Its systems engineering team maintains the builder; human involvement differs
@@ -39,7 +36,6 @@ architecture:
   sandbox: Retool-hosted runtime (no bespoke execution env described)
   harness: Retool-based builder with prompt management and multi-model testing/evaluation; built by a ~25-person
     systems-engineering team
-  model: Not documented for deployed agents; the platform provides multi-model testing and evaluation at build time
   interfaces:
   - slack
   - internal-ui
@@ -50,38 +46,56 @@ architecture:
   credentials: SSO via internal Retool proxies (no per-user accounts); ConductorOne access management; Okta auth;
     data classified by risk; ≤30-day retention, no training on inputs
 primitives:
-- name: Prompt + eval studio
+- id: prompt-eval-studio
+  name: Prompt + eval studio
   desc: Non-technical ops staff design prompts, test across models, deploy with QA oversight
-- name: MCP tool bridge
+  role: mechanism
+- id: mcp-tool-bridge
+  name: MCP tool bridge
   desc: Product features exposed to internal agents through one MCP server
-- name: Prepare the dispute submission
+  role: mechanism
+- id: prepare-the-dispute-submission
+  name: Prepare the dispute submission
   desc: The dispute agent applies the 100+ page dispute guide and the BPO operating procedure to produce a more
     robust, better-articulated submission
-- name: Draft the collections response
+  role: workflow
+- id: draft-the-collections-response
+  name: Draft the collections response
   desc: The agent analyzes the customer reply and layers in account context and negotiating guidelines, offering
     the servicing team drafts in several tones to select, customize, or send
-- name: Apply the quality rubric
+  role: workflow
+- id: apply-the-quality-rubric
+  name: Apply the quality rubric
   desc: A QA agent reviews every support interaction against the quality rubric and feeds response trends into a
     closed loop improving agent and human performance
+  role: validation
 key_metrics:
-- 50%+ of customer-support cases resolved by chatbot as first touch
-- 'Dispute processing: 3 hours → 3 seconds'
-- QA covers every support interaction; one person using AI instead of five QA specialists
-- KYC adverse-media accuracy 85% → 88%
+- id: customer-support-cases-resolved-chatbot-first
+  text: 50%+ of customer-support cases resolved by chatbot as first touch
+- id: dispute-processing-hours-seconds
+  text: 'Dispute processing: 3 hours → 3 seconds'
+- id: qa-covers-support-interaction-one-person
+  text: QA covers every support interaction; one person using AI instead of five QA specialists
+- id: kyc-adverse-media-accuracy
+  text: KYC adverse-media accuracy 85% → 88%
 lessons_learned:
-- Brex's CTO recommends automating a useful portion of a workflow before pursuing complete automation.
-- Brex assigns a systems engineering team to maintain its internal agent platform and shares capabilities with the
-  customer product.
-- Brex automates high-confidence fraud cases and sends the remaining cases to analysts with AI-generated findings.
-- Brex operations staff and engineers translated KYC procedures into individual decisions and instructions, retaining
-  human quality checks.
-- Brex groups legal approvals by data retention, training use, and segregation requirements, with controls agreed
-  by product and legal teams.
+- id: cto-recommends-automating-useful-portion-workflow
+  text: Brex's CTO recommends automating a useful portion of a workflow before pursuing complete automation.
+- id: assigns-systems-engineering-team-maintain-internal
+  text: Brex assigns a systems engineering team to maintain its internal agent platform and shares capabilities with the
+    customer product.
+- id: automates-high-confidence-fraud-cases-sends
+  text: Brex automates high-confidence fraud cases and sends the remaining cases to analysts with AI-generated findings.
+- id: operations-staff-engineers-translated-kyc-procedures
+  text: Brex operations staff and engineers translated KYC procedures into individual decisions and instructions, retaining
+    human quality checks.
+- id: groups-legal-approvals-data-retention-training
+  text: Brex groups legal approvals by data retention, training use, and segregation requirements, with controls agreed
+    by product and legal teams.
 sources:
 - id: brex-agent-platform-source-1
   title: 'Agent, Human, Ops: How Brex Is Changing Roles and Workflows'
   url: https://www.firstround.com/ai/brex
-  canonical_url: https://www.firstround.com/ai/brex
   kind: case-study
   provenance_class: independent-secondary
   published_at: '2025-09-25'
@@ -92,7 +106,6 @@ sources:
 - id: brex-onboarding-source
   title: 'The end of the trade-off: How AI agents broke the onboarding trilemma'
   url: https://www.brex.com/journal/rebuilding-onboarding-ai-native
-  canonical_url: https://www.brex.com/journal/rebuilding-onboarding-ai-native
   kind: engineering-blog
   provenance_class: first-party
   accessed_at: '2026-09-17'
@@ -103,123 +116,89 @@ sources:
 evidence:
   operating_models.0:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 76, 159
   operating_models.1:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 143, 205
   - source_id: brex-agent-platform-source-1
     relation: contextualizes
     locator: Preserved content.md, line 211 (humans shift toward reviewing trends)
   operating_models.2:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, line 173
   summary:
   - source_id: brex-agent-platform-source-1
-    relation: supports
   - source_id: brex-onboarding-source
     relation: contextualizes
     locator: 'Separate documented implementation: see dedicated agent record; not evidence of identical builder
       version.'
   headline_metric:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 179–189
   architecture.sandbox:
   - source_id: brex-agent-platform-source-1
-    relation: supports
   architecture.harness:
   - source_id: brex-agent-platform-source-1
-    relation: supports
-  architecture.model:
-  - source_id: brex-agent-platform-source-1
-    relation: supports
   architecture.tool_access:
   - source_id: brex-agent-platform-source-1
-    relation: supports
   architecture.knowledge:
   - source_id: brex-agent-platform-source-1
-    relation: supports
   architecture.credentials:
   - source_id: brex-agent-platform-source-1
-    relation: supports
-  primitives.0:
+  primitives.prompt-eval-studio:
   - source_id: brex-agent-platform-source-1
-    relation: supports
-  primitives.1:
+  primitives.mcp-tool-bridge:
   - source_id: brex-agent-platform-source-1
-    relation: supports
-  key_metrics.0:
+  key_metrics.customer-support-cases-resolved-chatbot-first:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 76
-  key_metrics.1:
+  key_metrics.dispute-processing-hours-seconds:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 179–189
-  key_metrics.2:
+  key_metrics.qa-covers-support-interaction-one-person:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 80
-  key_metrics.3:
+  key_metrics.kyc-adverse-media-accuracy:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 163–167
-  lessons_learned.0:
+  lessons_learned.cto-recommends-automating-useful-portion-workflow:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 153-159
-  lessons_learned.1:
+  lessons_learned.assigns-systems-engineering-team-maintain-internal:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 38-40
-  lessons_learned.2:
+  lessons_learned.automates-high-confidence-fraud-cases-sends:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 159
-  lessons_learned.3:
+  lessons_learned.operations-staff-engineers-translated-kyc-procedures:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 195-205
-  lessons_learned.4:
+  lessons_learned.groups-legal-approvals-data-retention-training:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 54-60
   architecture.interfaces:
   - source_id: brex-agent-platform-source-1
-    relation: supports
-  primitives.2:
+  primitives.prepare-the-dispute-submission:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 179–189
-  primitives.3:
+  primitives.draft-the-collections-response:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, line 173
-  primitives.4:
+  primitives.apply-the-quality-rubric:
   - source_id: brex-agent-platform-source-1
-    relation: supports
     locator: Preserved content.md, lines 80–82
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The report documents confidence-threshold automation for fraud recommendations and describes
       L1 process work as fully automated in most cases, with the remainder reviewed by an analyst.
     valid_at: '2025-09-25'
   operating_models.1:
-    kind: inference
-    provenance: catalog-judgment
     confidence: low
     confidence_reason: The report documents human checks inside the KYC flow and humans reviewing LLM work, but
       a later passage shifts humans toward reviewing trends, so the per-run boundary is mixed in the evidence.
     valid_at: '2025-09-25'
   operating_models.2:
-    kind: inference
-    provenance: catalog-judgment
     confidence: medium
     confidence_reason: The report documents the servicing team picking among agent-drafted response options before
       anything is sent; initial outreach itself is automated.
@@ -227,48 +206,61 @@ claim_metadata:
   headline_metric:
     valid_at: '2025'
     metric_scope: Dispute-submission preparation using the internal agent platform; not end-to-end chargeback resolution
-  key_metrics.0:
+    category: effectiveness
+    basis: reported-measurement
+    subject: Dispute-submission preparation time on the internal agent platform
+  key_metrics.customer-support-cases-resolved-chatbot-first:
     valid_at: '2025'
     metric_scope: Customer-support cases resolved by the chatbot at first touch (Brex customer-facing product AI,
       adjacent to this internal platform)
     denominator: Customer-support cases; exact sample size not provided
-  key_metrics.1:
+    category: adoption-output
+    basis: reported-measurement
+    subject: Customer-support cases resolved by the chatbot at first touch (customer-facing product AI, adjacent
+      to this platform)
+  key_metrics.dispute-processing-hours-seconds:
     valid_at: '2025'
     metric_scope: Dispute-submission preparation using the internal agent platform; not end-to-end chargeback resolution
-  key_metrics.2:
+  key_metrics.qa-covers-support-interaction-one-person:
     valid_at: '2025'
     metric_scope: Quality assurance of customer-support interactions
     denominator: Every support interaction
     measurement_method: Agent applies the quality rubric to every response; one person oversees instead of five
       QA specialists
-  key_metrics.3:
+    category: effectiveness
+    basis: reported-measurement
+    subject: Support-interaction QA coverage and the staffing change from five specialists to one
+  key_metrics.kyc-adverse-media-accuracy:
     valid_at: '2025'
     metric_scope: KYC adverse-media classification; human versus agent accuracy
-  lessons_learned.0:
+    category: effectiveness
+    basis: reported-measurement
+    subject: KYC adverse-media classification accuracy, agent versus human
+  lessons_learned.cto-recommends-automating-useful-portion-workflow:
     kind: opinion
     provenance: reported
     confidence: medium
     confidence_reason: The interview contrasts a 40% target with 100% and describes fraud cases still routed to
       analysts. These are the CTO's priorities, not measured optimal targets.
-  lessons_learned.1:
+  lessons_learned.assigns-systems-engineering-team-maintain-internal:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The interview identifies the platform team and explains how new external MCP tools become
       available internally.
-  lessons_learned.2:
+  lessons_learned.automates-high-confidence-fraud-cases-sends:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The fraud example names the automation boundary. It does not establish that all complete
       automation fails on accuracy.
-  lessons_learned.3:
+  lessons_learned.operations-staff-engineers-translated-kyc-procedures:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: The interview describes a joint, line-by-line review of operating procedures and subsequent
       human review of LLM work.
-  lessons_learned.4:
+  lessons_learned.groups-legal-approvals-data-retention-training:
     kind: fact
     provenance: reported
     confidence: medium
@@ -285,115 +277,47 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.2
-      - primitives.3
+      - primitives.prepare-the-dispute-submission
+      - primitives.draft-the-collections-response
       note: The prompt studio and the MCP bridge are build-time mechanisms. Platform-wide capability and the L1/L2/L3
         restructure stay out of the run description.
     human_involvement:
       state: not-applicable
-      claim_paths: []
       note: There is no single platform-wide agent review boundary. Scoped downstream operating-model claims remain
         in research details; access controls are described separately.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.sandbox
-      - architecture.tool_access
-      - architecture.knowledge
-      - architecture.credentials
-      - architecture.interfaces
     validation:
       state: reported
       claim_paths:
-      - primitives.4
+      - primitives.apply-the-quality-rubric
       note: The quality-rubric agent checks every support interaction; the KYC human checks are cited with human
         involvement.
     observations:
       state: reported
-      claim_paths:
-      - headline_metric
-      - key_metrics.0
-      - key_metrics.1
-      - key_metrics.2
-      - key_metrics.3
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
-      - lessons_learned.2
-      - lessons_learned.3
-      - lessons_learned.4
   implementation_fields:
     model:
       state: unreported
-      claim_paths: []
-      note: Deployed-agent models are not documented; multi-model testing is build time. The placeholder claim stays
-        in research details.
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
+      note: 'Deployed-agent models are not documented; the platform provides multi-model testing and
+        evaluation at build time.'
     sandbox:
-      state: reported
-      claim_paths:
-      - architecture.sandbox
       note: Retool hosts the runtime; the capture describes no further isolation boundary.
     tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
       note: The MCP bridge and immediate internal availability are supported at line 40; the Slack /c1 clause describes
         provisioning configuration, not agent invocation (flagged).
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
     context_mgmt:
       state: unreported
-      claim_paths: []
       note: No mechanism for maintaining agent context over time is documented; the QA feedback loop improves performance
         rather than managing context.
     credentials:
-      state: reported
-      claim_paths:
-      - architecture.credentials
       note: SSO via Retool proxies, Okta provisioning, and the retention and segregation controls are supported
         at lines 60–62; the ConductorOne vendor name is not in the capture (flagged).
-    interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
-  primitive_roles:
-    primitives.0: mechanism
-    primitives.1: mechanism
-    primitives.2: workflow
-    primitives.3: workflow
-    primitives.4: validation
-  observations:
-    headline_metric:
-      category: effectiveness
-      basis: reported-measurement
-      subject: Dispute-submission preparation time on the internal agent platform
-    key_metrics.0:
-      category: adoption-output
-      basis: reported-measurement
-      subject: Customer-support cases resolved by the chatbot at first touch (customer-facing product AI, adjacent
-        to this platform)
-    key_metrics.1:
+  aliases:
+    key_metrics.dispute-processing-hours-seconds:
       duplicate_of: headline_metric
       reason: Identical subject, values, period, scope, and locator as the headline; the shorthand adds nothing.
-    key_metrics.2:
-      category: effectiveness
-      basis: reported-measurement
-      subject: Support-interaction QA coverage and the staffing change from five specialists to one
-    key_metrics.3:
-      category: effectiveness
-      basis: reported-measurement
-      subject: KYC adverse-media classification accuracy, agent versus human

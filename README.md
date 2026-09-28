@@ -28,7 +28,7 @@ undocumented details stay unknown.
 
 <!-- BEGIN OVERVIEW -->
 
-**Current map: 51 agents across 41 organizations, plus 15 infrastructure records. The complete catalog is backed by 120 distinct sources and 1172 evidence-linked claims.**
+**Current map: 51 agents across 41 organizations, plus 15 infrastructure records. The complete catalog is backed by 120 distinct sources and 1139 evidence-linked claims.**
 
 ## Agents
 
@@ -124,7 +124,7 @@ Agent autonomy (51 records; infrastructure excluded) is classified as 28 drafts-
 
 The catalog contains 64 scoped supervision assessments across those entries, including 3 continuous-steering, 32 work-product-review, 1 outcome-review, 7 exception-only, and 21 unknown assessments. 9 entries have more than one assessed workflow; the counts therefore do not assign one level to each company.
 
-15 entries are platforms or supporting patterns. State duration is undocumented for 39 entries. Review cost, failure rates, and retired systems remain rarely reported.
+15 entries are platforms or supporting patterns. Review cost, failure rates, and retired systems remain rarely reported.
 
 <!-- END README FINDINGS -->
 
@@ -177,4 +177,4 @@ platform. Attribute downstream agent results to their actual subject and author
 The homepage counts agents; the Infrastructure index keeps supporting implementations
 discoverable. Full JSON exports include both collections, identified by derived
 `catalog_section`. Existing detail URLs and anchors remain stable. See the
-[schema migration](data/schema.md#collection-migration-catalog-7-compact-index-3).
+[schema migration](docs/changelog.md).

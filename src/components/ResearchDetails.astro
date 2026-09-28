@@ -1,6 +1,7 @@
 ---
 // ABOUTME: Holds the per-claim research ledger behind one native disclosure.
 // ABOUTME: It keeps provenance, confidence, and source locators available on the page.
+import ClaimAliases from './ClaimAliases.astro';
 import Icon from './Icon.astro';
 import type { ClaimView } from '../lib/entry-view';
 
@@ -24,6 +25,7 @@ const aliasById = new Map(aliasRelations.map((item) => [item.claim.id, item]));
       <li>
         {researchOnly.has(claim.id) ? (
           <div id={claim.anchor} data-claim-id={claim.id} class="research-only-claim">
+            <ClaimAliases claim={claim} />
             <strong>{claim.label}</strong>
             <p>{claim.text}</p>
             {aliasById.get(claim.id) && (

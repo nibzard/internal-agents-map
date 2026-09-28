@@ -36,9 +36,9 @@ one confidence disclaimer across unrelated lessons.
 
 When the record opts into `page_content`, review the seven reader questions and all
 eight architecture fields against the captures actually read. Record explicit review
-states, a named workflow scope, primitive roles, and observation category/basis/subject.
-Leave a concrete next action for `not-reviewed`; never infer `unreported` from a blank
-legacy field. Confirm duplicate representations have identical scope and qualifications.
+states and a named workflow scope. Leave a concrete next action for `not-reviewed`; never
+infer `unreported` from a field that nobody reviewed. Confirm duplicate metrics have
+identical scope and qualifications.
 
 Search `data/agents/` with `rg` for the organization, system, and aliases before choosing Add.
 A matching system calls for Update, not a duplicate or exclusion.
@@ -65,6 +65,26 @@ For an assessment, stop after the report. For an authorized catalog change:
 Link each claim to source evidence. Distinguish reported claims from catalog judgments and
 assess confidence from the support for each claim. Source type alone does not determine confidence.
 Company metrics remain self-reported unless independently verified. Unknown means undocumented.
+
+Write the record in the shortest form that `data/schema.md` allows:
+
+- Do not write `year`, `canonical_url` when it is equal to `url`, or `relation: supports`.
+  When the record has only one source, write `source_id` on an evidence link only if the link
+  has no `locator`. The build fills these values.
+- Omit an architecture field that the sources do not document. Do not write `unknown`,
+  `Not specified`, or an empty value.
+- Give every primitive, key metric, and lesson a kebab-case `id`, unique in its list. Give
+  each primitive a `role`: `workflow`, `mechanism`, or `validation`. Write a key metric or a
+  lesson as `{id, text}`. Every claim path uses the ID, such as `primitives.open-a-run`.
+- Put `category`, `basis`, and `subject` in the `claim_metadata` of the headline and each
+  key metric, or list the metric under `page_content.aliases` with `duplicate_of` and `reason`.
+- In `page_content.questions`, write `claim_paths` only for `workflow`, `human_involvement`,
+  and `validation`. The build derives the paths of `purpose`, `implementation`,
+  `observations`, and `lessons`.
+- Write a `page_content.implementation_fields` entry only for an absent architecture field,
+  with a `state` and a `note`, or for a `note` on a present field. The build makes every
+  other absent field `unreported`, so give a field that you did not check the state
+  `not-reviewed` and a next action.
 
 Preserve accepted sources using the contribution guide's source-preservation procedure. Review
 the captured text before linking it. The original URL remains the citation. A capture preserves

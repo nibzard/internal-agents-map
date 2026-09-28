@@ -43,7 +43,6 @@ class LinkResult:
 class SourceTarget:
     source_id: str
     url: str
-    archived_url: str | None = None
     manifest_path: str | None = None
     configuration_error: str | None = None
 
@@ -170,7 +169,6 @@ def catalog_sources() -> list[SourceTarget]:
             errors = []
             source_id = source.get("id")
             url = source.get("url")
-            archived_url = source.get("archived_url")
             capture = source.get("capture")
             manifest_path = None
 
@@ -180,9 +178,6 @@ def catalog_sources() -> list[SourceTarget]:
             if not isinstance(url, str) or not url:
                 errors.append("original URL is missing or invalid")
                 url = ""
-            if archived_url is not None and (not isinstance(archived_url, str) or not archived_url):
-                errors.append("archived_url must be a non-empty string")
-                archived_url = None
             if capture is not None:
                 if not isinstance(capture, dict) or set(capture) != {"manifest_path"}:
                     errors.append("capture must contain only manifest_path")
@@ -195,7 +190,6 @@ def catalog_sources() -> list[SourceTarget]:
                 SourceTarget(
                     source_id=source_id,
                     url=url,
-                    archived_url=archived_url,
                     manifest_path=manifest_path,
                     configuration_error="; ".join(errors) or None,
                 )
@@ -207,7 +201,6 @@ def external_targets(
     sources: list[SourceTarget], documentation_urls: set[str]
 ) -> tuple[list[SourceTarget], list[str]]:
     catalog_urls = {target.url for target in sources if target.url}
-    catalog_urls.update(target.archived_url for target in sources if target.archived_url)
     return sources, sorted(documentation_urls - catalog_urls)
 
 
@@ -258,14 +251,6 @@ def local_snapshot_result(target: SourceTarget) -> SnapshotResult:
         return SnapshotResult("invalid", "manifest source_id does not match the catalog source")
     if manifest.get("original_url") != target.url:
         return SnapshotResult("invalid", "manifest original_url does not match the catalog source")
-    if (
-        "external_archive_url" in manifest
-        and manifest["external_archive_url"] != target.archived_url
-    ):
-        return SnapshotResult(
-            "invalid", "manifest external_archive_url does not match archived_url"
-        )
-
     artifacts = manifest.get("artifacts")
     markdown = artifacts.get("markdown") if isinstance(artifacts, dict) else None
     if not isinstance(markdown, dict):
@@ -342,22 +327,13 @@ def classify_source(
     target: SourceTarget,
     original: LinkResult,
     snapshot: SnapshotResult,
-    external_archive: LinkResult | None,
 ) -> SourceResult:
-    archive_warnings = ()
-    if external_archive is not None and external_archive.status != "healthy":
-        archive_warnings = (
-            f"external archive {external_archive.status}: {external_archive.url}: "
-            f"{external_archive.detail}",
-        )
-
     if snapshot.status == "invalid":
         return SourceResult(
             target.source_id,
             target.url,
             "missing",
             f"invalid declared local snapshot: {snapshot.detail}",
-            archive_warnings,
         )
     if original.status != "missing":
         return SourceResult(
@@ -365,28 +341,23 @@ def classify_source(
             target.url,
             original.status,
             original.detail,
-            archive_warnings,
         )
 
     fallbacks = []
     if snapshot.status == "healthy":
         fallbacks.append("verified local snapshot")
-    if external_archive is not None and external_archive.status == "healthy":
-        fallbacks.append("healthy external archive")
     if fallbacks:
         return SourceResult(
             target.source_id,
             target.url,
             "archived",
             f"{original.detail}; fallback: {' and '.join(fallbacks)}",
-            archive_warnings,
         )
     return SourceResult(
         target.source_id,
         target.url,
         "missing",
         f"{original.detail}; no verified archive fallback",
-        archive_warnings,
     )
 
 
@@ -396,7 +367,6 @@ def check_external_targets(
     checker: Callable[[str], LinkResult],
 ) -> tuple[list[SourceResult], list[LinkResult]]:
     urls = {target.url for target in sources if target.url}
-    urls.update(target.archived_url for target in sources if target.archived_url)
     urls.update(documentation_urls)
     checked: dict[str, LinkResult] = {}
     if urls:
@@ -410,10 +380,7 @@ def check_external_targets(
         original = checked.get(target.url)
         if original is None:
             original = LinkResult(target.url, "unreachable", "original URL is unavailable")
-        archive = checked.get(target.archived_url) if target.archived_url else None
-        source_results.append(
-            classify_source(target, original, local_snapshot_result(target), archive)
-        )
+        source_results.append(classify_source(target, original, local_snapshot_result(target)))
     documentation_results = [checked[url] for url in documentation_urls]
     return source_results, documentation_results
 

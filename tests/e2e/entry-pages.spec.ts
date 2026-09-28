@@ -18,6 +18,13 @@ const CATALOG = JSON.parse(
   approaches: ReadonlyArray<{ id: string; company_id: string; catalog_section: string; page_content: { questions: Record<string, { state: string }> } }>;
   companies: ReadonlyArray<CatalogCompany>;
   claims: ReadonlyArray<{ id: string; approach_id: string }>;
+  claim_aliases: Readonly<Record<string, string>>;
+};
+/** The claim that replaces a claim ID of the previous schema. */
+const currentClaim = (oldClaimId: string) => {
+  const current = CATALOG.claim_aliases[oldClaimId];
+  if (!current) throw new Error(`old claim ID "${oldClaimId}" has no alias.`);
+  return current;
 };
 /** The number of implementations in the committed catalog. */
 const TOTAL = CATALOG.approaches.length;
@@ -416,13 +423,25 @@ test.describe('lesson attribution', () => {
   test('shows reported opinions and catalog interpretations without field labels', async ({ page }) => {
     await page.goto('/agents/strongdm-software-factory');
     await expect(
-      page.locator('#claim-strongdm-software-factory--lessons-learned-2 .claim-attribution'),
+      page.locator(`#claim-${currentClaim('strongdm-software-factory--lessons-learned-2')} .claim-attribution`),
     ).toHaveText('Reported opinion:');
 
     await page.goto('/agents/coinbase-forge-mux');
     await expect(
-      page.locator('#claim-coinbase-forge-mux--lessons-learned-2 .claim-attribution'),
+      page.locator(`#claim-${currentClaim('coinbase-forge-mux--lessons-learned-2')} .claim-attribution`),
     ).toHaveText('Catalog interpretation:');
+  });
+});
+
+test.describe('old claim anchors', () => {
+  test('lead to the claim that replaces them', async ({ page }) => {
+    const old = 'doordash-code-review--primitives-0';
+    await page.goto(`/agents/doordash-code-review#claim-${old}`);
+    const alias = page.locator(`[id="claim-${old}"]`);
+    await expect(alias).toHaveCount(1);
+    await expect(alias).toHaveAttribute('data-claim-alias', currentClaim(old));
+    // The empty anchor sits inside the claim, so the browser scrolls to the claim.
+    await expect(page.locator(`#claim-${currentClaim(old)} [id="claim-${old}"]`)).toHaveCount(1);
   });
 });
 

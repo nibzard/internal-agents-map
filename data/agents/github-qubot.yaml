@@ -4,7 +4,6 @@ company: GitHub
 agent_name: Qubot
 approach_type: agent
 deployment_stage: scaled
-year: 2026
 first_public_evidence:
   date: 2026-06
   source_id: github-qubot-source-1
@@ -19,8 +18,6 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: GitHub's internal data-analytics agent, powered by GitHub Copilot. Employees ask questions about the
   company data warehouse in plain language.
@@ -33,19 +30,20 @@ architecture:
   knowledge: Federated context contributed by teams and normalized into a structured context layer
   context_mgmt: A context agent ingests, organizes, and normalizes contributed context
 primitives:
-- {name: Start a Qubot run, desc: A question in the Qubot Slack channel spawns a Copilot Cloud Agent instance on github.com}
-- {name: Select context and query engine, desc: "The run uses the federated context layer and routes work to Kusto for recent exploratory data or Trino for complex historical analysis"}
-- {name: Query the warehouse, desc: Qubot connects to Kusto and Trino through MCP servers and executes the data query}
-- {name: Return answer and report, desc: The answer appears in Slack for threaded refinement and the results are stored as a Markdown report in a pull request}
-- {name: Offline evaluation gate, desc: "Context and agent-configuration changes run against curated prompts, ground-truth SQL, accuracy, latency, and regression checks before shipping"}
+- {id: start-a-qubot-run, name: Start a Qubot run, desc: A question in the Qubot Slack channel spawns a Copilot Cloud Agent instance on github.com, role: workflow}
+- {id: select-context-and-query-engine, name: Select context and query engine, desc: "The run uses the federated context layer and routes work to Kusto for recent exploratory data or Trino for complex historical analysis", role: workflow}
+- {id: query-the-warehouse, name: Query the warehouse, desc: Qubot connects to Kusto and Trino through MCP servers and executes the data query, role: workflow}
+- {id: return-answer-and-report, name: Return answer and report, desc: The answer appears in Slack for threaded refinement and the results are stored as a Markdown report in a pull request, role: workflow}
+- {id: offline-evaluation-gate, name: Offline evaluation gate, desc: "Context and agent-configuration changes run against curated prompts, ground-truth SQL, accuracy, latency, and regression checks before shipping", role: validation}
 key_metrics:
-- Hundreds of users run thousands of queries
-- Volume of data questions in internal data and analytics Slack channels dropped
+- id: hundreds-users-run-thousands-queries
+  text: Hundreds of users run thousands of queries
+- id: volume-data-questions-internal-analytics-slack
+  text: Volume of data questions in internal data and analytics Slack channels dropped
 sources:
 - id: github-qubot-source-1
   title: How we built an internal data analytics agent
   url: https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/
-  canonical_url: https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -57,98 +55,79 @@ sources:
 evidence:
   operating_models.0:
   - source_id: github-qubot-source-1
-    relation: supports
   summary:
   - source_id: github-qubot-source-1
-    relation: supports
   headline_metric:
-  - source_id: github-qubot-source-1
-    relation: supports
-    locator: Preserved content.md, lines 70
+  - locator: Preserved content.md, lines 70
   architecture.model:
   - source_id: github-qubot-source-1
-    relation: supports
   architecture.harness:
-  - {source_id: github-qubot-source-1, relation: supports, locator: 'Preserved content.md, line 30'}
+  - {locator: 'Preserved content.md, line 30'}
   architecture.tool_access:
   - source_id: github-qubot-source-1
-    relation: supports
   architecture.interfaces:
-  - {source_id: github-qubot-source-1, relation: supports, locator: 'Preserved content.md, lines 30–32'}
+  - {locator: 'Preserved content.md, lines 30–32'}
   architecture.knowledge:
-  - {source_id: github-qubot-source-1, relation: supports, locator: 'Preserved content.md, lines 36–48'}
+  - {locator: 'Preserved content.md, lines 36–48'}
   architecture.context_mgmt:
-  - {source_id: github-qubot-source-1, relation: supports, locator: 'Preserved content.md, line 48'}
-  primitives.0:
-  - {source_id: github-qubot-source-1, relation: supports, locator: 'Preserved content.md, line 30'}
-  primitives.1:
-  - {source_id: github-qubot-source-1, relation: supports, locator: 'Preserved content.md, lines 36–48, 64'}
-  primitives.2:
-  - {source_id: github-qubot-source-1, relation: supports, locator: 'Preserved content.md, line 64'}
-  primitives.3:
-  - {source_id: github-qubot-source-1, relation: supports, locator: 'Preserved content.md, line 30'}
-  primitives.4:
-  - {source_id: github-qubot-source-1, relation: supports, locator: 'Preserved content.md, lines 52–60'}
-  key_metrics.0:
-  - source_id: github-qubot-source-1
-    relation: supports
-    locator: Preserved content.md, lines 70
-  key_metrics.1:
-  - source_id: github-qubot-source-1
-    relation: supports
-    locator: Preserved content.md, lines 70
+  - {locator: 'Preserved content.md, line 48'}
+  primitives.start-a-qubot-run:
+  - {locator: 'Preserved content.md, line 30'}
+  primitives.select-context-and-query-engine:
+  - {locator: 'Preserved content.md, lines 36–48, 64'}
+  primitives.query-the-warehouse:
+  - {locator: 'Preserved content.md, line 64'}
+  primitives.return-answer-and-report:
+  - {locator: 'Preserved content.md, line 30'}
+  primitives.offline-evaluation-gate:
+  - {locator: 'Preserved content.md, lines 52–60'}
+  key_metrics.hundreds-users-run-thousands-queries:
+  - locator: Preserved content.md, lines 70
+  key_metrics.volume-data-questions-internal-analytics-slack:
+  - locator: Preserved content.md, lines 70
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The public evidence does not document where human attention returns in the question-and-answer
       flow.
     valid_at: 2026-06
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: GitHub reported the adoption figures in its own engineering blog without independent verification.
     valid_at: 2026-06
     reported_by: GitHub
     metric_scope: Internal GitHub Qubot users and queries; no exact count or measurement window
-  key_metrics.0:
-    kind: metric
-    provenance: reported
+    category: adoption-output
+    basis: qualitative
+    subject: Qubot adoption and data-channel question volume
+  key_metrics.hundreds-users-run-thousands-queries:
     confidence: medium
     confidence_reason: GitHub reported the adoption figures in its own engineering blog.
     metric_scope: Internal GitHub Qubot users and queries; no exact count or measurement window
-  key_metrics.1:
+    category: adoption-output
+    basis: estimate
+    subject: Internal Qubot users and queries
+  key_metrics.volume-data-questions-internal-analytics-slack:
     kind: fact
     provenance: reported
     confidence: medium
     confidence_reason: Company reports a qualitative decrease without before-and-after counts.
     metric_scope: Questions in GitHub internal data and analytics Slack channels
+    category: adoption-output
+    basis: qualitative
+    subject: Questions in internal data and analytics Slack channels
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
   source_ids: [github-qubot-source-1]
   workflow_scope: Slack data question → warehouse answer and report
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.0, primitives.1, primitives.2, primitives.3]}
-    human_involvement: {state: unreported, claim_paths: [], note: The reviewed source shows threaded refinement but does not define a required human checkpoint.}
-    implementation: {state: reported, claim_paths: [architecture.harness, architecture.model, architecture.tool_access, architecture.knowledge, architecture.context_mgmt, architecture.interfaces]}
-    validation: {state: reported, claim_paths: [primitives.4]}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1]}
-    lessons: {state: unreported, claim_paths: [], note: The reviewed source does not present a distinct transferable lesson in this record.}
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.start-a-qubot-run, primitives.select-context-and-query-engine, primitives.query-the-warehouse, primitives.return-answer-and-report]}
+    human_involvement: {state: unreported, note: The reviewed source shows threaded refinement but does not define a required human checkpoint.}
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.offline-evaluation-gate]}
+    observations: {state: reported}
+    lessons: {state: unreported, note: The reviewed source does not present a distinct transferable lesson in this record.}
   implementation_fields:
-    model: {state: reported, claim_paths: [architecture.model]}
-    harness: {state: reported, claim_paths: [architecture.harness]}
-    sandbox: {state: unreported, claim_paths: [], note: The source names the cloud-agent host but not its isolation boundary.}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access]}
-    knowledge: {state: reported, claim_paths: [architecture.knowledge]}
-    context_mgmt: {state: reported, claim_paths: [architecture.context_mgmt]}
-    credentials: {state: unreported, claim_paths: []}
-    interfaces: {state: reported, claim_paths: [architecture.interfaces]}
-  primitive_roles: {primitives.0: workflow, primitives.1: workflow, primitives.2: workflow, primitives.3: workflow, primitives.4: validation}
-  observations:
-    headline_metric: {category: adoption-output, basis: qualitative, subject: Qubot adoption and data-channel question volume}
-    key_metrics.0: {category: adoption-output, basis: estimate, subject: Internal Qubot users and queries}
-    key_metrics.1: {category: adoption-output, basis: qualitative, subject: Questions in internal data and analytics Slack channels}
+    sandbox: {state: unreported, note: The source names the cloud-agent host but not its isolation boundary.}

@@ -27,7 +27,7 @@ describe('derived collections', () => {
   });
   it('keeps full and compact JSON inclusive and individual exports identifiable', () => {
     const compact = JSON.parse(compactIndexJson(catalog));
-    expect(compact.schema_version).toBe(3);
+    expect(compact.schema_version).toBe(4);
     expect(compact.approaches).toHaveLength(catalog.approaches.length);
     for (const item of catalog.approaches) {
       expect(JSON.parse(recordJson(catalog, item.id)).approaches[0].catalog_section).toBe(item.catalog_section);

@@ -69,7 +69,7 @@ describe('compact index', () => {
   };
 
   it('describes every implementation of the catalog, in catalog order', () => {
-    expect(current.schema_version).toBe(3);
+    expect(current.schema_version).toBe(4);
     expect(current.approaches.map((entry) => entry.id)).toEqual(
       catalog.approaches.map((approach) => approach.id),
     );
@@ -231,11 +231,8 @@ describe('Markdown links', () => {
 
 describe('the qualification of a figure', () => {
   /** The observation basis of a claim, through an alias to its target. */
-  const basisOf = (claim: Claim) => {
-    const observations = catalog.approaches.find((item) => item.id === claim.approach_id)?.page_content?.observations;
-    const observation = observations?.[claim.field];
-    return observation?.duplicate_of ? observations?.[observation.duplicate_of]?.basis : observation?.basis;
-  };
+  const basisOf = (claim: Claim) =>
+    claim.duplicate_of ? catalog.claims.find((item) => item.id === claim.duplicate_of)?.basis : claim.basis;
   /** Quantitative metrics whose record does not report the scope or the denominator. */
   const unqualified = catalog.claims.filter(
     (claim) =>
@@ -296,7 +293,7 @@ describe('the results of an entry in Markdown', () => {
       if (entry.resultStatementClaims.length === 0) continue;
       const markdown = recordMarkdown(catalog, approach.id);
       expect(markdown, approach.id).toContain(
-        entry.isPilot ? `## ${entry.profile.observations}` : '## Reported outcomes and statements',
+        `## ${entry.profile.observations}`,
       );
       for (const claim of entry.resultStatementClaims) {
         const position = markdown.indexOf(claim.text.trim());

@@ -4,7 +4,6 @@ company: DoorDash
 agent_name: Analytics AI Marketplace
 approach_type: platform
 deployment_stage: deployed
-year: 2025
 first_public_evidence:
   date: '2025-11-11'
   source_id: doordash-ai-marketplace-source-1
@@ -19,8 +18,6 @@ operating_models:
 rubric:
   invocation:
   - interactive
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: DoorDash’s analytics platform hosts agents and reporting workflows over internal data and operational knowledge.
 architecture:
@@ -32,17 +29,22 @@ architecture:
   - slack
   - cursor
 primitives:
-- name: Discover an agent
+- id: discover-an-agent
+  name: Discover an agent
   desc: Employees find specialized agents in a shared marketplace.
-- name: Answer with tools
+  role: workflow
+- id: answer-with-tools
+  name: Answer with tools
   desc: Agents retrieve context and use schema-aware SQL tools.
-- name: Validate queries
+  role: workflow
+- id: validate-queries
+  name: Validate queries
   desc: SQL linting and EXPLAIN checks precede execution; model judges evaluate response quality.
+  role: validation
 sources:
 - id: doordash-ai-marketplace-source-1
   title: 'Beyond single agents: DoorDash''s collaborative AI ecosystem'
   url: https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/
-  canonical_url: https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/
   kind: engineering-blog
   provenance_class: first-party
   published_at: '2025-11-11'
@@ -51,45 +53,25 @@ sources:
   duplicate_of: doordash-flux-source-2
 evidence:
   summary:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   operating_models.0:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   architecture.harness:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   architecture.knowledge:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   architecture.tool_access:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
   architecture.interfaces:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
-  primitives.0:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
-  primitives.1:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
-  primitives.2:
-  - source_id: doordash-ai-marketplace-source-1
-    relation: supports
-    locator: Taking a high-level look; Moving forward
+  - locator: Taking a high-level look; Moving forward
+  primitives.discover-an-agent:
+  - locator: Taking a high-level look; Moving forward
+  primitives.answer-with-tools:
+  - locator: Taking a high-level look; Moving forward
+  primitives.validate-queries:
+  - locator: Taking a high-level look; Moving forward
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source describes Analytics AI Marketplace and its work, but does not establish whether
       a person must approve or inspect each successful output.
@@ -103,67 +85,23 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
+      - primitives.discover-an-agent
+      - primitives.answer-with-tools
       note: Documented use example; no universal platform run is implied.
     human_involvement:
       state: not-applicable
-      claim_paths: []
       note: There is no single platform-wide agent review boundary. Scoped downstream operating-model claims remain
         in research details; access controls are described separately.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.knowledge
-      - architecture.tool_access
-      - architecture.interfaces
     validation:
       state: reported
       claim_paths:
-      - primitives.2
+      - primitives.validate-queries
     observations:
       state: unreported
-      claim_paths: []
     lessons:
       state: unreported
-      claim_paths: []
-  implementation_fields:
-    model:
-      state: unreported
-      claim_paths: []
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: unreported
-      claim_paths: []
-    credentials:
-      state: unreported
-      claim_paths: []
-    interfaces:
-      state: reported
-      claim_paths:
-      - architecture.interfaces
-  primitive_roles:
-    primitives.0: workflow
-    primitives.1: workflow
-    primitives.2: validation
-  observations: {}

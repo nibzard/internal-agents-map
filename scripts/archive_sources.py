@@ -104,20 +104,11 @@ class SteelResult:
 class CaptureResult:
     source_id: str
     manifest_path: str
-    archived_url: str | None
+    external_archive_url: str | None
 
     def yaml_snippet(self) -> str:
         """Return the exact source fields a contributor should paste into YAML."""
-        lines: list[str] = []
-        if self.archived_url:
-            lines.append(f"archived_url: {json.dumps(self.archived_url)}")
-        lines.extend(
-            [
-                "capture:",
-                f"  manifest_path: {json.dumps(self.manifest_path)}",
-            ]
-        )
-        return "\n".join(lines) + "\n"
+        return f"capture:\n  manifest_path: {json.dumps(self.manifest_path)}\n"
 
 
 def fail(message: str) -> NoReturn:
@@ -264,7 +255,6 @@ def validate_bundle(
     *,
     repo_root: Path = ROOT,
     bundle_dir: Path | None = None,
-    archived_url: str | None = None,
 ) -> Mapping[str, Any]:
     """Validate a complete capture bundle without making any network calls."""
     if not ID_RE.fullmatch(source_id):
@@ -333,11 +323,9 @@ def validate_bundle(
             fail("Manifest PDF artifact does not begin with %PDF-.")
 
     if "external_archive_url" in manifest:
-        external_url = _require_https_url(
+        _require_https_url(
             manifest["external_archive_url"], "Capture manifest external_archive_url"
         )
-        if external_url != archived_url:
-            fail("Capture manifest external_archive_url does not match source archived_url.")
     return manifest
 
 
@@ -813,7 +801,7 @@ def capture_source(
         runner=runner,
     )
     pdf_data = download_pdf(steel_result.pdf_url, opener=opener) if steel_result.pdf_url else None
-    archived_url = (
+    external_archive_url = (
         preserve_with_wayback(
             original_url,
             opener=opener,
@@ -848,8 +836,8 @@ def capture_source(
         "tool": {"name": "steel", "version": version.strip()},
         "artifacts": artifacts,
     }
-    if archived_url:
-        manifest["external_archive_url"] = archived_url
+    if external_archive_url:
+        manifest["external_archive_url"] = external_archive_url
 
     try:
         archive_root.mkdir(parents=True, exist_ok=True)
@@ -870,7 +858,6 @@ def capture_source(
             original_url,
             repo_root=repo_root,
             bundle_dir=temporary,
-            archived_url=archived_url,
         )
         if _target_exists(target):
             fail(f"Capture bundle already exists for {source_id!r}; archives are append-only.")
@@ -881,7 +868,7 @@ def capture_source(
     except OSError:
         shutil.rmtree(temporary, ignore_errors=True)
         fail(f"Unable to write capture bundle for {source_id!r}.")
-    return CaptureResult(source_id, manifest_path, archived_url)
+    return CaptureResult(source_id, manifest_path, external_archive_url)
 
 
 def check_declared_captures(
@@ -905,7 +892,6 @@ def check_declared_captures(
                 source_id,
                 str(source["url"]),
                 repo_root=repo_root,
-                archived_url=source.get("archived_url"),
             )
         except (ArchiveError, OSError) as error:
             errors.append(f"{source_id}: {error}")
@@ -939,7 +925,7 @@ def _capture_summary(result: CaptureResult) -> dict[str, Any]:
     return {
         "source_id": result.source_id,
         "manifest_path": result.manifest_path,
-        "archived_url": result.archived_url,
+        "external_archive_url": result.external_archive_url,
         "yaml": result.yaml_snippet(),
     }
 

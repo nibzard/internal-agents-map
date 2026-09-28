@@ -6,7 +6,6 @@ aliases:
 - StrongDM AI Software Factory
 approach_type: agent
 deployment_stage: deployed
-year: 2026
 first_public_evidence:
   date: '2026-02-06'
   source_id: strongdm-factory-overview
@@ -21,13 +20,10 @@ operating_models:
 rubric:
   invocation:
   - background
-  state: cross-session-memory
-  identity: dedicated-agent
   evidence_strength: detailed-primary
 summary: An internal agent system in which natural-language seeds and end-to-end scenario harnesses drive agents
   that write, validate, and iterate on code under standing rules that humans neither write nor review code.
 architecture:
-  sandbox: unknown
   harness: End-to-end scenario harness with user-story-style scenarios kept outside the codebase as a holdout set
     and checked by an LLM; satisfaction measured as the fraction of observed scenario trajectories that likely satisfy
     the user; Digital Twin Universe clones of Okta, Jira, Slack, Google Docs, Google Drive, and Google Sheets absorb
@@ -45,41 +41,59 @@ architecture:
   context_mgmt: Pyramid Summaries with reversible summarization at multiple zoom levels; on-disk state as the memory
     substrate
 primitives:
-- name: Scenarios
+- id: scenarios
+  name: Scenarios
   desc: End-to-end user-story validations, often stored outside the codebase like a training holdout set, flexibly
     checked by an LLM to resist reward hacking and lazy test rewriting
-- name: Satisfaction
+  role: validation
+- id: satisfaction
+  name: Satisfaction
   desc: Probabilistic success measure replacing boolean test-green; the fraction of all observed scenario trajectories
     that likely satisfy the user
-- name: Digital Twin Universe
+  role: validation
+- id: digital-twin-universe
+  name: Digital Twin Universe
   desc: Behavioral clones of third-party services that replicate APIs, edge cases, and observable behaviors, so
     thousands of scenarios can run per hour without rate limits, abuse detection, or live-API cost
-- name: Shift Work
+  role: mechanism
+- id: shift-work
+  name: Shift Work
   desc: Splitting work into interactive and fully specified classes; when specs, tests, and the existing app fully
     express intent, an agent runs end-to-end without back-and-forth
-- name: Attractor
+  role: mechanism
+- id: attractor
+  name: Attractor
   desc: Non-interactive coding agent structured as a graph of work phases with natural-language edges evaluated
     by the LLM; execution traverses the graph until convergence or termination, and the spec is open source
-- name: Seed the work
+  role: mechanism
+- id: seed-the-work
+  name: Seed the work
   desc: A natural-language seed — a few sentences, a screenshot, or an existing codebase — starts the run
-- name: Implement and validate in the loop
+  role: workflow
+- id: implement-and-validate-in-the-loop
+  name: Implement and validate in the loop
   desc: Agents write code and run the end-to-end scenario harness; a sample of the output feeds back into the inputs
     so the system self-corrects
-- name: Converge on the holdout scenarios
+  role: workflow
+- id: converge-on-the-holdout-scenarios
+  name: Converge on the holdout scenarios
   desc: The loop runs until the holdout scenarios pass and stay passing, and the code ships without human review
+  role: workflow
 key_metrics: []
 lessons_learned:
-- StrongDM advocates evaluating generated code through observable behavior while treating its internal structure
-  as opaque.
-- StrongDM describes a specification, validation harness, and feedback loop that stops when holdout scenarios pass
-  and remain passing.
-- StrongDM proposes spending at least $1,000 in tokens per human engineer per day as an operating benchmark for
-  its software factory.
+- id: advocates-evaluating-generated-code-through-observable
+  text: StrongDM advocates evaluating generated code through observable behavior while treating its internal structure
+    as opaque.
+- id: specification-validation-harness-feedback-loop-stops
+  text: StrongDM describes a specification, validation harness, and feedback loop that stops when holdout scenarios pass
+    and remain passing.
+- id: proposes-spending-least-tokens-per-human
+  text: StrongDM proposes spending at least $1,000 in tokens per human engineer per day as an operating benchmark for
+    its software factory.
 sources:
 - id: strongdm-factory-overview
   title: Software Factories And The Agentic Moment
   url: https://factory.strongdm.ai/
-  canonical_url: https://factory.strongdm.ai/
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -94,7 +108,6 @@ sources:
 - id: strongdm-factory-principles
   title: Principles
   url: https://factory.strongdm.ai/principles
-  canonical_url: https://factory.strongdm.ai/principles
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -106,7 +119,6 @@ sources:
 - id: strongdm-factory-techniques
   title: Techniques
   url: https://factory.strongdm.ai/techniques
-  canonical_url: https://factory.strongdm.ai/techniques
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -118,7 +130,6 @@ sources:
 - id: strongdm-factory-products
   title: Products
   url: https://factory.strongdm.ai/products
-  canonical_url: https://factory.strongdm.ai/products
   kind: documentation
   provenance_class: first-party
   role: evidence
@@ -130,7 +141,6 @@ sources:
 - id: strongdm-attractor-spec
   title: Attractor
   url: https://factory.strongdm.ai/products/attractor
-  canonical_url: https://factory.strongdm.ai/products/attractor
   kind: documentation
   provenance_class: first-party
   role: evidence
@@ -142,7 +152,6 @@ sources:
 - id: strongdm-factory-weather-report
   title: Weather Report
   url: https://factory.strongdm.ai/weather-report
-  canonical_url: https://factory.strongdm.ai/weather-report
   kind: documentation
   provenance_class: first-party
   role: evidence
@@ -154,7 +163,6 @@ sources:
 - id: strongdm-attractor-repo
   title: strongdm/attractor
   url: https://github.com/strongdm/attractor
-  canonical_url: https://github.com/strongdm/attractor
   kind: repository
   provenance_class: first-party
   role: evidence
@@ -166,146 +174,107 @@ sources:
 evidence:
   summary:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: 'Definition: non-interactive development where specs + scenarios drive agents that write code, run
       harnesses, and converge without human review'
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: 'Rules: Code must not be written by humans; Code must not be reviewed by humans'
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: 'Validation constraint: zero hand-written code and zero traditional review'
   operating_models.0:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Agents that write code, run harnesses, and converge without human review
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: Grow from cascades of natural-language specifications; be validated automatically without semantic
       inspection of source
   - source_id: strongdm-factory-principles
-    relation: supports
     locator: 'Termination: the loop runs until the holdout scenarios pass (and stay passing)'
-  architecture.sandbox:
-  - source_id: strongdm-factory-overview
-    relation: supports
-    locator: The overview describes the workflow end to end without documenting an execution sandbox
   architecture.harness:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Scenarios, Satisfaction, and Digital Twin Universe sections
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: 'Digital Twin Universe: validate at volumes and rates far exceeding production limits'
   architecture.model:
   - source_id: strongdm-factory-weather-report
-    relation: supports
     locator: Current configuration table, 2026-06-04
   architecture.tool_access:
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: The Filesystem; Digital Twin Universe
   architecture.knowledge:
   - source_id: strongdm-factory-products
-    relation: supports
     locator: CXDB entry
   architecture.credentials:
   - source_id: strongdm-factory-products
-    relation: supports
     locator: StrongDM ID entry
   architecture.context_mgmt:
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: Pyramid Summaries; The Filesystem
-  primitives.0:
+  primitives.scenarios:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Scenarios section
-  primitives.1:
+  primitives.satisfaction:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Satisfaction section
-  primitives.2:
+  primitives.digital-twin-universe:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Digital Twin Universe section
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: Digital Twin Universe technique
-  primitives.3:
+  primitives.shift-work:
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: Shift Work technique
-  primitives.4:
+  primitives.attractor:
   - source_id: strongdm-attractor-spec
-    relation: supports
     locator: Graph structure and key properties
   - source_id: strongdm-attractor-repo
-    relation: supports
     locator: Repository description
-  primitives.5:
+  primitives.seed-the-work:
   - source_id: strongdm-factory-principles
-    relation: supports
     locator: Preserved content.md, lines 16–18
-  primitives.6:
+  primitives.implement-and-validate-in-the-loop:
   - source_id: strongdm-factory-principles
-    relation: supports
     locator: Preserved content.md, lines 22–32
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Preserved content.md, line 10
-  primitives.7:
+  primitives.converge-on-the-holdout-scenarios:
   - source_id: strongdm-factory-principles
-    relation: supports
     locator: Preserved content.md, line 34
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Preserved content.md, line 10
-  lessons_learned.0:
+  lessons_learned.advocates-evaluating-generated-code-through-observable:
   - source_id: strongdm-factory-techniques
-    relation: supports
     locator: Preserved content.md, lines 45
-  lessons_learned.1:
+  lessons_learned.specification-validation-harness-feedback-loop-stops:
   - source_id: strongdm-factory-principles
-    relation: supports
     locator: Preserved content.md, lines 12-34
-  lessons_learned.2:
+  lessons_learned.proposes-spending-least-tokens-per-human:
   - source_id: strongdm-factory-overview
-    relation: supports
     locator: Preserved content.md, lines 23
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The site documents zero human code-writing and review with automatic scenario validation,
       but no passage states that a person is summoned when scenarios fail to converge; what happens on non-convergence
       is undocumented.
     valid_at: 2026-09
-  architecture.sandbox:
-    kind: inference
-    provenance: catalog-judgment
-    confidence: medium
-    confidence_reason: The preserved sources do not document an execution sandbox; unknown does not mean absent.
   architecture.model:
     kind: fact
     provenance: reported
     confidence: high
     confidence_reason: First-party configuration log current as of 2026-06-04.
     valid_at: 2026-06
-  lessons_learned.0:
+  lessons_learned.advocates-evaluating-generated-code-through-observable:
     kind: opinion
     provenance: reported
     confidence: high
     confidence_reason: The techniques page explicitly compares code with an opaque model snapshot; this is a stated
       evaluation philosophy, not proof that source review has no value.
-  lessons_learned.1:
+  lessons_learned.specification-validation-harness-feedback-loop-stops:
     kind: fact
     provenance: reported
     confidence: high
     confidence_reason: The principles page states the loop and termination condition. It does not document who handles
       a run that fails to converge.
-  lessons_learned.2:
+  lessons_learned.proposes-spending-least-tokens-per-human:
     kind: opinion
     provenance: reported
     confidence: high
@@ -327,14 +296,12 @@ page_content:
   questions:
     purpose:
       state: reported
-      claim_paths:
-      - summary
     workflow:
       state: reported
       claim_paths:
-      - primitives.5
-      - primitives.6
-      - primitives.7
+      - primitives.seed-the-work
+      - primitives.implement-and-validate-in-the-loop
+      - primitives.converge-on-the-holdout-scenarios
     human_involvement:
       state: reported
       claim_paths:
@@ -343,74 +310,24 @@ page_content:
         is not documented, and the unknown attention-boundary judgment stays in research details.
     implementation:
       state: reported
-      claim_paths:
-      - architecture.harness
-      - architecture.model
-      - architecture.tool_access
-      - architecture.knowledge
-      - architecture.credentials
-      - architecture.context_mgmt
     validation:
       state: reported
       claim_paths:
-      - primitives.0
-      - primitives.1
+      - primitives.scenarios
+      - primitives.satisfaction
       note: End-to-end holdout scenarios scored by satisfaction; the Digital Twin Universe carries the validation
         load and stays under implementation as a reusable mechanism.
     observations:
       state: unreported
-      claim_paths: []
       note: The captures state principles, techniques, and model configuration; they report no measured outcomes
         of the factory's software. The token-spend figure is a stated operating principle kept under lessons.
     lessons:
       state: reported
-      claim_paths:
-      - lessons_learned.0
-      - lessons_learned.1
-      - lessons_learned.2
   implementation_fields:
-    model:
-      state: reported
-      claim_paths:
-      - architecture.model
-    harness:
-      state: reported
-      claim_paths:
-      - architecture.harness
-    sandbox:
-      state: unreported
-      claim_paths: []
-      note: No execution or isolation boundary is documented; the legacy unknown claim stays in research details.
-    tool_access:
-      state: reported
-      claim_paths:
-      - architecture.tool_access
-    knowledge:
-      state: reported
-      claim_paths:
-      - architecture.knowledge
-    context_mgmt:
-      state: reported
-      claim_paths:
-      - architecture.context_mgmt
     credentials:
-      state: reported
-      claim_paths:
-      - architecture.credentials
       note: StrongDM ID covers identity for humans, workloads, and agents; secret handling inside runs is not further
         documented.
     interfaces:
       state: unreported
-      claim_paths: []
       note: No human-facing surface is named; the factory is non-interactive and work starts from natural-language
         seeds.
-  primitive_roles:
-    primitives.0: validation
-    primitives.1: validation
-    primitives.2: mechanism
-    primitives.3: mechanism
-    primitives.4: mechanism
-    primitives.5: workflow
-    primitives.6: workflow
-    primitives.7: workflow
-  observations: {}

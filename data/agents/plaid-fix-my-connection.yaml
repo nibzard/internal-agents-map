@@ -4,7 +4,6 @@ company: Plaid
 agent_name: Fix My Connection
 approach_type: agent
 deployment_stage: scaled
-year: 2025
 first_public_evidence:
   date: 2025-06
   source_id: plaid-fix-my-connection-source-1
@@ -20,8 +19,6 @@ operating_models:
 rubric:
   invocation:
   - background
-  state: unknown
-  identity: unknown
   evidence_strength: detailed-primary
 summary: Plaid's internal agent for bank-integration reliability. Fix My Connection proactively detects bank-integration
   access issues and automatically repairs them. Plaid reports more than 2 million successful user-permissioned
@@ -29,15 +26,15 @@ summary: Plaid's internal agent for bank-integration reliability. Fix My Connect
 headline_metric: More than 2 million successful logins and 90% faster average repair
 architecture:
   tool_access: Plaid bank-integration infrastructure
-  interfaces: []
 key_metrics:
-- More than 2 million successful user-permissioned logins
-- Average time to fix a degradation reduced by 90%
+- id: million-successful-user-permissioned-logins
+  text: More than 2 million successful user-permissioned logins
+- id: average-time-fix-degradation-reduced
+  text: Average time to fix a degradation reduced by 90%
 sources:
 - id: plaid-fix-my-connection-source-1
   title: AI agents at Plaid (June 2025)
   url: https://plaid.com/blog/ai-agents-june-2025/
-  canonical_url: https://plaid.com/blog/ai-agents-june-2025/
   kind: engineering-blog
   provenance_class: first-party
   role: evidence
@@ -49,96 +46,75 @@ sources:
 evidence:
   operating_models.0:
   - source_id: plaid-fix-my-connection-source-1
-    relation: supports
   summary:
   - source_id: plaid-fix-my-connection-source-1
-    relation: supports
   headline_metric:
-  - source_id: plaid-fix-my-connection-source-1
-    relation: supports
-    locator: Preserved content.md, lines 26–32
+  - locator: Preserved content.md, lines 26–32
   architecture.tool_access:
   - source_id: plaid-fix-my-connection-source-1
-    relation: supports
-  primitives.0:
-  - {source_id: plaid-fix-my-connection-source-1, relation: supports, locator: 'Preserved content.md, line 30'}
-  primitives.1:
-  - {source_id: plaid-fix-my-connection-source-1, relation: supports, locator: 'Preserved content.md, line 30'}
-  key_metrics.0:
-  - source_id: plaid-fix-my-connection-source-1
-    relation: supports
-    locator: Preserved content.md, lines 26–32
-  key_metrics.1:
-  - source_id: plaid-fix-my-connection-source-1
-    relation: supports
-    locator: Preserved content.md, lines 26–32
+  primitives.detect-an-access-issue:
+  - {locator: 'Preserved content.md, line 30'}
+  primitives.repair-the-connection:
+  - {locator: 'Preserved content.md, line 30'}
+  key_metrics.million-successful-user-permissioned-logins:
+  - locator: Preserved content.md, lines 26–32
+  key_metrics.average-time-fix-degradation-reduced:
+  - locator: Preserved content.md, lines 26–32
 claim_metadata:
   operating_models.0:
-    kind: inference
-    provenance: catalog-judgment
     confidence: unverified
     confidence_reason: The source reports aggregate impact such as successful logins and repair time; it does not
       document that a person reviews outcomes, work products, or exceptions on any run.
     valid_at: 2025-06
   headline_metric:
-    kind: metric
-    provenance: reported
     confidence: medium
     confidence_reason: Plaid reported the figures in its own blog without independent verification.
     valid_at: 2025-06
     reported_by: Plaid
     metric_scope: Automated repair of bank connections and the successful user-permissioned logins enabled by those
       repairs
-  key_metrics.0:
-    kind: metric
-    provenance: reported
+    category: effectiveness
+    basis: reported-measurement
+    subject: 'Automated bank-connection
+      repairs, the successful logins they enable, and average repair time'
+  key_metrics.million-successful-user-permissioned-logins:
     confidence: medium
     confidence_reason: Plaid reported the figure in its own blog.
     metric_scope: Automated repair of bank connections and the successful user-permissioned logins enabled by those
       repairs
-  key_metrics.1:
-    kind: metric
-    provenance: reported
+  key_metrics.average-time-fix-degradation-reduced:
     confidence: medium
     confidence_reason: Plaid reported the figure in its own blog.
     metric_scope: Automated repair of bank connections and the successful user-permissioned logins enabled by those
       repairs
     denominator: Average degradation-repair time before automated repairs; no baseline duration provided
 primitives:
-- {name: Detect an access issue, desc: The system proactively detects bank-integration access issues}
-- {name: Repair the connection, desc: It automatically repairs the detected issue to restore user-permissioned access}
+- {id: detect-an-access-issue, name: Detect an access issue, desc: The system proactively detects bank-integration access issues, role: workflow}
+- {id: repair-the-connection, name: Repair the connection, desc: It automatically repairs the detected issue to restore user-permissioned access, role: workflow}
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
   source_ids: [plaid-fix-my-connection-source-1]
   workflow_scope: Proactive detection to automatic repair of bank-integration access issues
   questions:
-    purpose: {state: reported, claim_paths: [summary]}
-    workflow: {state: reported, claim_paths: [primitives.0, primitives.1], note: 'The capture describes the run in one
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.detect-an-access-issue, primitives.repair-the-connection], note: 'The capture describes the run in one
       sentence; the two steps carry exactly that content.'}
-    human_involvement: {state: unreported, claim_paths: [], note: 'The capture reports aggregate impact only; no human
+    human_involvement: {state: unreported, note: 'The capture reports aggregate impact only; no human
       checkpoint is documented.'}
-    implementation: {state: reported, claim_paths: [architecture.tool_access]}
-    validation: {state: unreported, claim_paths: [], note: 'No check of repairs or failure behavior is documented.'}
-    observations: {state: reported, claim_paths: [headline_metric, key_metrics.0, key_metrics.1]}
-    lessons: {state: unreported, claim_paths: [], note: 'The capture states impact and future plans; no evaluated
+    implementation: {state: reported}
+    validation: {state: unreported, note: 'No check of repairs or failure behavior is documented.'}
+    observations: {state: reported}
+    lessons: {state: unreported, note: 'The capture states impact and future plans; no evaluated
       transferable lesson.'}
   implementation_fields:
-    model: {state: unreported, claim_paths: [], note: 'Described as AI-powered; no model is specified.'}
-    harness: {state: unreported, claim_paths: []}
-    sandbox: {state: unreported, claim_paths: []}
-    tool_access: {state: reported, claim_paths: [architecture.tool_access]}
-    knowledge: {state: unreported, claim_paths: [], note: 'Integration knowledge is implied by the repair behavior; no
+    model: {state: unreported, note: 'Described as AI-powered; no model is specified.'}
+    knowledge: {state: unreported, note: 'Integration knowledge is implied by the repair behavior; no
       knowledge store is documented.'}
-    context_mgmt: {state: unreported, claim_paths: []}
-    credentials: {state: unreported, claim_paths: [], note: 'User-permissioned data access is named, but credential
+    credentials: {state: unreported, note: 'User-permissioned data access is named, but credential
       handling for the agent is not documented.'}
-    interfaces: {state: unreported, claim_paths: []}
-  primitive_roles: {primitives.0: workflow, primitives.1: workflow}
-  observations:
-    headline_metric: {category: effectiveness, basis: reported-measurement, subject: 'Automated bank-connection
-      repairs, the successful logins they enable, and average repair time'}
-    key_metrics.0: {duplicate_of: headline_metric, reason: 'Component of the compound headline: the same
+  aliases:
+    key_metrics.million-successful-user-permissioned-logins: {duplicate_of: headline_metric, reason: 'Component of the compound headline: the same
       over-2-million login figure with the same scope.'}
-    key_metrics.1: {duplicate_of: headline_metric, reason: 'Component of the compound headline: the same 90%
+    key_metrics.average-time-fix-degradation-reduced: {duplicate_of: headline_metric, reason: 'Component of the compound headline: the same 90%
       repair-time reduction against an unprovided baseline.'}

@@ -19,11 +19,18 @@ function caveat(claim: ClaimView, label: string): string {
   return found.value;
 }
 
-/** The observation basis of a claim field, through an alias to its target. */
-function basisOf(approachId: string, field: string): string | undefined {
-  const observations = catalog.approaches.find((item) => item.id === approachId)?.page_content?.observations;
-  const observation = observations?.[field];
-  return observation?.duplicate_of ? observations?.[observation.duplicate_of]?.basis : observation?.basis;
+/** The observation basis of a claim, through an alias to its target. */
+function basisOf(claimId: string): string | undefined {
+  const claim = catalog.claims.find((item) => item.id === claimId);
+  return claim?.duplicate_of ? catalog.claims.find((item) => item.id === claim.duplicate_of)?.basis : claim?.basis;
+}
+
+/** The claim path of a claim that the previous schema named by list index. */
+function fieldOf(oldClaimId: string): string {
+  const current = catalog.claim_aliases?.[oldClaimId];
+  const claim = catalog.claims.find((item) => item.id === current);
+  if (!claim) throw new Error(`old claim ID "${oldClaimId}" does not resolve.`);
+  return claim.field;
 }
 
 describe('every entry', () => {
@@ -40,7 +47,6 @@ describe('every entry', () => {
         ...entry.metricClaims.map((claim) => claim.id),
         ...entry.resultStatementClaims.map((claim) => claim.id),
         ...entry.lessonClaims.map((claim) => claim.id),
-        ...entry.otherClaims.map((claim) => claim.id),
         ...entry.researchOnlyClaims.map((claim) => claim.id),
       ]);
       expect(placed.size).toBe(approach.claim_ids.length);
@@ -52,6 +58,10 @@ describe('every entry', () => {
     for (const approach of catalog.approaches) {
       const entry = entryView(catalog, approach.id);
       for (const claim of entry.claims) expect(claim.anchor).toBe(`claim-${claim.id}`);
+      const anchors = new Set(entry.claims.flatMap((claim) => [claim.anchor, ...claim.aliasAnchors]));
+      for (const [old] of Object.entries(catalog.claim_aliases ?? {}).filter(([, current]) => approach.claim_ids.includes(current))) {
+        expect(anchors, old).toContain(`claim-${old}`);
+      }
       for (const source of entry.sources) expect(source.anchor).toBe(`source-${source.id}`);
     }
   });
@@ -87,7 +97,7 @@ describe('every entry', () => {
   it('keeps the research fields of every figure in the ledger', () => {
     for (const approach of catalog.approaches) {
       for (const claim of entryView(catalog, approach.id).metricClaims) {
-        if (!claim.isMetric || basisOf(approach.id, claim.field) === 'qualitative') continue;
+        if (!claim.isMetric || basisOf(claim.id) === 'qualitative') continue;
         expect(claim.metadata.map((item) => item.label)).toEqual([
           'Reported by',
           'Scope',
@@ -118,7 +128,7 @@ describe('every entry', () => {
         const record = claims.get(claim.id)!;
         const missing =
           record.kind === 'metric' &&
-          basisOf(approach.id, record.field) !== 'qualitative' &&
+          basisOf(record.id) !== 'qualitative' &&
           (record.denominator === null ||
             record.denominator === undefined ||
             record.metric_scope === null ||
@@ -324,7 +334,6 @@ describe('page-content pilot reading model', () => {
   it('covers the whole catalog with explicit workflow roles', () => {
     for (const approach of catalog.approaches) {
       const entry = entryView(catalog, approach.id);
-      expect(entry.isPilot, approach.id).toBe(true);
       const workflowReported = entry.coverageQuestions.workflow?.state === 'reported';
       expect(entry.workflowClaims.length > 0, approach.id).toBe(workflowReported);
       if (workflowReported) {
@@ -332,24 +341,20 @@ describe('page-content pilot reading model', () => {
         for (const claim of entry.workflowClaims) expect(claim.displayName, approach.id).toBeTruthy();
       }
     }
-    expect(entryView(catalog, 'doordash-code-review').mechanismClaims.map((claim) => claim.field)).toContain('primitives.0');
+    expect(entryView(catalog, 'doordash-code-review').mechanismClaims.map((claim) => claim.field)).toContain(fieldOf('doordash-code-review--primitives-0'));
   });
 
   it('separates validation, lessons, canonical observations, and aliases', () => {
     expect(entryView(catalog, 'github-qubot').validationClaims.length).toBeGreaterThan(0);
     const notion = entryView(catalog, 'notion-custom-agents');
-    expect(notion.aliasObservationClaims.map((claim) => claim.field)).toEqual(['key_metrics.0']);
-    expect(notion.canonicalObservationClaims.map((claim) => claim.field)).not.toContain('key_metrics.0');
+    const alias = fieldOf('notion-custom-agents--key-metrics-0');
+    expect(notion.aliasObservationClaims.map((claim) => claim.field)).toEqual([alias]);
+    expect(notion.canonicalObservationClaims.map((claim) => claim.field)).not.toContain(alias);
     const yc = entryView(catalog, 'ycombinator-agent-infra');
     expect(yc.canonicalObservationClaims).toHaveLength(0);
     expect(yc.lessonClaims.length).toBeGreaterThan(0);
   });
 
-  it('leaves no record on the legacy path', () => {
-    for (const approach of catalog.approaches) {
-      expect(entryView(catalog, approach.id).isPilot, approach.id).toBe(true);
-    }
-  });
 });
 
 describe('figma-security-agent', () => {
@@ -357,7 +362,7 @@ describe('figma-security-agent', () => {
   const byField = new Map(entry.claims.map((claim) => [claim.field, claim]));
 
   it('does not ask a qualitative observation for a denominator or a scope', () => {
-    const confidence = byField.get('key_metrics.2')!;
+    const confidence = byField.get(fieldOf('figma-security-agent--key-metrics-2'))!;
     expect(confidence.isMetric).toBe(true);
     expect(confidence.qualification).toBeNull();
     const labels = confidence.metadata.map((item) => item.label);
