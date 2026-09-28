@@ -32,3 +32,6 @@ dist/
 .astro/
 playwright-report/
 test-results/
+
+# Worktrees that Claude Code opens for parallel sessions
+.claude/worktrees/
