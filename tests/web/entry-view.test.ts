@@ -226,6 +226,20 @@ describe('plaid-internal-mcp-server', () => {
   });
 });
 
+describe('the header boundaries', () => {
+  it('lists each distinct boundary of an entry with scoped assessments that differ', () => {
+    expect(entryView(catalog, 'figma-security-agent').boundaryLabels).toEqual([
+      'Work-product review',
+      'Exception-only',
+      'Unknown',
+    ]);
+  });
+
+  it('keeps one boundary for an entry with one assessment', () => {
+    expect(entryView(catalog, 'hubspot-sidekick').boundaryLabels).toEqual(['Work-product review']);
+  });
+});
+
 describe('the directory model', () => {
   const cards = directoryCards(catalog);
 

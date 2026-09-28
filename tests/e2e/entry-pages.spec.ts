@@ -287,7 +287,7 @@ test.describe('page-content pilot', () => {
         questionBySection[selector]
           ? record.page_content.questions[questionBySection[selector]!]?.state
           : undefined;
-      const selectors = ['#purpose', '#how-it-works', '#human-involvement', '#implementation', '#validation', '#results', '#lessons', '#sources'].filter(
+      const selectors = ['#how-it-works', '#human-involvement', '#implementation', '#validation', '#results', '#lessons', '#sources'].filter(
         (selector) =>
           !(record.catalog_section === 'infrastructure' && stateOf(selector) === 'not-applicable') &&
           !(['#validation', '#lessons'].includes(selector) && stateOf(selector) !== 'reported' && stateOf(selector) !== 'mixed'),
@@ -298,7 +298,7 @@ test.describe('page-content pilot', () => {
       if (WORKFLOW_REPORTED.has(id)) {
         await expect(page.locator('#how-it-works .claim-label').first()).not.toBeEmpty();
       }
-      await expect(page.locator('#purpose a[href="#sources"]')).toBeVisible();
+      await expect(page.locator('.entry-header a[href="#sources"]')).toBeVisible();
       const ids = await page.locator('[data-claim-id]').evaluateAll((nodes) => nodes.map((node) => node.id));
       expect(new Set(ids).size).toBe(ids.length);
       expect([...ids].sort()).toEqual(CATALOG.claims.filter((claim) => claim.approach_id === id).map((claim) => `claim-${claim.id}`).sort());
@@ -343,6 +343,37 @@ test.describe('page-content pilot', () => {
       });
     });
   }
+});
+
+test.describe('entry header', () => {
+  test('shows the summary directly under the title of a reviewed entry', async ({ page }) => {
+    await page.goto('/agents/figma-security-agent');
+    const lede = page.locator('.entry-header h1 + .lede');
+    await expect(lede).toHaveAttribute('data-claim-id', 'figma-security-agent--summary');
+    await expect(lede).toContainText('alert-response system from commercial parts');
+    await expect(page.getByText('alert-response system from commercial parts')).toHaveCount(1);
+  });
+
+  test('lists each boundary of an entry whose scopes differ', async ({ page }) => {
+    await page.goto('/agents/figma-security-agent');
+    const involvement = page
+      .locator('.entry-facts div')
+      .filter({ has: page.locator('dt', { hasText: 'Human involvement' }) })
+      .locator('dd');
+    await expect(involvement).toContainText('Varies by scope');
+    await expect(involvement).toContainText('Work-product review');
+    await expect(involvement).toContainText('Exception-only');
+    await expect(involvement.locator('a[href="#human-involvement"]')).toBeVisible();
+  });
+
+  test('keeps the single label of an entry with one boundary', async ({ page }) => {
+    await page.goto('/agents/hubspot-sidekick');
+    const involvement = page
+      .locator('.entry-facts div')
+      .filter({ has: page.locator('dt', { hasText: 'Human involvement' }) })
+      .locator('dd');
+    await expect(involvement).toHaveText('Drafts reviewed');
+  });
 });
 
 test.describe('lesson attribution', () => {

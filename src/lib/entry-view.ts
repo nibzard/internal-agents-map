@@ -212,6 +212,8 @@ export interface EntryView {
   readonly interfaces: readonly TermView[];
   readonly invocation: readonly TermView[];
   readonly operatingModels: readonly OperatingModelView[];
+  /** The distinct boundary labels of the scoped assessments, in record order. */
+  readonly boundaryLabels: readonly string[];
   readonly isPilot: boolean;
   readonly workflowScope: string | null;
   readonly coverageQuestions: Readonly<Record<string, CoverageAnswerView>>;
@@ -562,6 +564,7 @@ export function entryView(catalog: Catalog, id: string): EntryView {
       level: model.level,
       levelLabel: levelLabel(model.level),
     })),
+    boundaryLabels: [...new Set(approach.operating_models.map((model) => termLabel(model.attention_boundary)))],
     isPilot: Boolean(page),
     workflowScope: page?.workflow_scope ?? null,
     coverageQuestions,

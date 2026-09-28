@@ -63,13 +63,12 @@ const hasRelated = entry.relatedEntries.length > 0 || entry.relatedLessons.lengt
     <header class="entry-header">
       <CompanyLogo company={entry.companyView} size={40} eager />
       <h1>{entry.agentName}</h1>
-      {entry.summary && !entry.isPilot ? (
-        <>
-          <p class="lede" id={entry.summary.anchor} data-claim-id={entry.summary.id}>{entry.summary.text}</p>
-        </>
-      ) : !entry.summary ? (
+      {entry.summary ? (
+        <p class="lede" id={entry.summary.anchor} data-claim-id={entry.summary.id}>{entry.summary.text}</p>
+      ) : (
         <p class="lede">This entry has no summary claim yet.</p>
-      ) : null}
+      )}
+      {entry.isPilot && <p class="section-note"><a href="#sources">Check the reviewed sources and claim details</a>.</p>}
       <dl class="entry-facts">
         <div>
           <dt>Company</dt>
@@ -85,7 +84,14 @@ const hasRelated = entry.relatedEntries.length > 0 || entry.relatedLessons.lengt
         </div>
         {!entry.isSupportingSystem && <div>
           <dt>Human involvement</dt>
-          <dd>{entry.autonomyLabel}</dd>
+          {entry.boundaryLabels.length > 1 ? (
+            <dd>
+              Varies by scope: {entry.boundaryLabels.join(', ')}.
+              {showQuestion(entry, 'human_involvement') && <> <a href="#human-involvement">See each scope</a>.</>}
+            </dd>
+          ) : (
+            <dd>{entry.autonomyLabel}</dd>
+          )}
         </div>}
         {!entry.isSupportingSystem && invocation.length > 0 && (
           <div>
@@ -113,14 +119,6 @@ const hasRelated = entry.relatedEntries.length > 0 || entry.relatedLessons.lengt
         </div>
       </dl>
     </header>
-
-    {entry.isPilot && (
-      <section class="entry-section" id="purpose" aria-labelledby="purpose-title">
-        <h2 id="purpose-title">Purpose</h2>
-        {entry.summary && <Claim claim={entry.summary} showLabel={false} />}
-        <p class="section-note"><a href="#sources">Check the reviewed sources and claim details</a>.</p>
-      </section>
-    )}
 
     {entry.profile.sectionOrder.map((section) => <EntrySection entry={entry} section={section} />)}
 
