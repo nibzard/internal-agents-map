@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "source_id": "shopify-river-source-3",
+  "original_url": "https://x.com/tobi/status/2053121182044451016",
+  "final_url": "https://x.com/tobi/status/2053121182044451016",
+  "captured_at": "2026-09-15T22:31:43Z",
+  "http_status": 200,
+  "tool": {
+    "name": "steel",
+    "version": "0.4.4"
+  },
+  "artifacts": {
+    "markdown": {
+      "path": "archive/sources/shopify-river-source-3/content.md",
+      "sha256": "sha256:eca697d7e4b6eaf10edd2618b50413d7c2b9ca7f64c488717b00d59e8b83b7e0",
+      "bytes": 7323
+    }
+  }
+}

@@ -5,9 +5,9 @@ agent_name: River
 approach_type: agent
 deployment_stage: deployed
 first_public_evidence:
-  date: '2026'
-  source_id: shopify-river-source-1
-last_reviewed_at: '2026-09-17'
+  date: '2026-05-09'
+  source_id: shopify-river-source-3
+last_reviewed_at: '2026-09-28'
 status: internal
 domains:
 - coding
@@ -15,15 +15,20 @@ autonomy: unknown
 operating_models:
 - scope: public Slack question → collaborative investigation or code change
   attention_boundary: unknown
+- scope: River-authored code change → reviewed pull request
+  attention_boundary: work-product-review
 rubric:
   invocation:
   - interactive
   evidence_strength: detailed-primary
-summary: River is Shopify’s internal Slack agent for investigating questions and making code changes in public threads.
+summary: River is Shopify’s internal Slack agent for investigating questions and making code changes in public
+  threads. Teams can provide channel context, and River carries knowledge across conversations.
 architecture:
   harness: An agent profile on Aquifer.
   tool_access: Code, tests, data warehouse and production traces.
   knowledge: World monorepo, skills and shared Slack transcripts.
+  context_mgmt: Teams can pre-load channel instructions and skills. River also uses memory that updates across
+    conversations.
   interfaces:
   - slack
 primitives:
@@ -39,6 +44,14 @@ primitives:
   name: Continue collaboratively
   desc: Colleagues add constraints and redirect the work within the same thread.
   role: workflow
+- id: work-in-public
+  name: Work in public
+  desc: River declines direct messages and asks employees to start a public channel.
+  role: mechanism
+- id: carry-knowledge-forward
+  name: Carry knowledge forward
+  desc: Teams pre-load channel context, and River updates its memory from shared work.
+  role: mechanism
 sources:
 - id: shopify-river-source-1
   title: Under the River
@@ -48,33 +61,100 @@ sources:
   accessed_at: '2026-08-12'
   last_verified_at: '2026-08-31'
   duplicate_of: shopify-internal-agents-source-1
+- id: shopify-river-source-2
+  title: 'Tobi Lütke on The Knowledge Project: AI Agents, Better Decisions, and the Future of Work'
+  url: https://fs.blog/knowledge-project-podcast/tobi-lutke-3/
+  kind: podcast
+  provenance_class: direct-participant
+  publisher: The Knowledge Project (Farnam Street)
+  published_at: '2026-09-10'
+  accessed_at: '2026-09-15'
+  last_verified_at: '2026-09-15'
+  capture:
+    manifest_path: archive/sources/shopify-river-source-2/metadata.json
+- id: shopify-river-source-3
+  title: 'Tobi Lütke on X: Learning on the Shop floor'
+  url: https://x.com/tobi/status/2053121182044451016
+  kind: social-post
+  provenance_class: direct-participant
+  published_at: '2026-05-09'
+  accessed_at: '2026-09-15'
+  last_verified_at: '2026-09-15'
+  capture:
+    manifest_path: archive/sources/shopify-river-source-3/metadata.json
 evidence:
   summary:
-  - locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - source_id: shopify-river-source-1
+    locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - source_id: shopify-river-source-2
+    locator: 'Episode page: River is described as an AI colleague with memory and personality'
+  - source_id: shopify-river-source-3
+    locator: 'Learning on the Shop floor: A constraint that became a feature; Why this matters more, not less, with AI'
   operating_models.0:
-  - locator: 'River only works in the open: well-going thread includes a colleague redirect and continued collaboration'
+  - source_id: shopify-river-source-1
+    locator: 'River only works in the open: well-going thread includes a colleague redirect and continued collaboration'
+  operating_models.1:
+  - source_id: shopify-river-source-3
+    locator: 'Learning on the Shop floor: About one in eight pull requests merged last week was authored by River, reviewed by us'
   architecture.harness:
-  - locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - source_id: shopify-river-source-1
+    locator: 'Part II: River only works in the open; At scale; River is one profile'
   architecture.tool_access:
-  - locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - source_id: shopify-river-source-1
+    locator: 'Part II: River only works in the open; At scale; River is one profile'
   architecture.knowledge:
-  - locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - source_id: shopify-river-source-1
+    locator: 'Part II: River only works in the open; At scale; River is one profile'
+  architecture.context_mgmt:
+  - source_id: shopify-river-source-3
+    locator: 'Learning on the Shop floor: Why this matters more, not less, with AI'
   architecture.interfaces:
-  - locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - source_id: shopify-river-source-1
+    locator: 'Part II: River only works in the open; At scale; River is one profile'
   primitives.receive-a-request:
-  - locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - source_id: shopify-river-source-1
+    locator: 'Part II: River only works in the open; At scale; River is one profile'
   primitives.investigate-and-act:
-  - locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - source_id: shopify-river-source-1
+    locator: 'Part II: River only works in the open; At scale; River is one profile'
   primitives.continue-collaboratively:
-  - locator: 'Part II: River only works in the open; At scale; River is one profile'
+  - source_id: shopify-river-source-1
+    locator: 'Part II: River only works in the open; At scale; River is one profile'
+  primitives.work-in-public:
+  - source_id: shopify-river-source-3
+    locator: 'Learning on the Shop floor: A constraint that became a feature'
+  primitives.carry-knowledge-forward:
+  - source_id: shopify-river-source-3
+    locator: 'Learning on the Shop floor: Why this matters more, not less, with AI'
   key_metrics.sessions-across-slack-channels:
-  - locator: 'At scale: recent 30-day river_sessions domain-table counts'
+  - source_id: shopify-river-source-1
+    locator: 'At scale: recent 30-day river_sessions domain-table counts'
+  key_metrics.may-employees-and-channels:
+  - source_id: shopify-river-source-3
+    locator: 'Learning on the Shop floor: opening usage figures'
+  key_metrics.may-weekly-pull-requests:
+  - source_id: shopify-river-source-3
+    locator: 'Learning on the Shop floor: opening usage figures'
+  key_metrics.pull-request-merge-rate:
+  - source_id: shopify-river-source-3
+    locator: 'Learning on the Shop floor: Why this matters more, not less, with AI'
+  lessons_learned.public-threads-share-skills:
+  - source_id: shopify-river-source-3
+    locator: 'Learning on the Shop floor: A constraint that became a feature'
+  lessons_learned.skills-improve-merge-rate:
+  - source_id: shopify-river-source-3
+    locator: 'Learning on the Shop floor: Why this matters more, not less, with AI'
 claim_metadata:
   operating_models.0:
     confidence: unverified
     confidence_reason: The source describes a colleague optionally redirecting a public thread, but does not require
       continuous steering or a universal PR approval checkpoint.
     valid_at: '2026'
+  operating_models.1:
+    confidence: medium
+    confidence_reason: The CEO says employees reviewed River-authored pull requests. This supports review of that
+      work product, but does not define oversight for other River tasks.
+    valid_at: '2026-05-09'
   key_metrics.sessions-across-slack-channels:
     metric_scope: 'River: 59,918 sessions across 5,170 Slack channels in a reported 30-day period; 3,536 River-coauthored
       PRs merged.'
@@ -85,17 +165,66 @@ claim_metadata:
     basis: reported-measurement
     subject: 'River: 59,918 sessions across 5,170 Slack channels in a reported 30-day period; 3,536 River-coauthored
       PRs merged.'
+  key_metrics.may-employees-and-channels:
+    confidence: medium
+    confidence_reason: The CEO reports exact counts without a measurement method.
+    valid_at: '2026-05-09'
+    metric_scope: Employees who worked with River and distinct Slack channels with River activity
+    measurement_method: Company usage data summarized by the CEO; 30 days ending 2026-05-09
+    category: adoption-output
+    basis: reported-measurement
+    subject: River employees and Slack channels in a 30-day period ending 2026-05-09.
+  key_metrics.may-weekly-pull-requests:
+    confidence: medium
+    confidence_reason: The CEO reports the weekly count without a measurement method.
+    valid_at: '2026-05-09'
+    metric_scope: Pull requests opened by River in the main monorepo in one week
+    measurement_method: Company usage data summarized by the CEO; week ending 2026-05-09
+    category: adoption-output
+    basis: reported-measurement
+    subject: River pull requests opened in the main monorepo in the week ending 2026-05-09.
+  key_metrics.pull-request-merge-rate:
+    confidence: medium
+    confidence_reason: The CEO reports the change without defining the merge rate or its measurement method.
+    valid_at: '2026-05-09'
+    metric_scope: Merge rate of River pull requests over two months
+    category: adoption-output
+    basis: reported-measurement
+    subject: River pull request merge rate over two months, as reported by Shopify's CEO.
+  lessons_learned.public-threads-share-skills:
+    kind: fact
+    provenance: reported
+    confidence: medium
+    confidence_reason: The CEO describes employees learning from public River threads and sharing skills across teams.
+  lessons_learned.skills-improve-merge-rate:
+    kind: fact
+    provenance: reported
+    confidence: medium
+    confidence_reason: The CEO attributes the reported increase in merge rate to employees updating River's skills.
 relationships:
 - type: built-on
   approach_id: shopify-internal-agents
 key_metrics:
 - id: sessions-across-slack-channels
   text: 59,918 sessions across 5,170 Slack channels in a reported 30-day period; 3,536 River-coauthored PRs merged.
+- id: may-employees-and-channels
+  text: 5,938 employees worked with River across 4,450 Slack channels in the 30 days before 2026-05-09.
+- id: may-weekly-pull-requests
+  text: 1,870 pull requests opened by River in the main monorepo in the week before 2026-05-09.
+- id: pull-request-merge-rate
+  text: River pull request merge rate rose from 36% to 77% over two months, according to Shopify's CEO.
+lessons_learned:
+- id: public-threads-share-skills
+  text: Shared River threads let Shopify employees learn from other teams' requests and reuse their skills.
+- id: skills-improve-merge-rate
+  text: Shopify's CEO attributes River's rising pull request merge rate to public observation and written skills.
 page_content:
   version: 1
-  reviewed_at: '2026-09-17'
+  reviewed_at: '2026-09-28'
   source_ids:
   - shopify-river-source-1
+  - shopify-river-source-2
+  - shopify-river-source-3
   workflow_scope: public Slack question → collaborative investigation or code change
   questions:
     purpose:
@@ -107,9 +236,10 @@ page_content:
       - primitives.investigate-and-act
       - primitives.continue-collaboratively
     human_involvement:
-      state: unreported
-      note: The source describes a colleague optionally redirecting a public thread, but does not require continuous
-        steering or a universal PR approval checkpoint.
+      state: reported
+      claim_paths:
+      - operating_models.1
+      note: The CEO reports review of River-authored pull requests. Oversight of other River tasks is not specified.
     implementation:
       state: reported
     validation:
@@ -117,4 +247,4 @@ page_content:
     observations:
       state: reported
     lessons:
-      state: unreported
+      state: reported

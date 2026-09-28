@@ -8935,10 +8935,10 @@
       "deployment_stage": "deployed",
       "year": 2026,
       "first_public_evidence": {
-        "date": "2026",
-        "source_id": "shopify-river-source-1"
+        "date": "2026-05-09",
+        "source_id": "shopify-river-source-3"
       },
-      "last_reviewed_at": "2026-09-17",
+      "last_reviewed_at": "2026-09-28",
       "status": "internal",
       "domains": [
         "coding"
@@ -8949,6 +8949,11 @@
           "scope": "public Slack question → collaborative investigation or code change",
           "attention_boundary": "unknown",
           "level": null
+        },
+        {
+          "scope": "River-authored code change → reviewed pull request",
+          "attention_boundary": "work-product-review",
+          "level": 3
         }
       ],
       "rubric": {
@@ -8965,9 +8970,11 @@
       ],
       "page_content": {
         "version": 1,
-        "reviewed_at": "2026-09-17",
+        "reviewed_at": "2026-09-28",
         "source_ids": [
-          "shopify-river-source-1"
+          "shopify-river-source-1",
+          "shopify-river-source-2",
+          "shopify-river-source-3"
         ],
         "workflow_scope": "public Slack question → collaborative investigation or code change",
         "questions": {
@@ -8986,9 +8993,11 @@
             ]
           },
           "human_involvement": {
-            "state": "unreported",
-            "claim_paths": [],
-            "note": "The source describes a colleague optionally redirecting a public thread, but does not require continuous steering or a universal PR approval checkpoint."
+            "state": "reported",
+            "claim_paths": [
+              "operating_models.1"
+            ],
+            "note": "The CEO reports review of River-authored pull requests. Oversight of other River tasks is not specified."
           },
           "implementation": {
             "state": "reported",
@@ -8996,6 +9005,7 @@
               "architecture.harness",
               "architecture.tool_access",
               "architecture.knowledge",
+              "architecture.context_mgmt",
               "architecture.interfaces"
             ]
           },
@@ -9006,12 +9016,18 @@
           "observations": {
             "state": "reported",
             "claim_paths": [
-              "key_metrics.sessions-across-slack-channels"
+              "key_metrics.sessions-across-slack-channels",
+              "key_metrics.may-employees-and-channels",
+              "key_metrics.may-weekly-pull-requests",
+              "key_metrics.pull-request-merge-rate"
             ]
           },
           "lessons": {
-            "state": "unreported",
-            "claim_paths": []
+            "state": "reported",
+            "claim_paths": [
+              "lessons_learned.public-threads-share-skills",
+              "lessons_learned.skills-improve-merge-rate"
+            ]
           }
         },
         "implementation_fields": {
@@ -9042,8 +9058,10 @@
             ]
           },
           "context_mgmt": {
-            "state": "unreported",
-            "claim_paths": []
+            "state": "reported",
+            "claim_paths": [
+              "architecture.context_mgmt"
+            ]
           },
           "credentials": {
             "state": "unreported",
@@ -9065,15 +9083,26 @@
         "shopify-river--architecture-harness",
         "shopify-river--architecture-tool-access",
         "shopify-river--architecture-knowledge",
+        "shopify-river--architecture-context-mgmt",
         "shopify-river--architecture-interfaces",
         "shopify-river--primitives-receive-a-request",
         "shopify-river--primitives-investigate-and-act",
         "shopify-river--primitives-continue-collaboratively",
+        "shopify-river--primitives-work-in-public",
+        "shopify-river--primitives-carry-knowledge-forward",
         "shopify-river--key-metrics-sessions-across-slack-channels",
-        "shopify-river--operating-models-0"
+        "shopify-river--key-metrics-may-employees-and-channels",
+        "shopify-river--key-metrics-may-weekly-pull-requests",
+        "shopify-river--key-metrics-pull-request-merge-rate",
+        "shopify-river--lessons-learned-public-threads-share-skills",
+        "shopify-river--lessons-learned-skills-improve-merge-rate",
+        "shopify-river--operating-models-0",
+        "shopify-river--operating-models-1"
       ],
       "source_ids": [
-        "shopify-river-source-1"
+        "shopify-river-source-1",
+        "shopify-river-source-2",
+        "shopify-river-source-3"
       ],
       "interfaces": [
         "slack"
@@ -28768,7 +28797,7 @@
       "id": "shopify-river--summary",
       "approach_id": "shopify-river",
       "field": "summary",
-      "text": "River is Shopify’s internal Slack agent for investigating questions and making code changes in public threads.",
+      "text": "River is Shopify’s internal Slack agent for investigating questions and making code changes in public threads. Teams can provide channel context, and River carries knowledge across conversations.",
       "kind": "fact",
       "provenance": "reported",
       "confidence": "high",
@@ -28779,6 +28808,16 @@
           "source_id": "shopify-river-source-1",
           "relation": "supports",
           "locator": "Part II: River only works in the open; At scale; River is one profile"
+        },
+        {
+          "source_id": "shopify-river-source-2",
+          "relation": "supports",
+          "locator": "Episode page: River is described as an AI colleague with memory and personality"
+        },
+        {
+          "source_id": "shopify-river-source-3",
+          "relation": "supports",
+          "locator": "Learning on the Shop floor: A constraint that became a feature; Why this matters more, not less, with AI"
         }
       ]
     },
@@ -28833,6 +28872,24 @@
           "source_id": "shopify-river-source-1",
           "relation": "supports",
           "locator": "Part II: River only works in the open; At scale; River is one profile"
+        }
+      ]
+    },
+    {
+      "id": "shopify-river--architecture-context-mgmt",
+      "approach_id": "shopify-river",
+      "field": "architecture.context_mgmt",
+      "text": "Teams can pre-load channel instructions and skills. River also uses memory that updates across conversations.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "shopify-river-source-3",
+          "relation": "supports",
+          "locator": "Learning on the Shop floor: Why this matters more, not less, with AI"
         }
       ]
     },
@@ -28918,6 +28975,48 @@
       "role": "workflow"
     },
     {
+      "id": "shopify-river--primitives-work-in-public",
+      "approach_id": "shopify-river",
+      "field": "primitives.work-in-public",
+      "text": "River declines direct messages and asks employees to start a public channel.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "shopify-river-source-3",
+          "relation": "supports",
+          "locator": "Learning on the Shop floor: A constraint that became a feature"
+        }
+      ],
+      "display_name": "Work in public",
+      "item_id": "work-in-public",
+      "role": "mechanism"
+    },
+    {
+      "id": "shopify-river--primitives-carry-knowledge-forward",
+      "approach_id": "shopify-river",
+      "field": "primitives.carry-knowledge-forward",
+      "text": "Teams pre-load channel context, and River updates its memory from shared work.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A linked participant or independent source reports the claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "shopify-river-source-3",
+          "relation": "supports",
+          "locator": "Learning on the Shop floor: Why this matters more, not less, with AI"
+        }
+      ],
+      "display_name": "Carry knowledge forward",
+      "item_id": "carry-knowledge-forward",
+      "role": "mechanism"
+    },
+    {
       "id": "shopify-river--key-metrics-sessions-across-slack-channels",
       "approach_id": "shopify-river",
       "field": "key_metrics.sessions-across-slack-channels",
@@ -28943,6 +29042,118 @@
       "subject": "River: 59,918 sessions across 5,170 Slack channels in a reported 30-day period; 3,536 River-coauthored PRs merged."
     },
     {
+      "id": "shopify-river--key-metrics-may-employees-and-channels",
+      "approach_id": "shopify-river",
+      "field": "key_metrics.may-employees-and-channels",
+      "text": "5,938 employees worked with River across 4,450 Slack channels in the 30 days before 2026-05-09.",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "The CEO reports exact counts without a measurement method.",
+      "valid_at": "2026-05-09",
+      "evidence": [
+        {
+          "source_id": "shopify-river-source-3",
+          "relation": "supports",
+          "locator": "Learning on the Shop floor: opening usage figures"
+        }
+      ],
+      "reported_by": "Shopify",
+      "metric_scope": "Employees who worked with River and distinct Slack channels with River activity",
+      "measurement_method": "Company usage data summarized by the CEO; 30 days ending 2026-05-09",
+      "item_id": "may-employees-and-channels",
+      "category": "adoption-output",
+      "basis": "reported-measurement",
+      "subject": "River employees and Slack channels in a 30-day period ending 2026-05-09."
+    },
+    {
+      "id": "shopify-river--key-metrics-may-weekly-pull-requests",
+      "approach_id": "shopify-river",
+      "field": "key_metrics.may-weekly-pull-requests",
+      "text": "1,870 pull requests opened by River in the main monorepo in the week before 2026-05-09.",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "The CEO reports the weekly count without a measurement method.",
+      "valid_at": "2026-05-09",
+      "evidence": [
+        {
+          "source_id": "shopify-river-source-3",
+          "relation": "supports",
+          "locator": "Learning on the Shop floor: opening usage figures"
+        }
+      ],
+      "reported_by": "Shopify",
+      "metric_scope": "Pull requests opened by River in the main monorepo in one week",
+      "measurement_method": "Company usage data summarized by the CEO; week ending 2026-05-09",
+      "item_id": "may-weekly-pull-requests",
+      "category": "adoption-output",
+      "basis": "reported-measurement",
+      "subject": "River pull requests opened in the main monorepo in the week ending 2026-05-09."
+    },
+    {
+      "id": "shopify-river--key-metrics-pull-request-merge-rate",
+      "approach_id": "shopify-river",
+      "field": "key_metrics.pull-request-merge-rate",
+      "text": "River pull request merge rate rose from 36% to 77% over two months, according to Shopify's CEO.",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "The CEO reports the change without defining the merge rate or its measurement method.",
+      "valid_at": "2026-05-09",
+      "evidence": [
+        {
+          "source_id": "shopify-river-source-3",
+          "relation": "supports",
+          "locator": "Learning on the Shop floor: Why this matters more, not less, with AI"
+        }
+      ],
+      "reported_by": "Shopify",
+      "metric_scope": "Merge rate of River pull requests over two months",
+      "item_id": "pull-request-merge-rate",
+      "category": "adoption-output",
+      "basis": "reported-measurement",
+      "subject": "River pull request merge rate over two months, as reported by Shopify's CEO."
+    },
+    {
+      "id": "shopify-river--lessons-learned-public-threads-share-skills",
+      "approach_id": "shopify-river",
+      "field": "lessons_learned.public-threads-share-skills",
+      "text": "Shared River threads let Shopify employees learn from other teams' requests and reuse their skills.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "The CEO describes employees learning from public River threads and sharing skills across teams.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "shopify-river-source-3",
+          "relation": "supports",
+          "locator": "Learning on the Shop floor: A constraint that became a feature"
+        }
+      ],
+      "item_id": "public-threads-share-skills"
+    },
+    {
+      "id": "shopify-river--lessons-learned-skills-improve-merge-rate",
+      "approach_id": "shopify-river",
+      "field": "lessons_learned.skills-improve-merge-rate",
+      "text": "Shopify's CEO attributes River's rising pull request merge rate to public observation and written skills.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "The CEO attributes the reported increase in merge rate to employees updating River's skills.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "shopify-river-source-3",
+          "relation": "supports",
+          "locator": "Learning on the Shop floor: Why this matters more, not less, with AI"
+        }
+      ],
+      "item_id": "skills-improve-merge-rate"
+    },
+    {
       "id": "shopify-river--operating-models-0",
       "approach_id": "shopify-river",
       "field": "operating_models.0",
@@ -28957,6 +29168,24 @@
           "source_id": "shopify-river-source-1",
           "relation": "supports",
           "locator": "River only works in the open: well-going thread includes a colleague redirect and continued collaboration"
+        }
+      ]
+    },
+    {
+      "id": "shopify-river--operating-models-1",
+      "approach_id": "shopify-river",
+      "field": "operating_models.1",
+      "text": "Level 3 for River-authored code change → reviewed pull request; human attention boundary: work-product-review.",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The CEO says employees reviewed River-authored pull requests. This supports review of that work product, but does not define oversight for other River tasks.",
+      "valid_at": "2026-05-09",
+      "evidence": [
+        {
+          "source_id": "shopify-river-source-3",
+          "relation": "supports",
+          "locator": "Learning on the Shop floor: About one in eight pull requests merged last week was authored by River, reviewed by us"
         }
       ]
     },
@@ -37846,6 +38075,71 @@
       "accessed_at": "2026-08-12",
       "last_verified_at": "2026-08-31",
       "duplicate_of": "shopify-internal-agents-source-1",
+      "role": "evidence",
+      "approach_id": "shopify-river"
+    },
+    {
+      "id": "shopify-river-source-2",
+      "title": "Tobi Lütke on The Knowledge Project: AI Agents, Better Decisions, and the Future of Work",
+      "url": "https://fs.blog/knowledge-project-podcast/tobi-lutke-3/",
+      "canonical_url": "https://fs.blog/knowledge-project-podcast/tobi-lutke-3/",
+      "kind": "podcast",
+      "provenance_class": "direct-participant",
+      "publisher": "The Knowledge Project (Farnam Street)",
+      "published_at": "2026-09-10",
+      "accessed_at": "2026-09-15",
+      "last_verified_at": "2026-09-15",
+      "capture": {
+        "schema_version": 1,
+        "source_id": "shopify-river-source-2",
+        "original_url": "https://fs.blog/knowledge-project-podcast/tobi-lutke-3/",
+        "final_url": "https://fs.blog/knowledge-project-podcast/tobi-lutke-3/",
+        "captured_at": "2026-09-15T22:31:34Z",
+        "http_status": 200,
+        "tool": {
+          "name": "steel",
+          "version": "0.4.4"
+        },
+        "artifacts": {
+          "markdown": {
+            "path": "archive/sources/shopify-river-source-2/content.md",
+            "sha256": "sha256:ec4c2f1ea51ab1ae99139e9cf3eb8d14d4230a5f21496b09f921eff57138ece8",
+            "bytes": 2874
+          }
+        }
+      },
+      "role": "evidence",
+      "approach_id": "shopify-river"
+    },
+    {
+      "id": "shopify-river-source-3",
+      "title": "Tobi Lütke on X: Learning on the Shop floor",
+      "url": "https://x.com/tobi/status/2053121182044451016",
+      "canonical_url": "https://x.com/tobi/status/2053121182044451016",
+      "kind": "social-post",
+      "provenance_class": "direct-participant",
+      "published_at": "2026-05-09",
+      "accessed_at": "2026-09-15",
+      "last_verified_at": "2026-09-15",
+      "capture": {
+        "schema_version": 1,
+        "source_id": "shopify-river-source-3",
+        "original_url": "https://x.com/tobi/status/2053121182044451016",
+        "final_url": "https://x.com/tobi/status/2053121182044451016",
+        "captured_at": "2026-09-15T22:31:43Z",
+        "http_status": 200,
+        "tool": {
+          "name": "steel",
+          "version": "0.4.4"
+        },
+        "artifacts": {
+          "markdown": {
+            "path": "archive/sources/shopify-river-source-3/content.md",
+            "sha256": "sha256:eca697d7e4b6eaf10edd2618b50413d7c2b9ca7f64c488717b00d59e8b83b7e0",
+            "bytes": 7323
+          }
+        }
+      },
       "role": "evidence",
       "approach_id": "shopify-river"
     },
