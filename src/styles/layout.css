@@ -207,6 +207,9 @@ footer {
   color: var(--muted);
   font-size: var(--text-sm);
   margin-top: 32px;
+  /* The floating search bar sits 24px up from the bottom and stands about 44px tall.
+     The footer holds that band open, so the imprint is clear of the bar at the end of a scroll. */
+  padding-bottom: 64px;
 }
 /* The invite reads first, straight after the page it follows; the imprint
    closes the band beneath it. */

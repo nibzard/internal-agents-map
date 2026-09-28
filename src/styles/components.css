@@ -19,6 +19,7 @@
   flex-wrap: wrap;
   margin-top: 32px;
 }
+.mobile-catalog-search { display: none; }
 /* The same hairline the table draws, between each figure and the next. */
 .stat + .stat {
   border-left: .5px solid var(--sand-6);
@@ -68,6 +69,42 @@
 }
 @media (max-width: 800px) {
   .problem-links a { padding: 4px 11px; }
+}
+/* On a wide screen the problems stand in the rail column, which the catalog page
+   leaves empty, as a list under a quiet title: the same form as a table of contents.
+   The markup stays in the intro, so a narrow screen keeps the pills above the cards. */
+@media (min-width: 1051px) {
+  .intro { position: relative; }
+  .problem-links {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 60px);
+    width: 224px;
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+  /* The title takes the form of the sidebar's group label: a size step below the
+     links, which are a tone darker, so the block reads as a label over a menu. */
+  .problem-links h2 {
+    margin: 0 0 10px;
+    padding: 0 12px;
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    letter-spacing: normal;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .problem-links ul { display: block; }
+  .problem-links li { line-height: inherit; }
+  .problem-links a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: none;
+    color: var(--sand-11);
+    line-height: inherit;
+  }
+  .problem-links a:hover { background: var(--sand-3); color: var(--sand-12); }
 }
 
 /* The company mark, in a card and at the top of an entry. */
@@ -328,8 +365,9 @@
     0 2px 4px rgba(0, 0, 0, .02);
 }
 /* The badges lead the card. The markup keeps the name first, which is the
-   order this reads in as text. The right padding keeps them clear of the fold. */
-.entries .tags { order: -1; margin: 0; padding-right: 32px; }
+   order this reads in as text. The right padding keeps them clear of the fold. The
+   bottom margin keeps them clear of the name when the card has no open space. */
+.entries .tags { order: -1; margin: 0 0 16px; padding-right: 32px; }
 /* The name and its summary close the card, below whatever space is left. */
 .entries .entry-top { margin-top: auto; }
 .entries .entry-summary {
@@ -939,14 +977,38 @@
 @media (max-width: 800px) {
   .related-list, .doc-links { grid-template-columns: minmax(0, 1fr); }
   .intro > h1 + p { display: none; }
-  .intro { padding-bottom: 24px; }
+  .intro { padding-bottom: 0; margin-bottom: 20px; }
+  /* The labels size the columns, so the long first label of the infrastructure page stays on one line. */
   .stats {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px 16px;
-    margin-top: 24px;
+    grid-template-columns: repeat(3, auto);
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 20px;
   }
   .stat + .stat { border-left: 0; padding-left: 0; }
+  .stat span { font-size: 13px; }
+  .problem-links { margin-top: 24px; }
+  .mobile-catalog-search:not([hidden]) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 48px;
+    margin-bottom: 16px;
+    padding: 0 16px;
+    border: 1px solid var(--sand-6);
+    border-radius: 12px;
+    background: var(--sand-3);
+    color: var(--ink);
+    text-align: left;
+    font-size: var(--text-sm);
+  }
+  .mobile-catalog-search .icon { color: var(--muted); }
+  /* A page with a door in its reading flow needs no floating one. */
+  body:has(.mobile-catalog-search:not([hidden])) .search-launcher { display: none; }
+  body:has(.mobile-catalog-search:not([hidden])) footer { padding-bottom: 0; }
+  .entries .entry-box { padding: 20px; }
   .entry-top { align-items: start; }
   /*
    * A narrow screen has no room for two columns, so each field stands over its
@@ -1032,8 +1094,9 @@
   .claim { padding: 16px 0; }
   .sources li { padding: 8px 0; }
 }
-@media (max-width: 420px) {
-  .stats { gap: 24px; }
+/* A phone holds one card across; a tablet keeps the two the base grid gives. */
+@media (max-width: 679px) {
+  .entries:not([hidden]) { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* Research ledger */

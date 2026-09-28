@@ -262,3 +262,17 @@ test.describe('the guide headers', () => {
     });
   }
 });
+
+test.describe('the footer', () => {
+  for (const path of ['/', '/definitions', '/agents/stripe-minions']) {
+    test(`${path} keeps its imprint clear of the floating search bar`, async ({ page }) => {
+      await page.goto(path);
+      const launcher = page.locator('.search-launcher');
+      test.skip(!(await launcher.isVisible()), 'This page opens the palette from a door in the page.');
+      await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+      const imprint = await page.locator('footer small').boundingBox();
+      const bar = await launcher.boundingBox();
+      expect(imprint!.y + imprint!.height).toBeLessThan(bar!.y);
+    });
+  }
+});
