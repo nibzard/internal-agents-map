@@ -1,0 +1,9 @@
+---
+// ABOUTME: The same theme action appears in the desktop rail and mobile bar.
+// ABOUTME: It stays hidden until the theme script can make it interactive.
+import Icon from './Icon.astro';
+---
+<button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" hidden>
+  <span data-theme-icon="dark"><Icon name="moon" /></span>
+  <span data-theme-icon="light" hidden><Icon name="sun" /></span>
+</button>
