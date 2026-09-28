@@ -11,8 +11,10 @@ import {
   type Claim,
   type ClaimKind,
   type EvidenceRelation,
+  type PageContent,
   type Source,
 } from './catalog';
+import type { ObservationBasis } from './schema-values';
 import { fieldLabel, levelLabel, termLabel } from './labels';
 import { companyView, type CompanyView } from './companies';
 import { isWellDocumented } from './documentation';
@@ -55,6 +57,20 @@ export function pageProfile(section: CatalogSection): PageProfile {
 
 export function showQuestion(entry: EntryView, key: string): boolean {
   return !entry.isSupportingSystem || entry.coverageQuestions[key]?.state !== 'not-applicable';
+}
+
+/** The absence statement of a question that the sources leave unanswered. */
+const UNREPORTED_STATEMENTS: Readonly<Record<string, string>> = {
+  validation: 'The available sources do not describe how the team checks the output.',
+  lessons: 'The available sources do not report lessons from this work.',
+};
+
+/**
+ * Give the note of a coverage answer. An unreported answer without a note gets the
+ * absence statement of its question, so the section says what the sources omit.
+ */
+export function coverageNote(answer: CoverageAnswerView, key: string): string | null {
+  return answer.note ?? (answer.state === 'unreported' ? (UNREPORTED_STATEMENTS[key] ?? null) : null);
 }
 
 export interface CaveatView {
@@ -210,6 +226,8 @@ export interface EntryView {
   readonly interfaces: readonly TermView[];
   readonly invocation: readonly TermView[];
   readonly operatingModels: readonly OperatingModelView[];
+  /** The distinct boundary labels of the scoped assessments, in record order. */
+  readonly boundaryLabels: readonly string[];
   readonly isPilot: boolean;
   readonly workflowScope: string | null;
   readonly coverageQuestions: Readonly<Record<string, CoverageAnswerView>>;
@@ -301,11 +319,19 @@ function caveats(claim: Claim): CaveatView[] {
 }
 
 /**
+ * Tell if a claim is a figure that needs a scope and a denominator.
+ * A qualitative observation measures nothing, so it has no denominator to report.
+ */
+function needsFigureFields(claim: Claim, basis: ObservationBasis | undefined): boolean {
+  return claim.kind === 'metric' && basis !== 'qualitative';
+}
+
+/**
  * Say which qualification of a figure the sources do not report.
  * Without this line a number with no denominator reads as a plain outcome.
  */
-function qualification(claim: Claim): string | null {
-  if (claim.kind !== 'metric') return null;
+function qualification(claim: Claim, basis: ObservationBasis | undefined): string | null {
+  if (!needsFigureFields(claim, basis)) return null;
   const missing = REQUIRED_METRIC_FIELDS.filter(([key]) => fieldValue(claim, key) === null).map(
     ([, label]) => label.toLowerCase(),
   );
@@ -314,18 +340,36 @@ function qualification(claim: Claim): string | null {
   return `The source does not report the ${names} of this figure.`;
 }
 
-/** List every research field of a claim. A metric names the fields it lacks. */
-function metadata(claim: Claim): CaveatView[] {
+/**
+ * List every research field of a claim. A metric names the fields it lacks.
+ * A qualitative observation does not name a missing scope or denominator.
+ */
+function metadata(claim: Claim, basis: ObservationBasis | undefined): CaveatView[] {
+  const figureFields = new Set(REQUIRED_METRIC_FIELDS.map(([key]) => key));
   const result: CaveatView[] = [];
   for (const [key, label] of QUALIFIER_FIELDS) {
     const value = fieldValue(claim, key);
     if (value !== null) result.push({ label, value });
-    else if (claim.kind === 'metric') result.push({ label, value: 'Not reported' });
+    else if (claim.kind === 'metric' && (needsFigureFields(claim, basis) || !figureFields.has(key))) {
+      result.push({ label, value: 'Not reported' });
+    }
   }
   return result;
 }
 
-function claimView(claim: Claim, numbers: ReadonlyMap<string, number>, sources: ReadonlyMap<string, Source>): ClaimView {
+/** Find the observation basis of a claim. An alias observation uses the basis of its target. */
+function observationBasis(page: PageContent | undefined, claim: Claim): ObservationBasis | undefined {
+  const observation = page?.observations[claim.field];
+  if (observation?.duplicate_of) return page?.observations[observation.duplicate_of]?.basis;
+  return observation?.basis;
+}
+
+function claimView(
+  claim: Claim,
+  basis: ObservationBasis | undefined,
+  numbers: ReadonlyMap<string, number>,
+  sources: ReadonlyMap<string, Source>,
+): ClaimView {
   const citations: CitationView[] = claim.evidence.map((evidence) => {
     const source = sources.get(evidence.source_id);
     const number = numbers.get(evidence.source_id);
@@ -361,8 +405,8 @@ function claimView(claim: Claim, numbers: ReadonlyMap<string, number>, sources: 
     validAt: claim.valid_at,
     isMetric: claim.kind === 'metric',
     caveats: caveats(claim),
-    qualification: qualification(claim),
-    metadata: metadata(claim),
+    qualification: qualification(claim, basis),
+    metadata: metadata(claim, basis),
     showCitationRoles:
       citations.length > 1 || citations.some((item) => item.relation !== 'supports'),
     supporting: citations.filter((item) => item.relation === 'supports'),
@@ -425,7 +469,7 @@ export function entryView(catalog: Catalog, id: string): EntryView {
   const claims = approach.claim_ids.map((claimId) => {
     const claim = allClaims.get(claimId);
     if (!claim) throw new Error(`approach "${approach.id}" lists unknown claim "${claimId}".`);
-    return claimView(claim, numbers, allSources);
+    return claimView(claim, observationBasis(approach.page_content, claim), numbers, allSources);
   });
 
   const of = (test: (claim: ClaimView) => boolean) => claims.filter(test);
@@ -534,6 +578,7 @@ export function entryView(catalog: Catalog, id: string): EntryView {
       level: model.level,
       levelLabel: levelLabel(model.level),
     })),
+    boundaryLabels: [...new Set(approach.operating_models.map((model) => termLabel(model.attention_boundary)))],
     isPilot: Boolean(page),
     workflowScope: page?.workflow_scope ?? null,
     coverageQuestions,

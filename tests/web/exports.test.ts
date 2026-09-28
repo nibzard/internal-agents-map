@@ -145,16 +145,14 @@ describe('record Markdown', () => {
     const markdown = recordMarkdown(catalog, 'brex-support-qa');
     const view = entryView(catalog, 'brex-support-qa');
     const sections = [
-      [view.profile.validation, 'validation'],
-      [view.profile.observations, 'observations'],
-      ['Lessons', 'lessons'],
+      [view.profile.validation, 'validation', '**Not reported:** The available sources do not describe how the team checks the output.'],
+      [view.profile.observations, 'observations', '**Not reported**'],
+      ['Lessons', 'lessons', '**Not reported:** The available sources do not report lessons from this work.'],
     ] as const;
-    for (const [title, key] of sections) {
+    for (const [title, key, statement] of sections) {
       expect(view.coverageQuestions[key]?.note, key).toBeNull();
       const section = markdown.split(`## ${title}`)[1] ?? '';
-      expect(section.trimStart().startsWith('**Not reported**'), `${key}: ${section.slice(0, 60)}`).toBe(
-        true,
-      );
+      expect(section.trimStart().startsWith(statement), `${key}: ${section.slice(0, 60)}`).toBe(true);
     }
   });
 
@@ -217,10 +215,17 @@ describe('Markdown links', () => {
 });
 
 describe('the qualification of a figure', () => {
-  /** Metrics whose record does not report the scope or the denominator. */
+  /** The observation basis of a claim, through an alias to its target. */
+  const basisOf = (claim: Claim) => {
+    const observations = catalog.approaches.find((item) => item.id === claim.approach_id)?.page_content?.observations;
+    const observation = observations?.[claim.field];
+    return observation?.duplicate_of ? observations?.[observation.duplicate_of]?.basis : observation?.basis;
+  };
+  /** Quantitative metrics whose record does not report the scope or the denominator. */
   const unqualified = catalog.claims.filter(
     (claim) =>
       claim.kind === 'metric' &&
+      basisOf(claim) !== 'qualitative' &&
       (claim.metric_scope === null ||
         claim.metric_scope === undefined ||
         claim.denominator === null ||

@@ -3,6 +3,7 @@
 import Claim from './Claim.astro';
 import Arrowed from './Arrowed.astro';
 import Icon from './Icon.astro';
+import SourceMarks from './SourceMarks.astro';
 import { showQuestion, type EntryView } from '../lib/entry-view';
 interface Props { entry: EntryView; section: 'workflow' | 'people' | 'implementation' }
 const { entry, section } = Astro.props;
@@ -71,6 +72,7 @@ const hasImplementation = entry.isPilot || entry.architectureClaims.length > 0 |
               {row.claim ? (
                 <dd id={row.claim.anchor} data-claim-id={row.claim.id}>
                   {row.claim.text}
+                  <SourceMarks citations={row.claim.supporting} />
                   {row.note && <span class="architecture-note">{row.note}</span>}
                   {row.claim.caveats.length > 0 && (
                     <span class="architecture-caveats">
