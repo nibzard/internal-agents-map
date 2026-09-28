@@ -639,12 +639,18 @@ test.describe('the problem entry points', () => {
     expect(problems.x).toBeGreaterThanOrEqual(main.x + main.width);
     expect(Math.round(problems.y)).toBe(Math.round(sidebar.y));
     expect(problems.x + problems.width).toBeLessThanOrEqual(page.viewportSize()!.width);
-    // The title takes the form of a contents title: the body face, not a heading's serif.
-    const title = await page.locator('.problem-links h2').evaluate((node) => {
-      const style = getComputedStyle(node);
-      return [style.fontFamily.split(',')[0], style.fontWeight, style.lineHeight];
-    });
-    expect(title).toEqual(['Areal', '400', '22.4px']);
+    // The title takes the form of the sidebar's group label: the body face, a size step below the links.
+    const [title, groupLabel, link] = await Promise.all(
+      ['.problem-links h2', '.nav-group-label', '.problem-links a'].map((selector) =>
+        page.locator(selector).first().evaluate((node) => {
+          const style = getComputedStyle(node);
+          return [style.fontFamily.split(',')[0], style.fontWeight, style.fontSize, style.color];
+        }),
+      ),
+    );
+    expect(title).toEqual(groupLabel);
+    expect(parseFloat(link[2])).toBeGreaterThan(parseFloat(title[2]));
+    expect(link[3]).not.toBe(title[3]);
     // A list, not a row of pills: each link on its own line.
     const links = await page.locator('.problem-links a').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().left));
     expect(new Set(links).size).toBe(1);
