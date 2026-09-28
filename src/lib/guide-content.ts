@@ -597,13 +597,13 @@ export const DEFINITIONS_TERMS = {
     ] as TextBlock,
     figures: [
       {
-        label: 'Foreground work: repeated exchanges between you and the agent',
+        label: 'Foreground work: you send a message, the agent works, and its reply returns to you before the next exchange',
         term: 'Foreground',
         caption: 'Discuss, steer, and iterate as it works',
       },
       {
         label:
-          'Background work: a trigger starts the agent, which works independently and returns a result',
+          'Background work: you hand off a task, the agent continues while your row is dotted, and the result returns to your row',
         term: 'Background',
         caption: 'Work proceeds without continuous interaction',
       },
@@ -621,6 +621,11 @@ export const DEFINITIONS_TERMS = {
         'These are modes of work. The same agent can move between them. An engineer might give a Minion instructions, leave it to work, then return to discuss the result.',
       ],
     ] as readonly TextBlock[],
+    switchingFigure: {
+      term: 'One agent, changing modes',
+      label: 'One task moves from foreground discussion to background work and back to foreground discussion. The same agent stays active. You participate at the beginning and end, and can step away while it continues on the Background work rail.',
+      caption: 'Discuss the task, let the agent continue, then return to discuss the result.',
+    } satisfies ConceptFigure,
   },
   combination: {
     label: 'These descriptions work together',

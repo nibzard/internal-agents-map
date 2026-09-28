@@ -300,7 +300,7 @@ const {
 }
 .place-scene:has(.place-callout) { padding-bottom: var(--callout-reach); }
 .place-scene-wide { display: block; }
-.exchange-scene, .cycle-scene { height: auto; }
+.exchange-scene, .handoff-scene { height: auto; }
 /* Every column carries a title row, so the boxes line up whether or not it is filled. */
 .place-machine, .place-link {
   --title-row: 20px;
@@ -381,18 +381,43 @@ const {
 .exchange-agent { fill: var(--blue-9); stroke: var(--blue-9); }
 .exchange-scene text { fill: var(--muted); stroke: none; }
 .exchange-signal { fill: none; stroke: var(--blue-9); stroke-width: var(--figure-line-width); }
-/* A trigger arrives, the agent works, a result lands, and it begins again. */
-.cycle-scene { display: block; width: calc(100% + 16px); height: 100%; margin-left: -16px; }
-.cycle-scene text { fill: var(--muted); stroke: none; }
-.cycle-link { fill: none; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
-.cycle-trigger { fill: var(--panel); stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
-/* The lit state is its own circle, so it can rise and fall on top of the first. */
-.cycle-trigger-on { fill: var(--blue-9); stroke: var(--blue-9); stroke-width: 1.2; }
-.cycle-agent { fill: var(--blue-9); }
-.cycle-spinner { fill: none; stroke: var(--on-brand); stroke-width: 2.5; stroke-linecap: round; }
-.cycle-result { fill: var(--panel); stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
-.cycle-result-on { fill: var(--blue-9); stroke: var(--blue-9); stroke-width: 1.2; }
-.cycle-signal { fill: none; stroke: var(--blue-9); stroke-width: var(--figure-line-width); }
+/* The agent continues on its row while your row is dotted; the result returns to you. */
+.handoff-scene { display: block; width: 100%; height: auto; }
+.handoff-scene text { fill: var(--muted); stroke: none; }
+.handoff-link { fill: none; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
+.handoff-away { stroke-dasharray: 2 4; }
+.handoff-you { fill: var(--panel); stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
+.handoff-agent, .handoff-you-active { fill: var(--blue-9); stroke: var(--blue-9); stroke-width: var(--figure-line-width); }
+.handoff-signal { fill: none; stroke: var(--blue-9); stroke-width: var(--figure-line-width); }
+/* One run changes modes. HTML labels and dots keep their size as the path narrows. */
+.mode-switch-scene { --mode-gutter: 88px; font-size: 12px; color: var(--muted); }
+.guide .mode-switch-figure > figcaption { margin: 0 0 16px; color: var(--ink); font-size: var(--text-sm); font-weight: 500; }
+.mode-switch-notes {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  margin-left: var(--mode-gutter);
+  text-align: center;
+  line-height: 1.5;
+}
+.mode-switch-track { position: relative; height: 282px; margin-left: var(--mode-gutter); }
+.mode-switch-track svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.mode-switch-track path { fill: none; stroke: var(--figure-line); stroke-width: var(--figure-line-width); vector-effect: non-scaling-stroke; }
+.mode-switch-guide { stroke-dasharray: 2 4; }
+/* The dash and its gradient must scale together to stay aligned along the path. */
+.mode-switch-track .mode-switch-signal { stroke: var(--blue-9); vector-effect: none; }
+.mode-switch-origin { position: absolute; left: -32px; top: var(--rail-y); width: 20px; height: 20px; transform: translate(-50%, -50%); }
+.mode-switch-origin::after { content: ''; position: absolute; left: 100%; top: 50%; width: 22px; height: 1px; transform: translateY(-50%); background: var(--figure-line); }
+.mode-switch-node { position: absolute; inset: 0; box-sizing: border-box; border: 1px solid var(--figure-line); border-radius: 50%; background: var(--panel); }
+.mode-switch-agent, .mode-switch-you-active { border-color: var(--blue-9); background: var(--blue-9); }
+.mode-switch-background { border-style: dashed; }
+.mode-switch-label { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); line-height: 1.4; text-align: center; }
+.mode-switch-label-above { top: auto; bottom: 30px; }
+@media (max-width: 520px) {
+  .mode-switch-scene { --mode-gutter: 76px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .exchange-signal, .handoff-signal, .mode-switch-signal { display: none; }
+}
 .place-arrow { align-self: center; width: 64px; fill: none; stroke: var(--figure-line); stroke-width: var(--figure-line-width); }
 .concept-pair { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); max-width: 680px; margin: 24px 0; }
 .guide .concept-pair figure { margin: 0; padding: 24px 16px; min-width: 0; }
@@ -538,7 +563,7 @@ const {
   .lesson-diagram .lesson-diagram-tail { font-size: 14px; }
   .lessons table, .lesson-branches, .lesson-shared-state { font-size: 14px; }
   .guide-faq details, .concept-combination dl, .guide .classification-table { font-size: 14px; }
-  .cycle-scene text { font-size: 30px; }
+  .handoff-scene text { font-size: 29px; }
   .exchange-scene text { font-size: 29px; }
   /* The machines stand one above the other, and the link between them turns. */
   .place-scene { flex-direction: column; align-items: center; gap: 6px; }
