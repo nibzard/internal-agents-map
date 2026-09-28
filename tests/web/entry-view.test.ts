@@ -19,6 +19,13 @@ function caveat(claim: ClaimView, label: string): string {
   return found.value;
 }
 
+/** The observation basis of a claim field, through an alias to its target. */
+function basisOf(approachId: string, field: string): string | undefined {
+  const observations = catalog.approaches.find((item) => item.id === approachId)?.page_content?.observations;
+  const observation = observations?.[field];
+  return observation?.duplicate_of ? observations?.[observation.duplicate_of]?.basis : observation?.basis;
+}
+
 describe('every entry', () => {
   it('places every claim of the record in a section', () => {
     for (const approach of catalog.approaches) {
@@ -77,10 +84,10 @@ describe('every entry', () => {
     }
   });
 
-  it('keeps the research fields of every metric in the ledger', () => {
+  it('keeps the research fields of every figure in the ledger', () => {
     for (const approach of catalog.approaches) {
       for (const claim of entryView(catalog, approach.id).metricClaims) {
-        if (!claim.isMetric) continue;
+        if (!claim.isMetric || basisOf(approach.id, claim.field) === 'qualitative') continue;
         expect(claim.metadata.map((item) => item.label)).toEqual([
           'Reported by',
           'Scope',
@@ -111,6 +118,7 @@ describe('every entry', () => {
         const record = claims.get(claim.id)!;
         const missing =
           record.kind === 'metric' &&
+          basisOf(approach.id, record.field) !== 'qualitative' &&
           (record.denominator === null ||
             record.denominator === undefined ||
             record.metric_scope === null ||
@@ -327,6 +335,27 @@ describe('page-content pilot reading model', () => {
     for (const approach of catalog.approaches) {
       expect(entryView(catalog, approach.id).isPilot, approach.id).toBe(true);
     }
+  });
+});
+
+describe('figma-security-agent', () => {
+  const entry = entryView(catalog, 'figma-security-agent');
+  const byField = new Map(entry.claims.map((claim) => [claim.field, claim]));
+
+  it('does not ask a qualitative observation for a denominator or a scope', () => {
+    const confidence = byField.get('key_metrics.2')!;
+    expect(confidence.isMetric).toBe(true);
+    expect(confidence.qualification).toBeNull();
+    const labels = confidence.metadata.map((item) => item.label);
+    expect(labels).not.toContain('Denominator');
+    expect(confidence.metadata.filter((item) => item.value === 'Not reported').map((item) => item.label))
+      .not.toContain('Scope');
+  });
+
+  it('still asks an estimated figure for its denominator', () => {
+    const headline = byField.get('headline_metric')!;
+    expect(headline.qualification).toBe('The source does not report the denominator of this figure.');
+    expect(headline.metadata).toContainEqual({ label: 'Denominator', value: 'Not reported' });
   });
 });
 
