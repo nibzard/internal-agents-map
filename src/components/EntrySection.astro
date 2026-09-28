@@ -18,7 +18,6 @@ const hasImplementation = entry.isPilot || entry.architectureClaims.length > 0 |
           <>
             <p class="section-note">
               {entry.workflowScope ? `${entry.isSupportingSystem ? 'Documented use example' : 'Representative workflow'}: ${entry.workflowScope}.` : 'The workflow the sources report for this implementation.'}
-              {' '}<a href="#sources">Research details</a>
             </p>
             <div class="step-panel">
               {entry.workflowClaims.map((claim) => <Claim claim={claim} showLabel={entry.isPilot} />)}
