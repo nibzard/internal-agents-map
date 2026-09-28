@@ -324,8 +324,9 @@
     0 2px 4px rgba(0, 0, 0, .02);
 }
 /* The badges lead the card. The markup keeps the name first, which is the
-   order this reads in as text. The right padding keeps them clear of the fold. */
-.entries .tags { order: -1; margin: 0; padding-right: 32px; }
+   order this reads in as text. The right padding keeps them clear of the fold. The
+   bottom margin keeps them clear of the name when the card has no open space. */
+.entries .tags { order: -1; margin: 0 0 16px; padding-right: 32px; }
 /* The name and its summary close the card, below whatever space is left. */
 .entries .entry-top { margin-top: auto; }
 .entries .entry-summary {

@@ -223,6 +223,20 @@ test.describe('the directory with javascript', () => {
     }
   });
 
+  test('on a phone each card keeps its badges clear of its name', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'The card takes the height of its words only on a phone.');
+    await page.goto('/');
+    const gaps = await visibleCards(page).evaluateAll((cards) =>
+      cards.map((card) => {
+        const tags = card.querySelector('.tags')!.getBoundingClientRect();
+        const name = card.querySelector('.entry-top')!.getBoundingClientRect();
+        return name.top - tags.bottom;
+      }),
+    );
+    expect(gaps.length).toBeGreaterThan(0);
+    for (const gap of gaps) expect(gap).toBeGreaterThanOrEqual(12);
+  });
+
   test('the palette opens from the bar and reaches every kind of page', async ({ page }) => {
     await page.goto('/');
     await searchLauncher(page).click();
