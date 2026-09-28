@@ -511,6 +511,8 @@ export function startPalette(): void {
   // The pill reads as a field and answers as a door: it opens the palette, at
   // every width, and takes no typing of its own.
   for (const trigger of document.querySelectorAll<HTMLElement>('[data-palette-open]')) {
+    // A door in the reading flow arrives hidden, so a page without the script reads straight through.
+    trigger.hidden = false;
     // Open after the full click so a touch cannot land on the arriving scrim.
     trigger.addEventListener('click', (event) => {
       event.preventDefault();
