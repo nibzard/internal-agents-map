@@ -21,6 +21,11 @@ from typing import Any, NoReturn
 from urllib.parse import urlsplit
 
 try:
+    from source_refs import capture_source, validate_source_aliases
+except ModuleNotFoundError:
+    from scripts.source_refs import capture_source, validate_source_aliases
+
+try:
     import yaml
     from jsonschema import Draft7Validator, FormatChecker
 except ImportError:
@@ -741,6 +746,9 @@ def validate_record(record: dict, path: Path, global_sources: set[str]) -> None:
     validate_page_content(record, filename, local_sources)
     validate_metric_axes(record, filename)
     metadata = record.get("claim_metadata") or {}
+    for claim_path, values in metadata.items():
+        if "confidence" in values and not values.get("confidence_reason", "").strip():
+            die(f"{filename}: claim metadata for {claim_path!r} requires 'confidence_reason'.")
     for index, _ in enumerate(record["operating_models"]):
         claim_path = f"operating_models.{index}"
         values = metadata.get(claim_path) or {}
@@ -782,6 +790,11 @@ def load_agents() -> list[dict]:
         records.append(record)
     records.sort(key=lambda item: (item["company"].casefold(), item["agent_name"].casefold()))
     approach_ids = {record["id"] for record in records}
+    sources = {source["id"]: source for record in records for source in record["sources"]}
+    try:
+        validate_source_aliases(sources)
+    except ValueError as error:
+        die(str(error))
     for record in records:
         for relation in record.get("relationships") or []:
             if relation["approach_id"] not in approach_ids:
@@ -1053,11 +1066,12 @@ def evidence_refs(record: dict, path: str) -> str:
     return " <small>" + "; ".join(parts) + ".</small>"
 
 
-def render_source_reference(source: dict) -> str:
+def render_source_reference(source: dict, sources: dict[str, dict] | None = None) -> str:
     """Render the original citation and any verified preserved copies together."""
     original = f"[{source['title']}]({source['url']})"
     fallbacks = []
-    manifest = load_capture_manifest(source, "catalog source rendering")
+    preserved = capture_source(source, sources or {source["id"]: source})
+    manifest = load_capture_manifest(preserved, "catalog source rendering") if preserved else None
     if manifest is not None:
         snapshot_path = manifest["artifacts"]["markdown"]["path"]
         fallbacks.append(f"[snapshot](../{snapshot_path})")
@@ -1281,6 +1295,7 @@ def render_adoption_snapshot(records: list[dict]) -> str:
 
 
 def render_landscape(records: list[dict]) -> str:
+    sources = {source["id"]: source for record in records for source in record["sources"]}
     out = [
         "# Internal agents: full catalog",
         "",
@@ -1322,7 +1337,7 @@ def render_landscape(records: list[dict]) -> str:
             "Access terms include attribute-based access control (ABAC), role-based access control (RBAC), and single sign-on (SSO).",
             "Domain terms include know your customer (KYC), quality assurance (QA), security operations center (SOC), and structured query language (SQL).",
             "",
-            "The [schema reference](../data/schema.md) defines each comparison field. Unknown means that the collected sources do not document the value.",
+            "The [schema reference](../data/schema.md) defines each comparison field. Unknown means that the catalog has not established a classification. Review states distinguish an unanswered question from unfinished review or a question that does not apply.",
             "Operating levels are generated from scoped, evidence-backed human-attention boundaries; they are catalog judgments, not company-wide maturity scores.",
             "",
         ]
@@ -1406,7 +1421,9 @@ def render_landscape(records: list[dict]) -> str:
             detail = (
                 f"{source['kind']}; {source['provenance_class']}; {source.get('role', 'evidence')}"
             )
-            out.append(f'- <a id="{source["id"]}"></a>{render_source_reference(source)} ({detail})')
+            out.append(
+                f'- <a id="{source["id"]}"></a>{render_source_reference(source, sources)} ({detail})'
+            )
         out.extend(["", f"Last reviewed: {record['last_reviewed_at']}.", "", "---", ""])
     return "\n".join(out)
 
@@ -1468,7 +1485,6 @@ def normalize(
         approach["claim_ids"] = []
         approach["source_ids"] = [source["id"] for source in record["sources"]]
         approach["interfaces"] = (record.get("architecture") or {}).get("interfaces", [])
-        source_index = {source["id"]: source for source in record["sources"]}
         items = {
             f"{field}.{item['id']}": item
             for field in ITEM_LISTS
@@ -1479,24 +1495,6 @@ def normalize(
             claim_id = claim_id_of(record["id"], path)
             meta = (record.get("claim_metadata") or {}).get(path, {})
             links = record["evidence"][path]
-            supporting_sources = [
-                source_index[link["source_id"]]
-                for link in links
-                if link.get("relation", "supports") == "supports"
-            ]
-            classes = {source["provenance_class"] for source in supporting_sources}
-            default_confidence = (
-                "high"
-                if "first-party" in classes
-                else (
-                    "medium" if classes & {"direct-participant", "independent-secondary"} else "low"
-                )
-            )
-            default_reason = {
-                "high": "A linked first-party source states the claim.",
-                "medium": "A linked participant or independent source reports the claim.",
-                "low": "Only community or aggregate evidence supports the claim.",
-            }[default_confidence]
             claim = {
                 "id": claim_id,
                 "approach_id": record["id"],
@@ -1504,8 +1502,11 @@ def normalize(
                 "text": claim_text,
                 "kind": meta.get("kind", default_kind),
                 "provenance": meta.get("provenance", default_provenance),
-                "confidence": meta.get("confidence", default_confidence),
-                "confidence_reason": meta.get("confidence_reason", default_reason),
+                "confidence": meta.get("confidence", "not-assessed"),
+                "confidence_reason": meta.get(
+                    "confidence_reason",
+                    "No explicit confidence assessment is recorded for this claim.",
+                ),
                 "valid_at": meta.get("valid_at"),
                 "evidence": links,
             }
@@ -1541,6 +1542,17 @@ def normalize(
             if manifest is not None:
                 normalized_source["capture"] = manifest
             sources.append(normalized_source)
+    source_index = {source["id"]: source for source in sources}
+    try:
+        validate_source_aliases(source_index)
+    except ValueError as error:
+        die(str(error))
+    # Keep the original manifest's source ID, URL and timestamp when a citation
+    # reuses it. No capture files or authored source records are copied or changed.
+    for source in sources:
+        preserved = capture_source(source, source_index)
+        if preserved is not None:
+            source["capture"] = preserved["capture"]
     claim_aliases = claim_aliases or {}
     validate_claim_aliases(claim_aliases, {claim["id"] for claim in claims})
     return {

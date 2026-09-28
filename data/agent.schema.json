@@ -317,7 +317,7 @@
     "evidenceRelation": { "enum": ["supports", "contradicts", "contextualizes"] },
     "claimKind": { "enum": ["fact", "metric", "inference", "opinion"] },
     "claimProvenance": { "enum": ["reported", "observed", "inferred", "catalog-judgment"] },
-    "confidence": { "enum": ["high", "medium", "low", "unverified"] },
+    "confidence": { "enum": ["high", "medium", "low", "unverified", "not-assessed"] },
     "reviewState": { "enum": ["reported", "unreported", "not-applicable", "not-reviewed"] },
     "primitiveRole": { "enum": ["workflow", "mechanism", "validation"] },
     "observationCategory": {

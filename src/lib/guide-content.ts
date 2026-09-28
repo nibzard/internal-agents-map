@@ -181,11 +181,16 @@ export interface GuideSection {
   readonly titleId: string;
   readonly heading: string;
   readonly body: readonly TextBlock[];
+  readonly table?: {
+    readonly headings: readonly string[];
+    readonly rows: readonly (readonly string[])[];
+  };
   /** The documents the section sends a reader to. */
   readonly links?: readonly GuideLink[];
 }
 
-export const METHODOLOGY_LEDE = 'How we record evidence and explain its limits.';
+export const METHODOLOGY_LEDE =
+  'The map collects public accounts of internal agents and their infrastructure. It reflects what organizations choose to publish, so it cannot tell us how common a practice is across the industry.';
 
 const CONTRIBUTING_URL =
   'https://github.com/steel-experiments/internal-agents-map/blob/main/CONTRIBUTING.md';
@@ -197,22 +202,28 @@ export const METHODOLOGY_SECTIONS: readonly GuideSection[] = [
     heading: 'What we include',
     body: [
       [
-        'Each case describes a system that a named organization built or adapted for its own teams. Public sources must describe its implementation or use.',
+        'Each case identifies an organization, the internal work its system serves, and what the team built or materially adapted. Public evidence must describe the implementation or its use.',
       ],
       [
-        'We maintain platforms and supporting tools in a separate Infrastructure collection, alongside the default Agents collection. A product name is optional. Commercial systems can qualify when sources describe the internal build or adaptation. General adoption claims are insufficient.',
+        'Adaptation can mean connecting internal tools, supplying company context, or adding workflow logic or controls. Buying licenses or announcing adoption alone does not qualify. Systems can qualify without a product name or a minimum amount of custom code.',
+      ],
+      [
+        'Agents perform identifiable work. The Infrastructure collection covers implemented platforms and components that support agent workflows. Prototypes and research implementations can qualify; each entry states its deployment stage. Commercial and open-source systems follow the same evidence requirements.',
       ],
     ],
   },
   {
     id: 'intake',
     titleId: 'intake-title',
-    heading: 'How we add cases',
+    heading: 'How we review cases',
     body: [
       [
-        'We use an agent skill to assess sources against our ',
+        'We read the sources, check for an existing record, and assess the case against our ',
         { text: 'inclusion rules', href: `${CONTRIBUTING_URL}#inclusion-rules` },
-        ' and prepare catalog changes. Automated checks validate record structure, source files, and links; they cannot confirm reported results or our interpretations.',
+        '. We add a case, update its existing entry, record what evidence is missing, or explain why it is out of scope. New evidence can reopen a decision.',
+      ],
+      [
+        'Agents help prepare changes and check claims against source passages. Maintainers publish accepted changes by merging pull requests. Automated checks catch structural errors, damaged source files, and broken links. They cannot confirm an interpretation or reported result. Agreement between reviewing agents is not independent evidence.',
       ],
     ],
   },
@@ -222,27 +233,75 @@ export const METHODOLOGY_SECTIONS: readonly GuideSection[] = [
     heading: 'How we use sources',
     body: [
       [
-        'Claims link to public sources. We record who published each source and separate reported claims from our own judgments. We keep conflicting reports visible.',
+        'We prefer original accounts. Attributed outside reporting can also support a case. We record each publisher’s relationship to the work and link claims to sources that support, contradict, or provide context for them. Passage locators identify the evidence where available. An article repeating a company’s result is not independent verification.',
       ],
       [
-        'We capture a copy of each source page with ',
+        'We preserve source pages with ',
         {
-          text: 'Steel, the open-source browser infrastructure for AI agents',
+          text: 'Steel',
           href: 'https://steel.dev/',
         },
-        '. Each capture records the time, the final URL, and the HTTP status. A capture shows what a page said when we read it. It does not confirm the claims on that page.',
+        '. Citations retain the publisher’s URL and link to the saved copy when one is available. Entries that cite the same source version at the same URL can share a capture. Its date tells you when we saved that copy. Preservation does not verify the claims it contains.',
       ],
       [
-        'Company results remain self-reported unless an independent source verifies them. Confidence describes the support for a claim. Evidence strength describes source type and detail. Neither label proves that a claim is true.',
+        'We distinguish reported facts, attributed opinions, and our own inferences. Company results remain self-reported unless separately verified. For metrics, we retain the reported scope, dates, denominator, and measurement method when available. Conflicting reports stay visible with their qualifications.',
+      ],
+    ],
+  },
+  {
+    id: 'confidence',
+    titleId: 'confidence-title',
+    heading: 'What confidence means',
+    body: [
+      [
+        'We assess confidence for each claim, with a reason that identifies its evidence and any unresolved step. Publisher identity alone never supplies a rating. Evidence strength describes source type and detail.',
       ],
       [
-        'A record gets the In depth label when it has primary sources with implementation detail, no low-confidence claim, a supporting source for every claim, a saved copy of every source, and a known point where people review the work. The catalog shows these records first. The label describes the evidence, not the quality of the agent.',
+        'A source can clearly support “the company reports a reduction” without independently verifying the reduction. Read the attribution and qualifications alongside the rating.',
+      ],
+    ],
+    table: {
+      headings: ['Confidence', 'Meaning'],
+      rows: [
+        ['High', 'Direct, specific evidence supports the claim as worded and scoped.'],
+        ['Medium', 'The evidence supports the main point, with a qualification or inference explained in the reason.'],
+        ['Low', 'Support is weak, ambiguous, or conflicting.'],
+        ['Unverified', 'Review has not established enough support for the claim.'],
+        ['Not assessed', 'No explicit confidence rating is recorded. The source may still have been reviewed.'],
+      ],
+    },
+  },
+  {
+    id: 'uncertainty',
+    titleId: 'uncertainty-title',
+    heading: 'When an answer is missing',
+    body: [
+      [
+        'Unknown means the catalog has not established a classification. A capability or human supervision may still be present. Review states explain why a question has no answer.',
+      ],
+    ],
+    table: {
+      headings: ['Review state', 'Meaning'],
+      rows: [
+        ['Not reported', 'The reviewed sources do not establish the requested detail.'],
+        ['Not reviewed', 'The assessment is unfinished. A note records the next research action.'],
+        ['Not applicable', 'The question does not fit this system or workflow. A note explains why.'],
+      ],
+    },
+  },
+  {
+    id: 'documentation',
+    titleId: 'documentation-title',
+    heading: 'What In depth means',
+    body: [
+      [
+        'In depth identifies records with detailed primary evidence about their purpose and implementation. Every claim has a supporting source. All sources have preserved copies and have been reviewed, along with the reader questions and implementation fields. A shared capture counts for every entry that cites that source version.',
       ],
       [
-        'For metrics, we keep the reported dates, scope, measurement method, and what the numbers count, when available. A report date does not establish the measurement period.',
+        'A completed review can leave a question unanswered or mark it not applicable. Records can qualify with low-confidence claims or conflicting evidence. In depth describes documentation coverage. It does not certify performance or reported results.',
       ],
       [
-        'Unknown means that the sources do not provide an answer. It does not establish that a feature is absent.',
+        'By default, your bookmarks come first, then the entries we feature, followed by other In depth entries. Alphabetical sorting ignores these distinctions.',
       ],
     ],
   },
@@ -252,10 +311,10 @@ export const METHODOLOGY_SECTIONS: readonly GuideSection[] = [
     heading: 'How we assign levels',
     body: [
       [
-        'We assess specific tasks and when a person must review the work. Each level is our judgment, linked to evidence and a date. One system can have several levels for different tasks.',
+        'For each named workflow, we assess whether and when human attention is required. The levels distinguish continuous participation, review of the work product, review of the outcome, and intervention only on exceptions. Each assessment cites evidence and a date.',
       ],
       [
-        'The levels do not rank companies or measure quality. See ',
+        'One system can have different levels for different workflows. A single review boundary may not apply to shared infrastructure. Permissions to publish, merge, or act in production are recorded separately. The levels do not rank companies or output quality. See ',
         { text: 'the supervision definitions', path: `${guidePath('definitions')}#supervision` },
         ' for the terms and framework.',
       ],
@@ -277,18 +336,19 @@ export const METHODOLOGY_SECTIONS: readonly GuideSection[] = [
     ],
   },
   {
-    id: 'logos',
-    titleId: 'logos-title',
-    heading: 'How we use company logos',
+    id: 'updates',
+    titleId: 'updates-title',
+    heading: 'Corrections and review dates',
     body: [
-      ['Each logo is the trademark of its owner. The owner keeps all rights.'],
       [
-        'The catalog shows a logo only to identify the organization of an entry. It does not show an endorsement, a partnership, or a review of the organization.',
+        'We apply corrections and new evidence to the existing record. We keep conflicting accounts and label historical implementations so an older design is not attributed to its replacement. You can submit a source or correction through the contribution link below.',
       ],
       [
-        'An owner can ask us to remove its logo. We then show a monogram instead. The entry itself does not change.',
+        'An entry’s review date records editorial work on the catalog. A source’s verification date records its last successful check at the original URL. Rereading a saved copy does not advance that date. Capture dates record when we saved the evidence. A metric’s observation date and measurement period come from the source.',
       ],
-      ['A logo says nothing about the evidence. It is not a quality signal.'],
+      [
+        'Scheduled link checks test availability. They do not establish that a described system is still operating or that its reported results remain current.',
+      ],
     ],
   },
   {
@@ -297,13 +357,23 @@ export const METHODOLOGY_SECTIONS: readonly GuideSection[] = [
     heading: 'What the map cannot tell you',
     body: [
       [
-        'The map covers cases with public evidence. Many concern coding and code review. Failed projects and unpublished systems may be missing.',
+        'Many documented cases concern coding and code review. Failed projects and unpublished systems may be missing, and companies decide which details and results to disclose.',
       ],
       [
-        'Case counts cannot tell us how common a practice is across the industry. Results from different tasks or measurement methods may not be comparable.',
+        'Counts describe catalog records, including agent families, and do not measure independent deployments. Several entries can share infrastructure or cite the same account. Results from different tasks or measurement methods may not be comparable.',
       ],
     ],
     links: REPOSITORY_LINKS,
+  },
+  {
+    id: 'logos',
+    titleId: 'logos-title',
+    heading: 'Company logos',
+    body: [
+      [
+        'Logos identify organizations and remain their owners’ trademarks. They imply no endorsement, partnership, or quality judgment. If an owner requests removal, we replace the logo with a monogram and keep the entry.',
+      ],
+    ],
   },
 ];
 
@@ -405,7 +475,7 @@ export const INVOCATION_DEFINITIONS: readonly ClassificationDefinition[] = [
 export const SUPERVISION_DEFINITIONS = {
   heading: 'Supervision: when does a person look?',
   intro: [
-    'Every workflow in the catalog has a point where a person normally steps back in during a successful run. That point is its supervision level.',
+    'A supervision level describes whether and when a person must take part in a named workflow. Some successful runs need no routine human review.',
   ] as TextBlock,
   source: [
     'The levels follow ',
@@ -417,10 +487,10 @@ export const SUPERVISION_DEFINITIONS = {
   ] as TextBlock,
   rows: [
     { id: 'continuous-steering', label: termLabel('continuous-steering'), level: '2', attention: 'A person pairs with the agent throughout execution.', meaning: 'The person repeatedly guides the work as it proceeds.' },
-    { id: 'work-product-review', label: termLabel('work-product-review'), level: '3', attention: 'A person reviews the draft or implementation.', meaning: 'The agent works unattended, but nothing ships until a person has read the output.' },
+    { id: 'work-product-review', label: termLabel('work-product-review'), level: '3', attention: 'A person reviews the draft or implementation.', meaning: 'The named workflow requires a person to inspect the work product. Publication permissions are recorded separately.' },
     { id: 'outcome-review', label: termLabel('outcome-review'), level: '4', attention: 'A person evaluates tests, behavior, or outcomes.', meaning: 'The normal review boundary is the result rather than routine implementation inspection.' },
     { id: 'exception-only', label: termLabel('exception-only'), level: '5', attention: 'A person returns when the system raises an exception.', meaning: 'A normal successful run does not require routine human review.' },
-    { id: 'unknown', label: termLabel('unknown'), level: '—', attention: 'Not established by the collected evidence.', meaning: 'The normal review boundary is undocumented or has not been assessed. Unknown does not mean no human supervision.' },
+    { id: 'unknown', label: termLabel('unknown'), level: '—', attention: 'The catalog has not established a classification.', meaning: 'Review states distinguish missing evidence from unfinished assessment. A question that does not fit the system is not applicable; unknown does not mean no human supervision.' },
   ] as readonly SupervisionDefinition[],
   limits: [
     { strong: 'Attention is not authority.' },

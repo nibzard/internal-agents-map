@@ -37,6 +37,13 @@ Every local capture records:
 Captures are append-only. Do not overwrite a source bundle. If materially changed source content
 supports new claims, add a new source record and capture it under a new source ID.
 
+Several catalog records can cite the same preserved source version. Set `duplicate_of` to
+the original source ID and use the same original URL to reuse its capture. The build and
+link checker resolve the reference; the original manifest retains its source ID, paths, and
+capture time. Do not copy or relabel the bundle. A mirror, translation, or changed version
+needs its own reviewed capture. A later access date on an alias does not make the shared
+capture more recent.
+
 ## Collection boundaries
 
 Capture only public pages that are available without a login. Do not use stored credentials,

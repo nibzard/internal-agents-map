@@ -2,7 +2,7 @@
 
 Contributions can add an approach, add a source, correct a claim, or improve the analysis.
 
-The catalog favors broad collection and explicit provenance. Do not invent missing details. Use `unknown` for a required classification or rubric value that the sources do not document. Omit an optional field, such as an architecture field, that no source documents; do not write a placeholder value. Keep commentary and conflicting evidence, but label them.
+The catalog favors broad collection and explicit provenance. Do not invent missing details. Use `unknown` when a required classification or rubric value has not been established. Omit an optional field, such as an architecture field, that no source documents; do not write a placeholder value. Use review states to distinguish missing reporting from unfinished review. Keep commentary and conflicting evidence, but label them.
 
 The catalog is public. Do not add personal contact data, such as e-mail addresses or private notes about people, to any file. Only public sources belong here. CI rejects e-mail addresses in tracked files.
 
@@ -149,6 +149,11 @@ and existing bundles. Review `archive/sources/<source-id>/content.md` before lin
 from YAML. See the [source-preservation policy](docs/source-preservation.md) for ownership,
 retention, and takedown rules.
 
+When another record already preserves the same source version, set `duplicate_of` to that
+source ID. An exact match on the original URL lets the build reuse its capture, with the
+original manifest and timestamp intact. Mirrors, translations, and changed versions need
+their own captures.
+
 ## Write claims and analysis
 
 - Use quotation marks only for exact source text.
@@ -157,6 +162,11 @@ retention, and takedown rules.
 - Mark editorial conclusions as `inferred` or `catalog-judgment`.
 - Preserve conflicting reports when they refer to different dates or methods.
 - Do not treat an undocumented field as evidence that a feature is absent.
+- Assess confidence for each claim, with a reason tied to its evidence. Use `high` for
+  direct, specific support, `medium` when a material qualification or inference remains,
+  `low` for ambiguous or conflicting support, and `unverified` when support is insufficient.
+  Omitted confidence becomes `not-assessed`; publisher identity never supplies a rating.
+  Confidence in a report's attribution does not independently verify its outcome.
 - Never assign an operating level without naming the workflow scope. Treat it as a dated catalog judgment, not a reported company fact.
 - Review each lesson against a specific source passage. Describe a reported practice as
   `fact`/`reported`, attribute a team's preference as `opinion`/`reported`, and reserve
@@ -175,6 +185,17 @@ retention, and takedown rules.
 - Give the headline and each key metric a `category`, `basis`, and `subject` in its
   `claim_metadata`, or list the metric under `page_content.aliases` with `duplicate_of`
   and `reason`. Confirm a duplicate metric manually.
+
+`unknown` means the catalog has not established a classification. Use the review states to
+distinguish a question the reviewed sources leave unanswered (`unreported`), unfinished
+review (`not-reviewed`), and a question outside the workflow's scope (`not-applicable`).
+Shared infrastructure does not need a single supervision level when its workflows differ.
+
+The “In depth” badge requires detailed primary evidence, a supporting source for every
+claim, preserved copies of every source, and a completed `page_content` review of all listed
+sources, questions, and architecture fields. Purpose and implementation must be reported.
+Qualified claims and reviewed gaps can qualify; unfinished review cannot. The badge describes
+documentation coverage, not verified outcomes or system quality.
 
 When you edit `docs/patterns.md` or `docs/adoption-lessons.md`, compare similar approach types and deployment stages. State the sample size. Include counterexamples before you call a pattern common.
 

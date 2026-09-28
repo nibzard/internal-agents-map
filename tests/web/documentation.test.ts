@@ -31,13 +31,13 @@ function edited(change: {
 
 describe('the well-documented rule', () => {
   it('marks records with detailed, archived, fully supported evidence', () => {
-    for (const id of ['stripe-minions', 'linear-agent', 'posthog-stamphog', 'sierra-pinecone']) {
+    for (const id of ['stripe-minions', 'linear-agent', 'posthog-stamphog', 'sierra-pinecone', 'plaid-internal-mcp-server', 'databricks-costar', 'block-builderbot', 'coinbase-mux', 'airbnb-datako', 'airbnb-pascal']) {
       expect(isWellDocumented(catalog, approach(id)), id).toBe(true);
     }
   });
 
   it('does not mark records with thin or unarchived evidence', () => {
-    for (const id of ['airbnb-datako', 'airbnb-pascal', 'brex-disputes', 'uber-coding-agent']) {
+    for (const id of ['brex-disputes', 'uber-coding-agent']) {
       expect(isWellDocumented(catalog, approach(id)), id).toBe(false);
     }
   });
@@ -49,9 +49,9 @@ describe('the well-documented rule', () => {
     expect(isWellDocumented(changed, record)).toBe(false);
   });
 
-  it('rejects a record with a low-confidence claim', () => {
+  it('keeps a supported but low-confidence claim eligible', () => {
     const { catalog: changed, approach: record } = edited({ claim: (claim) => ({ ...claim, confidence: 'low' }) });
-    expect(isWellDocumented(changed, record)).toBe(false);
+    expect(isWellDocumented(changed, record)).toBe(true);
   });
 
   it('rejects a record with a claim that no source supports', () => {
@@ -69,16 +69,61 @@ describe('the well-documented rule', () => {
     expect(isWellDocumented(changed, record)).toBe(false);
   });
 
-  it('rejects a record whose human attention boundary is unknown', () => {
+  it('allows an unknown human attention boundary after review', () => {
     const { catalog: changed, approach: record } = edited({
       approach: { operating_models: [...stripe.operating_models, { scope: 'x', attention_boundary: 'unknown', level: null }] },
     });
-    expect(isWellDocumented(changed, record)).toBe(false);
+    expect(isWellDocumented(changed, record)).toBe(true);
   });
 
-  it('rejects a record with no operating model', () => {
+  it('does not require a system-wide operating model', () => {
     const { catalog: changed, approach: record } = edited({ approach: { operating_models: [] } });
-    expect(isWellDocumented(changed, record)).toBe(false);
+    expect(isWellDocumented(changed, record)).toBe(true);
+  });
+
+  it('requires a page review that covers every listed source', () => {
+    for (const review of [undefined, { ...stripe.page_content!, source_ids: [] }]) {
+      const { catalog: changed, approach: record } = edited({ approach: { page_content: review } });
+      expect(isWellDocumented(changed, record)).toBe(false);
+    }
+  });
+
+  it('rejects unfinished review of a reader question or architecture field', () => {
+    const pending = { state: 'not-reviewed' as const, claim_paths: [], note: 'Read the source for this question.' };
+    for (const review of [
+      { ...stripe.page_content, questions: { ...stripe.page_content.questions, human_involvement: pending } },
+      { ...stripe.page_content, implementation_fields: { ...stripe.page_content.implementation_fields, sandbox: pending } },
+    ]) {
+      const { catalog: changed, approach: record } = edited({ approach: { page_content: review } });
+      expect(isWellDocumented(changed, record)).toBe(false);
+    }
+  });
+
+  it('requires reported purpose and implementation even after a completed review', () => {
+    for (const key of ['purpose', 'implementation'] as const) {
+      const review = {
+        ...stripe.page_content,
+        questions: { ...stripe.page_content.questions, [key]: { state: 'unreported' as const, claim_paths: [] } },
+      };
+      const { catalog: changed, approach: record } = edited({ approach: { page_content: review } });
+      expect(isWellDocumented(changed, record)).toBe(false);
+    }
+  });
+
+  it('allows reviewed gaps and questions that do not apply', () => {
+    const review = {
+      ...stripe.page_content,
+      questions: {
+        ...stripe.page_content.questions,
+        human_involvement: { state: 'not-applicable' as const, claim_paths: [], note: 'Workflows differ.' },
+      },
+      implementation_fields: {
+        ...stripe.page_content.implementation_fields,
+        sandbox: { state: 'unreported' as const, claim_paths: [] },
+      },
+    };
+    const { catalog: changed, approach: record } = edited({ approach: { page_content: review } });
+    expect(isWellDocumented(changed, record)).toBe(true);
   });
 });
 

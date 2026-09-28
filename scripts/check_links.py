@@ -20,6 +20,11 @@ from urllib.parse import unquote, urlsplit
 
 import yaml
 
+try:
+    from source_refs import capture_source, validate_source_aliases
+except ModuleNotFoundError:
+    from scripts.source_refs import capture_source, validate_source_aliases
+
 ROOT = Path(__file__).resolve().parent.parent
 AGENTS_DIR = ROOT / "data" / "agents"
 ARCHIVE_DIR = ROOT / "archive"
@@ -45,6 +50,7 @@ class SourceTarget:
     url: str
     manifest_path: str | None = None
     configuration_error: str | None = None
+    capture_source_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -163,14 +169,29 @@ def markdown_urls() -> set[str]:
 
 def catalog_sources() -> list[SourceTarget]:
     targets = []
+    records = []
     for path in sorted(AGENTS_DIR.glob("*.yaml")):
         record = yaml.safe_load(path.read_text(encoding="utf-8"))
+        records.append((path, record))
+    sources = {
+        source["id"]: source
+        for _, record in records
+        for source in record.get("sources", [])
+        if isinstance(source.get("id"), str)
+    }
+    alias_error = None
+    try:
+        validate_source_aliases(sources)
+    except ValueError as error:
+        alias_error = str(error)
+    for path, record in records:
         for source in record.get("sources", []):
             errors = []
             source_id = source.get("id")
             url = source.get("url")
             capture = source.get("capture")
             manifest_path = None
+            capture_id = None
 
             if not isinstance(source_id, str) or not source_id:
                 errors.append("source id is missing or invalid")
@@ -178,6 +199,14 @@ def catalog_sources() -> list[SourceTarget]:
             if not isinstance(url, str) or not url:
                 errors.append("original URL is missing or invalid")
                 url = ""
+            if source.get("duplicate_of") and alias_error:
+                errors.append(alias_error)
+            if not errors:
+                preserved = capture_source(source, sources)
+                if preserved is not None:
+                    capture = preserved["capture"]
+                    if preserved["id"] != source_id:
+                        capture_id = preserved["id"]
             if capture is not None:
                 if not isinstance(capture, dict) or set(capture) != {"manifest_path"}:
                     errors.append("capture must contain only manifest_path")
@@ -192,6 +221,7 @@ def catalog_sources() -> list[SourceTarget]:
                     url=url,
                     manifest_path=manifest_path,
                     configuration_error="; ".join(errors) or None,
+                    capture_source_id=capture_id,
                 )
             )
     return sorted(targets, key=lambda target: target.source_id)
@@ -232,9 +262,8 @@ def local_snapshot_result(target: SourceTarget) -> SnapshotResult:
     if target.manifest_path is None:
         return SnapshotResult("absent", "no local snapshot declared")
 
-    manifest_path, error = _safe_archive_path(
-        target.manifest_path, target.source_id, "metadata.json"
-    )
+    capture_id = target.capture_source_id or target.source_id
+    manifest_path, error = _safe_archive_path(target.manifest_path, capture_id, "metadata.json")
     if error:
         return SnapshotResult("invalid", error)
     assert manifest_path is not None
@@ -247,7 +276,7 @@ def local_snapshot_result(target: SourceTarget) -> SnapshotResult:
 
     if not isinstance(manifest, dict) or manifest.get("schema_version") != 1:
         return SnapshotResult("invalid", "manifest must be a version 1 JSON object")
-    if manifest.get("source_id") != target.source_id:
+    if manifest.get("source_id") != capture_id:
         return SnapshotResult("invalid", "manifest source_id does not match the catalog source")
     if manifest.get("original_url") != target.url:
         return SnapshotResult("invalid", "manifest original_url does not match the catalog source")
@@ -255,7 +284,7 @@ def local_snapshot_result(target: SourceTarget) -> SnapshotResult:
     markdown = artifacts.get("markdown") if isinstance(artifacts, dict) else None
     if not isinstance(markdown, dict):
         return SnapshotResult("invalid", "manifest has no Markdown artifact")
-    content_path, error = _safe_archive_path(markdown.get("path"), target.source_id, "content.md")
+    content_path, error = _safe_archive_path(markdown.get("path"), capture_id, "content.md")
     if error:
         return SnapshotResult("invalid", error)
     assert content_path is not None

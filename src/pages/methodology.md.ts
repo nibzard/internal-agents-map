@@ -18,6 +18,11 @@ function document(): string {
   for (const section of METHODOLOGY_SECTIONS) {
     blocks.push(`## ${section.heading}`);
     for (const block of section.body) blocks.push(inlineMarkdown(block));
+    if (section.table) {
+      const { headings, rows } = section.table;
+      const row = (cells: readonly string[]) => `| ${cells.map((cell) => cell.replaceAll('|', '\\|')).join(' | ')} |`;
+      blocks.push([row(headings), row(headings.map(() => '---')), ...rows.map(row)].join('\n'));
+    }
     if (section.links) {
       blocks.push(section.links.map((link) => `[${link.label}](${link.url})`).join(' '));
     }

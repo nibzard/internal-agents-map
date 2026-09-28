@@ -91,7 +91,7 @@ Other terms include large language model (LLM), Model Context Protocol (MCP), pu
 Access terms include attribute-based access control (ABAC), role-based access control (RBAC), and single sign-on (SSO).
 Domain terms include know your customer (KYC), quality assurance (QA), security operations center (SOC), and structured query language (SQL).
 
-The [schema reference](../data/schema.md) defines each comparison field. Unknown means that the collected sources do not document the value.
+The [schema reference](../data/schema.md) defines each comparison field. Unknown means that the catalog has not established a classification. Review states distinguish an unanswered question from unfinished review or a question that does not apply.
 Operating levels are generated from scoped, evidence-backed human-attention boundaries; they are catalog judgments, not company-wide maturity scores.
 
 <a id="airbnb-airchat"></a>
@@ -192,7 +192,7 @@ Last reviewed: 2026-09-16.
 
 ### Sources
 
-- <a id="airbnb-datako-source-1"></a>[Beyond the CLI (DX podcast)](https://getdx.com/podcast/beyond-the-cli-agentic-ai-for-async-workloads-and-non-developers/) (podcast; direct-participant; evidence)
+- <a id="airbnb-datako-source-1"></a>[Beyond the CLI (DX podcast)](https://getdx.com/podcast/beyond-the-cli-agentic-ai-for-async-workloads-and-non-developers/) ([snapshot](../archive/sources/airbnb-airchat-source-2/content.md), captured 2026-08-31) (podcast; direct-participant; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -234,7 +234,7 @@ Last reviewed: 2026-09-17.
 
 ### Sources
 
-- <a id="airbnb-pascal-source-1"></a>[Beyond the CLI (DX podcast)](https://getdx.com/podcast/beyond-the-cli-agentic-ai-for-async-workloads-and-non-developers/) (podcast; direct-participant; evidence)
+- <a id="airbnb-pascal-source-1"></a>[Beyond the CLI (DX podcast)](https://getdx.com/podcast/beyond-the-cli-agentic-ai-for-async-workloads-and-non-developers/) ([snapshot](../archive/sources/airbnb-airchat-source-2/content.md), captured 2026-08-31) (podcast; direct-participant; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -527,7 +527,7 @@ Last reviewed: 2026-09-17.
 
 ### Sources
 
-- <a id="brex-collections-source-1"></a>[Agent, Human, Ops: How Brex Is Changing Roles and Workflows](https://www.firstround.com/ai/brex) (case-study; independent-secondary; evidence)
+- <a id="brex-collections-source-1"></a>[Agent, Human, Ops: How Brex Is Changing Roles and Workflows](https://www.firstround.com/ai/brex) ([snapshot](../archive/sources/brex-agent-platform-source-1/content.md), captured 2026-08-31) (case-study; independent-secondary; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -573,7 +573,7 @@ Last reviewed: 2026-09-17.
 
 ### Sources
 
-- <a id="brex-disputes-source-1"></a>[Agent, Human, Ops: How Brex Is Changing Roles and Workflows](https://www.firstround.com/ai/brex) (case-study; independent-secondary; evidence)
+- <a id="brex-disputes-source-1"></a>[Agent, Human, Ops: How Brex Is Changing Roles and Workflows](https://www.firstround.com/ai/brex) ([snapshot](../archive/sources/brex-agent-platform-source-1/content.md), captured 2026-08-31) (case-study; independent-secondary; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -687,7 +687,7 @@ Last reviewed: 2026-09-16.
 
 ### Sources
 
-- <a id="brex-onboarding-source-1"></a>[The end of the trade-off: How AI agents broke the onboarding trilemma](https://www.brex.com/journal/rebuilding-onboarding-ai-native) (engineering-blog; first-party; evidence)
+- <a id="brex-onboarding-source-1"></a>[The end of the trade-off: How AI agents broke the onboarding trilemma](https://www.brex.com/journal/rebuilding-onboarding-ai-native) ([snapshot](../archive/sources/brex-onboarding-source/content.md), captured 2026-09-17) (engineering-blog; first-party; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -728,7 +728,7 @@ Last reviewed: 2026-09-17.
 
 ### Sources
 
-- <a id="brex-support-qa-source-1"></a>[Agent, Human, Ops: How Brex Is Changing Roles and Workflows](https://www.firstround.com/ai/brex) (case-study; independent-secondary; evidence)
+- <a id="brex-support-qa-source-1"></a>[Agent, Human, Ops: How Brex Is Changing Roles and Workflows](https://www.firstround.com/ai/brex) ([snapshot](../archive/sources/brex-agent-platform-source-1/content.md), captured 2026-08-31) (case-study; independent-secondary; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -777,7 +777,7 @@ Last reviewed: 2026-09-17.
 
 ### Sources
 
-- <a id="cloudflare-code-reviewer-source-1"></a>[Orchestrating AI Code Review at scale](https://blog.cloudflare.com/ai-code-review/) (engineering-blog; first-party; evidence)
+- <a id="cloudflare-code-reviewer-source-1"></a>[Orchestrating AI Code Review at scale](https://blog.cloudflare.com/ai-code-review/) ([snapshot](../archive/sources/cloudflare-code-review-source/content.md), captured 2026-09-17) (engineering-blog; first-party; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -962,7 +962,7 @@ Last reviewed: 2026-09-17.
 
 ### Sources
 
-- <a id="coinbase-mux-source-1"></a>[Coding had a concurrency problem: how Mux helped solve it](https://www.coinbase.com/de/blog/coding-had-a-concurrency-problem-how-mux-helped-solve-it) (engineering-blog; first-party; evidence)
+- <a id="coinbase-mux-source-1"></a>[Coding had a concurrency problem: how Mux helped solve it](https://www.coinbase.com/de/blog/coding-had-a-concurrency-problem-how-mux-helped-solve-it) ([snapshot](../archive/sources/coinbase-forge-mux-source-1/content.md), captured 2026-08-31) (engineering-blog; first-party; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -1312,7 +1312,7 @@ Last reviewed: 2026-09-16.
 
 ### Sources
 
-- <a id="doordash-ai-marketplace-source-1"></a>[Beyond single agents: DoorDash's collaborative AI ecosystem](https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/) (engineering-blog; first-party; evidence)
+- <a id="doordash-ai-marketplace-source-1"></a>[Beyond single agents: DoorDash's collaborative AI ecosystem](https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/) ([snapshot](../archive/sources/doordash-flux-source-2/content.md), captured 2026-08-31) (engineering-blog; first-party; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -1355,7 +1355,7 @@ Last reviewed: 2026-09-17.
 
 ### Sources
 
-- <a id="doordash-dataexplorer-source-1"></a>[Beyond single agents: DoorDash's collaborative AI ecosystem](https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/) (engineering-blog; first-party; evidence)
+- <a id="doordash-dataexplorer-source-1"></a>[Beyond single agents: DoorDash's collaborative AI ecosystem](https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/) ([snapshot](../archive/sources/doordash-flux-source-2/content.md), captured 2026-08-31) (engineering-blog; first-party; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -1467,7 +1467,7 @@ Last reviewed: 2026-09-17.
 
 ### Sources
 
-- <a id="dropbox-deflaker-source-1"></a>[Introducing Nova, our internal platform for coding agents](https://dropbox.tech/machine-learning/introducing-nova-our-internal-platform-for-coding-agents) (engineering-blog; first-party; evidence)
+- <a id="dropbox-deflaker-source-1"></a>[Introducing Nova, our internal platform for coding agents](https://dropbox.tech/machine-learning/introducing-nova-our-internal-platform-for-coding-agents) ([snapshot](../archive/sources/dropbox-nova-source-1/content.md), captured 2026-08-31) (engineering-blog; first-party; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -1826,7 +1826,7 @@ Last reviewed: 2026-09-16.
 
 ### Sources
 
-- <a id="harvey-security-operations-source-1"></a>[Building an agentic security operations center](https://www.harvey.ai/blog/building-an-agentic-security-operations-center) (engineering-blog; first-party; evidence)
+- <a id="harvey-security-operations-source-1"></a>[Building an agentic security operations center](https://www.harvey.ai/blog/building-an-agentic-security-operations-center) ([snapshot](../archive/sources/harvey-spectre-source-2/content.md), captured 2026-08-31) (engineering-blog; first-party; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -2285,7 +2285,7 @@ Last reviewed: 2026-09-16.
 
 ### Sources
 
-- <a id="notion-bug-triage-source-1"></a>[Notion's Token Town: 5 Rebuilds, 100+ Tools (Latent Space)](https://latent.space/p/notion) (podcast; direct-participant; evidence)
+- <a id="notion-bug-triage-source-1"></a>[Notion's Token Town: 5 Rebuilds, 100+ Tools (Latent Space)](https://latent.space/p/notion) ([snapshot](../archive/sources/notion-custom-agents-source-1/content.md), captured 2026-08-31) (podcast; direct-participant; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -2334,7 +2334,7 @@ Last reviewed: 2026-09-17.
 
 ### Sources
 
-- <a id="notion-scruff-source-1"></a>[Meet Scruff, Security’s New AI Teammate](https://www.notion.com/blog/meet-scruff-securitys-new-ai-teammate) (engineering-blog; first-party; evidence)
+- <a id="notion-scruff-source-1"></a>[Meet Scruff, Security’s New AI Teammate](https://www.notion.com/blog/meet-scruff-securitys-new-ai-teammate) ([snapshot](../archive/sources/notion-scruff-source/content.md), captured 2026-09-17) (engineering-blog; first-party; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -3043,7 +3043,7 @@ Last reviewed: 2026-09-17.
 
 ### Sources
 
-- <a id="shopify-river-source-1"></a>[Under the River](https://shopify.engineering/under-the-river) (engineering-blog; first-party; evidence)
+- <a id="shopify-river-source-1"></a>[Under the River](https://shopify.engineering/under-the-river) ([snapshot](../archive/sources/shopify-internal-agents-source-1/content.md), captured 2026-08-31) (engineering-blog; first-party; evidence)
 
 Last reviewed: 2026-09-17.
 
@@ -3856,7 +3856,7 @@ Last reviewed: 2026-09-16.
 
 ### Sources
 
-- <a id="ycombinator-operations-source-1"></a>[Inside YC's AI Playbook (Lightcone podcast, with Pete Koomen)](https://www.ycombinator.com/library/Qh-inside-yc-s-ai-playbook) (podcast; first-party; evidence)
+- <a id="ycombinator-operations-source-1"></a>[Inside YC's AI Playbook (Lightcone podcast, with Pete Koomen)](https://www.ycombinator.com/library/Qh-inside-yc-s-ai-playbook) ([snapshot](../archive/sources/ycombinator-agent-infra-source-1/content.md), captured 2026-08-31) (podcast; first-party; evidence)
 
 Last reviewed: 2026-09-17.
 

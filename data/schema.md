@@ -75,7 +75,7 @@ by itself establish unattended execution.
 - `human-in-loop`: The system acts, but a person participates in each cycle or approval.
 - `drafts-reviewed`: The system prepares work that a person reviews before use.
 - `autonomous`: The work takes effect without required human review.
-- `unknown`: The sources do not document the review boundary.
+- `unknown`: The catalog has not established the review boundary. The review state distinguishes missing reporting from unfinished review or an inapplicable question.
 
 When a record has exactly one operating model, its autonomy must not contradict the
 attention boundary of that model. The build refuses any other pair:
@@ -91,12 +91,12 @@ The value `unknown` on either side agrees with every value.
 
 ### Operating models and derived levels
 
-`operating_models` adapts [Dan Shapiro's five levels of AI-assisted software development](https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/) to a documented internal-agent workflow, not to an organization as a whole. Shapiro's original framework is coding-oriented; this catalog generalizes it by asking where human attention normally returns. Each item contains only:
+`operating_models` adapts [Dan Shapiro's five levels of AI-assisted software development](https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/) to a documented internal-agent workflow, not to an organization as a whole. Shapiro's original framework is coding-oriented; this catalog generalizes it by asking whether and when a successful run requires human attention. Each item contains only:
 
 | Field | Description |
 | --- | --- |
 | `scope` | A short description of the workflow being assessed, preferably from input to output. |
-| `attention_boundary` | Where human attention normally returns during a successful run. |
+| `attention_boundary` | Whether and when a successful run requires human attention. |
 
 The build derives the level from the attention boundary:
 
@@ -106,9 +106,14 @@ The build derives the level from the attention boundary:
 | `work-product-review` | 3 | The agent produces a draft or implementation that a person reviews. |
 | `outcome-review` | 4 | A person delegates from a specification and evaluates tests, behavior, or outcomes rather than routinely inspecting implementation. |
 | `exception-only` | 5 | A person is normally involved only when the system raises an exception. |
-| `unknown` | — | The collected evidence does not locate the human attention boundary. |
+| `unknown` | — | The catalog has not established a human attention boundary. |
 
 Never render or interpret a level without its scope. Compound systems can have multiple scoped assessments. Use `unknown` rather than averaging different workflows or guessing from `autonomy`, invocation mode, output volume, or company identity.
+
+For infrastructure that supports different workflows, a single supervision level may not apply.
+Record that distinction in `page_content.questions.human_involvement` as `not-applicable`
+with a scope-specific reason. An `unknown` operating model can retain the existing claim and
+its evidence without asserting a level for the whole platform.
 
 The boundary describes required human attention, not tool authority or elapsed unattended
 execution. Record permissions and publication controls in the supported claims. A Level 5
@@ -189,7 +194,7 @@ Every source requires these fields:
 | `kind` | The source format. |
 | `provenance_class` | The relationship between the publisher and the approach. |
 | `accessed_at` | The collection date. |
-| `last_verified_at` | The last successful review date. |
+| `last_verified_at` | The last successful check of the source at its original URL. Reading a preserved copy does not advance this date. |
 | `role` | `evidence`, `commentary`, or `discovery`. The default is `evidence`. |
 
 `canonical_url` is optional. It is the normalized publisher URL after redirects and tracking removal. The default is `url`, and the export always contains it. Write it only when it is different from `url`.
@@ -212,6 +217,13 @@ archive/sources/<source-id>/page.pdf        # optional
 The version 1 JSON manifest contains `schema_version`, `source_id`, `original_url`, `final_url`, `captured_at`, `http_status`, `tool`, and `artifacts`. It may also contain `external_archive_url`, the external archive that the capture tool found. The `tool` map records `name: steel` and a non-empty version. `artifacts.markdown` is mandatory; `artifacts.pdf` is optional. Each artifact records its repository-relative `path`, exact `bytes`, and a lowercase `sha256:<digest>`. Markdown must be non-empty. PDFs must begin with `%PDF-` and cannot exceed 10 MiB. Paths and hashes are validated during every build.
 
 Captures are append-only evidence snapshots: never overwrite an existing bundle or use a capture to replace the original `url`. Create a new source ID when materially changed source content is needed for new claims.
+
+Use `duplicate_of` to reference an existing source ID. When the original URLs match exactly,
+this declares the same source version and allows reuse of the original capture. The build
+resolves alias chains and rejects missing targets and cycles. In the export, the alias has
+the resolved `capture`; the manifest keeps the original `source_id`, paths, URL, and capture
+time. An alias's own capture takes precedence. A mirror or translation with a different URL
+needs its own capture, even when it has `duplicate_of`.
 
 Source kinds are `engineering-blog`, `corporate-article`, `documentation`, `source-code`, `repository`, `release`, `social-post`, `talk`, `transcript`, `podcast`, `paper`, `case-study`, `news`, `hn-thread`, `hn-comment`, `forum`, and `other`.
 
@@ -289,7 +301,23 @@ A claim path uses the item ID: `primitives.<id>`, `key_metrics.<id>`, or `lesson
 
 A metric's `valid_at` can identify a dated reported observation, but does not by itself define a measurement interval. Keep the interval explicit in `metric_scope` or `measurement_method`; never derive it from a capture or review timestamp. If a source says only “last month” or “as of Part 2,” preserve that wording and leave unsupported calendar dates unset.
 
-Claim kinds are `fact`, `metric`, `inference`, and `opinion`. Provenance values are `reported`, `observed`, `inferred`, and `catalog-judgment`. Confidence values are `high`, `medium`, `low`, and `unverified`.
+Claim kinds are `fact`, `metric`, `inference`, and `opinion`. Provenance values are `reported`, `observed`, `inferred`, and `catalog-judgment`.
+
+Confidence describes the support for a particular claim. Every authored `confidence` needs
+a `confidence_reason` that identifies the evidence and any qualification. Source provenance
+alone never supplies a rating. A well-supported attribution of a company metric remains
+self-reported unless independently verified.
+
+| Confidence | Meaning |
+| --- | --- |
+| `high` | Direct, specific evidence supports the claim as worded and scoped. |
+| `medium` | Evidence supports the main point, with a material qualification or inference. |
+| `low` | Support is weak, ambiguous, or conflicting. |
+| `unverified` | Review has not established enough support for the claim. |
+| `not-assessed` | No explicit confidence assessment is recorded. This is the export default. |
+
+The build preserves authored assessments. Changes to a rating require review of its evidence;
+they cannot be inferred from a new source type or a successful link check.
 
 Metric metadata can also include `value`, `unit`, `reported_by`, `metric_scope`, `denominator`, and `measurement_method`. The generated export uses the company as `reported_by` when a reported metric does not override it.
 
