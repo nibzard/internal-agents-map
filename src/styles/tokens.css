@@ -38,6 +38,7 @@ html {
      one blue on the page. */
   --brand: #0700e1;
   --font-brand: 'Nanum Myeongjo', Georgia, 'Times New Roman', serif;
+  --font-body: Areal, Arial, Helvetica, sans-serif;
   /* Every blue is a step of that one, mixed rather than taken from the imported
      scale, which carries its own hue. Nine is the accent itself; the steps
      below it are the tints a badge or a rule is drawn in, and ten is the one
@@ -68,7 +69,7 @@ html {
   --text-xl: 32px;
   /* A triangle, for the markers that are not catalog entries. */
   --triangle: polygon(50% 0%, 100% 100%, 0% 100%);
-  font-family: Areal, Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
   color: var(--ink);
   background: var(--sand-1);
   font-size: var(--text-sm);

@@ -516,7 +516,10 @@
 /* The observation takes its own row, starting at the mark's edge. */
 .claim-marked > .observed { grid-column: 1 / -1; margin-top: 0; }
 .entry-section h3 {
+  font-family: var(--font-body);
   font-size: var(--text-md);
+  font-weight: 500;
+  letter-spacing: -.015em;
   margin: 32px 0 12px;
 }
 .scope-list {

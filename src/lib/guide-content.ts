@@ -362,14 +362,14 @@ const MINIONS_PART_ONE =
 const MINIONS_PART_TWO = `${MINIONS_PART_ONE}-part-2`;
 
 export const DEFINITIONS_LEDE =
-  'How organizations turn general-purpose models into agents for their own work.';
+  'An agent is internal when it does a company’s own work with the company’s own context and tools.';
 
 export const DEFINITIONS_INTRO: readonly TextBlock[] = [
   [
-    'A model alone doesn’t know a company’s codebase, follow its processes, or have access to its tools. Organizations supply that context and access, and shape how the agent carries out work.',
+    'A model alone doesn’t know the codebase, follow the processes, or reach the tools. The organization supplies those, and shapes how the agent works.',
   ],
   [
-    'Internal Agents Map documents these systems: what they do, how teams build or adapt them, and what public evidence tells us about their use.',
+    'This guide explains the terms the map uses. The map itself records what each system does, how the team built or adapted it, and what public evidence says about its use.',
   ],
 ];
 
@@ -388,10 +388,10 @@ export const WORK_MODES_DESCRIPTION =
 
 export const APPROACH_TYPE_DEFINITIONS: readonly ClassificationDefinition[] = [
   { id: 'agent', label: termLabel('agent'), meaning: 'One system that carries out tasks.' },
-  { id: 'agent-system', label: termLabel('agent-system'), meaning: 'A documented family of independently useful agents; internal subagents alone do not establish a family.' },
-  { id: 'platform', label: termLabel('platform'), meaning: 'Reusable infrastructure for several agents or workflows.' },
+  { id: 'agent-system', label: termLabel('agent-system'), meaning: 'Several agents that each do useful work on their own and ship as one family.' },
+  { id: 'platform', label: termLabel('platform'), meaning: 'Shared infrastructure that several agents or workflows run on.' },
   { id: 'orchestration-system', label: termLabel('orchestration-system'), meaning: 'A system whose primary role is coordinating agents.' },
-  { id: 'supporting-pattern', label: termLabel('supporting-pattern'), meaning: 'A narrower implemented component that enables agent operation.' },
+  { id: 'supporting-pattern', label: termLabel('supporting-pattern'), meaning: 'One component, such as a sandbox or a context layer, that agents depend on.' },
 ];
 
 export const INVOCATION_DEFINITIONS: readonly ClassificationDefinition[] = [
@@ -403,27 +403,28 @@ export const INVOCATION_DEFINITIONS: readonly ClassificationDefinition[] = [
 ];
 
 export const SUPERVISION_DEFINITIONS = {
-  heading: 'Supervision: where human attention returns',
+  heading: 'Supervision: when does a person look?',
   intro: [
-    'The catalog assesses one documented workflow at a time. The boundary records when human attention normally returns during a successful run.',
+    'Every workflow in the catalog has a point where a person normally steps back in during a successful run. That point is its supervision level.',
   ] as TextBlock,
   source: [
-    'Levels 2–5 adapt ',
+    'The levels follow ',
     {
       text: "Dan Shapiro’s five levels of AI-assisted software development",
       href: 'https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/',
     },
-    '. Levels 0–1 describe manual work and discrete assistance, outside the internal-agent workflows assessed here.',
+    '. Levels 0 and 1 cover manual work and autocomplete, so the catalog starts at level 2.',
   ] as TextBlock,
   rows: [
     { id: 'continuous-steering', label: termLabel('continuous-steering'), level: '2', attention: 'A person pairs with the agent throughout execution.', meaning: 'The person repeatedly guides the work as it proceeds.' },
-    { id: 'work-product-review', label: termLabel('work-product-review'), level: '3', attention: 'A person reviews the draft or implementation.', meaning: 'The agent produces work, but review returns to the produced artifact.' },
+    { id: 'work-product-review', label: termLabel('work-product-review'), level: '3', attention: 'A person reviews the draft or implementation.', meaning: 'The agent works unattended, but nothing ships until a person has read the output.' },
     { id: 'outcome-review', label: termLabel('outcome-review'), level: '4', attention: 'A person evaluates tests, behavior, or outcomes.', meaning: 'The normal review boundary is the result rather than routine implementation inspection.' },
     { id: 'exception-only', label: termLabel('exception-only'), level: '5', attention: 'A person returns when the system raises an exception.', meaning: 'A normal successful run does not require routine human review.' },
     { id: 'unknown', label: termLabel('unknown'), level: '—', attention: 'Not established by the collected evidence.', meaning: 'The normal review boundary is undocumented or has not been assessed. Unknown does not mean no human supervision.' },
   ] as readonly SupervisionDefinition[],
   limits: [
-    'Attention is separate from authority. A background run can still lack permission to publish, merge, spend money, or act in production. A level also does not state how long the system runs unattended.',
+    { strong: 'Attention is not authority.' },
+    ' A background run can still lack permission to publish, merge, spend money, or act in production. A level also says nothing about how long the system runs unattended.',
   ] as TextBlock,
   scope: [
     'A level describes the named workflow and evidence date. It does not rank a company, maturity, autonomy, or output quality. One system can therefore have several scoped levels.',
@@ -443,7 +444,7 @@ export const DEFINITIONS_SCOPE = {
   diagramLabel: 'An agent connected to knowledge, tools, and workflows within an organization',
   body: [
     [
-      'It might investigate a failed deployment, prepare a code change, or help an employee resolve an IT issue. “Internal” describes the work it serves. The organization can build the system itself or adapt an existing product.',
+      'It might investigate a failed deployment, open a pull request, or help an employee resolve an IT issue. “Internal” describes the work it serves. The organization can build the system itself or adapt an existing product.',
     ],
     [
       'An agent answering customers directly serves a customer-facing role. One system can support both kinds of work.',
@@ -500,22 +501,22 @@ export const DEFINITIONS_WORKFLOW = {
 export const DEFINITIONS_CHART = {
   eyebrow: '03 / Different approaches',
   heading: 'How agents fit the organization',
-  intro: ['Two questions help explain the different approaches in the map:'] as TextBlock,
+  intro: ['Two questions separate the approaches in the map.'] as TextBlock,
   dimensions: [
     {
-      heading: 'Horizontal axis indicates how broad the work is.',
+      heading: 'How broad is the work? (horizontal axis)',
       description: [
         'Focused agents follow one defined workflow. Broader agents perform many kinds of work. Shared platforms have a separate infrastructure index.',
       ],
     },
     {
-      heading: 'Vertical axis defines how organization specific it is.',
+      heading: 'How company-specific is it? (vertical axis)',
       description: [
         'Standard products arrive with common capabilities. Internal systems add company knowledge, tools, conventions, and processes.',
       ],
     },
   ] as readonly ChartDimension[],
-  legend: { catalog: 'Catalog entry', reference: 'Reference example' },
+  legend: { catalog: 'Catalog entry', reference: 'Reference product, default setup' },
   verticalAxis: { from: 'Standard capabilities', to: 'Company-specific capabilities' },
   horizontalAxis: { from: 'One workflow', to: 'Many workflows' },
   cells: {
@@ -529,7 +530,7 @@ export const DEFINITIONS_CHART = {
   } as Record<string, ChartCell>,
   emptyCell: 'No selected example currently fits.',
   caption: [
-    'Illustrative placements based on public descriptions. Blue circles are agents; infrastructure is excluded from this comparison; green triangles are reference products or categories in their default setup. An arrow runs from a standard product to a company system built on it, which the company moved upward with its own knowledge and tools. Positions show broad relationships, not measured scores. Spacing within a region is for readability.',
+    'Illustrative placements from public descriptions, not measured scores. An arrow runs from a standard product to a company system built on it.',
   ] as TextBlock,
   body: [
     [
@@ -540,6 +541,7 @@ export const DEFINITIONS_CHART = {
     ],
   ] as readonly TextBlock[],
   notesSummary: 'Why these systems are placed here',
+  notesIntro: 'Spacing within a region is for readability.',
   builtHeading: 'What the team built or adapted',
   builtBody: [
     [
@@ -553,9 +555,9 @@ export const DEFINITIONS_CHART = {
 
 /** Section 04: the other words a reader meets, and what each one answers. */
 export const DEFINITIONS_TERMS = {
-  eyebrow: '04 / Other terms you’ll encounter',
-  heading: 'Different questions about the same system',
-  intro: ['These terms answer different questions about a system. They can apply together.'] as TextBlock,
+  eyebrow: '04 / Other terms',
+  heading: 'Four more questions about the same system',
+  intro: ['Each term answers a different question. They apply together.'] as TextBlock,
   place: {
     heading: 'Cloud and local: where does the work run?',
     definition: ['Local and cloud describe ', { strong: 'where the agent runs.' }] as TextBlock,
@@ -648,6 +650,9 @@ export const DEFINITIONS_TERMS = {
     closing: [
       'Working without someone’s continuous attention does not imply permission to take every action.',
     ] as TextBlock,
+    recorded: [
+      'The catalog records the authority a source describes. When an article explains a workflow but not its permissions, the entry says so instead of guessing.',
+    ] as TextBlock,
   },
 } as const;
 
@@ -665,7 +670,7 @@ export const DEFINITIONS_QUESTIONS = {
     {
       question: 'Does “internal” mean private or self-hosted?',
       answer: [
-        'No. An internal agent can use hosted services. Hosting, data handling, and access controls need to be described separately.',
+        'No. An internal agent can use hosted services. Each entry describes hosting, data handling, and access controls on their own terms.',
       ],
     },
     {
@@ -689,7 +694,7 @@ export const DEFINITIONS_QUESTIONS = {
     {
       question: 'Are these official definitions?',
       answer: [
-        'These are working definitions for reading the map. Product terminology varies. Concrete descriptions of the work, context, tools, and behavior are more useful than a label alone.',
+        'These are working definitions for reading the map. Product terminology varies. A concrete description of the work, context, tools, and behavior tells you more than any label.',
       ],
     },
   ] as readonly GuideQuestion[],
