@@ -26,6 +26,7 @@ const LOGO_CARDS = CATALOG.approaches
   .filter((approach) => LOGO_BY_COMPANY.get(approach.company_id) !== null)
   .slice(0, 3);
 const visibleCards = (page: Page) => page.locator('article.entry:visible');
+const searchLauncher = (page: Page) => page.locator('[data-palette-open]:visible').first();
 
 test.describe('the directory without javascript', () => {
   test.skip(({ javaScriptEnabled }) => javaScriptEnabled !== false, 'This is the no-JS project.');
@@ -86,7 +87,7 @@ test.describe('the directory with javascript', () => {
   test('shows the whole catalog under a bar that opens the palette', async ({ page }) => {
     await page.goto('/');
     await expect(visibleCards(page)).toHaveCount(TOTAL);
-    const bar = page.locator('.search-launcher');
+    const bar = searchLauncher(page);
     await expect(bar).toBeVisible();
     // It reads as a field and answers as a door: no field of its own to type in.
     await expect(bar.locator('input')).toHaveCount(0);
@@ -142,7 +143,7 @@ test.describe('the directory with javascript', () => {
       await page.locator(`.nav-links a[href="${path}"]`).first().click();
       await expect(page).toHaveURL(new RegExp(`${path}$`));
       expect(await page.evaluate(() => 'navigationMarker' in window)).toBe(true);
-      await page.locator('.search-launcher').click();
+      await searchLauncher(page).click();
       await expect(page.locator('#palette')).toBeVisible();
       await page.keyboard.press('Escape');
       await expect(page.locator('#palette')).toBeHidden();
@@ -151,7 +152,7 @@ test.describe('the directory with javascript', () => {
       await page.keyboard.press('Escape');
       await expect(page.locator('#palette')).toBeHidden();
     }
-    await page.locator('.search-launcher').click();
+    await searchLauncher(page).click();
     await expect(page.locator('#palette')).toBeVisible();
   });
 
@@ -179,8 +180,8 @@ test.describe('the directory with javascript', () => {
     await expect(page.locator('#palette')).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(page.locator('#palette')).toBeHidden();
-    for (const target of ['#search-shortcut', '#search-shortcut', '#search-shortcut']) {
-      await page.locator(target).first().click();
+    for (let attempt = 0; attempt < 3; attempt++) {
+      await page.locator('#search-shortcut:visible, .mobile-catalog-search:visible').first().click();
       await expect(page.locator('#palette-input')).toBeFocused();
       await page.keyboard.press('Escape');
       await expect(page.locator('#palette')).toBeHidden();
@@ -189,7 +190,7 @@ test.describe('the directory with javascript', () => {
 
   test('the palette opens from the bar and reaches every kind of page', async ({ page }) => {
     await page.goto('/');
-    await page.locator('.search-launcher').click();
+    await searchLauncher(page).click();
     await expect(page.locator('#palette')).toBeVisible();
     for (const group of ['catalog', 'infrastructure', 'lessons', 'definitions']) {
       await expect(page.locator(`.palette-group[data-group="${group}"]`)).toBeVisible();
@@ -510,7 +511,7 @@ test.describe('the directory order', () => {
     test.skip(javaScriptEnabled === false, 'The palette needs the script.');
     test.skip(isMobile, 'On a phone the pills are in the filter sheet, above the results.');
     await page.goto('/');
-    await page.locator('.search-launcher').click();
+    await searchLauncher(page).click();
     await page.locator('[data-palette-sort] .palette-pill').click();
     // The opening animation gives each row a transform; hold them in that state.
     const covered = await page.evaluate(() => {
@@ -530,7 +531,7 @@ test.describe('the directory order', () => {
   test('sorts the palette from its sort pill, and the directory with it', async ({ page, javaScriptEnabled }) => {
     test.skip(javaScriptEnabled === false, 'The palette needs the script.');
     await page.goto('/');
-    await page.locator('.search-launcher').click();
+    await searchLauncher(page).click();
     const sort = page.locator('[data-palette-sort]');
     const firstItem = page.locator('.palette-group[data-group="catalog"] li:has(.palette-item:visible)').first();
     await expect(firstItem).toHaveAttribute('data-well-documented', 'true');

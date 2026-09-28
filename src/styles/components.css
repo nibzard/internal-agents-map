@@ -19,6 +19,7 @@
   flex-wrap: wrap;
   margin-top: 32px;
 }
+.mobile-catalog-search { display: none; }
 /* The same hairline the table draws, between each figure and the next. */
 .stat + .stat {
   border-left: .5px solid var(--sand-6);
@@ -931,14 +932,36 @@
 @media (max-width: 800px) {
   .related-list, .doc-links { grid-template-columns: minmax(0, 1fr); }
   .intro > h1 + p { display: none; }
-  .intro { padding-bottom: 24px; }
+  .intro { padding-bottom: 0; margin-bottom: 20px; }
   .stats {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px 16px;
-    margin-top: 24px;
+    grid-template-columns: .8fr 1.3fr .8fr;
+    gap: 8px;
+    margin-top: 20px;
   }
   .stat + .stat { border-left: 0; padding-left: 0; }
+  .stat span { font-size: 13px; }
+  .problem-links { margin-top: 24px; }
+  .mobile-catalog-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 48px;
+    margin-bottom: 16px;
+    padding: 0 16px;
+    border: 1px solid var(--sand-6);
+    border-radius: 12px;
+    background: var(--sand-3);
+    color: var(--ink);
+    text-align: left;
+    font-size: var(--text-sm);
+  }
+  .mobile-catalog-search .icon { color: var(--sand-10); }
+  body[data-current="catalog"] .search-launcher,
+  body[data-current="infrastructure"] .search-launcher { display: none; }
+  .entries:not([hidden]) { grid-template-columns: minmax(0, 1fr); }
+  .entries .entry-box { padding: 20px; }
   .entry-top { align-items: start; }
   /*
    * A narrow screen has no room for two columns, so each field stands over its
@@ -1024,8 +1047,8 @@
   .claim { padding: 16px 0; }
   .sources li { padding: 8px 0; }
 }
-@media (max-width: 420px) {
-  .stats { gap: 24px; }
+@media (min-width: 680px) and (max-width: 800px) {
+  .entries:not([hidden]) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* Research ledger */
