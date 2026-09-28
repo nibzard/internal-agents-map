@@ -72,8 +72,9 @@
 }
 /* On a wide screen the problems stand in the rail column, which the catalog page
    leaves empty, as a list under a quiet title: the same form as a table of contents.
-   The markup stays in the intro, so a narrow screen keeps the pills above the cards. */
-@media (min-width: 1051px) {
+   The markup stays in the intro, so a narrow screen keeps the pills above the cards.
+   The width is the one at which layout.css shows the rail column. */
+@media (min-width: 1340px) {
   .intro { position: relative; }
   .problem-links {
     position: absolute;

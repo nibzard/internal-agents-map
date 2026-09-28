@@ -22,7 +22,7 @@ export default defineConfig({
   projects: [
     {
       name: 'desktop',
-      use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 900 } },
+      use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
     },
     {
       name: 'mobile',
@@ -30,7 +30,7 @@ export default defineConfig({
     },
     {
       name: 'no-javascript',
-      use: { ...devices['Desktop Chrome'], javaScriptEnabled: false },
+      use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 }, javaScriptEnabled: false },
     },
   ],
 });
