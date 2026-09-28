@@ -6,6 +6,7 @@ import EntrySection from '../../components/EntrySection.astro';
 import Claim from '../../components/Claim.astro';
 import Icon from '../../components/Icon.astro';
 import CompanyLogo from '../../components/CompanyLogo.astro';
+import EntryActions from '../../components/EntryActions.astro';
 import ResearchDetails from '../../components/ResearchDetails.astro';
 import SourceList from '../../components/SourceList.astro';
 import { loadCatalog } from '../../lib/catalog';
@@ -128,6 +129,7 @@ const lessonsNote = coverageNoteOf('lessons');
           <dd><time datetime={entry.reviewedAt}>{entry.reviewedAt}</time></dd>
         </div>
       </dl>
+      <EntryActions path={entry.path} title={`${entry.agentName} at ${entry.company}`} />
     </header>
 
     {entry.profile.sectionOrder.map((section) => <EntrySection entry={entry} section={section} />)}

@@ -340,12 +340,13 @@ export function entryMarkdown(entry: EntryView, level = 1): string[] {
   for (const [key, answer] of Object.entries(entry.coverageQuestions)) lines.push(`- **${key.replaceAll('_', ' ')}:** ${answer.stateLabel}${answer.note ? ` — ${answer.note}` : ''}`);
   lines.push('');
 
-  if (entry.relatedEntries.length > 0) {
+  if (entry.relatedEntries.length > 0 || entry.relatedLessons.length > 0) {
     lines.push(heading(level + 1, 'Related reading'), '');
     for (const related of entry.relatedEntries) {
       const name = `${related.company} — ${related.agentName}`;
       lines.push(`- ${related.relationLabel}: ${markdownLink(name, canonicalUrl(related.path))}`);
     }
+    for (const lesson of entry.relatedLessons) lines.push(`- Lesson: ${markdownLink(lesson.title, canonicalUrl(lesson.path))}`);
     lines.push('');
   }
 
