@@ -388,6 +388,28 @@ test.describe('entry header', () => {
       .locator('dd');
     await expect(involvement).toHaveText('Drafts reviewed');
   });
+
+  test('links the Markdown record and a ChatGPT prompt', async ({ page }) => {
+    await page.goto('/agents/stripe-minions');
+    const actions = page.locator('.entry-header .entry-actions');
+    await expect(actions.getByRole('link', { name: 'Copy as MD' })).toHaveAttribute('href', '/agents/stripe-minions.md');
+    await expect(actions.getByRole('link')).toHaveCount(2);
+    const ask = new URL((await actions.getByRole('link', { name: 'Ask ChatGPT' }).getAttribute('href'))!);
+    expect(ask.origin).toBe('https://chatgpt.com');
+    expect(ask.searchParams.get('q')).toContain('https://internal-agents.com/agents/stripe-minions.md');
+  });
+
+  test('copies the Markdown record instead of opening it', async ({ page, context }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop', 'The clipboard needs JavaScript and one browser grant.');
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    await page.goto('/agents/stripe-minions');
+    const copy = page.locator('.entry-actions a[data-copy-markdown]');
+    await copy.click();
+    await expect(copy).toHaveText('Copied');
+    await expect(page).toHaveURL(/\/agents\/stripe-minions$/);
+    const text = await page.evaluate(() => navigator.clipboard.readText());
+    expect(text.startsWith('Source: https://internal-agents.com/agents/stripe-minions')).toBe(true);
+  });
 });
 
 test.describe('lesson attribution', () => {
