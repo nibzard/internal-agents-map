@@ -1,5 +1,5 @@
 // ABOUTME: Exercises theme selection, persistence, and Astro navigation in real browsers.
-// ABOUTME: System colors also work without JavaScript or access to browser storage.
+// ABOUTME: The light default also works without JavaScript or access to browser storage.
 import { expect, test, type Page } from '@playwright/test';
 
 const themeButton = (page: Page) => page.locator('[data-theme-toggle]:visible');
@@ -10,22 +10,18 @@ async function followEntry(page: Page): Promise<void> {
   await expect(page.locator('h1')).toContainText('Builderbot');
 }
 
-test('follows system colors until the reader makes a choice', async ({ page, javaScriptEnabled }) => {
-  await page.emulateMedia({ colorScheme: 'dark' });
-  await page.goto('/');
-  await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(17, 17, 16)');
-  await expect(page.locator('.entries .entry-box').first()).toHaveCSS('background-color', 'rgb(25, 25, 24)');
-  if (javaScriptEnabled === false) {
-    await expect(themeButton(page)).toHaveCount(0);
-  } else {
-    await expect(themeButton(page)).toHaveAccessibleName('Switch to light theme');
-  }
-
-  await page.emulateMedia({ colorScheme: 'light' });
-  await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(253, 253, 252)');
-  await expect(page.locator('.entries .entry-box').first()).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-  if (javaScriptEnabled !== false) {
-    await expect(themeButton(page)).toHaveAccessibleName('Switch to dark theme');
+test('uses the light theme until the reader makes a choice, whatever the system prefers', async ({ page, javaScriptEnabled }) => {
+  for (const colorScheme of ['dark', 'light'] as const) {
+    await page.emulateMedia({ colorScheme });
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveCSS('color-scheme', 'light');
+    await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(253, 253, 252)');
+    await expect(page.locator('.entries .entry-box').first()).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+    if (javaScriptEnabled === false) {
+      await expect(themeButton(page)).toHaveCount(0);
+    } else {
+      await expect(themeButton(page)).toHaveAccessibleName('Switch to dark theme');
+    }
   }
 });
 
@@ -105,17 +101,18 @@ test.describe('theme controls', () => {
     await page.emulateMedia({ colorScheme: 'dark' });
     await page.addInitScript(() => localStorage.setItem('theme', 'invalid'));
     await page.goto('/');
-    await expect(themeButton(page)).toHaveAccessibleName('Switch to light theme');
+    await expect(themeButton(page)).toHaveAccessibleName('Switch to dark theme');
     const other = await context.newPage();
     await other.emulateMedia({ colorScheme: 'dark' });
     await other.goto('/definitions');
-    await expect(themeButton(other)).toHaveAccessibleName('Switch to light theme');
+    await expect(themeButton(other)).toHaveAccessibleName('Switch to dark theme');
     await themeButton(page).click();
-    await expect(other.locator('html')).toHaveCSS('color-scheme', 'light');
+    await expect(other.locator('html')).toHaveCSS('color-scheme', 'dark');
     await themeButton(other).click();
-    await expect(page.locator('html')).toHaveCSS('color-scheme', 'dark');
+    await expect(page.locator('html')).toHaveCSS('color-scheme', 'light');
+    await themeButton(page).click();
+    await expect(other.locator('html')).toHaveCSS('color-scheme', 'dark');
     await other.evaluate(() => localStorage.removeItem('theme'));
-    await page.emulateMedia({ colorScheme: 'light' });
     await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(253, 253, 252)');
     await other.close();
   });

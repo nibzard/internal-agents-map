@@ -1,4 +1,4 @@
-// ABOUTME: Remembers an explicit light or dark theme and otherwise follows the system.
+// ABOUTME: Remembers an explicit light or dark theme and otherwise uses the light theme.
 // ABOUTME: Carries the choice through Astro swaps, including when storage is blocked.
 import type { TransitionBeforeSwapEvent } from 'astro:transitions/client';
 
@@ -8,7 +8,6 @@ function parseTheme(value: string | null | undefined): Theme | null {
   return value === 'light' || value === 'dark' ? value : null;
 }
 
-const systemTheme = matchMedia('(prefers-color-scheme: dark)');
 let preference = parseTheme(document.documentElement.dataset.theme);
 
 function applyTheme(target: Document): void {
@@ -17,7 +16,7 @@ function applyTheme(target: Document): void {
 }
 
 function updateControls(): void {
-  const current = preference ?? (systemTheme.matches ? 'dark' : 'light');
+  const current = preference ?? 'light';
   const next = current === 'dark' ? 'light' : 'dark';
   document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
     button.setAttribute('aria-label', `Switch to ${next} theme`);
@@ -33,7 +32,6 @@ function updateControls(): void {
 document.addEventListener('astro:before-swap', (event) => {
   applyTheme((event as TransitionBeforeSwapEvent).newDocument);
 });
-systemTheme.addEventListener('change', updateControls);
 window.addEventListener('storage', (event) => {
   if (event.key !== 'theme' && event.key !== null) return;
   preference = parseTheme(event.newValue);
@@ -46,7 +44,7 @@ export function startTheme(): void {
   updateControls();
   document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
     button.addEventListener('click', () => {
-      const current = preference ?? (systemTheme.matches ? 'dark' : 'light');
+      const current = preference ?? 'light';
       preference = current === 'dark' ? 'light' : 'dark';
       applyTheme(document);
       updateControls();

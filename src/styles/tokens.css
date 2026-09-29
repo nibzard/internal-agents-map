@@ -25,9 +25,9 @@ html {
   scroll-behavior: smooth;
 }
 :root {
-  /* Native theme selection also follows the system when JavaScript is off.
-     These are the paired Radix Sand light and dark scales. */
-  color-scheme: light dark;
+  /* The light theme is the default. The dark theme applies only when the reader
+     selects it. These are the paired Radix Sand light and dark scales. */
+  color-scheme: light;
   --sand-1: light-dark(#fdfdfc, #111110);
   --sand-2: light-dark(#f9f9f8, #191918);
   --sand-3: light-dark(#f1f0ef, #222221);

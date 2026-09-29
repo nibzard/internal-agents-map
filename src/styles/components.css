@@ -133,9 +133,6 @@
 }
 /* Vendored marks already render in grayscale; reverse that ink on dark pages. */
 :root[data-theme="dark"] .company-logo img { filter: grayscale(1) invert(1); }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .company-logo img { filter: grayscale(1) invert(1); }
-}
 .company-logo-monogram {
   display: inline-flex;
   align-items: center;
