@@ -4,6 +4,8 @@
 import '../styles/site.css';
 import Analytics from '../components/Analytics.astro';
 import ContributionInvite from '../components/ContributionInvite.astro';
+import RecordContribution from '../components/RecordContribution.astro';
+import type { UpdateRecord } from '../lib/update-prompt';
 import { ClientRouter } from 'astro:transitions';
 import CommandPalette from '../components/CommandPalette.astro';
 import Icon from '../components/Icon.astro';
@@ -20,6 +22,7 @@ import {
 import type { OgImage } from '../lib/og';
 
 interface Props {
+  updateRecord?: UpdateRecord;
   title: string;
   description: string;
   /** The canonical path of this page, such as `/agents/block-builderbot`. */
@@ -38,6 +41,7 @@ interface Props {
 }
 
 const {
+  updateRecord,
   title,
   description,
   path,
@@ -132,7 +136,7 @@ const image = ogImage ?? { url: OG_IMAGE, alt: OG_IMAGE_ALT };
   </aside>
   <main id="main">
     <slot />
-    <ContributionInvite />
+    {updateRecord ? <RecordContribution record={updateRecord} /> : <ContributionInvite />}
   </main>
   {path !== homePath() && path !== '/infrastructure' && (
     <aside id="contents" class="contents" aria-label="Table of contents" hidden></aside>
@@ -156,6 +160,7 @@ const image = ogImage ?? { url: OG_IMAGE, alt: OG_IMAGE_ALT };
   import { startDisclosures } from '../scripts/disclosures';
   import { startPalette } from '../scripts/palette';
   import { startCatalogOrder } from '../scripts/catalog-order';
+  import { startCopyUpdate } from '../scripts/copy-update';
   import { startCopyMarkdown } from '../scripts/copy-markdown';
   import { startTheme } from '../scripts/theme';
 
@@ -171,6 +176,7 @@ const image = ogImage ?? { url: OG_IMAGE, alt: OG_IMAGE_ALT };
     // After the palette, so the palette hears the first sort.
     startCatalogOrder();
     startCopyMarkdown();
+    startCopyUpdate();
   });
 </script>
 </body>
