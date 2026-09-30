@@ -1437,12 +1437,6 @@
 .organization-page .entry-section > .entry:last-child { margin-bottom: 0; }
 
 /* Record contributions keep the prompt available without clipboard access. */
-.record-contribution .contribution-links {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 16px;
-}
 .record-contribution [data-copy-update] { border: 0; }
 .record-contribution [data-update-status]:empty { display: none; }
 .update-preview { margin-top: 12px; }
