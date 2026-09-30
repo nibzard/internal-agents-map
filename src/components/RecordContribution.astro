@@ -1,0 +1,33 @@
+---
+// ABOUTME: Hands one record to the reader's coding agent with a copyable update prompt.
+// ABOUTME: The native preview also works without JavaScript or clipboard access.
+import Icon from './Icon.astro';
+import { CONTRIBUTE_URL } from '../lib/metadata';
+import { updatePrompt, type UpdateRecord } from '../lib/update-prompt';
+
+interface Props {
+  record: UpdateRecord;
+}
+const { record } = Astro.props;
+const prompt = updatePrompt(record);
+const issueUrl = new URL(CONTRIBUTE_URL);
+issueUrl.searchParams.set('request', 'Fix an existing entry');
+issueUrl.searchParams.set('agent', record.title);
+---
+<section class="contribution-invite record-contribution" aria-labelledby="contribute-title" data-record-contribution>
+  <strong id="contribute-title">Improve this record</strong>
+  <p>Give your coding agent the context and instructions to prepare a source-backed update.</p>
+  <div class="contribution-links">
+    <button type="button" class="button button-solid" data-copy-update hidden>
+      <span>Copy update prompt</span><Icon name="clipboard" />
+    </button>
+    <a class="button" href={issueUrl.toString()}><span>Suggest on GitHub</span><Icon name="arrow-upright" /></a>
+  </div>
+  <p role="status" aria-atomic="true" data-update-status></p>
+  <p>Paste the prompt into your coding agent, then describe the correction or add a public source.</p>
+  <details class="update-preview">
+    <summary>Preview prompt</summary>
+    <label class="visually-hidden" for="update-prompt">Update prompt for {record.title}</label>
+    <textarea id="update-prompt" readonly rows="14" spellcheck="false">{prompt}</textarea>
+  </details>
+</section>

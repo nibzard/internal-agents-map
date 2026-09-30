@@ -64,7 +64,7 @@ const coverageNoteOf = (key: string) => {
 const validationNote = coverageNoteOf('validation');
 const lessonsNote = coverageNoteOf('lessons');
 ---
-<SiteLayout title={title} description={description} path={entry.path} structuredData={graph} ogImage={preview}>
+<SiteLayout updateRecord={{ id: entry.id, title: `${entry.agentName} at ${entry.company}` }} title={title} description={description} path={entry.path} structuredData={graph} ogImage={preview}>
   <article class="entry-page" data-approach-id={entry.id}>
     <header class="entry-header">
       <CompanyLogo company={entry.companyView} size={40} eager />

@@ -1435,3 +1435,21 @@
 
 .organization-page .entry h3 { margin: 0; }
 .organization-page .entry-section > .entry:last-child { margin-bottom: 0; }
+
+/* Record contributions keep the prompt available without clipboard access. */
+.record-contribution [data-copy-update] { border: 0; }
+.record-contribution [data-update-status]:empty { display: none; }
+.update-preview { margin-top: 12px; }
+.update-preview summary { cursor: pointer; }
+.update-preview textarea {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--sand-6);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+  resize: vertical;
+}
