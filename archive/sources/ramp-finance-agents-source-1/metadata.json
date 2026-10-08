@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "source_id": "ramp-finance-agents-source-1",
+  "original_url": "https://ramplabs.substack.com/p/we-built-an-agent-to-prompt-our-internal",
+  "final_url": "https://ramplabs.substack.com/p/we-built-an-agent-to-prompt-our-internal",
+  "captured_at": "2026-10-08T15:18:29Z",
+  "http_status": 200,
+  "tool": {
+    "name": "steel",
+    "version": "0.5.0-preview.6"
+  },
+  "artifacts": {
+    "markdown": {
+      "path": "archive/sources/ramp-finance-agents-source-1/content.md",
+      "sha256": "sha256:2e311499a878aefee5f7872e55e4a7e5198e4ea4a25a3f56726c28987b04a946",
+      "bytes": 8111
+    }
+  }
+}

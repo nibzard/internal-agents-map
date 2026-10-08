@@ -7,7 +7,7 @@ deployment_stage: scaled
 first_public_evidence:
   date: '2025'
   source_id: databricks-costar-source-1
-last_reviewed_at: '2026-09-17'
+last_reviewed_at: '2026-10-08'
 status: internal
 domains:
 - coding
@@ -22,9 +22,11 @@ rubric:
   - interactive
   - background
   evidence_strength: detailed-primary
-summary: Databricks runs internal engineering agents for work such as on-call support and automated code review.
-  coSTAR ships and tests them, using LLM judges as the test suite and a coding assistant to refine the agent until
-  the judges pass. Databricks' Omnigent is a separate product.
+summary: Databricks ships and tests engineering agents with coSTAR, using LLM judges as the
+  test suite and a coding assistant to refine an agent until the judges pass. The agents cover
+  internal engineering workflows such as on-call support and automated code review, alongside
+  customer-facing and open-source agents such as the MLflow assistant. Databricks' Omnigent
+  is a separate product.
 architecture:
   harness: coSTAR framework for shipping and testing internal agents
   knowledge: Private benchmark built from the Databricks multi-million line codebase
@@ -90,7 +92,6 @@ evidence:
   - source_id: databricks-costar-source-1
   summary:
   - source_id: databricks-costar-source-1
-  - source_id: databricks-costar-source-2
   architecture.harness:
   - source_id: databricks-costar-source-1
   architecture.knowledge:

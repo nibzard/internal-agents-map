@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "source_id": "embat-mr-batt-source-1",
+  "original_url": "https://www.embat.io/tech/internal-ai-agent-platform",
+  "final_url": "https://www.embat.io/tech/internal-ai-agent-platform",
+  "captured_at": "2026-10-08T15:18:23Z",
+  "http_status": 200,
+  "tool": {
+    "name": "steel",
+    "version": "0.5.0-preview.6"
+  },
+  "artifacts": {
+    "markdown": {
+      "path": "archive/sources/embat-mr-batt-source-1/content.md",
+      "sha256": "sha256:af8cbdd29449a2c8dc17366a17f8420158fe5ffbde7a0932df459efd601ef3ad",
+      "bytes": 6893
+    }
+  }
+}

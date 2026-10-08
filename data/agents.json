@@ -2879,7 +2879,7 @@
         "date": "2025",
         "source_id": "databricks-costar-source-1"
       },
-      "last_reviewed_at": "2026-09-17",
+      "last_reviewed_at": "2026-10-08",
       "status": "internal",
       "domains": [
         "coding",
@@ -3425,7 +3425,7 @@
         "date": "2026",
         "source_id": "doordash-code-review-source-1"
       },
-      "last_reviewed_at": "2026-09-16",
+      "last_reviewed_at": "2026-10-08",
       "status": "internal",
       "domains": [
         "code-review"
@@ -3449,7 +3449,8 @@
         "version": 1,
         "reviewed_at": "2026-09-17",
         "source_ids": [
-          "doordash-code-review-source-1"
+          "doordash-code-review-source-1",
+          "doordash-code-review-source-2"
         ],
         "workflow_scope": "Pull request opening → staged review → published finding and optional fix",
         "questions": {
@@ -3496,6 +3497,7 @@
             "claim_paths": [
               "headline_metric",
               "key_metrics.prs-reviewed-typical-week-repositories",
+              "key_metrics.automated-code-reviews-week-august-2026",
               "key_metrics.action-rate-settled-high-critical-findings",
               "key_metrics.average-cost-per-review",
               "key_metrics.findings-posted-minutes-pull-request-opens"
@@ -3577,6 +3579,7 @@
         "doordash-code-review--primitives-optional-fixer",
         "doordash-code-review--primitives-evaluation-loop",
         "doordash-code-review--key-metrics-prs-reviewed-typical-week-repositories",
+        "doordash-code-review--key-metrics-automated-code-reviews-week-august-2026",
         "doordash-code-review--key-metrics-action-rate-settled-high-critical-findings",
         "doordash-code-review--key-metrics-average-cost-per-review",
         "doordash-code-review--key-metrics-findings-posted-minutes-pull-request-opens",
@@ -3585,7 +3588,8 @@
         "doordash-code-review--operating-models-0"
       ],
       "source_ids": [
-        "doordash-code-review-source-1"
+        "doordash-code-review-source-1",
+        "doordash-code-review-source-2"
       ],
       "interfaces": [
         "github"
@@ -4240,7 +4244,7 @@
         "date": "2026",
         "source_id": "dropbox-nova-source-1"
       },
-      "last_reviewed_at": "2026-09-16",
+      "last_reviewed_at": "2026-10-08",
       "status": "internal",
       "domains": [
         "coding",
@@ -4273,7 +4277,8 @@
         "reviewed_at": "2026-09-17",
         "source_ids": [
           "dropbox-nova-source-1",
-          "dropbox-nova-source-2"
+          "dropbox-nova-source-2",
+          "dropbox-nova-source-3"
         ],
         "workflow_scope": "Athena flaky-test alert through the Deflaker fix-and-validate loop to a landed fix or capped attempts",
         "questions": {
@@ -4320,6 +4325,7 @@
             "state": "reported",
             "claim_paths": [
               "headline_metric",
+              "key_metrics.one-in-twelve-pull-requests-may-2026",
               "key_metrics.flaky-test-remediation-deflaker-validation-runs",
               "key_metrics.predecessor-goose-based-migrator-used-thousands",
               "key_metrics.dozens-agents-launchable-one-runbook"
@@ -4410,6 +4416,7 @@
         "dropbox-nova--primitives-propose-a-root-cause-fix",
         "dropbox-nova--primitives-validate-the-fix-in-ci",
         "dropbox-nova--primitives-retry-with-carried-forward-notes",
+        "dropbox-nova--key-metrics-one-in-twelve-pull-requests-may-2026",
         "dropbox-nova--key-metrics-flaky-test-remediation-deflaker-validation-runs",
         "dropbox-nova--key-metrics-predecessor-goose-based-migrator-used-thousands",
         "dropbox-nova--key-metrics-dozens-agents-launchable-one-runbook",
@@ -4422,7 +4429,8 @@
       ],
       "source_ids": [
         "dropbox-nova-source-1",
-        "dropbox-nova-source-2"
+        "dropbox-nova-source-2",
+        "dropbox-nova-source-3"
       ],
       "interfaces": [
         "web",
@@ -4613,6 +4621,166 @@
         "internal-ui",
         "slack",
         "github"
+      ]
+    },
+    {
+      "id": "embat-mr-batt",
+      "company": "Embat",
+      "agent_name": "Mr. Batt",
+      "aliases": [
+        "Agent M. Batt"
+      ],
+      "approach_type": "agent-system",
+      "deployment_stage": "deployed",
+      "year": 2026,
+      "first_public_evidence": {
+        "date": "2026-07-21",
+        "source_id": "embat-mr-batt-source-1"
+      },
+      "last_reviewed_at": "2026-10-08",
+      "status": "internal",
+      "domains": [
+        "support"
+      ],
+      "autonomy": "unknown",
+      "operating_models": [
+        {
+          "scope": "Support question in Slack → routed specialist answer",
+          "attention_boundary": "unknown",
+          "level": null
+        }
+      ],
+      "rubric": {
+        "invocation": [
+          "interactive"
+        ],
+        "evidence_strength": "limited-primary"
+      },
+      "page_content": {
+        "version": 1,
+        "reviewed_at": "2026-10-08",
+        "source_ids": [
+          "embat-mr-batt-source-1"
+        ],
+        "workflow_scope": "Support question in Slack → routed specialist answer",
+        "questions": {
+          "purpose": {
+            "state": "reported",
+            "claim_paths": [
+              "summary"
+            ]
+          },
+          "workflow": {
+            "state": "reported",
+            "claim_paths": [
+              "primitives.route-to-specialist",
+              "primitives.ask-user-when-router-unsure"
+            ]
+          },
+          "human_involvement": {
+            "state": "reported",
+            "claim_paths": [
+              "operating_models.0",
+              "primitives.ask-user-when-router-unsure"
+            ],
+            "note": "The review boundary for the specialists' answers is not documented; the reported human involvement is the router asking the person to choose when unsure."
+          },
+          "implementation": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.harness",
+              "architecture.tool_access",
+              "architecture.knowledge",
+              "architecture.interfaces"
+            ]
+          },
+          "validation": {
+            "state": "unreported",
+            "claim_paths": []
+          },
+          "observations": {
+            "state": "reported",
+            "claim_paths": [
+              "headline_metric"
+            ]
+          },
+          "lessons": {
+            "state": "reported",
+            "claim_paths": [
+              "lessons_learned.generalist-prompt-interference",
+              "lessons_learned.router-asks-rather-than-guesses",
+              "lessons_learned.borrow-harness-spend-on-tools"
+            ]
+          }
+        },
+        "implementation_fields": {
+          "model": {
+            "state": "unreported",
+            "claim_paths": [],
+            "note": "The post relies on the Claude Managed Agents platform and one Google ADK tool, and names no specific model."
+          },
+          "harness": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.harness"
+            ]
+          },
+          "sandbox": {
+            "state": "unreported",
+            "claim_paths": []
+          },
+          "tool_access": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.tool_access"
+            ]
+          },
+          "knowledge": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.knowledge"
+            ]
+          },
+          "context_mgmt": {
+            "state": "unreported",
+            "claim_paths": []
+          },
+          "credentials": {
+            "state": "unreported",
+            "claim_paths": []
+          },
+          "interfaces": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.interfaces"
+            ]
+          }
+        },
+        "aliases": {}
+      },
+      "company_id": "embat",
+      "catalog_section": "agents",
+      "claim_ids": [
+        "embat-mr-batt--summary",
+        "embat-mr-batt--headline-metric",
+        "embat-mr-batt--architecture-harness",
+        "embat-mr-batt--architecture-tool-access",
+        "embat-mr-batt--architecture-knowledge",
+        "embat-mr-batt--architecture-interfaces",
+        "embat-mr-batt--primitives-route-to-specialist",
+        "embat-mr-batt--primitives-ask-user-when-router-unsure",
+        "embat-mr-batt--primitives-per-domain-specialist",
+        "embat-mr-batt--primitives-configure-agent-declaratively",
+        "embat-mr-batt--lessons-learned-generalist-prompt-interference",
+        "embat-mr-batt--lessons-learned-router-asks-rather-than-guesses",
+        "embat-mr-batt--lessons-learned-borrow-harness-spend-on-tools",
+        "embat-mr-batt--operating-models-0"
+      ],
+      "source_ids": [
+        "embat-mr-batt-source-1"
+      ],
+      "interfaces": [
+        "slack"
       ]
     },
     {
@@ -7930,6 +8098,169 @@
       ]
     },
     {
+      "id": "ramp-finance-agents",
+      "company": "Ramp",
+      "agent_name": "Doer and Architect",
+      "approach_type": "agent-system",
+      "deployment_stage": "deployed",
+      "year": 2025,
+      "first_public_evidence": {
+        "date": "2025-10-01",
+        "source_id": "ramp-finance-agents-source-1"
+      },
+      "last_reviewed_at": "2026-10-08",
+      "status": "internal",
+      "domains": [
+        "finance-ops"
+      ],
+      "autonomy": "unknown",
+      "operating_models": [
+        {
+          "scope": "Accountant screen recording → reusable Process → completed spreadsheet",
+          "attention_boundary": "unknown",
+          "level": null
+        }
+      ],
+      "rubric": {
+        "invocation": [
+          "background"
+        ],
+        "evidence_strength": "detailed-primary"
+      },
+      "page_content": {
+        "version": 1,
+        "reviewed_at": "2026-10-08",
+        "source_ids": [
+          "ramp-finance-agents-source-1"
+        ],
+        "workflow_scope": "Accountant screen recording → reusable Process → completed spreadsheet",
+        "questions": {
+          "purpose": {
+            "state": "reported",
+            "claim_paths": [
+              "summary"
+            ]
+          },
+          "workflow": {
+            "state": "reported",
+            "claim_paths": [
+              "primitives.architect-watches-recording",
+              "primitives.doer-executes-process"
+            ]
+          },
+          "human_involvement": {
+            "state": "reported",
+            "claim_paths": [
+              "operating_models.0"
+            ],
+            "note": "The post reports human intervention only after partial completions; the review boundary for completed spreadsheets and ERP entries is not documented."
+          },
+          "implementation": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.model",
+              "architecture.harness",
+              "architecture.tool_access",
+              "architecture.knowledge"
+            ]
+          },
+          "validation": {
+            "state": "reported",
+            "claim_paths": [
+              "primitives.validation-checks-per-instruction"
+            ]
+          },
+          "observations": {
+            "state": "reported",
+            "claim_paths": [
+              "headline_metric",
+              "key_metrics.spreadsheetbench-soft-restriction",
+              "key_metrics.spreadsheetbench-hard-restriction",
+              "key_metrics.prompt-crafting-before-architect"
+            ]
+          },
+          "lessons": {
+            "state": "reported",
+            "claim_paths": [
+              "lessons_learned.bottleneck-instruction-not-execution",
+              "lessons_learned.complementary-model-strengths",
+              "lessons_learned.production-agents-still-hard",
+              "lessons_learned.async-intake-not-autonomy"
+            ]
+          }
+        },
+        "implementation_fields": {
+          "model": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.model"
+            ]
+          },
+          "harness": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.harness"
+            ]
+          },
+          "sandbox": {
+            "state": "unreported",
+            "claim_paths": []
+          },
+          "tool_access": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.tool_access"
+            ]
+          },
+          "knowledge": {
+            "state": "reported",
+            "claim_paths": [
+              "architecture.knowledge"
+            ]
+          },
+          "context_mgmt": {
+            "state": "unreported",
+            "claim_paths": []
+          },
+          "credentials": {
+            "state": "unreported",
+            "claim_paths": []
+          },
+          "interfaces": {
+            "state": "unreported",
+            "claim_paths": []
+          }
+        },
+        "aliases": {}
+      },
+      "company_id": "ramp",
+      "catalog_section": "agents",
+      "claim_ids": [
+        "ramp-finance-agents--summary",
+        "ramp-finance-agents--headline-metric",
+        "ramp-finance-agents--architecture-harness",
+        "ramp-finance-agents--architecture-model",
+        "ramp-finance-agents--architecture-tool-access",
+        "ramp-finance-agents--architecture-knowledge",
+        "ramp-finance-agents--primitives-architect-watches-recording",
+        "ramp-finance-agents--primitives-compile-reusable-process",
+        "ramp-finance-agents--primitives-doer-executes-process",
+        "ramp-finance-agents--primitives-validation-checks-per-instruction",
+        "ramp-finance-agents--key-metrics-spreadsheetbench-soft-restriction",
+        "ramp-finance-agents--key-metrics-spreadsheetbench-hard-restriction",
+        "ramp-finance-agents--key-metrics-prompt-crafting-before-architect",
+        "ramp-finance-agents--lessons-learned-bottleneck-instruction-not-execution",
+        "ramp-finance-agents--lessons-learned-complementary-model-strengths",
+        "ramp-finance-agents--lessons-learned-production-agents-still-hard",
+        "ramp-finance-agents--lessons-learned-async-intake-not-autonomy",
+        "ramp-finance-agents--operating-models-0"
+      ],
+      "source_ids": [
+        "ramp-finance-agents-source-1"
+      ],
+      "interfaces": []
+    },
+    {
       "id": "ramp-inspect",
       "company": "Ramp",
       "agent_name": "Inspect",
@@ -8535,7 +8866,7 @@
         "date": "2026",
         "source_id": "sentry-junior-source-2"
       },
-      "last_reviewed_at": "2026-09-16",
+      "last_reviewed_at": "2026-10-08",
       "status": "open-sourced",
       "domains": [
         "coding",
@@ -8623,6 +8954,7 @@
             "claim_paths": [
               "headline_metric",
               "key_metrics.lines-typescript-excluding-tests-evals-docs",
+              "key_metrics.lines-typescript-october-2026-recount",
               "key_metrics.time-from-start-to-writeup"
             ]
           },
@@ -8716,6 +9048,7 @@
         "sentry-junior--primitives-run-visual-qa-browser-sandbox",
         "sentry-junior--primitives-watch-pull-request-follow-ups",
         "sentry-junior--key-metrics-lines-typescript-excluding-tests-evals-docs",
+        "sentry-junior--key-metrics-lines-typescript-october-2026-recount",
         "sentry-junior--key-metrics-time-from-start-to-writeup",
         "sentry-junior--lessons-learned-author-prefers-one-agent-work-company",
         "sentry-junior--lessons-learned-skills-contain-operational-instructions-including-telemetry",
@@ -16883,7 +17216,7 @@
       "id": "databricks-costar--summary",
       "approach_id": "databricks-costar",
       "field": "summary",
-      "text": "Databricks runs internal engineering agents for work such as on-call support and automated code review. coSTAR ships and tests them, using LLM judges as the test suite and a coding assistant to refine the agent until the judges pass. Databricks' Omnigent is a separate product.",
+      "text": "Databricks ships and tests engineering agents with coSTAR, using LLM judges as the test suite and a coding assistant to refine an agent until the judges pass. The agents cover internal engineering workflows such as on-call support and automated code review, alongside customer-facing and open-source agents such as the MLflow assistant. Databricks' Omnigent is a separate product.",
       "kind": "fact",
       "provenance": "reported",
       "confidence": "not-assessed",
@@ -16892,10 +17225,6 @@
       "evidence": [
         {
           "source_id": "databricks-costar-source-1",
-          "relation": "supports"
-        },
-        {
-          "source_id": "databricks-costar-source-2",
           "relation": "supports"
         }
       ]
@@ -17937,7 +18266,7 @@
       "id": "doordash-code-review--summary",
       "approach_id": "doordash-code-review",
       "field": "summary",
-      "text": "A specialized agent that automatically reviews 10,000+ PRs a week across 56 repositories, emphasizing grounded high-confidence findings over noisy comments.",
+      "text": "A specialized agent that automatically reviews 10,000+ PRs a week across 56 repositories as of May 2026, emphasizing grounded high-confidence findings over noisy comments.",
       "kind": "fact",
       "provenance": "reported",
       "confidence": "not-assessed",
@@ -17959,7 +18288,7 @@
       "provenance": "reported",
       "confidence": "not-assessed",
       "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
-      "valid_at": null,
+      "valid_at": "2026-05",
       "evidence": [
         {
           "source_id": "doordash-code-review-source-1",
@@ -17968,7 +18297,7 @@
         }
       ],
       "reported_by": "DoorDash",
-      "metric_scope": "Typical weekly PR reviews across 56 onboarded repositories",
+      "metric_scope": "Typical weekly PR reviews across 56 onboarded repositories as reported in May 2026",
       "category": "adoption-output",
       "basis": "reported-measurement",
       "subject": "Typical weekly reviews across 56 repositories"
@@ -18192,12 +18521,12 @@
       "id": "doordash-code-review--key-metrics-prs-reviewed-typical-week-repositories",
       "approach_id": "doordash-code-review",
       "field": "key_metrics.prs-reviewed-typical-week-repositories",
-      "text": "10,000+ PRs reviewed in a typical week across 56 repositories",
+      "text": "10,000+ PRs reviewed in a typical week across 56 repositories as of May 2026",
       "kind": "metric",
       "provenance": "reported",
       "confidence": "not-assessed",
       "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
-      "valid_at": null,
+      "valid_at": "2026-05",
       "evidence": [
         {
           "source_id": "doordash-code-review-source-1",
@@ -18206,10 +18535,34 @@
         }
       ],
       "reported_by": "DoorDash",
-      "metric_scope": "Typical weekly PR reviews across 56 onboarded repositories",
+      "metric_scope": "Typical weekly PR reviews across 56 onboarded repositories as reported in May 2026",
       "item_id": "prs-reviewed-typical-week-repositories",
       "duplicate_of": "doordash-code-review--headline-metric",
       "reason": "Same review count, repository population, period, and qualification as the headline observation."
+    },
+    {
+      "id": "doordash-code-review--key-metrics-automated-code-reviews-week-august-2026",
+      "approach_id": "doordash-code-review",
+      "field": "key_metrics.automated-code-reviews-week-august-2026",
+      "text": "More than 25,000 automated code reviews each week as of August 2026, counted as review runs rather than pull requests",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "The August 2026 Flux post states the weekly figure directly; the count covers review runs, which this record keeps explicit so it cannot be read as distinct pull requests.",
+      "valid_at": "2026-08",
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-2",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 10"
+        }
+      ],
+      "reported_by": "DoorDash",
+      "metric_scope": "Automated code reviews per week across DoorDash agent workflows; the count unit is review runs, not distinct pull requests",
+      "item_id": "automated-code-reviews-week-august-2026",
+      "category": "adoption-output",
+      "basis": "reported-measurement",
+      "subject": "Automated code reviews completed per week across DoorDash agent workflows"
     },
     {
       "id": "doordash-code-review--key-metrics-action-rate-settled-high-critical-findings",
@@ -19581,6 +19934,31 @@
       "role": "workflow"
     },
     {
+      "id": "dropbox-nova--key-metrics-one-in-twelve-pull-requests-may-2026",
+      "approach_id": "dropbox-nova",
+      "field": "key_metrics.one-in-twelve-pull-requests-may-2026",
+      "text": "Roughly 1 in 12 pull requests at Dropbox, with adoption continuing to grow, as of May 2026",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "The May 2026 post states the share directly for all Dropbox pull requests and adds that adoption was still growing.",
+      "valid_at": "2026-05",
+      "evidence": [
+        {
+          "source_id": "dropbox-nova-source-3",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 32"
+        }
+      ],
+      "reported_by": "Dropbox",
+      "metric_scope": "Share of all Dropbox pull requests accounted for by Nova, snapshot at publication",
+      "denominator": "All pull requests at Dropbox",
+      "item_id": "one-in-twelve-pull-requests-may-2026",
+      "category": "adoption-output",
+      "basis": "reported-measurement",
+      "subject": "Share of Dropbox pull requests involving Nova"
+    },
+    {
       "id": "dropbox-nova--key-metrics-flaky-test-remediation-deflaker-validation-runs",
       "approach_id": "dropbox-nova",
       "field": "key_metrics.flaky-test-remediation-deflaker-validation-runs",
@@ -20182,6 +20560,293 @@
           "source_id": "duolingo-agentic-workflows-source-1",
           "relation": "supports",
           "locator": "Preserved content.md, lines 22-28"
+        }
+      ]
+    },
+    {
+      "id": "embat-mr-batt--summary",
+      "approach_id": "embat-mr-batt",
+      "field": "summary",
+      "text": "Embat's internal agent platform began as a support tool for the Product Experience team and now serves the whole company through Slack. A router sends each message to one of more than ten specialist agents, each mapped to a module, task, or tool set.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 20-24"
+        },
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 44-48"
+        }
+      ]
+    },
+    {
+      "id": "embat-mr-batt--headline-metric",
+      "approach_id": "embat-mr-batt",
+      "field": "headline_metric",
+      "text": "Grew from two agents to more than ten specialist agents",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "The article states directly that the platform started with two agents and is now past ten.",
+      "valid_at": "2026-07-21",
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 48"
+        }
+      ],
+      "reported_by": "Embat",
+      "metric_scope": "Count of specialist agents on the internal platform since the first two",
+      "category": "implementation-scale",
+      "basis": "reported-measurement",
+      "subject": "Specialist agents in Embat's internal platform"
+    },
+    {
+      "id": "embat-mr-batt--architecture-harness",
+      "approach_id": "embat-mr-batt",
+      "field": "architecture.harness",
+      "text": "Built on the Claude Managed Agents platform, with a lightweight router in front of the specialists; one tool spins up a Google ADK agent instead",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 26-30"
+        },
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 60-64"
+        }
+      ]
+    },
+    {
+      "id": "embat-mr-batt--architecture-tool-access",
+      "approach_id": "embat-mr-batt",
+      "field": "architecture.tool_access",
+      "text": "Embat databases, logs, bank providers, the company's own code repositories, and the Semantic Layer",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 22"
+        },
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 48"
+        }
+      ]
+    },
+    {
+      "id": "embat-mr-batt--architecture-knowledge",
+      "approach_id": "embat-mr-batt",
+      "field": "architecture.knowledge",
+      "text": "Each agent is defined by a system prompt, its allowed tools, and the repositories it may read; routing, Slack plumbing, memory, and tool execution are shared",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 46"
+        }
+      ]
+    },
+    {
+      "id": "embat-mr-batt--architecture-interfaces",
+      "approach_id": "embat-mr-batt",
+      "field": "architecture.interfaces",
+      "text": "slack",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 66-68"
+        }
+      ]
+    },
+    {
+      "id": "embat-mr-batt--primitives-route-to-specialist",
+      "approach_id": "embat-mr-batt",
+      "field": "primitives.route-to-specialist",
+      "text": "A lightweight step reads the conversation and picks the agent that best fits before any specialist runs",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 52-54"
+        }
+      ],
+      "display_name": "Route to a specialist",
+      "item_id": "route-to-specialist",
+      "role": "workflow"
+    },
+    {
+      "id": "embat-mr-batt--primitives-ask-user-when-router-unsure",
+      "approach_id": "embat-mr-batt",
+      "field": "primitives.ask-user-when-router-unsure",
+      "text": "When the router is not confident, it asks the person to choose; messages that are not support requests get a separate place",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 54"
+        }
+      ],
+      "display_name": "Ask the user when routing is unsure",
+      "item_id": "ask-user-when-router-unsure",
+      "role": "workflow"
+    },
+    {
+      "id": "embat-mr-batt--primitives-per-domain-specialist",
+      "approach_id": "embat-mr-batt",
+      "field": "primitives.per-domain-specialist",
+      "text": "Each agent maps to a module, task, or tool set, and the team that owns the domain owns the agent behavior",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 40-42"
+        }
+      ],
+      "display_name": "One specialist per domain",
+      "item_id": "per-domain-specialist",
+      "role": "mechanism"
+    },
+    {
+      "id": "embat-mr-batt--primitives-configure-agent-declaratively",
+      "approach_id": "embat-mr-batt",
+      "field": "primitives.configure-agent-declaratively",
+      "text": "An agent is a system prompt, a tool allowlist, and a list of readable repositories; people who cannot code can configure one",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 46"
+        }
+      ],
+      "display_name": "Declare an agent in one place",
+      "item_id": "configure-agent-declaratively",
+      "role": "mechanism"
+    },
+    {
+      "id": "embat-mr-batt--lessons-learned-generalist-prompt-interference",
+      "approach_id": "embat-mr-batt",
+      "field": "lessons_learned.generalist-prompt-interference",
+      "text": "Embat's single generalist agent needed one large system prompt that no team fully owned, and prompt changes in one domain degraded performance in another; splitting into per-domain specialists removed the interference.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "The article names the shared-prompt ownership problem and the cross-domain degradation as the reported reason for the split.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 40-42"
+        }
+      ],
+      "item_id": "generalist-prompt-interference"
+    },
+    {
+      "id": "embat-mr-batt--lessons-learned-router-asks-rather-than-guesses",
+      "approach_id": "embat-mr-batt",
+      "field": "lessons_learned.router-asks-rather-than-guesses",
+      "text": "With more than ten agents, Embat kept a human in the loop at routing, where an unsure router asks the person to choose instead of picking wrong.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "The article states the router asks the person to choose when it is not confident.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 54"
+        }
+      ],
+      "item_id": "router-asks-rather-than-guesses"
+    },
+    {
+      "id": "embat-mr-batt--lessons-learned-borrow-harness-spend-on-tools",
+      "approach_id": "embat-mr-batt",
+      "field": "lessons_learned.borrow-harness-spend-on-tools",
+      "text": "Embat chose to borrow the Claude Managed Agents platform rather than build an agent loop, and spent its effort on tools, data access, and answer speed instead.",
+      "kind": "opinion",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "The team reports its preference to borrow the platform and spend effort on tooling; the post does not compare the choice against a from-scratch build.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 26-30"
+        }
+      ],
+      "item_id": "borrow-harness-spend-on-tools"
+    },
+    {
+      "id": "embat-mr-batt--operating-models-0",
+      "approach_id": "embat-mr-batt",
+      "field": "operating_models.0",
+      "text": "Unclassified for Support question in Slack → routed specialist answer; human attention boundary: unknown.",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "unverified",
+      "confidence_reason": "The article documents human involvement only at routing, where an unsure router asks the person to choose; it does not state whether anyone reviews the specialists' answers before use.",
+      "valid_at": "2026-07",
+      "evidence": [
+        {
+          "source_id": "embat-mr-batt-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 50-54"
         }
       ]
     },
@@ -26397,6 +27062,404 @@
       ]
     },
     {
+      "id": "ramp-finance-agents--summary",
+      "approach_id": "ramp-finance-agents",
+      "field": "summary",
+      "text": "Ramp Labs pairs an internal finance agent (the Doer), which executes spreadsheet accounting workflows such as monthly revenue reconciliation and month-end inter-company transfers into ERP, with a second agent (the Architect) that watches screen recordings of accountants and writes the prompts and context files the Doer needs.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 16-24"
+        },
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 41-56"
+        }
+      ]
+    },
+    {
+      "id": "ramp-finance-agents--headline-metric",
+      "approach_id": "ramp-finance-agents",
+      "field": "headline_metric",
+      "text": "Tasks that took 1-2 hours complete in under 10 minutes, a reported 6-12x speedup",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "Ramp Labs reports the comparison directly for its named spreadsheet tasks, but states no measurement method, sample, or time period.",
+      "valid_at": "2025-10",
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 102"
+        }
+      ],
+      "reported_by": "Ramp",
+      "metric_scope": "Spreadsheet accounting tasks that took 1-2 hours, such as monthly revenue reconciliation and month-end inter-company transfers",
+      "category": "effectiveness",
+      "basis": "reported-measurement",
+      "subject": "The named spreadsheet accounting tasks"
+    },
+    {
+      "id": "ramp-finance-agents--architecture-harness",
+      "approach_id": "ramp-finance-agents",
+      "field": "architecture.harness",
+      "text": "A two-agent pipeline in which the Architect compiles a reusable Process of steps, required files, and context, and hands it to the Doer to execute; the Doer relies on model intelligence with minimal guide rails",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 45-56"
+        },
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 62-64"
+        }
+      ]
+    },
+    {
+      "id": "ramp-finance-agents--architecture-model",
+      "approach_id": "ramp-finance-agents",
+      "field": "architecture.model",
+      "text": "Architect uses Gemini 2.5 Pro with a 1M-token context window; Doer uses Claude Sonnet 4.5",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 71"
+        },
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 83"
+        }
+      ]
+    },
+    {
+      "id": "ramp-finance-agents--architecture-tool-access",
+      "approach_id": "ramp-finance-agents",
+      "field": "architecture.tool_access",
+      "text": "The Doer uses specialized tools to search, manipulate, and validate spreadsheet operations; workloads combine invoice and data-warehouse data, several tools, Excel workbooks, and ERP journal-entry import",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 54"
+        },
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 32-33"
+        }
+      ]
+    },
+    {
+      "id": "ramp-finance-agents--architecture-knowledge",
+      "approach_id": "ramp-finance-agents",
+      "field": "architecture.knowledge",
+      "text": "A Process is a compiled set of steps, required files, and additional information such as temporal dependencies, reusable across runs",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 64"
+        }
+      ]
+    },
+    {
+      "id": "ramp-finance-agents--primitives-architect-watches-recording",
+      "approach_id": "ramp-finance-agents",
+      "field": "primitives.architect-watches-recording",
+      "text": "An accountant uploads a screen recording; the Architect extracts the workflow, the required files, and temporal dependencies, and generates a structured prompt",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 70-74"
+        }
+      ],
+      "display_name": "Architect watches a screen recording",
+      "item_id": "architect-watches-recording",
+      "role": "workflow"
+    },
+    {
+      "id": "ramp-finance-agents--primitives-compile-reusable-process",
+      "approach_id": "ramp-finance-agents",
+      "field": "primitives.compile-reusable-process",
+      "text": "The Architect compiles steps, required files, and context into a Process that later runs reuse",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 64"
+        }
+      ],
+      "display_name": "Compile a reusable Process",
+      "item_id": "compile-reusable-process",
+      "role": "mechanism"
+    },
+    {
+      "id": "ramp-finance-agents--primitives-doer-executes-process",
+      "approach_id": "ramp-finance-agents",
+      "field": "primitives.doer-executes-process",
+      "text": "The Doer receives the Process and uploaded files, manipulates the spreadsheets, and returns a completed spreadsheet",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 82-85"
+        }
+      ],
+      "display_name": "Doer executes the Process",
+      "item_id": "doer-executes-process",
+      "role": "workflow"
+    },
+    {
+      "id": "ramp-finance-agents--primitives-validation-checks-per-instruction",
+      "approach_id": "ramp-finance-agents",
+      "field": "primitives.validation-checks-per-instruction",
+      "text": "The Doer runs validation checks as it executes each instruction",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "not-assessed",
+      "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 84"
+        }
+      ],
+      "display_name": "Validation checks per instruction",
+      "item_id": "validation-checks-per-instruction",
+      "role": "validation"
+    },
+    {
+      "id": "ramp-finance-agents--key-metrics-spreadsheetbench-soft-restriction",
+      "approach_id": "ramp-finance-agents",
+      "field": "key_metrics.spreadsheetbench-soft-restriction",
+      "text": "49.5% accuracy on SpreadsheetBench soft-restriction tasks, tested on about 50 randomly selected tasks with 3 test cases each (OpenAI reported 45.5%)",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A self-run benchmark with a stated task count and comparison figures; the evaluation setup is reported only by Ramp Labs.",
+      "valid_at": "2025-10",
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 97-99"
+        }
+      ],
+      "reported_by": "Ramp",
+      "metric_scope": "About 50 randomly selected SpreadsheetBench tasks with 3 test cases each",
+      "item_id": "spreadsheetbench-soft-restriction",
+      "category": "effectiveness",
+      "basis": "reported-measurement",
+      "subject": "Doer agent accuracy on SpreadsheetBench soft-restriction tasks"
+    },
+    {
+      "id": "ramp-finance-agents--key-metrics-spreadsheetbench-hard-restriction",
+      "approach_id": "ramp-finance-agents",
+      "field": "key_metrics.spreadsheetbench-hard-restriction",
+      "text": "32.5% accuracy on SpreadsheetBench hard-restriction tasks in the same test (GPT-4o reported 13.38%)",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "A self-run benchmark with a stated task count and comparison figures; the evaluation setup is reported only by Ramp Labs.",
+      "valid_at": "2025-10",
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 100"
+        }
+      ],
+      "reported_by": "Ramp",
+      "metric_scope": "The same about 50 randomly selected SpreadsheetBench tasks with 3 test cases each",
+      "item_id": "spreadsheetbench-hard-restriction",
+      "category": "effectiveness",
+      "basis": "reported-measurement",
+      "subject": "Doer agent accuracy on SpreadsheetBench hard-restriction tasks"
+    },
+    {
+      "id": "ramp-finance-agents--key-metrics-prompt-crafting-before-architect",
+      "approach_id": "ramp-finance-agents",
+      "field": "key_metrics.prompt-crafting-before-architect",
+      "text": "30-45 minutes of prompt crafting, file uploading, and error resolution per use before the Architect existed",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "medium",
+      "confidence_reason": "The post states the setup time directly as the reported cost of each use before the Architect existed, with no measurement method.",
+      "valid_at": "2025-10",
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 16"
+        }
+      ],
+      "reported_by": "Ramp",
+      "metric_scope": "Prompt crafting, file uploading, and error resolution per use of the finance agent",
+      "item_id": "prompt-crafting-before-architect",
+      "category": "cost-latency",
+      "basis": "reported-measurement",
+      "subject": "Manual setup time per finance-agent use before the Architect"
+    },
+    {
+      "id": "ramp-finance-agents--lessons-learned-bottleneck-instruction-not-execution",
+      "approach_id": "ramp-finance-agents",
+      "field": "lessons_learned.bottleneck-instruction-not-execution",
+      "text": "At Ramp the bottleneck was instruction, not execution; once the Architect wrote the prompts, adding workflows cost near-zero human time instead of scaling with prompt-writing capacity.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "The post states the bottleneck conclusion and the scaling contrast between manual prompt writing and Architect-generated workflows.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 37"
+        },
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 110"
+        }
+      ],
+      "item_id": "bottleneck-instruction-not-execution"
+    },
+    {
+      "id": "ramp-finance-agents--lessons-learned-complementary-model-strengths",
+      "approach_id": "ramp-finance-agents",
+      "field": "lessons_learned.complementary-model-strengths",
+      "text": "Ramp Labs used Gemini 2.5 Pro's long-context multimodal ability to extract workflows from video and Claude Sonnet 4.5 for swift, precise, economic execution.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "The post names both models and the strength each contributed to its stage of the pipeline.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 111"
+        }
+      ],
+      "item_id": "complementary-model-strengths"
+    },
+    {
+      "id": "ramp-finance-agents--lessons-learned-production-agents-still-hard",
+      "approach_id": "ramp-finance-agents",
+      "field": "lessons_learned.production-agents-still-hard",
+      "text": "Despite powerful models, the Ramp Labs team spent weeks iterating on system prompts, tool designs, and error handling; the engineering mattered as much as the models.",
+      "kind": "fact",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "The post reports the weeks of iteration on prompts, tools, and error handling directly.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 112"
+        }
+      ],
+      "item_id": "production-agents-still-hard"
+    },
+    {
+      "id": "ramp-finance-agents--lessons-learned-async-intake-not-autonomy",
+      "approach_id": "ramp-finance-agents",
+      "field": "lessons_learned.async-intake-not-autonomy",
+      "text": "The post documents unattended prompt generation and asynchronous pickup, but not whether a person reviews the completed spreadsheets or ERP entries; the catalog records the review boundary as unknown.",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "medium",
+      "confidence_reason": "The inference follows from what the post leaves unstated; the unattended generation and the partial-completion interventions are reported, the review boundary for completed work is not.",
+      "valid_at": null,
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 20"
+        },
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 102"
+        }
+      ],
+      "item_id": "async-intake-not-autonomy"
+    },
+    {
+      "id": "ramp-finance-agents--operating-models-0",
+      "approach_id": "ramp-finance-agents",
+      "field": "operating_models.0",
+      "text": "Unclassified for Accountant screen recording → reusable Process → completed spreadsheet; human attention boundary: unknown.",
+      "kind": "inference",
+      "provenance": "catalog-judgment",
+      "confidence": "unverified",
+      "confidence_reason": "The post reports that the Architect generates prompts without human intervention and that accountants return to a ready-to-use process, and it names human intervention only after partial completions; it does not state whether a person reviews completed work in a normal run.",
+      "valid_at": "2025-10",
+      "evidence": [
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 93"
+        },
+        {
+          "source_id": "ramp-finance-agents-source-1",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 102"
+        }
+      ]
+    },
+    {
       "id": "ramp-inspect--summary",
       "approach_id": "ramp-inspect",
       "field": "summary",
@@ -27822,7 +28885,7 @@
       "provenance": "reported",
       "confidence": "not-assessed",
       "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
-      "valid_at": null,
+      "valid_at": "2026-07",
       "evidence": [
         {
           "source_id": "sentry-junior-source-1",
@@ -27836,7 +28899,7 @@
         }
       ],
       "reported_by": "Sentry",
-      "metric_scope": "Junior codebase size (excluding tests, evals, documentation, and lockfiles) and license in the author report",
+      "metric_scope": "Junior codebase size (excluding tests, evals, documentation, and lockfiles) and license in the July 2026 author report",
       "category": "implementation-scale",
       "basis": "reported-measurement",
       "subject": "Junior codebase size, Apache-2.0 license, and internal use at Sentry"
@@ -28128,12 +29191,12 @@
       "id": "sentry-junior--key-metrics-lines-typescript-excluding-tests-evals-docs",
       "approach_id": "sentry-junior",
       "field": "key_metrics.lines-typescript-excluding-tests-evals-docs",
-      "text": "Around 100,000 lines of TypeScript excluding tests, evals, docs, and lockfiles",
+      "text": "Around 100,000 lines of TypeScript excluding tests, evals, docs, and lockfiles at the July 2026 writeup",
       "kind": "metric",
       "provenance": "reported",
       "confidence": "not-assessed",
       "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
-      "valid_at": null,
+      "valid_at": "2026-07",
       "evidence": [
         {
           "source_id": "sentry-junior-source-1",
@@ -28142,10 +29205,33 @@
         }
       ],
       "reported_by": "Sentry",
-      "metric_scope": "TypeScript lines in Junior excluding tests, evals, documentation, and lockfiles",
+      "metric_scope": "TypeScript lines in Junior excluding tests, evals, documentation, and lockfiles at the July 2026 writeup",
       "item_id": "lines-typescript-excluding-tests-evals-docs",
       "duplicate_of": "sentry-junior--headline-metric",
       "reason": "Component of the compound headline: the same about-100,000-line TypeScript count with the same exclusions."
+    },
+    {
+      "id": "sentry-junior--key-metrics-lines-typescript-october-2026-recount",
+      "approach_id": "sentry-junior",
+      "field": "key_metrics.lines-typescript-october-2026-recount",
+      "text": "Around 171,700 lines of TypeScript under the same exclusions, counted from the public repository on 2026-10-08",
+      "kind": "metric",
+      "provenance": "observed",
+      "confidence": "medium",
+      "confidence_reason": "A direct count on the public main branch, reproduced by two independent checks on 2026-10-08; the exclusion set mirrors the writeup's wording rather than a Sentry-defined list.",
+      "valid_at": "2026-10",
+      "evidence": [
+        {
+          "source_id": "sentry-junior-source-2",
+          "relation": "supports",
+          "locator": "Repository main branch on 2026-10-08, TypeScript line count excluding test, spec, fixture, eval, and docs files"
+        }
+      ],
+      "measurement_method": "Line count of TypeScript files on the repository main branch excluding test, spec, fixture, eval, and docs paths",
+      "item_id": "lines-typescript-october-2026-recount",
+      "category": "implementation-scale",
+      "basis": "reported-measurement",
+      "subject": "Junior codebase TypeScript lines excluding tests, evals, docs, and lockfiles"
     },
     {
       "id": "sentry-junior--key-metrics-time-from-start-to-writeup",
@@ -36228,6 +37314,39 @@
       "approach_id": "doordash-code-review"
     },
     {
+      "id": "doordash-code-review-source-2",
+      "title": "Delegating Engineering Work To Cloud-Based Agents (Flux)",
+      "url": "https://careersatdoordash.com/blog/delegating-engineering-work-to-cloud-based-agents/",
+      "canonical_url": "https://careersatdoordash.com/blog/delegating-engineering-work-to-cloud-based-agents/",
+      "kind": "engineering-blog",
+      "provenance_class": "first-party",
+      "published_at": "2026-08-11",
+      "accessed_at": "2026-10-08",
+      "last_verified_at": "2026-10-08",
+      "duplicate_of": "doordash-flux-source-3",
+      "role": "evidence",
+      "approach_id": "doordash-code-review",
+      "capture": {
+        "schema_version": 1,
+        "source_id": "doordash-flux-source-3",
+        "original_url": "https://careersatdoordash.com/blog/delegating-engineering-work-to-cloud-based-agents/",
+        "final_url": "https://careersatdoordash.com/blog/delegating-engineering-work-to-cloud-based-agents/",
+        "captured_at": "2026-08-31T18:09:17Z",
+        "http_status": 200,
+        "tool": {
+          "name": "steel",
+          "version": "0.4.4"
+        },
+        "artifacts": {
+          "markdown": {
+            "path": "archive/sources/doordash-flux-source-3/content.md",
+            "sha256": "sha256:b319a0ace131d82a2c4f8b477df5511412e3a1c3127e5d74cdb5598624f75b15",
+            "bytes": 9896
+          }
+        }
+      }
+    },
+    {
       "id": "doordash-ai-marketplace-source-1",
       "title": "Beyond single agents: DoorDash's collaborative AI ecosystem",
       "url": "https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/",
@@ -36487,6 +37606,38 @@
       "approach_id": "dropbox-nova"
     },
     {
+      "id": "dropbox-nova-source-3",
+      "title": "Beyond code generation — rethinking engineering productivity in the age of AI agents",
+      "url": "https://dropbox.tech/culture/beyond-code-generation-rethinking-engineering-productivity-in-the-age-of-ai-agents",
+      "canonical_url": "https://dropbox.tech/culture/beyond-code-generation-rethinking-engineering-productivity-in-the-age-of-ai-agents",
+      "kind": "engineering-blog",
+      "provenance_class": "first-party",
+      "published_at": "2026-05-28",
+      "accessed_at": "2026-10-08",
+      "last_verified_at": "2026-10-08",
+      "capture": {
+        "schema_version": 1,
+        "source_id": "dropbox-nova-source-3",
+        "original_url": "https://dropbox.tech/culture/beyond-code-generation-rethinking-engineering-productivity-in-the-age-of-ai-agents",
+        "final_url": "https://dropbox.tech/culture/beyond-code-generation-rethinking-engineering-productivity-in-the-age-of-ai-agents",
+        "captured_at": "2026-10-08T17:55:03Z",
+        "http_status": 200,
+        "tool": {
+          "name": "steel",
+          "version": "0.5.0-preview.6"
+        },
+        "artifacts": {
+          "markdown": {
+            "path": "archive/sources/dropbox-nova-source-3/content.md",
+            "sha256": "sha256:4bbaab295481e2f448825441a1c0e93b2248292d0286d04a5d1066ec933f7409",
+            "bytes": 10552
+          }
+        }
+      },
+      "role": "evidence",
+      "approach_id": "dropbox-nova"
+    },
+    {
       "id": "duolingo-agentic-workflows-source-1",
       "title": "Scaling Engineering with Agentic Workflows",
       "url": "https://blog.duolingo.com/agentic-workflows/",
@@ -36522,6 +37673,38 @@
         }
       },
       "approach_id": "duolingo-agentic-workflows"
+    },
+    {
+      "id": "embat-mr-batt-source-1",
+      "title": "How We Built an Internal AI Agent Platform at Embat",
+      "url": "https://www.embat.io/tech/internal-ai-agent-platform",
+      "canonical_url": "https://www.embat.io/tech/internal-ai-agent-platform",
+      "kind": "engineering-blog",
+      "provenance_class": "first-party",
+      "published_at": "2026-07-21",
+      "accessed_at": "2026-10-08",
+      "last_verified_at": "2026-10-08",
+      "capture": {
+        "schema_version": 1,
+        "source_id": "embat-mr-batt-source-1",
+        "original_url": "https://www.embat.io/tech/internal-ai-agent-platform",
+        "final_url": "https://www.embat.io/tech/internal-ai-agent-platform",
+        "captured_at": "2026-10-08T15:18:23Z",
+        "http_status": 200,
+        "tool": {
+          "name": "steel",
+          "version": "0.5.0-preview.6"
+        },
+        "artifacts": {
+          "markdown": {
+            "path": "archive/sources/embat-mr-batt-source-1/content.md",
+            "sha256": "sha256:af8cbdd29449a2c8dc17366a17f8420158fe5ffbde7a0932df459efd601ef3ad",
+            "bytes": 6893
+          }
+        }
+      },
+      "role": "evidence",
+      "approach_id": "embat-mr-batt"
     },
     {
       "id": "figma-security-agent-source-1",
@@ -37856,6 +39039,39 @@
       "approach_id": "posthog-stamphog"
     },
     {
+      "id": "ramp-finance-agents-source-1",
+      "title": "We built an agent to prompt our internal finance agent",
+      "url": "https://ramplabs.substack.com/p/we-built-an-agent-to-prompt-our-internal",
+      "canonical_url": "https://ramplabs.substack.com/p/we-built-an-agent-to-prompt-our-internal",
+      "kind": "engineering-blog",
+      "provenance_class": "first-party",
+      "publisher": "Ramp Labs",
+      "published_at": "2025-10-01",
+      "accessed_at": "2026-10-08",
+      "last_verified_at": "2026-10-08",
+      "capture": {
+        "schema_version": 1,
+        "source_id": "ramp-finance-agents-source-1",
+        "original_url": "https://ramplabs.substack.com/p/we-built-an-agent-to-prompt-our-internal",
+        "final_url": "https://ramplabs.substack.com/p/we-built-an-agent-to-prompt-our-internal",
+        "captured_at": "2026-10-08T15:18:29Z",
+        "http_status": 200,
+        "tool": {
+          "name": "steel",
+          "version": "0.5.0-preview.6"
+        },
+        "artifacts": {
+          "markdown": {
+            "path": "archive/sources/ramp-finance-agents-source-1/content.md",
+            "sha256": "sha256:2e311499a878aefee5f7872e55e4a7e5198e4ea4a25a3f56726c28987b04a946",
+            "bytes": 8111
+          }
+        }
+      },
+      "role": "evidence",
+      "approach_id": "ramp-finance-agents"
+    },
+    {
       "id": "ramp-inspect-source-1",
       "title": "Why We Built Our Own Background Agent (Inspect)",
       "url": "https://engineering.ramp.com/post/why-we-built-our-background-agent",
@@ -38183,6 +39399,10 @@
       "canonical_url": "https://cra.mr/building-an-intern/",
       "kind": "engineering-blog",
       "provenance_class": "first-party",
+      "authors": [
+        "David Cramer"
+      ],
+      "published_at": "2026-07-02",
       "accessed_at": "2026-08-12",
       "last_verified_at": "2026-08-31",
       "capture": {
@@ -39818,6 +41038,12 @@
         "source_url": "https://design.duolingo.com/illustration/duo",
         "accessed_at": "2026-09-25"
       }
+    },
+    {
+      "id": "embat",
+      "name": "Embat",
+      "homepage": "https://www.embat.io/",
+      "logo": null
     },
     {
       "id": "figma",

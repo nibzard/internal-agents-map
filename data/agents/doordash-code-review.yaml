@@ -10,7 +10,7 @@ deployment_stage: scaled
 first_public_evidence:
   date: '2026'
   source_id: doordash-code-review-source-1
-last_reviewed_at: '2026-09-16'
+last_reviewed_at: '2026-10-08'
 status: internal
 domains:
 - code-review
@@ -23,8 +23,8 @@ rubric:
   - background
   - event-driven
   evidence_strength: detailed-primary
-summary: A specialized agent that automatically reviews 10,000+ PRs a week across 56 repositories, emphasizing grounded
-  high-confidence findings over noisy comments.
+summary: A specialized agent that automatically reviews 10,000+ PRs a week across 56 repositories as of May 2026,
+  emphasizing grounded high-confidence findings over noisy comments.
 headline_metric: 10,000+ pull requests reviewed per week across 56 repositories
 architecture:
   harness: Three architecture versions; emphasis on attention and grounded, high-confidence findings rather than
@@ -46,7 +46,10 @@ primitives:
 - {id: evaluation-loop, name: Evaluation loop, desc: Changes are tested on real past review misses and high-severity incidents before production acceptance data is checked, role: validation}
 key_metrics:
 - id: prs-reviewed-typical-week-repositories
-  text: 10,000+ PRs reviewed in a typical week across 56 repositories
+  text: 10,000+ PRs reviewed in a typical week across 56 repositories as of May 2026
+- id: automated-code-reviews-week-august-2026
+  text: More than 25,000 automated code reviews each week as of August 2026, counted as review
+    runs rather than pull requests
 - id: action-rate-settled-high-critical-findings
   text: 60.2% action rate on settled high/critical findings (measured sample)
 - id: average-cost-per-review
@@ -69,13 +72,23 @@ sources:
   last_verified_at: '2026-08-31'
   capture:
     manifest_path: archive/sources/doordash-code-review-source-1/metadata.json
+- id: doordash-code-review-source-2
+  title: Delegating Engineering Work To Cloud-Based Agents (Flux)
+  url: https://careersatdoordash.com/blog/delegating-engineering-work-to-cloud-based-agents/
+  kind: engineering-blog
+  provenance_class: first-party
+  published_at: '2026-08-11'
+  accessed_at: '2026-10-08'
+  last_verified_at: '2026-10-08'
+  duplicate_of: doordash-flux-source-3
 evidence:
   operating_models.0:
   - source_id: doordash-code-review-source-1
   summary:
   - source_id: doordash-code-review-source-1
   headline_metric:
-  - locator: Preserved content.md, lines 23
+  - source_id: doordash-code-review-source-1
+    locator: Preserved content.md, lines 23
   architecture.harness:
   - source_id: doordash-code-review-source-1
   architecture.tool_access:
@@ -83,31 +96,39 @@ evidence:
   architecture.knowledge:
   - source_id: doordash-code-review-source-1
   primitives.grounded-findings:
-  - locator: Preserved content.md, lines 56-68,166
+  - source_id: doordash-code-review-source-1
+    locator: Preserved content.md, lines 56-68,166
   primitives.automatic-review-trigger:
-  - {locator: 'Preserved content.md, line 23'}
+  - {source_id: doordash-code-review-source-1, locator: 'Preserved content.md, line 23'}
   primitives.lead-scout:
-  - {locator: 'Preserved content.md, lines 42–44'}
+  - {source_id: doordash-code-review-source-1, locator: 'Preserved content.md, lines 42–44'}
   primitives.deep-reviewers:
-  - {locator: 'Preserved content.md, lines 42–46'}
+  - {source_id: doordash-code-review-source-1, locator: 'Preserved content.md, lines 42–46'}
   primitives.disprove-it-pass:
-  - {locator: 'Preserved content.md, lines 58–68'}
+  - {source_id: doordash-code-review-source-1, locator: 'Preserved content.md, lines 58–68'}
   primitives.optional-fixer:
-  - {locator: 'Preserved content.md, lines 131–144'}
+  - {source_id: doordash-code-review-source-1, locator: 'Preserved content.md, lines 131–144'}
   primitives.evaluation-loop:
-  - {locator: 'Preserved content.md, lines 170–180'}
+  - {source_id: doordash-code-review-source-1, locator: 'Preserved content.md, lines 170–180'}
   key_metrics.prs-reviewed-typical-week-repositories:
-  - locator: Preserved content.md, lines 23
+  - source_id: doordash-code-review-source-1
+    locator: Preserved content.md, lines 23
+  key_metrics.automated-code-reviews-week-august-2026:
+  - source_id: doordash-code-review-source-2
+    locator: Preserved content.md, lines 10
   key_metrics.action-rate-settled-high-critical-findings:
-  - locator: Preserved content.md, lines 27
+  - source_id: doordash-code-review-source-1
+    locator: Preserved content.md, lines 27
   key_metrics.average-cost-per-review:
-  - {locator: 'Preserved content.md, lines 29, 129'}
+  - {source_id: doordash-code-review-source-1, locator: 'Preserved content.md, lines 29, 129'}
   key_metrics.findings-posted-minutes-pull-request-opens:
-  - {locator: 'Preserved content.md, line 30'}
+  - {source_id: doordash-code-review-source-1, locator: 'Preserved content.md, line 30'}
   lessons_learned.favors-fewer-actionable-review-comments-accepting:
-  - locator: Preserved content.md, lines 56-68,166
+  - source_id: doordash-code-review-source-1
+    locator: Preserved content.md, lines 56-68,166
   lessons_learned.acceptance-rate-describes-how-engineers-use:
-  - locator: Preserved content.md, lines 56-68
+  - source_id: doordash-code-review-source-1
+    locator: Preserved content.md, lines 56-68
   architecture.interfaces:
   - source_id: doordash-code-review-source-1
 claim_metadata:
@@ -128,12 +149,27 @@ claim_metadata:
     confidence_reason: The report ties acceptance to its precision-first policy. A denominator of published comments
       does not measure recall over all defects.
   headline_metric:
-    metric_scope: Typical weekly PR reviews across 56 onboarded repositories
+    metric_scope: Typical weekly PR reviews across 56 onboarded repositories as reported in
+      May 2026
+    valid_at: '2026-05'
     category: adoption-output
     basis: reported-measurement
     subject: Typical weekly reviews across 56 repositories
   key_metrics.prs-reviewed-typical-week-repositories:
-    metric_scope: Typical weekly PR reviews across 56 onboarded repositories
+    metric_scope: Typical weekly PR reviews across 56 onboarded repositories as reported in
+      May 2026
+    valid_at: '2026-05'
+  key_metrics.automated-code-reviews-week-august-2026:
+    confidence: high
+    confidence_reason: The August 2026 Flux post states the weekly figure directly; the count
+      covers review runs, which this record keeps explicit so it cannot be read as distinct
+      pull requests.
+    valid_at: '2026-08'
+    metric_scope: Automated code reviews per week across DoorDash agent workflows; the count
+      unit is review runs, not distinct pull requests
+    category: adoption-output
+    basis: reported-measurement
+    subject: Automated code reviews completed per week across DoorDash agent workflows
   key_metrics.action-rate-settled-high-critical-findings:
     metric_scope: Settled high and critical findings that led to code changes before merge
     denominator: 2,256 settled high and critical findings
@@ -160,7 +196,7 @@ claim_metadata:
 page_content:
   version: 1
   reviewed_at: '2026-09-17'
-  source_ids: [doordash-code-review-source-1]
+  source_ids: [doordash-code-review-source-1, doordash-code-review-source-2]
   workflow_scope: Pull request opening → staged review → published finding and optional fix
   questions:
     purpose: {state: reported}

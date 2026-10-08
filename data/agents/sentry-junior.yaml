@@ -7,7 +7,7 @@ deployment_stage: deployed
 first_public_evidence:
   date: '2026'
   source_id: sentry-junior-source-2
-last_reviewed_at: '2026-09-16'
+last_reviewed_at: '2026-10-08'
 status: open-sourced
 domains:
 - coding
@@ -71,7 +71,11 @@ primitives:
     check or requested change becomes a synthetic message, and Junior decides what to update in the thread', role: workflow}
 key_metrics:
 - id: lines-typescript-excluding-tests-evals-docs
-  text: Around 100,000 lines of TypeScript excluding tests, evals, docs, and lockfiles
+  text: Around 100,000 lines of TypeScript excluding tests, evals, docs, and lockfiles at the
+    July 2026 writeup
+- id: lines-typescript-october-2026-recount
+  text: Around 171,700 lines of TypeScript under the same exclusions, counted from the public
+    repository on 2026-10-08
 - id: time-from-start-to-writeup
   text: 4 months from start to writeup
 lessons_learned:
@@ -93,6 +97,9 @@ sources:
   url: https://cra.mr/building-an-intern/
   kind: engineering-blog
   provenance_class: first-party
+  authors:
+  - David Cramer
+  published_at: '2026-07-02'
   accessed_at: '2026-08-12'
   last_verified_at: '2026-08-31'
   capture:
@@ -179,6 +186,10 @@ evidence:
   key_metrics.lines-typescript-excluding-tests-evals-docs:
   - source_id: sentry-junior-source-1
     locator: Preserved content.md, lines 22
+  key_metrics.lines-typescript-october-2026-recount:
+  - source_id: sentry-junior-source-2
+    locator: Repository main branch on 2026-10-08, TypeScript line count excluding test,
+      spec, fixture, eval, and docs files
   key_metrics.time-from-start-to-writeup:
   - source_id: sentry-junior-source-1
     locator: Preserved content.md, lines 10–22
@@ -240,13 +251,29 @@ claim_metadata:
     confidence_reason: The authorization discussion distinguishes global read access from user-authorized writes;
       it is an integration design, not a guarantee for every tool.
   headline_metric:
-    metric_scope: Junior codebase size (excluding tests, evals, documentation, and lockfiles) and license in the author report
+    metric_scope: Junior codebase size (excluding tests, evals, documentation, and lockfiles)
+      and license in the July 2026 author report
+    valid_at: '2026-07'
     category: implementation-scale
     basis: reported-measurement
     subject: 'Junior codebase size,
       Apache-2.0 license, and internal use at Sentry'
   key_metrics.lines-typescript-excluding-tests-evals-docs:
     metric_scope: TypeScript lines in Junior excluding tests, evals, documentation, and lockfiles
+      at the July 2026 writeup
+    valid_at: '2026-07'
+  key_metrics.lines-typescript-october-2026-recount:
+    provenance: observed
+    confidence: medium
+    confidence_reason: A direct count on the public main branch, reproduced by two independent
+      checks on 2026-10-08; the exclusion set mirrors the writeup's wording rather than a
+      Sentry-defined list.
+    valid_at: '2026-10'
+    category: implementation-scale
+    basis: reported-measurement
+    subject: Junior codebase TypeScript lines excluding tests, evals, docs, and lockfiles
+    measurement_method: Line count of TypeScript files on the repository main branch excluding
+      test, spec, fixture, eval, and docs paths
   key_metrics.time-from-start-to-writeup:
     metric_scope: Author-reported development and iteration time before the writeup
     category: implementation-scale

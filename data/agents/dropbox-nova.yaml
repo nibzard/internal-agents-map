@@ -7,7 +7,7 @@ deployment_stage: scaled
 first_public_evidence:
   date: '2026'
   source_id: dropbox-nova-source-1
-last_reviewed_at: '2026-09-16'
+last_reviewed_at: '2026-10-08'
 status: internal
 domains:
 - coding
@@ -74,6 +74,9 @@ primitives:
     or attempts reach the cap of five
   role: workflow
 key_metrics:
+- id: one-in-twelve-pull-requests-may-2026
+  text: Roughly 1 in 12 pull requests at Dropbox, with adoption continuing to grow, as of May
+    2026
 - id: flaky-test-remediation-deflaker-validation-runs
   text: 'Flaky-test remediation (Deflaker): 100+ validation runs'
 - id: predecessor-goose-based-migrator-used-thousands
@@ -113,6 +116,16 @@ sources:
   last_verified_at: '2026-08-31'
   capture:
     manifest_path: archive/sources/dropbox-nova-source-2/metadata.json
+- id: dropbox-nova-source-3
+  title: Beyond code generation — rethinking engineering productivity in the age of AI agents
+  url: https://dropbox.tech/culture/beyond-code-generation-rethinking-engineering-productivity-in-the-age-of-ai-agents
+  kind: engineering-blog
+  provenance_class: first-party
+  published_at: '2026-05-28'
+  accessed_at: '2026-10-08'
+  last_verified_at: '2026-10-08'
+  capture:
+    manifest_path: archive/sources/dropbox-nova-source-3/metadata.json
 evidence:
   operating_models.0:
   - source_id: dropbox-nova-source-1
@@ -150,6 +163,9 @@ evidence:
   key_metrics.flaky-test-remediation-deflaker-validation-runs:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, lines 58–62
+  key_metrics.one-in-twelve-pull-requests-may-2026:
+  - source_id: dropbox-nova-source-3
+    locator: Preserved content.md, lines 32
   key_metrics.predecessor-goose-based-migrator-used-thousands:
   - source_id: dropbox-nova-source-1
     locator: Preserved content.md, lines 65–69
@@ -217,6 +233,16 @@ claim_metadata:
     confidence: medium
     confidence_reason: Dropbox gives its repository shape and existing build infrastructure as reasons for integration,
       rather than a separate agent-only workflow.
+  key_metrics.one-in-twelve-pull-requests-may-2026:
+    confidence: high
+    confidence_reason: The May 2026 post states the share directly for all Dropbox pull requests
+      and adds that adoption was still growing.
+    valid_at: '2026-05'
+    metric_scope: Share of all Dropbox pull requests accounted for by Nova, snapshot at publication
+    denominator: All pull requests at Dropbox
+    category: adoption-output
+    basis: reported-measurement
+    subject: Share of Dropbox pull requests involving Nova
   headline_metric:
     metric_scope: Migration-owner orchestration of dozens of agents from a shared runbook; qualitative capacity
       description
@@ -243,6 +269,7 @@ page_content:
   source_ids:
   - dropbox-nova-source-1
   - dropbox-nova-source-2
+  - dropbox-nova-source-3
   workflow_scope: Athena flaky-test alert through the Deflaker fix-and-validate loop to a landed fix or capped attempts
   questions:
     purpose:

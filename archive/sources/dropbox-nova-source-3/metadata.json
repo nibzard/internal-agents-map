@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "source_id": "dropbox-nova-source-3",
+  "original_url": "https://dropbox.tech/culture/beyond-code-generation-rethinking-engineering-productivity-in-the-age-of-ai-agents",
+  "final_url": "https://dropbox.tech/culture/beyond-code-generation-rethinking-engineering-productivity-in-the-age-of-ai-agents",
+  "captured_at": "2026-10-08T17:55:03Z",
+  "http_status": 200,
+  "tool": {
+    "name": "steel",
+    "version": "0.5.0-preview.6"
+  },
+  "artifacts": {
+    "markdown": {
+      "path": "archive/sources/dropbox-nova-source-3/content.md",
+      "sha256": "sha256:4bbaab295481e2f448825441a1c0e93b2248292d0286d04a5d1066ec933f7409",
+      "bytes": 10552
+    }
+  }
+}

@@ -28,7 +28,7 @@ undocumented details stay unknown.
 
 <!-- BEGIN OVERVIEW -->
 
-**Current map: 51 agents across 41 organizations, plus 15 infrastructure records. The complete catalog is backed by 122 distinct sources and 1148 evidence-linked claims.**
+**Current map: 53 agents across 42 organizations, plus 15 infrastructure records. The complete catalog is backed by 125 distinct sources and 1183 evidence-linked claims.**
 
 ## Agents
 
@@ -52,6 +52,7 @@ undocumented details stay unknown.
 | DoorDash | [AI Code Review Agent](docs/landscape.md#doordash-code-review) | agent | code-review |
 | DoorDash | [DataExplorer](docs/landscape.md#doordash-dataexplorer) | agent | data |
 | Dropbox | [Deflaker](docs/landscape.md#dropbox-deflaker) | agent | coding |
+| Embat | [Mr. Batt](docs/landscape.md#embat-mr-batt) | agent-system | support |
 | Figma | [Security alert triage and investigation agents](docs/landscape.md#figma-security-agent) | agent-system | security, on-call, coding |
 | Flex | [AI Investigation Agent](docs/landscape.md#flex-investigation-agent) | agent | finance-ops, on-call, coding |
 | GitHub | [Qubot](docs/landscape.md#github-qubot) | agent | data |
@@ -68,6 +69,7 @@ undocumented details stay unknown.
 | Plaid | [AI Annotator](docs/landscape.md#plaid-ai-annotator) | agent | data |
 | Plaid | [Fix My Connection](docs/landscape.md#plaid-fix-my-connection) | agent | ops, maintenance |
 | PostHog | [StampHog](docs/landscape.md#posthog-stamphog) | agent | code-review |
+| Ramp | [Doer and Architect](docs/landscape.md#ramp-finance-agents) | agent-system | finance-ops |
 | Ramp | [Inspect](docs/landscape.md#ramp-inspect) | agent | coding, code-review, on-call |
 | Replit | [Manager agent (agent-of-agents)](docs/landscape.md#replit-manager-agent) | agent | coding, code-review, support, research, data |
 | Salesforce | [Slackbot](docs/landscape.md#salesforce-slackbot) | agent | support, customer-success, ops |
@@ -118,11 +120,11 @@ exception-only supervision. Levels describe a specific workflow, not company mat
 
 ## What the current map shows
 
-These counts classify 66 catalog entries. A platform and one of its components can both appear, so the entries are not independent deployments, shares of industry practice, or counts of successful runs.
+These counts classify 68 catalog entries. A platform and one of its components can both appear, so the entries are not independent deployments, shares of industry practice, or counts of successful runs.
 
-Agent autonomy (51 records; infrastructure excluded) is classified as 28 drafts-reviewed, 5 human-in-loop, 6 autonomous, 1 assistive, and 11 unknown. Human-in-loop includes approval checkpoints; it does not mean a person continuously steers the whole run.
+Agent autonomy (53 records; infrastructure excluded) is classified as 28 drafts-reviewed, 5 human-in-loop, 6 autonomous, 1 assistive, and 13 unknown. Human-in-loop includes approval checkpoints; it does not mean a person continuously steers the whole run.
 
-The catalog contains 65 scoped supervision assessments across those entries, including 3 continuous-steering, 33 work-product-review, 1 outcome-review, 7 exception-only, and 21 unknown assessments. 10 entries have more than one assessed workflow; the counts therefore do not assign one level to each company.
+The catalog contains 67 scoped supervision assessments across those entries, including 3 continuous-steering, 33 work-product-review, 1 outcome-review, 7 exception-only, and 23 unknown assessments. 10 entries have more than one assessed workflow; the counts therefore do not assign one level to each company.
 
 15 entries are platforms or supporting patterns. Review cost, failure rates, and retired systems remain rarely reported.
 
