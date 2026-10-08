@@ -9,7 +9,7 @@ The model is rarely what holds an internal agent back.
 
 DoorDash rebuilt its AI code reviewer three times. The first version split the review among specialists for security, tests, and performance, and they missed changes that crossed system boundaries. The second gave the whole change to two generalist reviewers, who had too much to investigate. The third puts a scout first to write leads, and the two reviewers verify them. Each redesign changed how the work was divided and checked. ([DoorDash](https://careersatdoordash.com/blog/doordash-built-an-ai-code-reviewer-engineers-actually-listen-to/))
 
-We kept finding versions of that story. Once an agent can produce useful work, the engineering problem becomes managing that work reliably: where the agent works, what it can see, who checks it, when it stops, and what survives when it fails.
+We kept finding versions of that story. Once an agent could produce useful work, the problem changed. It became managing that work reliably: where the agent works, what it can see, who checks it, when it stops, and what survives when it fails.
 
 ## Why we made a map
 
@@ -45,7 +45,7 @@ DoorDash wasn't alone in redesigning how the work is split. [Embat's agent](http
 
 Teams spend more on what the agent can see and use than we expected.
 
-Stripe gives [Minions](https://internal-agents.com/agents/stripe-minions), its coding agents, rule files and an internal tool server with hundreds of tools, on machines warmed up before a task arrives. Cloudflare measured about 15,000 tokens of tool descriptions for 34 GitLab tools before the model started any work, so its agent now searches for the tool it needs. ([Cloudflare](https://blog.cloudflare.com/internal-ai-engineering-stack/)) GitHub said its analytics agent got faster mainly because of better-curated context, with no change of model. ([GitHub](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/))
+Stripe gives [Minions](https://internal-agents.com/agents/stripe-minions), its coding agents, rule files and an internal tool server with hundreds of tools. The machines are warmed up before a task arrives. Cloudflare measured about 15,000 tokens of tool descriptions for 34 GitLab tools before the model started any work, so its agent now searches for the tool it needs. ([Cloudflare](https://blog.cloudflare.com/internal-ai-engineering-stack/)) GitHub said its analytics agent got faster mainly because of better-curated context, with no change of model. ([GitHub](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/))
 
 Ramp's [finance agent](https://internal-agents.com/agents/ramp-finance-agents) handles work like monthly revenue reconciliation. Writing the prompts and context for each use took 30 to 45 minutes by hand, so Ramp built a second agent that writes them from accountants' screen recordings. ([Ramp](https://ramplabs.substack.com/p/we-built-an-agent-to-prompt-our-internal))
 
@@ -57,7 +57,7 @@ The most common pattern in the map is an agent that produces a draft for a perso
 
 Review then becomes the bottleneck. Maintainers of the Insight Toolkit, an open-source imaging library, described the volume of AI pull requests as overwhelming. Uber and HubSpot filter their own agents before people see the output. Uber grades each uReview comment's confidence, removes duplicates, and suppresses categories engineers rarely act on. ([Uber](https://www.uber.com/blog/ureview/)) HubSpot puts a judge agent between its code reviewer and its engineers. ([HubSpot](https://product.hubspot.com/blog/automated-code-review-the-6-month-evolution))
 
-In the accounts that describe autonomy growing, it grew one narrow job at a time, after the narrower version had shown it worked.
+In the accounts that describe it, autonomy grew one narrow job at a time. Each step came after the narrower version had worked.
 
 ### Let code keep the rules
 
@@ -71,7 +71,7 @@ Stripe describes its Minions blueprints as "a state machine that intermixes dete
 
 Public benchmarks can't tell you whether an agent can do your work, so teams build tests from their own history.
 
-Databricks turns real pull requests into tasks. It strips out hints about the original solution, because a task that leaks the answer makes the agent look better than it is. It also found tests that rejected valid alternative fixes and rewrote them by hand, because those make the agent look worse. ([Databricks](https://www.databricks.com/blog/benchmarking-coding-agents-databricks-multi-million-line-codebase)) Anthropic saw agents pass unit tests while the feature was broken end to end, and a separate, skeptical evaluator caught more than asking the builder to criticize its own work. ([Anthropic](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents))
+Databricks turns real pull requests into tasks. It strips out hints about the original solution, because a task that leaks the answer makes the agent look better than it is. It also found tests that rejected valid alternative fixes and rewrote them by hand, because those make the agent look worse. ([Databricks](https://www.databricks.com/blog/benchmarking-coding-agents-databricks-multi-million-line-codebase)) Anthropic saw agents pass unit tests while the feature was broken end to end. A separate, skeptical evaluator caught more than the builder did when reviewing itself. ([Anthropic](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents))
 
 Whoever builds the work shouldn't be the only one who checks it, and that applies to agents too.
 
@@ -132,6 +132,6 @@ The map is strongest where companies publish the most, which is coding and code 
 
 ## Use it, and help us fix it
 
-On the [Internal Agents Map](https://internal-agents.com/) you can browse agents by the problem they solve, compare how different teams handled the same question, and read short [lessons](https://internal-agents.com/lessons) on stopping, review noise, splitting work, and more. Every claim links to its source, and every record exports as Markdown or JSON.
+Browse the [Internal Agents Map](https://internal-agents.com/) by the problem an agent solves. Compare how teams answered the same question. Read the short [lessons](https://internal-agents.com/lessons) on stopping, review noise, and splitting work. Every claim links to its source, and every record exports as Markdown or JSON.
 
 If you've built an internal agent, or read about one we missed, [suggest it on GitHub](https://github.com/steel-experiments/internal-agents-map/issues/new?template=catalog-suggestion.yml). We especially want the failures.
