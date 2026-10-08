@@ -1040,7 +1040,7 @@ Last reviewed: 2026-09-21.
 
 ## Databricks: coSTAR
 
-> Databricks runs internal engineering agents for work such as on-call support and automated code review. coSTAR ships and tests them, using LLM judges as the test suite and a coding assistant to refine the agent until the judges pass. Databricks' Omnigent is a separate product. <small>Sources: [databricks-costar-source-1](#databricks-costar-source-1), [databricks-costar-source-2](#databricks-costar-source-2).</small>
+> Databricks ships and tests engineering agents with coSTAR, using LLM judges as the test suite and a coding assistant to refine an agent until the judges pass. The agents cover internal engineering workflows such as on-call support and automated code review, alongside customer-facing and open-source agents such as the MLflow assistant. Databricks' Omnigent is a separate product. <small>Sources: [databricks-costar-source-1](#databricks-costar-source-1).</small>
 
 | Field | Value |
 | --- | --- |
@@ -1087,7 +1087,7 @@ Last reviewed: 2026-09-21.
 - <a id="databricks-costar-source-1"></a>[coSTAR: how we ship AI agents at Databricks fast](https://www.databricks.com/blog/costar-how-we-ship-ai-agents-databricks-fast-without-breaking-things) ([snapshot](../archive/sources/databricks-costar-source-1/content.md), captured 2026-08-31) (engineering-blog; first-party; evidence)
 - <a id="databricks-costar-source-2"></a>[Benchmarking coding agents on a multi-million line codebase](https://www.databricks.com/blog/benchmarking-coding-agents-databricks-multi-million-line-codebase) ([snapshot](../archive/sources/databricks-costar-source-2/content.md), captured 2026-08-31) (engineering-blog; first-party; evidence)
 
-Last reviewed: 2026-09-17.
+Last reviewed: 2026-10-08.
 
 ---
 
@@ -1218,7 +1218,7 @@ Last reviewed: 2026-09-16.
 
 ## DoorDash: AI Code Review Agent
 
-> A specialized agent that automatically reviews 10,000+ PRs a week across 56 repositories, emphasizing grounded high-confidence findings over noisy comments. <small>Sources: [doordash-code-review-source-1](#doordash-code-review-source-1).</small>
+> A specialized agent that automatically reviews 10,000+ PRs a week across 56 repositories as of May 2026, emphasizing grounded high-confidence findings over noisy comments. <small>Sources: [doordash-code-review-source-1](#doordash-code-review-source-1).</small>
 
 | Field | Value |
 | --- | --- |
@@ -1258,7 +1258,8 @@ Last reviewed: 2026-09-16.
 
 ### Reported metrics
 
-- 10,000+ PRs reviewed in a typical week across 56 repositories <small>Sources: [doordash-code-review-source-1](#doordash-code-review-source-1).</small>
+- 10,000+ PRs reviewed in a typical week across 56 repositories as of May 2026 <small>Sources: [doordash-code-review-source-1](#doordash-code-review-source-1).</small>
+- More than 25,000 automated code reviews each week as of August 2026, counted as review runs rather than pull requests <small>Sources: [doordash-code-review-source-2](#doordash-code-review-source-2).</small>
 - 60.2% action rate on settled high/critical findings (measured sample) <small>Sources: [doordash-code-review-source-1](#doordash-code-review-source-1).</small>
 - Roughly $3 average cost per review <small>Sources: [doordash-code-review-source-1](#doordash-code-review-source-1).</small>
 - Findings posted about 7 minutes after a pull request opens on average <small>Sources: [doordash-code-review-source-1](#doordash-code-review-source-1).</small>
@@ -1271,8 +1272,9 @@ Last reviewed: 2026-09-16.
 ### Sources
 
 - <a id="doordash-code-review-source-1"></a>[How DoorDash built an AI code reviewer engineers actually listen to](https://careersatdoordash.com/blog/doordash-built-an-ai-code-reviewer-engineers-actually-listen-to/) ([snapshot](../archive/sources/doordash-code-review-source-1/content.md), captured 2026-08-31) (engineering-blog; first-party; evidence)
+- <a id="doordash-code-review-source-2"></a>[Delegating Engineering Work To Cloud-Based Agents (Flux)](https://careersatdoordash.com/blog/delegating-engineering-work-to-cloud-based-agents/) ([snapshot](../archive/sources/doordash-flux-source-3/content.md), captured 2026-08-31) (engineering-blog; first-party; evidence)
 
-Last reviewed: 2026-09-16.
+Last reviewed: 2026-10-08.
 
 ---
 
@@ -1521,6 +1523,7 @@ Last reviewed: 2026-09-17.
 
 ### Reported metrics
 
+- Roughly 1 in 12 pull requests at Dropbox, with adoption continuing to grow, as of May 2026 <small>Sources: [dropbox-nova-source-3](#dropbox-nova-source-3).</small>
 - Flaky-test remediation (Deflaker): 100+ validation runs <small>Sources: [dropbox-nova-source-1](#dropbox-nova-source-1).</small>
 - Predecessor Goose-based migrator used across thousands of migration entries before workflows moved onto Nova <small>Sources: [dropbox-nova-source-1](#dropbox-nova-source-1).</small>
 - Dozens of agents launchable from one runbook <small>Sources: [dropbox-nova-source-1](#dropbox-nova-source-1).</small>
@@ -1536,8 +1539,9 @@ Last reviewed: 2026-09-17.
 
 - <a id="dropbox-nova-source-1"></a>[Introducing Nova, our internal platform for coding agents](https://dropbox.tech/machine-learning/introducing-nova-our-internal-platform-for-coding-agents) ([snapshot](../archive/sources/dropbox-nova-source-1/content.md), captured 2026-08-31) (engineering-blog; first-party; evidence)
 - <a id="dropbox-nova-source-2"></a>[Hacker News submission for Nova](https://news.ycombinator.com/item?id=48235065) ([snapshot](../archive/sources/dropbox-nova-source-2/content.md), captured 2026-08-31) (hn-thread; community; discovery)
+- <a id="dropbox-nova-source-3"></a>[Beyond code generation — rethinking engineering productivity in the age of AI agents](https://dropbox.tech/culture/beyond-code-generation-rethinking-engineering-productivity-in-the-age-of-ai-agents) ([snapshot](../archive/sources/dropbox-nova-source-3/content.md), captured 2026-10-08) (engineering-blog; first-party; evidence)
 
-Last reviewed: 2026-09-16.
+Last reviewed: 2026-10-08.
 
 ---
 
@@ -3025,7 +3029,8 @@ Last reviewed: 2026-09-16.
 
 ### Reported metrics
 
-- Around 100,000 lines of TypeScript excluding tests, evals, docs, and lockfiles <small>Sources: [sentry-junior-source-1](#sentry-junior-source-1).</small>
+- Around 100,000 lines of TypeScript excluding tests, evals, docs, and lockfiles at the July 2026 writeup <small>Sources: [sentry-junior-source-1](#sentry-junior-source-1).</small>
+- Around 171,700 lines of TypeScript under the same exclusions, counted from the public repository on 2026-10-08 <small>Sources: [sentry-junior-source-2](#sentry-junior-source-2).</small>
 - 4 months from start to writeup <small>Sources: [sentry-junior-source-1](#sentry-junior-source-1).</small>
 
 ### Catalog observations
@@ -3043,7 +3048,7 @@ Last reviewed: 2026-09-16.
 - <a id="sentry-junior-source-3"></a>[Sentry Labs](https://labs.sentry.dev/) ([snapshot](../archive/sources/sentry-junior-source-3/content.md), captured 2026-08-31) (documentation; first-party; evidence)
 - <a id="sentry-junior-source-4"></a>[getsentry/junior Apache 2.0 license](https://github.com/getsentry/junior/blob/main/LICENSE?plain=1) ([snapshot](../archive/sources/sentry-junior-source-4/content.md), captured 2026-08-31) (source-code; first-party; evidence)
 
-Last reviewed: 2026-09-16.
+Last reviewed: 2026-10-08.
 
 ---
 

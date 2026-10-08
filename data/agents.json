@@ -2879,7 +2879,7 @@
         "date": "2025",
         "source_id": "databricks-costar-source-1"
       },
-      "last_reviewed_at": "2026-09-17",
+      "last_reviewed_at": "2026-10-08",
       "status": "internal",
       "domains": [
         "coding",
@@ -3425,7 +3425,7 @@
         "date": "2026",
         "source_id": "doordash-code-review-source-1"
       },
-      "last_reviewed_at": "2026-09-16",
+      "last_reviewed_at": "2026-10-08",
       "status": "internal",
       "domains": [
         "code-review"
@@ -3449,7 +3449,8 @@
         "version": 1,
         "reviewed_at": "2026-09-17",
         "source_ids": [
-          "doordash-code-review-source-1"
+          "doordash-code-review-source-1",
+          "doordash-code-review-source-2"
         ],
         "workflow_scope": "Pull request opening → staged review → published finding and optional fix",
         "questions": {
@@ -3496,6 +3497,7 @@
             "claim_paths": [
               "headline_metric",
               "key_metrics.prs-reviewed-typical-week-repositories",
+              "key_metrics.automated-code-reviews-week-august-2026",
               "key_metrics.action-rate-settled-high-critical-findings",
               "key_metrics.average-cost-per-review",
               "key_metrics.findings-posted-minutes-pull-request-opens"
@@ -3577,6 +3579,7 @@
         "doordash-code-review--primitives-optional-fixer",
         "doordash-code-review--primitives-evaluation-loop",
         "doordash-code-review--key-metrics-prs-reviewed-typical-week-repositories",
+        "doordash-code-review--key-metrics-automated-code-reviews-week-august-2026",
         "doordash-code-review--key-metrics-action-rate-settled-high-critical-findings",
         "doordash-code-review--key-metrics-average-cost-per-review",
         "doordash-code-review--key-metrics-findings-posted-minutes-pull-request-opens",
@@ -3585,7 +3588,8 @@
         "doordash-code-review--operating-models-0"
       ],
       "source_ids": [
-        "doordash-code-review-source-1"
+        "doordash-code-review-source-1",
+        "doordash-code-review-source-2"
       ],
       "interfaces": [
         "github"
@@ -4240,7 +4244,7 @@
         "date": "2026",
         "source_id": "dropbox-nova-source-1"
       },
-      "last_reviewed_at": "2026-09-16",
+      "last_reviewed_at": "2026-10-08",
       "status": "internal",
       "domains": [
         "coding",
@@ -4273,7 +4277,8 @@
         "reviewed_at": "2026-09-17",
         "source_ids": [
           "dropbox-nova-source-1",
-          "dropbox-nova-source-2"
+          "dropbox-nova-source-2",
+          "dropbox-nova-source-3"
         ],
         "workflow_scope": "Athena flaky-test alert through the Deflaker fix-and-validate loop to a landed fix or capped attempts",
         "questions": {
@@ -4320,6 +4325,7 @@
             "state": "reported",
             "claim_paths": [
               "headline_metric",
+              "key_metrics.one-in-twelve-pull-requests-may-2026",
               "key_metrics.flaky-test-remediation-deflaker-validation-runs",
               "key_metrics.predecessor-goose-based-migrator-used-thousands",
               "key_metrics.dozens-agents-launchable-one-runbook"
@@ -4410,6 +4416,7 @@
         "dropbox-nova--primitives-propose-a-root-cause-fix",
         "dropbox-nova--primitives-validate-the-fix-in-ci",
         "dropbox-nova--primitives-retry-with-carried-forward-notes",
+        "dropbox-nova--key-metrics-one-in-twelve-pull-requests-may-2026",
         "dropbox-nova--key-metrics-flaky-test-remediation-deflaker-validation-runs",
         "dropbox-nova--key-metrics-predecessor-goose-based-migrator-used-thousands",
         "dropbox-nova--key-metrics-dozens-agents-launchable-one-runbook",
@@ -4422,7 +4429,8 @@
       ],
       "source_ids": [
         "dropbox-nova-source-1",
-        "dropbox-nova-source-2"
+        "dropbox-nova-source-2",
+        "dropbox-nova-source-3"
       ],
       "interfaces": [
         "web",
@@ -8858,7 +8866,7 @@
         "date": "2026",
         "source_id": "sentry-junior-source-2"
       },
-      "last_reviewed_at": "2026-09-16",
+      "last_reviewed_at": "2026-10-08",
       "status": "open-sourced",
       "domains": [
         "coding",
@@ -8946,6 +8954,7 @@
             "claim_paths": [
               "headline_metric",
               "key_metrics.lines-typescript-excluding-tests-evals-docs",
+              "key_metrics.lines-typescript-october-2026-recount",
               "key_metrics.time-from-start-to-writeup"
             ]
           },
@@ -9039,6 +9048,7 @@
         "sentry-junior--primitives-run-visual-qa-browser-sandbox",
         "sentry-junior--primitives-watch-pull-request-follow-ups",
         "sentry-junior--key-metrics-lines-typescript-excluding-tests-evals-docs",
+        "sentry-junior--key-metrics-lines-typescript-october-2026-recount",
         "sentry-junior--key-metrics-time-from-start-to-writeup",
         "sentry-junior--lessons-learned-author-prefers-one-agent-work-company",
         "sentry-junior--lessons-learned-skills-contain-operational-instructions-including-telemetry",
@@ -17206,7 +17216,7 @@
       "id": "databricks-costar--summary",
       "approach_id": "databricks-costar",
       "field": "summary",
-      "text": "Databricks runs internal engineering agents for work such as on-call support and automated code review. coSTAR ships and tests them, using LLM judges as the test suite and a coding assistant to refine the agent until the judges pass. Databricks' Omnigent is a separate product.",
+      "text": "Databricks ships and tests engineering agents with coSTAR, using LLM judges as the test suite and a coding assistant to refine an agent until the judges pass. The agents cover internal engineering workflows such as on-call support and automated code review, alongside customer-facing and open-source agents such as the MLflow assistant. Databricks' Omnigent is a separate product.",
       "kind": "fact",
       "provenance": "reported",
       "confidence": "not-assessed",
@@ -17215,10 +17225,6 @@
       "evidence": [
         {
           "source_id": "databricks-costar-source-1",
-          "relation": "supports"
-        },
-        {
-          "source_id": "databricks-costar-source-2",
           "relation": "supports"
         }
       ]
@@ -18260,7 +18266,7 @@
       "id": "doordash-code-review--summary",
       "approach_id": "doordash-code-review",
       "field": "summary",
-      "text": "A specialized agent that automatically reviews 10,000+ PRs a week across 56 repositories, emphasizing grounded high-confidence findings over noisy comments.",
+      "text": "A specialized agent that automatically reviews 10,000+ PRs a week across 56 repositories as of May 2026, emphasizing grounded high-confidence findings over noisy comments.",
       "kind": "fact",
       "provenance": "reported",
       "confidence": "not-assessed",
@@ -18282,7 +18288,7 @@
       "provenance": "reported",
       "confidence": "not-assessed",
       "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
-      "valid_at": null,
+      "valid_at": "2026-05",
       "evidence": [
         {
           "source_id": "doordash-code-review-source-1",
@@ -18291,7 +18297,7 @@
         }
       ],
       "reported_by": "DoorDash",
-      "metric_scope": "Typical weekly PR reviews across 56 onboarded repositories",
+      "metric_scope": "Typical weekly PR reviews across 56 onboarded repositories as reported in May 2026",
       "category": "adoption-output",
       "basis": "reported-measurement",
       "subject": "Typical weekly reviews across 56 repositories"
@@ -18515,12 +18521,12 @@
       "id": "doordash-code-review--key-metrics-prs-reviewed-typical-week-repositories",
       "approach_id": "doordash-code-review",
       "field": "key_metrics.prs-reviewed-typical-week-repositories",
-      "text": "10,000+ PRs reviewed in a typical week across 56 repositories",
+      "text": "10,000+ PRs reviewed in a typical week across 56 repositories as of May 2026",
       "kind": "metric",
       "provenance": "reported",
       "confidence": "not-assessed",
       "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
-      "valid_at": null,
+      "valid_at": "2026-05",
       "evidence": [
         {
           "source_id": "doordash-code-review-source-1",
@@ -18529,10 +18535,34 @@
         }
       ],
       "reported_by": "DoorDash",
-      "metric_scope": "Typical weekly PR reviews across 56 onboarded repositories",
+      "metric_scope": "Typical weekly PR reviews across 56 onboarded repositories as reported in May 2026",
       "item_id": "prs-reviewed-typical-week-repositories",
       "duplicate_of": "doordash-code-review--headline-metric",
       "reason": "Same review count, repository population, period, and qualification as the headline observation."
+    },
+    {
+      "id": "doordash-code-review--key-metrics-automated-code-reviews-week-august-2026",
+      "approach_id": "doordash-code-review",
+      "field": "key_metrics.automated-code-reviews-week-august-2026",
+      "text": "More than 25,000 automated code reviews each week as of August 2026, counted as review runs rather than pull requests",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "The August 2026 Flux post states the weekly figure directly; the count covers review runs, which this record keeps explicit so it cannot be read as distinct pull requests.",
+      "valid_at": "2026-08",
+      "evidence": [
+        {
+          "source_id": "doordash-code-review-source-2",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 10"
+        }
+      ],
+      "reported_by": "DoorDash",
+      "metric_scope": "Automated code reviews per week across DoorDash agent workflows; the count unit is review runs, not distinct pull requests",
+      "item_id": "automated-code-reviews-week-august-2026",
+      "category": "adoption-output",
+      "basis": "reported-measurement",
+      "subject": "Automated code reviews completed per week across DoorDash agent workflows"
     },
     {
       "id": "doordash-code-review--key-metrics-action-rate-settled-high-critical-findings",
@@ -19902,6 +19932,31 @@
       "display_name": "Retry with carried-forward notes",
       "item_id": "retry-with-carried-forward-notes",
       "role": "workflow"
+    },
+    {
+      "id": "dropbox-nova--key-metrics-one-in-twelve-pull-requests-may-2026",
+      "approach_id": "dropbox-nova",
+      "field": "key_metrics.one-in-twelve-pull-requests-may-2026",
+      "text": "Roughly 1 in 12 pull requests at Dropbox, with adoption continuing to grow, as of May 2026",
+      "kind": "metric",
+      "provenance": "reported",
+      "confidence": "high",
+      "confidence_reason": "The May 2026 post states the share directly for all Dropbox pull requests and adds that adoption was still growing.",
+      "valid_at": "2026-05",
+      "evidence": [
+        {
+          "source_id": "dropbox-nova-source-3",
+          "relation": "supports",
+          "locator": "Preserved content.md, lines 32"
+        }
+      ],
+      "reported_by": "Dropbox",
+      "metric_scope": "Share of all Dropbox pull requests accounted for by Nova, snapshot at publication",
+      "denominator": "All pull requests at Dropbox",
+      "item_id": "one-in-twelve-pull-requests-may-2026",
+      "category": "adoption-output",
+      "basis": "reported-measurement",
+      "subject": "Share of Dropbox pull requests involving Nova"
     },
     {
       "id": "dropbox-nova--key-metrics-flaky-test-remediation-deflaker-validation-runs",
@@ -28830,7 +28885,7 @@
       "provenance": "reported",
       "confidence": "not-assessed",
       "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
-      "valid_at": null,
+      "valid_at": "2026-07",
       "evidence": [
         {
           "source_id": "sentry-junior-source-1",
@@ -28844,7 +28899,7 @@
         }
       ],
       "reported_by": "Sentry",
-      "metric_scope": "Junior codebase size (excluding tests, evals, documentation, and lockfiles) and license in the author report",
+      "metric_scope": "Junior codebase size (excluding tests, evals, documentation, and lockfiles) and license in the July 2026 author report",
       "category": "implementation-scale",
       "basis": "reported-measurement",
       "subject": "Junior codebase size, Apache-2.0 license, and internal use at Sentry"
@@ -29136,12 +29191,12 @@
       "id": "sentry-junior--key-metrics-lines-typescript-excluding-tests-evals-docs",
       "approach_id": "sentry-junior",
       "field": "key_metrics.lines-typescript-excluding-tests-evals-docs",
-      "text": "Around 100,000 lines of TypeScript excluding tests, evals, docs, and lockfiles",
+      "text": "Around 100,000 lines of TypeScript excluding tests, evals, docs, and lockfiles at the July 2026 writeup",
       "kind": "metric",
       "provenance": "reported",
       "confidence": "not-assessed",
       "confidence_reason": "No explicit confidence assessment is recorded for this claim.",
-      "valid_at": null,
+      "valid_at": "2026-07",
       "evidence": [
         {
           "source_id": "sentry-junior-source-1",
@@ -29150,10 +29205,33 @@
         }
       ],
       "reported_by": "Sentry",
-      "metric_scope": "TypeScript lines in Junior excluding tests, evals, documentation, and lockfiles",
+      "metric_scope": "TypeScript lines in Junior excluding tests, evals, documentation, and lockfiles at the July 2026 writeup",
       "item_id": "lines-typescript-excluding-tests-evals-docs",
       "duplicate_of": "sentry-junior--headline-metric",
       "reason": "Component of the compound headline: the same about-100,000-line TypeScript count with the same exclusions."
+    },
+    {
+      "id": "sentry-junior--key-metrics-lines-typescript-october-2026-recount",
+      "approach_id": "sentry-junior",
+      "field": "key_metrics.lines-typescript-october-2026-recount",
+      "text": "Around 171,700 lines of TypeScript under the same exclusions, counted from the public repository on 2026-10-08",
+      "kind": "metric",
+      "provenance": "observed",
+      "confidence": "medium",
+      "confidence_reason": "A direct count on the public main branch, reproduced by two independent checks on 2026-10-08; the exclusion set mirrors the writeup's wording rather than a Sentry-defined list.",
+      "valid_at": "2026-10",
+      "evidence": [
+        {
+          "source_id": "sentry-junior-source-2",
+          "relation": "supports",
+          "locator": "Repository main branch on 2026-10-08, TypeScript line count excluding test, spec, fixture, eval, and docs files"
+        }
+      ],
+      "measurement_method": "Line count of TypeScript files on the repository main branch excluding test, spec, fixture, eval, and docs paths",
+      "item_id": "lines-typescript-october-2026-recount",
+      "category": "implementation-scale",
+      "basis": "reported-measurement",
+      "subject": "Junior codebase TypeScript lines excluding tests, evals, docs, and lockfiles"
     },
     {
       "id": "sentry-junior--key-metrics-time-from-start-to-writeup",
@@ -37236,6 +37314,39 @@
       "approach_id": "doordash-code-review"
     },
     {
+      "id": "doordash-code-review-source-2",
+      "title": "Delegating Engineering Work To Cloud-Based Agents (Flux)",
+      "url": "https://careersatdoordash.com/blog/delegating-engineering-work-to-cloud-based-agents/",
+      "canonical_url": "https://careersatdoordash.com/blog/delegating-engineering-work-to-cloud-based-agents/",
+      "kind": "engineering-blog",
+      "provenance_class": "first-party",
+      "published_at": "2026-08-11",
+      "accessed_at": "2026-10-08",
+      "last_verified_at": "2026-10-08",
+      "duplicate_of": "doordash-flux-source-3",
+      "role": "evidence",
+      "approach_id": "doordash-code-review",
+      "capture": {
+        "schema_version": 1,
+        "source_id": "doordash-flux-source-3",
+        "original_url": "https://careersatdoordash.com/blog/delegating-engineering-work-to-cloud-based-agents/",
+        "final_url": "https://careersatdoordash.com/blog/delegating-engineering-work-to-cloud-based-agents/",
+        "captured_at": "2026-08-31T18:09:17Z",
+        "http_status": 200,
+        "tool": {
+          "name": "steel",
+          "version": "0.4.4"
+        },
+        "artifacts": {
+          "markdown": {
+            "path": "archive/sources/doordash-flux-source-3/content.md",
+            "sha256": "sha256:b319a0ace131d82a2c4f8b477df5511412e3a1c3127e5d74cdb5598624f75b15",
+            "bytes": 9896
+          }
+        }
+      }
+    },
+    {
       "id": "doordash-ai-marketplace-source-1",
       "title": "Beyond single agents: DoorDash's collaborative AI ecosystem",
       "url": "https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/",
@@ -37492,6 +37603,38 @@
           }
         }
       },
+      "approach_id": "dropbox-nova"
+    },
+    {
+      "id": "dropbox-nova-source-3",
+      "title": "Beyond code generation — rethinking engineering productivity in the age of AI agents",
+      "url": "https://dropbox.tech/culture/beyond-code-generation-rethinking-engineering-productivity-in-the-age-of-ai-agents",
+      "canonical_url": "https://dropbox.tech/culture/beyond-code-generation-rethinking-engineering-productivity-in-the-age-of-ai-agents",
+      "kind": "engineering-blog",
+      "provenance_class": "first-party",
+      "published_at": "2026-05-28",
+      "accessed_at": "2026-10-08",
+      "last_verified_at": "2026-10-08",
+      "capture": {
+        "schema_version": 1,
+        "source_id": "dropbox-nova-source-3",
+        "original_url": "https://dropbox.tech/culture/beyond-code-generation-rethinking-engineering-productivity-in-the-age-of-ai-agents",
+        "final_url": "https://dropbox.tech/culture/beyond-code-generation-rethinking-engineering-productivity-in-the-age-of-ai-agents",
+        "captured_at": "2026-10-08T17:55:03Z",
+        "http_status": 200,
+        "tool": {
+          "name": "steel",
+          "version": "0.5.0-preview.6"
+        },
+        "artifacts": {
+          "markdown": {
+            "path": "archive/sources/dropbox-nova-source-3/content.md",
+            "sha256": "sha256:4bbaab295481e2f448825441a1c0e93b2248292d0286d04a5d1066ec933f7409",
+            "bytes": 10552
+          }
+        }
+      },
+      "role": "evidence",
       "approach_id": "dropbox-nova"
     },
     {
@@ -39256,6 +39399,10 @@
       "canonical_url": "https://cra.mr/building-an-intern/",
       "kind": "engineering-blog",
       "provenance_class": "first-party",
+      "authors": [
+        "David Cramer"
+      ],
+      "published_at": "2026-07-02",
       "accessed_at": "2026-08-12",
       "last_verified_at": "2026-08-31",
       "capture": {
