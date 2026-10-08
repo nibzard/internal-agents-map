@@ -1,0 +1,206 @@
+# yaml-language-server: $schema=../agent.schema.json
+id: ramp-finance-agents
+company: Ramp
+agent_name: Doer and Architect
+approach_type: agent-system
+deployment_stage: deployed
+first_public_evidence:
+  date: '2025-10-01'
+  source_id: ramp-finance-agents-source-1
+last_reviewed_at: '2026-10-08'
+status: internal
+domains:
+- finance-ops
+autonomy: unknown
+operating_models:
+- scope: Accountant screen recording → reusable Process → completed spreadsheet
+  attention_boundary: unknown
+rubric:
+  invocation:
+  - background
+  evidence_strength: detailed-primary
+summary: Ramp Labs pairs an internal finance agent (the Doer), which executes spreadsheet
+  accounting workflows such as monthly revenue reconciliation and month-end inter-company
+  transfers into ERP, with a second agent (the Architect) that watches screen recordings
+  of accountants and writes the prompts and context files the Doer needs.
+headline_metric: Tasks that took 1-2 hours complete in under 10 minutes, a reported 6-12x speedup
+architecture:
+  harness: A two-agent pipeline in which the Architect compiles a reusable Process of steps,
+    required files, and context, and hands it to the Doer to execute; the Doer relies on
+    model intelligence with minimal guide rails
+  model: Architect uses Gemini 2.5 Pro with a 1M-token context window; Doer uses Claude
+    Sonnet 4.5
+  tool_access: The Doer uses specialized tools to search, manipulate, and validate spreadsheet
+    operations; workloads combine invoice and data-warehouse data, several tools, Excel
+    workbooks, and ERP journal-entry import
+  knowledge: A Process is a compiled set of steps, required files, and additional information
+    such as temporal dependencies, reusable across runs
+primitives:
+- {id: architect-watches-recording, name: Architect watches a screen recording, desc: 'An accountant uploads a screen recording; the Architect extracts the workflow, the required files, and temporal dependencies, and generates a structured prompt', role: workflow}
+- {id: compile-reusable-process, name: Compile a reusable Process, desc: 'The Architect compiles steps, required files, and context into a Process that later runs reuse', role: mechanism}
+- {id: doer-executes-process, name: Doer executes the Process, desc: 'The Doer receives the Process and uploaded files, manipulates the spreadsheets, and returns a completed spreadsheet', role: workflow}
+- {id: validation-checks-per-instruction, name: Validation checks per instruction, desc: 'The Doer runs validation checks as it executes each instruction', role: validation}
+key_metrics:
+- id: spreadsheetbench-soft-restriction
+  text: 49.5% accuracy on SpreadsheetBench soft-restriction tasks, tested on about 50 randomly
+    selected tasks with 3 test cases each (OpenAI reported 45.5%)
+- id: spreadsheetbench-hard-restriction
+  text: 32.5% accuracy on SpreadsheetBench hard-restriction tasks in the same test (GPT-4o
+    reported 13.38%)
+- id: prompt-crafting-before-architect
+  text: 30-45 minutes of prompt crafting, file uploading, and error resolution per use before
+    the Architect existed
+lessons_learned:
+- id: bottleneck-instruction-not-execution
+  text: At Ramp the bottleneck was instruction, not execution; once the Architect wrote the
+    prompts, adding workflows cost near-zero human time instead of scaling with prompt-writing
+    capacity.
+- id: complementary-model-strengths
+  text: Ramp Labs used Gemini 2.5 Pro's long-context multimodal ability to extract workflows
+    from video and Claude Sonnet 4.5 for swift, precise, economic execution.
+- id: production-agents-still-hard
+  text: Despite powerful models, the Ramp Labs team spent weeks iterating on system prompts,
+    tool designs, and error handling; the engineering mattered as much as the models.
+- id: async-intake-not-autonomy
+  text: The post documents unattended prompt generation and asynchronous pickup, but not
+    whether a person reviews the completed spreadsheets or ERP entries; the catalog records
+    the review boundary as unknown.
+sources:
+- id: ramp-finance-agents-source-1
+  title: We built an agent to prompt our internal finance agent
+  url: https://ramplabs.substack.com/p/we-built-an-agent-to-prompt-our-internal
+  kind: engineering-blog
+  provenance_class: first-party
+  publisher: Ramp Labs
+  published_at: '2025-10-01'
+  accessed_at: '2026-10-08'
+  last_verified_at: '2026-10-08'
+  capture:
+    manifest_path: archive/sources/ramp-finance-agents-source-1/metadata.json
+evidence:
+  summary:
+  - locator: Preserved content.md, lines 16-24
+  - locator: Preserved content.md, lines 41-56
+  operating_models.0:
+  - locator: Preserved content.md, lines 93
+  - locator: Preserved content.md, lines 102
+  headline_metric:
+  - locator: Preserved content.md, lines 102
+  architecture.harness:
+  - locator: Preserved content.md, lines 45-56
+  - locator: Preserved content.md, lines 62-64
+  architecture.model:
+  - locator: Preserved content.md, lines 71
+  - locator: Preserved content.md, lines 83
+  architecture.tool_access:
+  - locator: Preserved content.md, lines 54
+  - locator: Preserved content.md, lines 32-33
+  architecture.knowledge:
+  - locator: Preserved content.md, lines 64
+  primitives.architect-watches-recording:
+  - locator: Preserved content.md, lines 70-74
+  primitives.compile-reusable-process:
+  - locator: Preserved content.md, lines 64
+  primitives.doer-executes-process:
+  - locator: Preserved content.md, lines 82-85
+  primitives.validation-checks-per-instruction:
+  - locator: Preserved content.md, lines 84
+  key_metrics.spreadsheetbench-soft-restriction:
+  - locator: Preserved content.md, lines 97-99
+  key_metrics.spreadsheetbench-hard-restriction:
+  - locator: Preserved content.md, lines 100
+  key_metrics.prompt-crafting-before-architect:
+  - locator: Preserved content.md, lines 16
+  lessons_learned.bottleneck-instruction-not-execution:
+  - locator: Preserved content.md, lines 37
+  - locator: Preserved content.md, lines 110
+  lessons_learned.complementary-model-strengths:
+  - locator: Preserved content.md, lines 111
+  lessons_learned.production-agents-still-hard:
+  - locator: Preserved content.md, lines 112
+  lessons_learned.async-intake-not-autonomy:
+  - locator: Preserved content.md, lines 20
+  - locator: Preserved content.md, lines 102
+claim_metadata:
+  operating_models.0:
+    confidence: unverified
+    confidence_reason: The post reports that the Architect generates prompts without human
+      intervention and that accountants return to a ready-to-use process, and it names human
+      intervention only after partial completions; it does not state whether a person reviews
+      completed work in a normal run.
+    valid_at: '2025-10'
+  headline_metric:
+    confidence: medium
+    confidence_reason: Ramp Labs reports the comparison directly for its named spreadsheet
+      tasks, but states no measurement method, sample, or time period.
+    valid_at: '2025-10'
+    category: effectiveness
+    basis: reported-measurement
+    subject: The named spreadsheet accounting tasks
+    metric_scope: Spreadsheet accounting tasks that took 1-2 hours, such as monthly revenue
+      reconciliation and month-end inter-company transfers
+  key_metrics.spreadsheetbench-soft-restriction:
+    confidence: medium
+    confidence_reason: A self-run benchmark with a stated task count and comparison figures;
+      the evaluation setup is reported only by Ramp Labs.
+    valid_at: '2025-10'
+    category: effectiveness
+    basis: reported-measurement
+    subject: Doer agent accuracy on SpreadsheetBench soft-restriction tasks
+    metric_scope: About 50 randomly selected SpreadsheetBench tasks with 3 test cases each
+  key_metrics.spreadsheetbench-hard-restriction:
+    confidence: medium
+    confidence_reason: A self-run benchmark with a stated task count and comparison figures;
+      the evaluation setup is reported only by Ramp Labs.
+    valid_at: '2025-10'
+    category: effectiveness
+    basis: reported-measurement
+    subject: Doer agent accuracy on SpreadsheetBench hard-restriction tasks
+    metric_scope: The same about 50 randomly selected SpreadsheetBench tasks with 3 test
+      cases each
+  key_metrics.prompt-crafting-before-architect:
+    confidence: medium
+    confidence_reason: The post states the setup time directly as the reported cost of each
+      use before the Architect existed, with no measurement method.
+    valid_at: '2025-10'
+    category: cost-latency
+    basis: reported-measurement
+    subject: Manual setup time per finance-agent use before the Architect
+    metric_scope: Prompt crafting, file uploading, and error resolution per use of the finance
+      agent
+  lessons_learned.bottleneck-instruction-not-execution:
+    kind: fact
+    provenance: reported
+    confidence: high
+    confidence_reason: The post states the bottleneck conclusion and the scaling contrast
+      between manual prompt writing and Architect-generated workflows.
+  lessons_learned.complementary-model-strengths:
+    kind: fact
+    provenance: reported
+    confidence: high
+    confidence_reason: The post names both models and the strength each contributed to its
+      stage of the pipeline.
+  lessons_learned.production-agents-still-hard:
+    kind: fact
+    provenance: reported
+    confidence: high
+    confidence_reason: The post reports the weeks of iteration on prompts, tools, and error
+      handling directly.
+  lessons_learned.async-intake-not-autonomy:
+    confidence: medium
+    confidence_reason: The inference follows from what the post leaves unstated; the unattended
+      generation and the partial-completion interventions are reported, the review boundary
+      for completed work is not.
+page_content:
+  version: 1
+  reviewed_at: '2026-10-08'
+  source_ids: [ramp-finance-agents-source-1]
+  workflow_scope: Accountant screen recording → reusable Process → completed spreadsheet
+  questions:
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.architect-watches-recording, primitives.doer-executes-process]}
+    human_involvement: {state: reported, claim_paths: [operating_models.0], note: 'The post reports human intervention only after partial completions; the review boundary for completed spreadsheets and ERP entries is not documented.'}
+    implementation: {state: reported}
+    validation: {state: reported, claim_paths: [primitives.validation-checks-per-instruction]}
+    observations: {state: reported}
+    lessons: {state: reported}

@@ -113,6 +113,10 @@
       "html": "/agents/duolingo-agentic-workflows.html",
       "markdown": "/agents/duolingo-agentic-workflows.md"
     },
+    "/agents/embat-mr-batt": {
+      "html": "/agents/embat-mr-batt.html",
+      "markdown": "/agents/embat-mr-batt.md"
+    },
     "/agents/figma-security-agent": {
       "html": "/agents/figma-security-agent.html",
       "markdown": "/agents/figma-security-agent.md"
@@ -188,6 +192,10 @@
     "/agents/posthog-stamphog": {
       "html": "/agents/posthog-stamphog.html",
       "markdown": "/agents/posthog-stamphog.md"
+    },
+    "/agents/ramp-finance-agents": {
+      "html": "/agents/ramp-finance-agents.html",
+      "markdown": "/agents/ramp-finance-agents.md"
     },
     "/agents/ramp-inspect": {
       "html": "/agents/ramp-inspect.html",
@@ -328,6 +336,10 @@
     "/organizations/duolingo": {
       "html": "/organizations/duolingo.html",
       "markdown": "/organizations/duolingo.md"
+    },
+    "/organizations/embat": {
+      "html": "/organizations/embat.html",
+      "markdown": "/organizations/embat.md"
     },
     "/organizations/figma": {
       "html": "/organizations/figma.html",

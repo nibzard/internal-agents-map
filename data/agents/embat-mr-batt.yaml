@@ -1,0 +1,143 @@
+# yaml-language-server: $schema=../agent.schema.json
+id: embat-mr-batt
+company: Embat
+agent_name: Mr. Batt
+aliases: [Agent M. Batt]
+approach_type: agent-system
+deployment_stage: deployed
+first_public_evidence:
+  date: '2026-07-21'
+  source_id: embat-mr-batt-source-1
+last_reviewed_at: '2026-10-08'
+status: internal
+domains:
+- support
+autonomy: unknown
+operating_models:
+- scope: Support question in Slack → routed specialist answer
+  attention_boundary: unknown
+rubric:
+  invocation:
+  - interactive
+  evidence_strength: limited-primary
+summary: Embat's internal agent platform began as a support tool for the Product Experience
+  team and now serves the whole company through Slack. A router sends each message to one
+  of more than ten specialist agents, each mapped to a module, task, or tool set.
+headline_metric: Grew from two agents to more than ten specialist agents
+architecture:
+  harness: Built on the Claude Managed Agents platform, with a lightweight router in front
+    of the specialists; one tool spins up a Google ADK agent instead
+  tool_access: Embat databases, logs, bank providers, the company's own code repositories,
+    and the Semantic Layer
+  knowledge: Each agent is defined by a system prompt, its allowed tools, and the repositories
+    it may read; routing, Slack plumbing, memory, and tool execution are shared
+  interfaces:
+  - slack
+primitives:
+- {id: route-to-specialist, name: Route to a specialist, desc: 'A lightweight step reads the conversation and picks the agent that best fits before any specialist runs', role: workflow}
+- {id: ask-user-when-router-unsure, name: Ask the user when routing is unsure, desc: 'When the router is not confident, it asks the person to choose; messages that are not support requests get a separate place', role: workflow}
+- {id: per-domain-specialist, name: One specialist per domain, desc: 'Each agent maps to a module, task, or tool set, and the team that owns the domain owns the agent behavior', role: mechanism}
+- {id: configure-agent-declaratively, name: Declare an agent in one place, desc: 'An agent is a system prompt, a tool allowlist, and a list of readable repositories; people who cannot code can configure one', role: mechanism}
+lessons_learned:
+- id: generalist-prompt-interference
+  text: Embat's single generalist agent needed one large system prompt that no team fully
+    owned, and prompt changes in one domain degraded performance in another; splitting into
+    per-domain specialists removed the interference.
+- id: router-asks-rather-than-guesses
+  text: With more than ten agents, Embat kept a human in the loop at routing, where an unsure
+    router asks the person to choose instead of picking wrong.
+- id: borrow-harness-spend-on-tools
+  text: Embat chose to borrow the Claude Managed Agents platform rather than build an agent
+    loop, and spent its effort on tools, data access, and answer speed instead.
+sources:
+- id: embat-mr-batt-source-1
+  title: How We Built an Internal AI Agent Platform at Embat
+  url: https://www.embat.io/tech/internal-ai-agent-platform
+  kind: engineering-blog
+  provenance_class: first-party
+  published_at: '2026-07-21'
+  accessed_at: '2026-10-08'
+  last_verified_at: '2026-10-08'
+  capture:
+    manifest_path: archive/sources/embat-mr-batt-source-1/metadata.json
+evidence:
+  summary:
+  - locator: Preserved content.md, lines 20-24
+  - locator: Preserved content.md, lines 44-48
+  operating_models.0:
+  - locator: Preserved content.md, lines 50-54
+  headline_metric:
+  - locator: Preserved content.md, lines 48
+  architecture.harness:
+  - locator: Preserved content.md, lines 26-30
+  - locator: Preserved content.md, lines 60-64
+  architecture.tool_access:
+  - locator: Preserved content.md, lines 22
+  - locator: Preserved content.md, lines 48
+  architecture.knowledge:
+  - locator: Preserved content.md, lines 46
+  architecture.interfaces:
+  - locator: Preserved content.md, lines 66-68
+  primitives.route-to-specialist:
+  - locator: Preserved content.md, lines 52-54
+  primitives.ask-user-when-router-unsure:
+  - locator: Preserved content.md, lines 54
+  primitives.per-domain-specialist:
+  - locator: Preserved content.md, lines 40-42
+  primitives.configure-agent-declaratively:
+  - locator: Preserved content.md, lines 46
+  lessons_learned.generalist-prompt-interference:
+  - locator: Preserved content.md, lines 40-42
+  lessons_learned.router-asks-rather-than-guesses:
+  - locator: Preserved content.md, lines 54
+  lessons_learned.borrow-harness-spend-on-tools:
+  - locator: Preserved content.md, lines 26-30
+claim_metadata:
+  operating_models.0:
+    confidence: unverified
+    confidence_reason: The article documents human involvement only at routing, where an
+      unsure router asks the person to choose; it does not state whether anyone reviews the
+      specialists' answers before use.
+    valid_at: '2026-07'
+  headline_metric:
+    confidence: high
+    confidence_reason: The article states directly that the platform started with two agents
+      and is now past ten.
+    valid_at: '2026-07-21'
+    category: implementation-scale
+    basis: reported-measurement
+    subject: Specialist agents in Embat's internal platform
+    metric_scope: Count of specialist agents on the internal platform since the first two
+  lessons_learned.generalist-prompt-interference:
+    kind: fact
+    provenance: reported
+    confidence: high
+    confidence_reason: The article names the shared-prompt ownership problem and the cross-domain
+      degradation as the reported reason for the split.
+  lessons_learned.router-asks-rather-than-guesses:
+    kind: fact
+    provenance: reported
+    confidence: high
+    confidence_reason: The article states the router asks the person to choose when it is
+      not confident.
+  lessons_learned.borrow-harness-spend-on-tools:
+    kind: opinion
+    provenance: reported
+    confidence: medium
+    confidence_reason: The team reports its preference to borrow the platform and spend
+      effort on tooling; the post does not compare the choice against a from-scratch build.
+page_content:
+  version: 1
+  reviewed_at: '2026-10-08'
+  source_ids: [embat-mr-batt-source-1]
+  workflow_scope: Support question in Slack → routed specialist answer
+  questions:
+    purpose: {state: reported}
+    workflow: {state: reported, claim_paths: [primitives.route-to-specialist, primitives.ask-user-when-router-unsure]}
+    human_involvement: {state: reported, claim_paths: [operating_models.0, primitives.ask-user-when-router-unsure], note: 'The review boundary for the specialists'' answers is not documented; the reported human involvement is the router asking the person to choose when unsure.'}
+    implementation: {state: reported}
+    validation: {state: unreported}
+    observations: {state: reported}
+    lessons: {state: reported}
+  implementation_fields:
+    model: {state: unreported, note: 'The post relies on the Claude Managed Agents platform and one Google ADK tool, and names no specific model.'}

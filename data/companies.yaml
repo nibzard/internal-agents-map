@@ -105,6 +105,11 @@
     file: duolingo.svg
     source_url: https://design.duolingo.com/illustration/duo
     accessed_at: '2026-09-25'
+- id: embat
+  name: Embat
+  homepage: https://www.embat.io/
+  logo: none
+  logo_note: No logo asset collected yet; the brand page requires review before use.
 - id: figma
   name: Figma
   homepage: https://www.figma.com/
