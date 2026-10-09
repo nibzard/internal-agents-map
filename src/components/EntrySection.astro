@@ -34,7 +34,7 @@ const hasHowItWorks = entry.workflowClaims.length > 0;
     {(entry.isSupportingSystem || showQuestion(entry, 'human_involvement')) && <section class="entry-section" id="human-involvement" aria-labelledby="human-involvement-title">
       <h2 id="human-involvement-title">{entry.profile.people}</h2>
       {!entry.isSupportingSystem && <p class="section-note">
-        Where people review, approve, or guide the agent’s work.
+        People review, approve, or guide the agent’s work here.
       </p>}
       {!entry.isSupportingSystem && <p class="section-note"><a href="/definitions#supervision">How supervision levels work</a></p>}
       {!entry.isSupportingSystem && entry.coverageQuestions.human_involvement?.note && (
