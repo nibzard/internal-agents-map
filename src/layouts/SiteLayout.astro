@@ -137,6 +137,7 @@ const image = ogImage ?? { url: OG_IMAGE, alt: OG_IMAGE_ALT };
   <main id="main">
     <slot />
     {updateRecord ? <RecordContribution record={updateRecord} /> : <ContributionInvite />}
+    <slot name="after-contribution" />
   </main>
   {path !== homePath() && path !== '/infrastructure' && (
     <aside id="contents" class="contents" aria-label="Table of contents" hidden></aside>

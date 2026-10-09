@@ -124,11 +124,12 @@ for (const entry of ENTRIES) {
       await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
 
       await expect(page.locator('#sources')).toBeVisible();
+      await expect(page.locator('#main > :last-child')).toHaveAttribute('id', 'sources');
       await expect(page.locator('.page-back-end')).toBeVisible();
       if (entry.id !== 'plaid-internal-mcp-server') {
       await expect(
         page.locator('#human-involvement a[href="/definitions#supervision"]'),
-      ).toHaveText('supervision definitions');
+      ).toHaveText('How supervision levels work');
       }
       await expect(page.locator('a[href="/"]:visible').first()).toBeVisible();
     });
@@ -273,6 +274,30 @@ test.describe('page-content pilot', () => {
     const markdown = await (await request.get('/agents/sentry-junior.md')).text();
     expect(markdown.split('## Reported observations')[1]?.split('## Lessons')[0])
       .toContain('excluding tests, evals, docs, and lockfiles');
+  });
+
+  test('shows each operating model once, as a cited scope in its level card', async ({ page }) => {
+    await page.goto('/agents/stripe-minions');
+    const card = page.locator('#human-involvement .level-card');
+    await expect(card).toHaveCount(1);
+    await expect(card.locator('.level-name')).toHaveText('Work-product review');
+    await expect(card.locator('.level-number')).toContainText('Level 3 of 5');
+    await expect(card).toContainText('A person reviews the draft or implementation.');
+    const scope = card.locator('#claim-stripe-minions--operating-models-0');
+    await expect(scope).toContainText('coding task');
+    await expect(scope.locator('.source-marks a.citation')).toHaveCount(1);
+    await expect(page.locator('#human-involvement')).not.toContainText('Catalog interpretation');
+    await expect(page.locator('#human-involvement')).not.toContainText('human attention boundary');
+    await expect(page.locator('#human-involvement > :last-child a')).toHaveText('How supervision levels work');
+  });
+
+  test('groups the scopes of one level in one card and shows an unclassified scope without a level', async ({ page }) => {
+    await page.goto('/agents/figma-security-agent');
+    const cards = page.locator('#human-involvement .level-card');
+    await expect(cards.locator('.level-name')).toHaveText(['Work-product review', 'Exception-only', 'Not classified']);
+    await expect(cards.nth(0).locator('.level-scopes > li')).toHaveCount(2);
+    await expect(cards.nth(2).locator('.level-number')).toHaveCount(0);
+    await expect(cards.nth(2).locator('.level-attention')).toHaveCount(0);
   });
 
   test('shows a paraphrased headline without quotation marks', async ({ page }) => {

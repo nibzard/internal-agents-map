@@ -61,6 +61,14 @@ BOUNDARY_LEVELS = {
     "exception-only": 5,
     "unknown": None,
 }
+# The words that a claim sentence uses for each attention boundary.
+BOUNDARY_PHRASES = {
+    "continuous-steering": "continuous steering",
+    "work-product-review": "work-product review",
+    "outcome-review": "outcome review",
+    "exception-only": "exception-only",
+    "unknown": "unknown",
+}
 ID_RE = re.compile(AGENT_SCHEMA["definitions"]["kebabId"]["pattern"])
 # The architecture fields in the order that the entry page and the export use.
 ARCHITECTURE_FIELDS = (
@@ -406,7 +414,9 @@ def claim_fields(record: dict) -> dict[str, tuple[str, str, str]]:
         boundary = item["attention_boundary"]
         level = BOUNDARY_LEVELS[boundary]
         label = f"Level {level}" if level is not None else "Unclassified"
-        text = f"{label} for {item['scope']}; human attention boundary: {boundary}."
+        text = (
+            f"{label} for {item['scope']}; human attention boundary: {BOUNDARY_PHRASES[boundary]}."
+        )
         claims[f"operating_models.{index}"] = (text, "inference", "catalog-judgment")
     return claims
 

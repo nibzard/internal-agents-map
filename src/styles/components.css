@@ -528,7 +528,7 @@
 /* The mark reads as a bullet for the whole item, so it sits at its first line. */
 .step-panel .claim-marked { align-items: start; }
 .step-panel .claim-marked > .icon { width: 20px; height: 20px; }
-.entry-section > .section-note {
+.entry-section .section-note {
   color: var(--muted);
   font-size: var(--text-sm);
   max-width: 680px;
@@ -563,31 +563,74 @@
   letter-spacing: -.015em;
   margin: 32px 0 12px;
 }
+/* A level card leads with the classification and keeps the scope as its context.
+   The large numeral is a quiet mark of the level; the label carries the meaning. */
 .scope-list {
+  display: grid;
+  gap: 12px;
   list-style: none;
   padding: 0;
   margin: 16px 0 0;
 }
-.scope-list li {
-  padding: 12px 0;
+.level-card {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  background: var(--sand-3);
+  border-radius: 14px;
 }
-.scope-line {
+.level-head {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.level-eyebrow {
   margin: 0;
-}
-.scope-line .icon { flex: none; }
-.scope-line strong { min-width: 0; }
-.scope-list strong {
-  font-weight: 400;
-}
-.scope-list li > span {
-  display: block;
-  margin-top: 4px;
   font-size: var(--text-xs);
   color: var(--muted);
 }
+.level-name {
+  margin: 2px 0 0;
+  font-size: var(--text-md);
+  color: var(--ink);
+}
+.level-attention {
+  margin: 2px 0 0;
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+.level-number {
+  margin: -6px 0 0;
+  font-weight: 400;
+  font-size: 56px;
+  letter-spacing: -.04em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--sand-8);
+  white-space: nowrap;
+}
+.level-scale {
+  font-size: 18px;
+  margin-left: 2px;
+  color: var(--sand-7);
+}
+.level-scopes {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 0 0;
+  list-style: none;
+  border-top: .5px solid var(--sand-6);
+}
+.scope-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: var(--text-sm);
+}
+.scope-line .icon { flex: none; width: 20px; height: 20px; }
+.level-card[data-level="unknown"] .level-name { color: var(--muted); }
 .term-list {
   display: flex;
   flex-wrap: wrap;
@@ -606,6 +649,14 @@
   border-radius: 999px;
   color: var(--sand-12);
 }
+.interface-note { margin: 0 0 8px; }
+.interface-values {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+}
+.interface-values .term-list { margin: 0; }
 
 /* Claims */
 .claim {
@@ -996,7 +1047,7 @@
     margin-bottom: 16px;
     padding: 0 16px;
     border: 1px solid var(--sand-6);
-    border-radius: 12px;
+    border-radius: 999px;
     background: var(--sand-3);
     color: var(--ink);
     text-align: left;

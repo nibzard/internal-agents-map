@@ -52,8 +52,7 @@ const invocation = entry.invocation.filter((item) => item.id !== 'unknown');
 // A classification links to the palette, opened on the entries that share it.
 const workLinks = entry.domains.map((domain) => ({ ...domain, href: facetPath('work', domain.id) }));
 const invocationLinks = invocation.map((mode) => ({ ...mode, href: facetPath('invocation', mode.id) }));
-// The scope and denominator guidance belongs above figures. A section that reports
-// none carries its review state alone.
+// Introduce reported results only when observations are available.
 const hasFigures = entry.observationItems.length > 0;
 const hasRelated = entry.relatedEntries.length > 0 || entry.relatedLessons.length > 0;
 // A question that the sources leave unanswered keeps its section with the absence statement.
@@ -151,13 +150,19 @@ const lessonsNote = coverageNoteOf('lessons');
       <section class="entry-section" id="results" aria-labelledby="results-title">
         <h2 id="results-title">{entry.profile.observations}</h2>
         {hasFigures && <p class="section-note">
-          The catalog records what the sources report, with the scope and the denominator of every
-          figure. A qualification below limits the figure it sits under.
+          These results come from the sources. Notes below each result explain what it covers and any reported limits.
         </p>}
         {entry.observationItems.map((item) => (
           <div class="observation-item">
-            <p class="section-note"><strong>{item.categoryLabel}</strong> · {item.basisLabel} · {item.subject}</p>
             <Claim claim={item.claim} />
+            <details class="claim-details">
+              <summary><span>About this result</span><Icon name="chevron-down" /></summary>
+              <dl>
+                <dt>Category</dt><dd>{item.categoryLabel}</dd>
+                <dt>Evidence type</dt><dd>{item.basisLabel}</dd>
+                <dt>What it covers</dt><dd>{item.subject}</dd>
+              </dl>
+            </details>
           </div>
         ))}
         {entry.observationItems.length === 0 && (
@@ -177,18 +182,6 @@ const lessonsNote = coverageNoteOf('lessons');
       </section>
     )}
 
-    <section class="entry-section" id="sources" aria-labelledby="sources-title">
-      <h2 id="sources-title">Sources and research details</h2>
-      <p class="section-note">
-        Citations link to the original publisher. Each source also keeps a preserved copy in the
-        repository, so a changed or removed page stays checkable.
-      </p>
-      <SourceList sources={entry.sources} />
-      <details class="claim-details"><summary>Question coverage and scope</summary>
-        <dl class="architecture">{Object.entries(entry.coverageQuestions).map(([key, answer]) => <><dt>{key.replaceAll('_', ' ')}</dt><dd>{answer.stateLabel}{answer.note ? `: ${answer.note}` : ''}</dd></>)}</dl>
-      </details>
-      <ResearchDetails claims={entry.claims} researchOnlyClaims={entry.researchOnlyClaims} aliasRelations={entry.aliasObservationRelations} />
-    </section>
 
     {hasRelated && (
       <section class="entry-section" id="related" aria-labelledby="related-title">
@@ -217,4 +210,16 @@ const lessonsNote = coverageNoteOf('lessons');
       <Icon name={entry.profile.icon} />
     </a>
   </article>
+  <section slot="after-contribution" class="entry-section" id="sources" aria-labelledby="sources-title">
+    <h2 id="sources-title">Sources and research details</h2>
+    <p class="section-note">
+      Citations link to the original publisher. Each source also keeps a preserved copy in the
+      repository, so a changed or removed page stays checkable.
+    </p>
+    <SourceList sources={entry.sources} />
+    <details class="claim-details"><summary>Question coverage and scope</summary>
+      <dl class="architecture">{Object.entries(entry.coverageQuestions).map(([key, answer]) => <><dt>{key.replaceAll('_', ' ')}</dt><dd>{answer.stateLabel}{answer.note ? `: ${answer.note}` : ''}</dd></>)}</dl>
+    </details>
+    <ResearchDetails claims={entry.claims} researchOnlyClaims={entry.researchOnlyClaims} aliasRelations={entry.aliasObservationRelations} />
+  </section>
 </SiteLayout>

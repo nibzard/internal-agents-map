@@ -236,6 +236,23 @@ describe('plaid-internal-mcp-server', () => {
   });
 });
 
+describe('the supervision levels', () => {
+  const levels = entryView(catalog, 'figma-security-agent').supervisionLevels;
+
+  it('gives one level for each boundary, with its scopes in record order', () => {
+    expect(levels.map((level) => [level.level, level.label, level.scopes.map((item) => item.claim?.field)])).toEqual([
+      [3, 'Work-product review', ['operating_models.0', 'operating_models.1']],
+      [5, 'Exception-only', ['operating_models.2']],
+      [null, 'Not classified', ['operating_models.3']],
+    ]);
+  });
+
+  it('says when a person looks, in the words of the supervision definitions', () => {
+    expect(levels[0]!.attention).toBe('A person reviews the draft or implementation.');
+    expect(levels[2]!.attention).toBeNull();
+  });
+});
+
 describe('the header boundaries', () => {
   it('lists each distinct boundary of an entry with scoped assessments that differ', () => {
     expect(entryView(catalog, 'figma-security-agent').boundaryLabels).toEqual([

@@ -72,3 +72,14 @@ export function observedDate(value: string): string {
   if (!name) return value;
   return day ? `${Number(day)} ${name} ${year}` : `${name} ${year}`;
 }
+
+/**
+ * Put the preposition that agrees with the precision of a recorded date before it:
+ * "on 20 February 2026", "in February 2026", or "in 2026". A value that is not a
+ * date is returned as `observedDate` returns it, without a preposition.
+ */
+export function observedPhrase(value: string): string {
+  const date = observedDate(value);
+  if (date === value && !/^\d{4}$/.test(value)) return date;
+  return /^\d{4}-\d{2}-\d{2}$/.test(value.trim()) ? `on ${date}` : `in ${date}`;
+}

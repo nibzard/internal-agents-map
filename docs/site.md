@@ -154,6 +154,14 @@ per-entry claim and source coverage, JSON parity, and privacy. It rejects extra 
 escaping paths, and executable URL schemes. External source URLs are not fetched by this checker;
 the scheduled external-link workflow handles those.
 
+Claim coverage requires the text of each claim on its entry page. An operating-model claim is the
+exception on an agent page: it shows as a scope line in a level card. Each card shows one
+attention boundary and its level, and lists every scope that the catalog assesses at that
+boundary. Each scope line holds the claim anchor and the citations. The evidence ledger in the
+research details keeps the provenance, the confidence, and the observation date of the claim.
+For an operating-model claim, the checker requires the scope and the level label ("Level 3", or
+"Not classified" for an unknown boundary), or the sentence, on the page.
+
 The `validate` workflow installs uv, Node, and the pinned Chromium browser, then runs
 `npm run verify` on pull requests and on pushes to `main`. It does not deploy. Workflow
 concurrency is scoped to workflow and Git ref; a newer `main` run cancels an older run.
