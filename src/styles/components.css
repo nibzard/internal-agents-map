@@ -1047,7 +1047,7 @@
     margin-bottom: 16px;
     padding: 0 16px;
     border: 1px solid var(--sand-6);
-    border-radius: 12px;
+    border-radius: 999px;
     background: var(--sand-3);
     color: var(--ink);
     text-align: left;
