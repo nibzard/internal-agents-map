@@ -6,7 +6,7 @@ import ClaimAliases from './ClaimAliases.astro';
 import Icon from './Icon.astro';
 import SourceMarks from './SourceMarks.astro';
 import type { ClaimView } from '../lib/entry-view';
-import { observedDate } from '../lib/labels';
+import { observedPhrase } from '../lib/labels';
 
 interface Props {
   claim: ClaimView;
@@ -72,5 +72,5 @@ const attribution =
     tabled.map((caveat) => <p class="caveat-note">{caveat.value}</p>)
   ))}
   {claim.qualification && <p class="qualification">{claim.qualification}</p>}
-  {observed && <p class="observed">Observed in {observedDate(observed.value)}</p>}
+  {observed && <p class="observed">Observed {observedPhrase(observed.value)}</p>}
 </article>
