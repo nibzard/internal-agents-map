@@ -202,6 +202,15 @@ class PublicationTests(unittest.TestCase):
         immutable = next(rule for rule in config["headers"] if rule["source"] == "/_astro/:path*")
         self.assertIn("immutable", immutable["headers"][0]["value"])
 
+    def test_a_direct_markdown_url_is_served_as_plain_text(self):
+        # Some assistant browsers refuse text/markdown. A client that asks for
+        # Markdown in its Accept header still gets text/markdown from the middleware.
+        config = json.loads((ROOT / "vercel.json").read_text(encoding="utf-8"))
+        markdown = next(rule for rule in config["headers"] if rule["source"] == "/:path*.md")
+        self.assertIn(
+            {"key": "Content-Type", "value": "text/plain; charset=utf-8"}, markdown["headers"]
+        )
+
     def test_the_data_build_writes_no_hosting_or_routing_configuration(self):
         records = build.load_agents()
         companies = build.load_companies(records)
