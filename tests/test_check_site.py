@@ -269,6 +269,58 @@ class AstroArtifactTests(unittest.TestCase):
                 checker.check_entry_coverage(page, approach, claims, errors)
                 self.assertEqual(not errors, valid, errors)
 
+    def test_operating_model_card_stands_in_for_its_claim_text(self):
+        approach = {
+            "id": "example",
+            "claim_ids": ["model"],
+            "source_ids": [],
+            "operating_models": [
+                {
+                    "scope": "task → pull request",
+                    "attention_boundary": "work-product-review",
+                    "level": 3,
+                }
+            ],
+        }
+        claims = {
+            "model": {
+                "field": "operating_models.0",
+                "text": "Level 3 for task → pull request; human attention boundary: work-product review.",
+            }
+        }
+        for card, valid in (
+            ("task <span>→</span> pull request Work-product review · Level 3", True),
+            ("task <span>→</span> pull request Work-product review", False),
+            ("another task Work-product review · Level 3", False),
+        ):
+            with self.subTest(card=card):
+                page = checker.SiteParser()
+                page.feed(
+                    f'<article data-approach-id="example"><li data-claim-id="model">{card}</li></article>'
+                )
+                errors = []
+                checker.check_entry_coverage(page, approach, claims, errors)
+                self.assertEqual(not errors, valid, errors)
+
+    def test_operating_model_sentence_without_a_card_passes(self):
+        approach = {
+            "id": "example",
+            "claim_ids": ["model"],
+            "source_ids": [],
+            "operating_models": [
+                {"scope": "run → change", "attention_boundary": "unknown", "level": None}
+            ],
+        }
+        sentence = "Unclassified for run → change; human attention boundary: unknown."
+        claims = {"model": {"field": "operating_models.0", "text": sentence}}
+        page = checker.SiteParser()
+        page.feed(
+            f'<article data-approach-id="example"><div data-claim-id="model">{sentence}</div></article>'
+        )
+        errors = []
+        checker.check_entry_coverage(page, approach, claims, errors)
+        self.assertEqual(errors, [])
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

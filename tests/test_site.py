@@ -66,13 +66,11 @@ class ArtifactTests(unittest.TestCase):
             )
             self.assertEqual(published, expected)
         for approach in self.catalog["approaches"]:
-            text = checker.visible_text(self.entries[approach["id"]])
-            for claim_id in approach["claim_ids"]:
-                claim = self.claims[claim_id]
-                claim_text = str(claim["text"])
-                if claim.get("field") == "architecture.interfaces":
-                    claim_text = claim_text.replace(", ", " ")
-                self.assertIn(" ".join(claim_text.split()), text, claim_id)
+            errors: list[str] = []
+            checker.check_entry_coverage(
+                self.entries[approach["id"]], approach, self.claims, errors
+            )
+            self.assertEqual(errors, [], approach["id"])
 
     def test_the_directory_holds_one_card_and_a_crawlable_link_per_entry(self):
         directory = read_page("index.html")

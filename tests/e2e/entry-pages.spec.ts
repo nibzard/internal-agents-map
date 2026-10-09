@@ -276,6 +276,15 @@ test.describe('page-content pilot', () => {
       .toContain('excluding tests, evals, docs, and lockfiles');
   });
 
+  test('shows each operating model once, as a cited scope card', async ({ page }) => {
+    await page.goto('/agents/stripe-minions');
+    const card = page.locator('#human-involvement #claim-stripe-minions--operating-models-0');
+    await expect(card).toContainText('Work-product review · Level 3');
+    await expect(card.locator('.source-marks a.citation')).toHaveCount(1);
+    await expect(page.locator('#human-involvement')).not.toContainText('Catalog interpretation');
+    await expect(page.locator('#human-involvement')).not.toContainText('human attention boundary');
+  });
+
   test('shows a paraphrased headline without quotation marks', async ({ page }) => {
     await page.goto('/agents/stripe-minions');
     const headline = page.locator('#claim-stripe-minions--headline-metric .claim-text');

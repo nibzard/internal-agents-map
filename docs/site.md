@@ -154,6 +154,13 @@ per-entry claim and source coverage, JSON parity, and privacy. It rejects extra 
 escaping paths, and executable URL schemes. External source URLs are not fetched by this checker;
 the scheduled external-link workflow handles those.
 
+Claim coverage requires the text of each claim on its entry page. An operating-model claim is the
+exception on an agent page: its scope card stands in for its sentence. The card shows the scope, the attention
+boundary, and the level, and it holds the claim anchor and the citations. The evidence ledger in
+the research details keeps the provenance, the confidence, and the observation date of the claim.
+For an operating-model claim, the checker requires the scope and the level label, or the
+sentence, on the page.
+
 The `validate` workflow installs uv, Node, and the pinned Chromium browser, then runs
 `npm run verify` on pull requests and on pushes to `main`. It does not deploy. Workflow
 concurrency is scoped to workflow and Git ref; a newer `main` run cancels an older run.

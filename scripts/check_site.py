@@ -163,6 +163,15 @@ def check_directory_coverage(page: SiteParser, approaches: list[dict], errors: l
         errors.append(f"The directory links to an entry that the catalog does not hold: {path}.")
 
 
+def operating_model(approach: dict, claim: dict) -> dict | None:
+    """The operating model that a claim on the path operating_models.N describes, if any."""
+    match = re.fullmatch(r"operating_models\.(\d+)", str(claim.get("field", "")))
+    models = approach.get("operating_models") or []
+    if match is None or int(match.group(1)) >= len(models):
+        return None
+    return models[int(match.group(1))]
+
+
 def check_entry_coverage(
     page: SiteParser, approach: dict, claims: dict[str, dict], errors: list[str]
 ) -> None:
@@ -183,7 +192,16 @@ def check_entry_coverage(
         # Interface values render as separate list items instead of comma-separated prose.
         if claim.get("field") == "architecture.interfaces":
             claim_text = claim_text.replace(", ", " ")
-        if " ".join(claim_text.split()) not in text:
+        # An agent page shows an operating-model claim as its scope card. The evidence
+        # ledger keeps its provenance, confidence, and sources; the card gives its scope
+        # and level. A supporting-system page shows the sentence instead.
+        model = operating_model(approach, claim)
+        if model is not None:
+            level = f"Level {model['level']}" if model.get("level") is not None else "Level unknown"
+            card = (" ".join(str(model["scope"]).split()), level)
+            if not all(part in text for part in card) and " ".join(claim_text.split()) not in text:
+                errors.append(f"Missing claim text: {claim_id} in {name}")
+        elif " ".join(claim_text.split()) not in text:
             errors.append(f"Missing claim text: {claim_id} in {name}")
         for field in QUALIFIER_FIELDS:
             value = claim.get(field)

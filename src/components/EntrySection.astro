@@ -42,24 +42,25 @@ const hasHowItWorks = entry.workflowClaims.length > 0;
       )}
       {!entry.isSupportingSystem && entry.operatingModels.length > 0 && (
         <ul class="scope-list">
-          {entry.operatingModels.map((model) => (
-            <li>
-              <p class="scope-line">
-                <Icon name="person" />
-                <strong><Arrowed text={model.scope} /></strong>
-              </p>
-              <span>{model.boundaryLabel} · {model.levelLabel}</span>
-            </li>
-          ))}
+          {entry.operatingModels.map((model, index) => {
+            // The card stands in for the operating-model claim. The evidence ledger
+            // links to its anchor and keeps its provenance, confidence, and date.
+            const claim = entry.supervisionClaims.find((item) => item.field === `operating_models.${index}`);
+            return (
+              <li id={claim?.anchor} data-claim-id={claim?.id}>
+                {claim && <ClaimAliases claim={claim} />}
+                <p class="scope-line">
+                  <Icon name="person" />
+                  <strong><Arrowed text={model.scope} /></strong>
+                </p>
+                <span>{model.boundaryLabel} · {model.levelLabel}{claim && <SourceMarks citations={claim.supporting} />}</span>
+              </li>
+            );
+          })}
         </ul>
       )}
       {entry.isSupportingSystem && entry.architectureRows.some((row) => row.field === 'architecture.credentials' && row.claim) && <p>See <a href={`#${entry.architectureRows.find((row) => row.field === 'architecture.credentials')?.claim?.anchor}`}>documented credential and access boundaries</a> in the architecture above. Scoped human-review assessments for individual uses remain in research details.</p>}
       {entry.isSupportingSystem && !entry.architectureRows.some((row) => row.field === 'architecture.credentials' && row.claim) && <p class="review-state">No separate access-control assessment is recorded.</p>}
-      {entry.supervisionClaims.length > 0 && <div class="supervision-evidence">
-        {entry.supervisionClaims.map((claim) => (
-          <Claim claim={claim} showLabel={false} mark="person" />
-        ))}
-      </div>}
     </section>}
 
 </>}
