@@ -186,7 +186,9 @@ to it:
   permanently to the apex origin, with the path and query string.
 - Headers set `nosniff`, revalidation for pages and exports, one-year immutable caching for the
   hashed assets under `/_astro/`, the Markdown and JSON content types, CORS for the exports, and
-  the `describedby` link to `data-guide.md`.
+  the `describedby` link to `data-guide.md`. A direct `.md` URL is `text/plain`, because some
+  assistant browsers refuse `text/markdown`. The middleware gives `text/markdown` to a page
+  request whose `Accept` header asks for Markdown.
 - `X-Robots-Tag: noindex` covers the raw JSON records, the compact JSON index, and the 404 page
   only. No HTML entry page carries it. The Markdown representations use an HTTP canonical link to
   their HTML page instead of a noindex directive.

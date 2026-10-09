@@ -102,7 +102,7 @@ class RouteTests(unittest.TestCase):
 
     def test_names_the_media_type_of_every_published_extension(self):
         self.assertEqual(delivery.mime_for("agents.json"), "application/json")
-        self.assertEqual(delivery.mime_for("index.md"), "text/markdown")
+        self.assertEqual(delivery.mime_for("index.md"), "text/plain")
         self.assertEqual(delivery.mime_for("sitemap.xml"), "application/xml")
         self.assertEqual(delivery.mime_for("robots.txt"), "text/plain")
         self.assertEqual(delivery.mime_for("logos/fixture.svg"), "image/svg+xml")
@@ -122,6 +122,7 @@ class RouteTests(unittest.TestCase):
         self.assertTrue(markdown.canonical_link)
         direct = next(case for case in cases if case.path == "/index.md")
         self.assertEqual(direct.artifact, "index.md")
+        self.assertEqual(direct.mime, "text/plain")
 
     def test_record_json_stays_out_of_search_and_the_catalog_stays_in(self):
         cases = {case.path: case for case in delivery.export_cases(MANIFEST["routes"])}

@@ -25,9 +25,11 @@ PREVIEW_TOOLBAR = re.compile(
     rb'<script async data-explicit-opt-in="true" data-deployment-id="[^"]+"'
     rb' src="https://vercel\.live/_next-live/feedback/feedback\.js"></script>\s*$'
 )
+# A direct Markdown URL is plain text, because some assistant browsers refuse text/markdown.
+# A page request whose Accept header asks for Markdown gets text/markdown.
 MIME_TYPES = {
     ".html": "text/html",
-    ".md": "text/markdown",
+    ".md": "text/plain",
     ".json": "application/json",
     ".xml": "application/xml",
     ".txt": "text/plain",
@@ -139,7 +141,7 @@ def route_cases(routes: dict[str, dict[str, str]]) -> list[Case]:
             Case(
                 path=artifacts["markdown"],
                 artifact=artifact_name(artifacts["markdown"]),
-                mime="text/markdown",
+                mime=mime_for(artifacts["markdown"]),
                 canonical_link=True,
             )
         )

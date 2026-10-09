@@ -20,8 +20,9 @@ for the name, homepage, and logo descriptor. Join `claim_ids` and `source_ids` b
 do not infer facts from an agent's name or fill in unknown fields.
 
 Markdown is also available by sending `Accept: text/markdown` to a published HTML
-page. HTML is the default; an explicit `.md` URL always returns Markdown. Negotiated
-responses use `Vary: Accept`. Filters and URL fragments do not reduce the exported
+page. HTML is the default; an explicit `.md` URL always returns Markdown, with the
+`text/plain` media type because some assistant browsers refuse `text/markdown`.
+Negotiated responses use `text/markdown` and `Vary: Accept`. Filters and URL fragments do not reduce the exported
 collection; use individual records for selective retrieval. `/index.md` holds Agents and `/infrastructure.md` holds Infrastructure. The historical `/agents.json` and `/agents/index.json` endpoints retain both collections.
 
 Distinguish reported facts from catalog judgments. Keep provenance, confidence,
