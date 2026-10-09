@@ -124,11 +124,12 @@ for (const entry of ENTRIES) {
       await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
 
       await expect(page.locator('#sources')).toBeVisible();
+      await expect(page.locator('#main > :last-child')).toHaveAttribute('id', 'sources');
       await expect(page.locator('.page-back-end')).toBeVisible();
       if (entry.id !== 'plaid-internal-mcp-server') {
       await expect(
         page.locator('#human-involvement a[href="/definitions#supervision"]'),
-      ).toHaveText('supervision definitions');
+      ).toHaveText('How supervision levels work');
       }
       await expect(page.locator('a[href="/"]:visible').first()).toBeVisible();
     });

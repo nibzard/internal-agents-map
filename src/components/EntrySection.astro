@@ -17,7 +17,7 @@ const hasHowItWorks = entry.workflowClaims.length > 0;
         {hasHowItWorks ? (
           <>
             <p class="section-note">
-              {entry.workflowScope ? `${entry.isSupportingSystem ? 'Documented use example' : 'Representative workflow'}: ${entry.workflowScope}.` : 'The workflow the sources report for this implementation.'}
+              {entry.workflowScope ? `${entry.workflowScope.replace(/[.!?]$/, '')}.` : 'The workflow the sources report for this implementation.'}
             </p>
             <div class="step-panel">
               {entry.workflowClaims.map((claim) => <Claim claim={claim} />)}
@@ -34,8 +34,9 @@ const hasHowItWorks = entry.workflowClaims.length > 0;
     {(entry.isSupportingSystem || showQuestion(entry, 'human_involvement')) && <section class="entry-section" id="human-involvement" aria-labelledby="human-involvement-title">
       <h2 id="human-involvement-title">{entry.profile.people}</h2>
       {!entry.isSupportingSystem && <p class="section-note">
-        Each scope pairs its normal attention boundary with supporting evidence. See the <a href="/definitions#supervision">supervision definitions</a> for the level mapping and limits.
+        Where people review, approve, or guide the agent’s work.
       </p>}
+      {!entry.isSupportingSystem && <p class="section-note"><a href="/definitions#supervision">How supervision levels work</a></p>}
       {!entry.isSupportingSystem && entry.coverageQuestions.human_involvement?.note && (
         <p class="review-state" data-state={entry.coverageQuestions.human_involvement.state}><strong>{entry.coverageQuestions.human_involvement.stateLabel}:</strong> {entry.coverageQuestions.human_involvement.note}</p>
       )}
@@ -54,9 +55,11 @@ const hasHowItWorks = entry.workflowClaims.length > 0;
       )}
       {entry.isSupportingSystem && entry.architectureRows.some((row) => row.field === 'architecture.credentials' && row.claim) && <p>See <a href={`#${entry.architectureRows.find((row) => row.field === 'architecture.credentials')?.claim?.anchor}`}>documented credential and access boundaries</a> in the architecture above. Scoped human-review assessments for individual uses remain in research details.</p>}
       {entry.isSupportingSystem && !entry.architectureRows.some((row) => row.field === 'architecture.credentials' && row.claim) && <p class="review-state">No separate access-control assessment is recorded.</p>}
-      {entry.supervisionClaims.map((claim) => (
-        <Claim claim={claim} showLabel={false} mark="person" />
-      ))}
+      {entry.supervisionClaims.length > 0 && <div class="supervision-evidence">
+        {entry.supervisionClaims.map((claim) => (
+          <Claim claim={claim} showLabel={false} mark="person" />
+        ))}
+      </div>}
     </section>}
 
 </>}
@@ -70,9 +73,19 @@ const hasHowItWorks = entry.workflowClaims.length > 0;
             {row.claim ? (
               <dd id={row.claim.anchor} data-claim-id={row.claim.id}>
                 <ClaimAliases claim={row.claim} />
-                {row.claim.text}
-                <SourceMarks citations={row.claim.supporting} />
-                {row.note && <span class="architecture-note">{row.note}</span>}
+                {row.field === 'architecture.interfaces' ? <>
+                  {row.note && <p class="interface-note">{row.note}</p>}
+                  <div class="interface-values">
+                    <ul class="term-list" role="list">
+                      {entry.interfaces.map((item) => <li><span>{item.id}</span></li>)}
+                    </ul>
+                    <SourceMarks citations={row.claim.supporting} />
+                  </div>
+                </> : <>
+                  {row.claim.text}
+                  <SourceMarks citations={row.claim.supporting} />
+                  {row.note && <span class="architecture-note">{row.note}</span>}
+                </>}
                 {row.claim.caveats.length > 0 && (
                   <span class="architecture-caveats">
                     {row.claim.caveats.map((caveat) => (

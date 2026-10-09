@@ -179,7 +179,11 @@ def check_entry_coverage(
         if claim is None:
             errors.append(f"Unknown claim {claim_id} in {name}.")
             continue
-        if " ".join(str(claim["text"]).split()) not in text:
+        claim_text = str(claim["text"])
+        # Interface values render as separate list items instead of comma-separated prose.
+        if claim.get("field") == "architecture.interfaces":
+            claim_text = claim_text.replace(", ", " ")
+        if " ".join(claim_text.split()) not in text:
             errors.append(f"Missing claim text: {claim_id} in {name}")
         for field in QUALIFIER_FIELDS:
             value = claim.get(field)

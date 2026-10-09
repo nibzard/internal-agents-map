@@ -10682,7 +10682,7 @@
           "stripe-minions-source-6",
           "stripe-minions-source-7"
         ],
-        "workflow_scope": "Slack or internal-app request to a minion-produced pull request ready for human review",
+        "workflow_scope": "An engineer sends a request through Slack or an internal app. The agent prepares a pull request for human review",
         "questions": {
           "purpose": {
             "state": "reported",

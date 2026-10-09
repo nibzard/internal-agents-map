@@ -52,8 +52,7 @@ const attribution =
     <div class="conflict">
       <strong>Conflicting evidence</strong>
       <p>
-        The preserved evidence disagrees about this statement. Read the qualifications above and
-        source{claim.contradicting.length > 1 ? 's' : ''}{' '}
+        Sources disagree about this statement. See the conflicting sources:{' '}
         {claim.contradicting.map((citation, index) => (
           <>{index > 0 && ', '}<a href={`#${citation.anchor}`}>{citation.number}</a></>
         ))}.

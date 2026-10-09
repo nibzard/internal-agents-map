@@ -69,7 +69,10 @@ class ArtifactTests(unittest.TestCase):
             text = checker.visible_text(self.entries[approach["id"]])
             for claim_id in approach["claim_ids"]:
                 claim = self.claims[claim_id]
-                self.assertIn(" ".join(str(claim["text"]).split()), text, claim_id)
+                claim_text = str(claim["text"])
+                if claim.get("field") == "architecture.interfaces":
+                    claim_text = claim_text.replace(", ", " ")
+                self.assertIn(" ".join(claim_text.split()), text, claim_id)
 
     def test_the_directory_holds_one_card_and_a_crawlable_link_per_entry(self):
         directory = read_page("index.html")

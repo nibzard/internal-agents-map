@@ -298,7 +298,7 @@ page_content:
   reviewed_at: '2026-09-17'
   source_ids: [stripe-minions-source-1, stripe-minions-source-2, stripe-minions-source-3, stripe-minions-source-4,
     stripe-minions-source-5, stripe-minions-source-6, stripe-minions-source-7]
-  workflow_scope: Slack or internal-app request to a minion-produced pull request ready for human review
+  workflow_scope: An engineer sends a request through Slack or an internal app. The agent prepares a pull request for human review
   questions:
     purpose: {state: reported}
     workflow: {state: reported, claim_paths: [primitives.start-run-slack-internal-app, primitives.hydrate-context-before-the-run, primitives.implement-task-prewarmed-devbox, primitives.open-pull-request-human-review], note: 'The

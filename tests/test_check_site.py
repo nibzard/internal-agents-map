@@ -254,6 +254,21 @@ def build_artifact(root):
 
 
 class AstroArtifactTests(unittest.TestCase):
+    def test_interface_pills_preserve_all_values(self):
+        approach = {"id": "example", "claim_ids": ["interfaces"], "source_ids": []}
+        claims = {"interfaces": {"field": "architecture.interfaces", "text": "slack, cli"}}
+        for values, valid in ((["slack", "cli"], True), (["slack"], False)):
+            with self.subTest(values=values):
+                page = checker.SiteParser()
+                page.feed(
+                    '<article data-approach-id="example"><ul data-claim-id="interfaces">'
+                    + "".join(f"<li><span>{value}</span></li>" for value in values)
+                    + "</ul></article>"
+                )
+                errors = []
+                checker.check_entry_coverage(page, approach, claims, errors)
+                self.assertEqual(not errors, valid, errors)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
