@@ -36,29 +36,42 @@ const hasHowItWorks = entry.workflowClaims.length > 0;
       {!entry.isSupportingSystem && <p class="section-note">
         People review, approve, or guide the agent’s work here.
       </p>}
-      {!entry.isSupportingSystem && <p class="section-note"><a href="/definitions#supervision">How supervision levels work</a></p>}
       {!entry.isSupportingSystem && entry.coverageQuestions.human_involvement?.note && (
         <p class="review-state" data-state={entry.coverageQuestions.human_involvement.state}><strong>{entry.coverageQuestions.human_involvement.stateLabel}:</strong> {entry.coverageQuestions.human_involvement.note}</p>
       )}
       {!entry.isSupportingSystem && entry.operatingModels.length > 0 && (
         <ul class="scope-list">
-          {entry.operatingModels.map((model, index) => {
-            // The card stands in for the operating-model claim. The evidence ledger
-            // links to its anchor and keeps its provenance, confidence, and date.
-            const claim = entry.supervisionClaims.find((item) => item.field === `operating_models.${index}`);
-            return (
-              <li id={claim?.anchor} data-claim-id={claim?.id}>
-                {claim && <ClaimAliases claim={claim} />}
-                <p class="scope-line">
-                  <Icon name="person" />
-                  <strong><Arrowed text={model.scope} /></strong>
-                </p>
-                <span>{model.boundaryLabel} · {model.levelLabel}{claim && <SourceMarks citations={claim.supporting} />}</span>
-              </li>
-            );
-          })}
+          {entry.supervisionLevels.map((level) => (
+            <li class="level-card" data-level={level.level ?? 'unknown'}>
+              <div class="level-head">
+                <div>
+                  <p class="level-eyebrow">Supervision level</p>
+                  <p class="level-name">{level.label}</p>
+                  {level.attention && <p class="level-attention">{level.attention}</p>}
+                </div>
+                {level.level !== null && (
+                  <p class="level-number">
+                    <span aria-hidden="true">{level.level}<span class="level-scale">/5</span></span>
+                    <span class="visually-hidden">Level {level.level} of 5</span>
+                  </p>
+                )}
+              </div>
+              <ul class="level-scopes">
+                {/* The scope line stands in for its operating-model claim. The evidence
+                    ledger links to its anchor and keeps its provenance, confidence, and date. */}
+                {level.scopes.map(({ scope, claim }) => (
+                  <li class="scope-line" id={claim?.anchor} data-claim-id={claim?.id}>
+                    {claim && <ClaimAliases claim={claim} />}
+                    <Icon name="person" />
+                    <span><Arrowed text={scope} />{claim && <SourceMarks citations={claim.supporting} />}</span>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
         </ul>
       )}
+      {!entry.isSupportingSystem && <p class="section-note"><a href="/definitions#supervision">How supervision levels work</a></p>}
       {entry.isSupportingSystem && entry.architectureRows.some((row) => row.field === 'architecture.credentials' && row.claim) && <p>See <a href={`#${entry.architectureRows.find((row) => row.field === 'architecture.credentials')?.claim?.anchor}`}>documented credential and access boundaries</a> in the architecture above. Scoped human-review assessments for individual uses remain in research details.</p>}
       {entry.isSupportingSystem && !entry.architectureRows.some((row) => row.field === 'architecture.credentials' && row.claim) && <p class="review-state">No separate access-control assessment is recorded.</p>}
     </section>}

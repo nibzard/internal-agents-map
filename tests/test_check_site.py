@@ -302,6 +302,26 @@ class AstroArtifactTests(unittest.TestCase):
                 checker.check_entry_coverage(page, approach, claims, errors)
                 self.assertEqual(not errors, valid, errors)
 
+    def test_unclassified_operating_model_card_passes(self):
+        approach = {
+            "id": "example",
+            "claim_ids": ["model"],
+            "source_ids": [],
+            "operating_models": [
+                {"scope": "run → change", "attention_boundary": "unknown", "level": None}
+            ],
+        }
+        sentence = "Unclassified for run → change; human attention boundary: unknown."
+        claims = {"model": {"field": "operating_models.0", "text": sentence}}
+        page = checker.SiteParser()
+        page.feed(
+            '<article data-approach-id="example"><p>Not classified</p>'
+            '<li data-claim-id="model">run <span>→</span> change</li></article>'
+        )
+        errors = []
+        checker.check_entry_coverage(page, approach, claims, errors)
+        self.assertEqual(errors, [])
+
     def test_operating_model_sentence_without_a_card_passes(self):
         approach = {
             "id": "example",

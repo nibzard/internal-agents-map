@@ -563,35 +563,74 @@
   letter-spacing: -.015em;
   margin: 32px 0 12px;
 }
+/* A level card leads with the classification and keeps the scope as its context.
+   The large numeral is a quiet mark of the level; the label carries the meaning. */
 .scope-list {
+  display: grid;
+  gap: 12px;
   list-style: none;
   padding: 0;
   margin: 16px 0 0;
+}
+.level-card {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
   background: var(--sand-3);
   border-radius: 14px;
 }
-.scope-list li {
-  padding: 12px 16px;
+.level-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
 }
-.scope-list li + li { border-top: .5px solid var(--sand-6); }
+.level-eyebrow {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+.level-name {
+  margin: 2px 0 0;
+  font-size: var(--text-md);
+  color: var(--ink);
+}
+.level-attention {
+  margin: 2px 0 0;
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+.level-number {
+  margin: -6px 0 0;
+  font-weight: 400;
+  font-size: 56px;
+  letter-spacing: -.04em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--sand-8);
+  white-space: nowrap;
+}
+.level-scale {
+  font-size: 18px;
+  margin-left: 2px;
+  color: var(--sand-7);
+}
+.level-scopes {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 0 0;
+  list-style: none;
+  border-top: .5px solid var(--sand-6);
+}
 .scope-line {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  margin: 0;
+  font-size: var(--text-sm);
 }
 .scope-line .icon { flex: none; width: 20px; height: 20px; }
-.scope-line strong { min-width: 0; }
-.scope-list strong {
-  font-weight: 400;
-}
-.scope-list li > span {
-  display: block;
-  margin-top: 4px;
-  margin-left: 28px;
-  font-size: var(--text-xs);
-  color: var(--muted);
-}
+.level-card[data-level="unknown"] .level-name { color: var(--muted); }
 .term-list {
   display: flex;
   flex-wrap: wrap;

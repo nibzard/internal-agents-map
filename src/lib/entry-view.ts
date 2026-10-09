@@ -19,6 +19,7 @@ import { companyView, type CompanyView } from './companies';
 import { isWellDocumented } from './documentation';
 import { lessonsForApproach } from './lessons';
 import { entryPath } from './routes';
+import { SUPERVISION_DEFINITIONS } from './guide-content';
 import { shorten } from './text';
 
 /** Where the repository keeps the preserved copy of a source. */
@@ -52,6 +53,30 @@ export function pageProfile(section: CatalogSection): PageProfile {
     validation: 'Validation and failure handling', observations: 'Reported observations',
     related: 'Infrastructure used and related reading',
   };
+}
+
+/** Group the scoped assessments of an entry by boundary, in the order the record names them. */
+function supervisionLevels(approach: Approach, claims: readonly ClaimView[]): SupervisionLevelView[] {
+  const levels: { boundary: string; label: string; level: number | null; attention: string | null; scopes: { scope: string; claim: ClaimView | null }[] }[] = [];
+  approach.operating_models.forEach((model, index) => {
+    const claim = claims.find((item) => item.field === `operating_models.${index}`) ?? null;
+    const known = levels.find((item) => item.boundary === model.attention_boundary);
+    if (known) {
+      known.scopes.push({ scope: model.scope, claim });
+      return;
+    }
+    const classified = model.level !== null;
+    levels.push({
+      boundary: model.attention_boundary,
+      label: classified ? termLabel(model.attention_boundary) : 'Not classified',
+      level: model.level,
+      attention: classified
+        ? (SUPERVISION_DEFINITIONS.rows.find((row) => row.id === model.attention_boundary)?.attention ?? null)
+        : null,
+      scopes: [{ scope: model.scope, claim }],
+    });
+  });
+  return levels;
 }
 
 export function showQuestion(entry: EntryView, key: string): boolean {
@@ -179,6 +204,18 @@ export interface OperatingModelView {
   readonly levelLabel: string;
 }
 
+/** One attention boundary of an entry and every scope that the catalog assesses at it. */
+export interface SupervisionLevelView {
+  readonly boundary: string;
+  /** The boundary label, or "Not classified" for an unknown boundary. */
+  readonly label: string;
+  readonly level: number | null;
+  /** When a person looks at the work, in the words of the supervision definitions. */
+  readonly attention: string | null;
+  /** Each scope keeps its own operating-model claim, for the anchor and the citations. */
+  readonly scopes: readonly { readonly scope: string; readonly claim: ClaimView | null }[];
+}
+
 export interface RelatedEntryView {
   readonly id: string;
   readonly path: string;
@@ -226,6 +263,8 @@ export interface EntryView {
   readonly interfaces: readonly TermView[];
   readonly invocation: readonly TermView[];
   readonly operatingModels: readonly OperatingModelView[];
+  /** One level card for each distinct boundary, in record order. */
+  readonly supervisionLevels: readonly SupervisionLevelView[];
   /** The distinct boundary labels of the scoped assessments, in record order. */
   readonly boundaryLabels: readonly string[];
   readonly workflowScope: string | null;
@@ -572,6 +611,7 @@ export function entryView(catalog: Catalog, id: string): EntryView {
       level: model.level,
       levelLabel: levelLabel(model.level),
     })),
+    supervisionLevels: supervisionLevels(approach, supervisionClaims),
     boundaryLabels: [...new Set(approach.operating_models.map((model) => termLabel(model.attention_boundary)))],
     workflowScope: page.workflow_scope ?? null,
     coverageQuestions,

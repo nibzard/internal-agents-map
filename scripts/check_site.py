@@ -197,7 +197,9 @@ def check_entry_coverage(
         # and level. A supporting-system page shows the sentence instead.
         model = operating_model(approach, claim)
         if model is not None:
-            level = f"Level {model['level']}" if model.get("level") is not None else "Level unknown"
+            level = (
+                f"Level {model['level']}" if model.get("level") is not None else "Not classified"
+            )
             card = (" ".join(str(model["scope"]).split()), level)
             if not all(part in text for part in card) and " ".join(claim_text.split()) not in text:
                 errors.append(f"Missing claim text: {claim_id} in {name}")
