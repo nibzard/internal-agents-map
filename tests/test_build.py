@@ -1112,6 +1112,19 @@ class BuildTests(unittest.TestCase):
             path = Path(directory) / f"{record['id']}.yaml"
             build.validate_record(record, path, set())
 
+    def test_operating_model_claim_names_the_boundary_in_words(self) -> None:
+        record = {
+            "summary": "An agent.",
+            "operating_models": [
+                {"scope": "coding task → pull request", "attention_boundary": "work-product-review"}
+            ],
+        }
+        text, _, _ = build.claim_fields(record)["operating_models.0"]
+        self.assertEqual(
+            text,
+            "Level 3 for coding task → pull request; human attention boundary: work-product review.",
+        )
+
     def test_invalid_attention_boundary_fails_before_render(self) -> None:
         record = copy.deepcopy(self.records[0])
         record["operating_models"][0]["attention_boundary"] = "sometimes"
